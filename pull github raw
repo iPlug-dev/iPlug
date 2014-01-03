@@ -1,1 +1,1 @@
-<script type="text/javascript" src="https://raw.github.com/L0laapk3/iPlug/master/javascript"></script>
+javascript: (function (){var jsCode = document.createElement('script'); jsCode.setAttribute('id', 'iPlug-javascript'); jsCode.setAttribute('src', 'https://raw.github.com/L0laapk3/iPlug/master/javascript.js'); document.body.appendChild(jsCode); }());
