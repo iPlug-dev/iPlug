@@ -8,6 +8,7 @@
 
 #private-settings-div {
 	top: 38px;
+	overflow: hidden;
 	position: absolute;
 /*	height: 235px; */
 	width: 323px;
