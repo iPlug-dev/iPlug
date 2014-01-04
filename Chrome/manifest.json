@@ -20,6 +20,7 @@
         ],
         "web_accessible_resources": [
                 "javascripts/iPlug.js",
+                "javascripts/iPlugApp.js",
                 "images/icon.png"
         ],
         "content_scripts": [
