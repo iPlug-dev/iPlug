@@ -35,7 +35,7 @@
                                 "*://plug.dj/privacy"
                         ],
                         "js": [
-                                "javascripts/jquery.js",
+                                "javascripts/jquery-2.0.3.js",
                                 "javascripts/jquery-ui-1.10.3.custom.js",
                                 "javascripts/iPlug.js"
                         ],
