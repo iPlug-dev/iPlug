@@ -1,9 +1,21 @@
-#private-settings-icon{
+#private-settings-icon {
 	cursor: pointer;
 	height: 30px;
 	left: 10px;
 	position: absolute;
 	top: 8px;
+}
+
+#private-setting-div {
+	top: 38px;
+	position: absolute;
+/*	height: 235px;
+	width: 325px; */
+	background: #0a0a0a;
+	z-index: 1;
+	border-bottom: #1C1F25 1px solid;
+	border-left: #1C1F25 1px solid;
+	border-right: #1C1F25 1px solid;
 }
 
 .private-input {
