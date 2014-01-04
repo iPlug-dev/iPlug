@@ -21,7 +21,6 @@
         "web_accessible_resources": [
                 "javascripts/iPlug.js",
                 "images/icon.png"
-                //every image
         ],
         "content_scripts": [
                 {
