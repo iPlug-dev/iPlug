@@ -9,8 +9,9 @@
 #private-setting-div {
 	top: 38px;
 	position: absolute;
-/*	height: 235px;
-	width: 325px; */
+/*	height: 235px; */
+	width: 325px;
+	cursor: default;
 	background: #0a0a0a;
 	z-index: 1;
 	border-bottom: #1C1F25 1px solid;
