@@ -1,3 +1,11 @@
+#private-settings-icon{
+	cursor: pointer;
+	height: 30px;
+	left: 10px;
+	position: absolute;
+	top: 8px;
+}
+
 .private-input {
 	position: absolute;
 	width: 286px;
