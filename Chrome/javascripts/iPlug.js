@@ -13,7 +13,7 @@ function init() {
             });
         }
     } else {
-        setTimeout(init, 250);
+        setTimeout(init, 500);
     }
 }
 init();
