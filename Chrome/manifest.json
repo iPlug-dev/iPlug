@@ -24,7 +24,13 @@
         "web_accessible_resources": [
                 "javascripts/iPlug.js",
                 "javascripts/iPlugApp.js",
-                "images/icon.png"
+                "images/icon16.png",
+                "images/icon16.png",
+                "images/icon30.png",
+                "images/icon32.png",
+                "images/icon64.png",
+                "images/icon128.png",
+                "images/icon256.png"
         ],
         "content_scripts": [
                 {
