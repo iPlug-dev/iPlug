@@ -1,4 +1,8 @@
-#iplug-menu-icon {
+#room-bar{
+	left: 110px;
+}
+
+	#iplug-menu-icon {
 	position: absolute;
 	left: 56px; 
 	top: 0; 
@@ -10,6 +14,7 @@
 	-webkit-box-shadow: inset 0 -2px 0 -1px #0a0a0a; 
 	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
 }
+
 .iplug-logo {
 	left: 12px; 
 	top: 12px; 
