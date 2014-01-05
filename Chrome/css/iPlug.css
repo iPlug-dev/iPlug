@@ -13,7 +13,7 @@
 .iplug-logo {
 	left: 12px; 
 	top: 12px; 
-	background-image: chrome.extension.getURL("images/icon256.png"); 
+	background-image: url(chrome-extension://__MSG_@@extension_id__/images/icon256.png); 
 	background-size: cover;
 	position: absolute;
         width: 30px;
