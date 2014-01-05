@@ -1,3 +1,25 @@
+#iplug-menu-icon {
+	position: absolute;
+	left: 56px; 
+	top: 0; 
+	width: 53px; 
+	height: 54px; 
+	cursor: pointer; 
+	background: #323742; 
+	-moz-box-shadow: inset 0 -2px 0 -1px #0a0a0a; 
+	-webkit-box-shadow: inset 0 -2px 0 -1px #0a0a0a; 
+	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
+}
+.iplug-logo {
+	left: 12px; 
+	top: 12px; 
+	background-image: chrome.extension.getURL("images/icon256.png"); 
+	background-size: cover;
+	position: absolute;
+        width: 30px;
+        height: 30px;
+}
+
 #private-settings-icon {
 	cursor: pointer;
 	height: 30px;
