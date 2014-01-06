@@ -1,6 +1,15 @@
 #room-bar{
 	left: 110px;
 }
+#iplug-menu-plug {
+	left: 20px;
+	top: 4px;
+	background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/plug.png);
+	background-size: cover;
+	position: absolute;
+	width: 15px;
+	height: 15px;
+}
 
 #iplug-menu-icon {
 	position: absolute;
