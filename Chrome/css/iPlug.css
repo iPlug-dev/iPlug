@@ -2,13 +2,13 @@
 	left: 110px;
 }
 #iplug-menu-plug {
-	left: 21px;
+	left: 22px;
 	top: 3px;
 	background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/plug.png);
 	background-size: cover;
 	position: absolute;
-	width: 14px;
-	height: 14px;
+	width: 12px;
+	height: 12px;
 }
 
 #iplug-menu-icon {
@@ -25,13 +25,13 @@
 }
 
 .iplug-logo {
-	left: 14px; 
-	top: 14px; 
+	left: 15px; 
+	top: 15px; 
 	background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/icon256.png); 
 	background-size: cover;
 	position: absolute;
-        width: 26px;
-        height: 26px;
+        width: 24px;
+        height: 24px;
 }
 
 #private-settings-icon {
