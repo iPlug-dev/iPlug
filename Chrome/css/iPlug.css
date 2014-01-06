@@ -2,7 +2,7 @@
 	left: 110px;
 }
 
-	#iplug-menu-icon {
+#iplug-menu-icon {
 	position: absolute;
 	left: 56px; 
 	top: 0; 
@@ -18,7 +18,7 @@
 .iplug-logo {
 	left: 12px; 
 	top: 12px; 
-	background-image: url(chrome-extension://__MSG_@@extension_id__/images/icon256.png); 
+	background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/icon256.png); 
 	background-size: cover;
 	position: absolute;
         width: 30px;
