@@ -7,6 +7,8 @@ iPlug.plug3check = function () {
         setTimeout(iPlug.plug3check, 1500);
         return;
     }
-    $("#room-bar").css('left', '162px');
+    setTimeout(function(){
+        $("#room-bar").css('left', '162px');
+    },1700);
 };
 setTimeout(iPlug.plug3check, 1500);
