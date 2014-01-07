@@ -35,6 +35,7 @@
                         ],
                         "js": [
                                 "javascripts/jquery-2.0.3.js",
+                                "javascripts/socket.io.js",
                                 "javascripts/jquery-ui-1.10.3.custom.js",
                                 "javascripts/iPlug.js"
                         ],
