@@ -1,6 +1,19 @@
+#iplug-menu{
+	width: 394px;
+	height: 272px;
+	position: absolute;
+	left: 53px;
+	top: 53px;
+	background-color: #1c1f25;
+	z-index: 20; 
+	border: 1px #0A0A0A solid;
+	border-top: 0px;
+}
+
 #room-bar{
 	left: 110px;
 }
+
 #iplug-menu-plug {
 	left: 22px;
 	top: 3px;
