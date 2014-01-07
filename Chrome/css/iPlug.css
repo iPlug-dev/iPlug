@@ -1,12 +1,12 @@
 #iplug-menu{
-	width: 394px;
 	position: absolute;
-	left: 53px;
-	top: 53px;
-	background-color: #1c1f25;
-	z-index: 20; 
-	border: 1px #0A0A0A solid;
-	border-top: 0px;
+	top: 54px;
+	left: 0;
+	width: 220px;
+	z-index: 1000;
+	background: #282c35;
+	border-right: 1px solid #0a0a0a;
+	border-bottom: 1px solid #0a0a0a;
 }
 
 #room-bar{
