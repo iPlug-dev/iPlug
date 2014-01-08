@@ -4,11 +4,11 @@ $("#plug-dj").after("<div id='iplug-menu-icon'><i id='iplug-menu-plug'></i><i cl
 iPlug = {};
 iPlug.plug3check = function () {
     if (typeof plugCubed == "undefined") {
-        setTimeout(iPlug.plug3check, 1500);
+        setTimeout(iPlug.plug3check, 2000);
         return;
     }
     setTimeout(function(){
         $("#room-bar").css('left', '162px');
-    },1700);
+    },2100);
 };
-setTimeout(iPlug.plug3check, 1500);
+setTimeout(iPlug.plug3check, 10000);
