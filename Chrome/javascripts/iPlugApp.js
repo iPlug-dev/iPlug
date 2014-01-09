@@ -9,6 +9,6 @@ iPlug.plug3check = function () {
     }
     setTimeout(function(){
         $("#room-bar").css('left', '162px');
-    },2100);
+    },6000);
 };
 setTimeout(iPlug.plug3check, 10000);
