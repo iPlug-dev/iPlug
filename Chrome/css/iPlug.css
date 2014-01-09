@@ -1,3 +1,53 @@
+#token-text{
+	position: relative;
+	top: 0px;
+	font-size: initial;
+	color: #CCC;
+}
+
+#token-input{
+	 position: absolute;
+	 top: 25px;
+	 left: 5px;
+	 right: 5px;
+	 border: 1px rgb(196,46,59) solid;
+	 background-color: rgba(255,255,255,0.1);
+	 color: #CCC; 
+}
+
+#token-submit{
+	 left: 15px; 
+	 position: absolute; 
+	 border: 1px #616161 solid;
+	 border-radius: 7px;
+	 padding: 3px;
+	 top: 47px;
+	 background: #8A8A8A;
+	 cursor: pointer; 
+}
+
+#token-remind{
+	 left: 106px;
+	 position: absolute; 
+	 border: 1px #616161 solid; 
+	 border-radius: 7px;
+	 padding: 3px; 
+	 top: 47px; 
+	 background: #707070; 
+	 cursor: normal; 
+}
+
+#token-new{
+	 right: 15px; 
+	 position: absolute; 
+	 border: 1px #616161 solid; 
+	 border-radius: 7px; 
+	 padding: 3px; 
+	 top: 47px;
+	 background: #8A8A8A;
+	 cursor: pointer; 
+}
+
 #iplug-menu {
 	position: absolute;
 	top: 54px;
