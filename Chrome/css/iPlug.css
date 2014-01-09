@@ -21,7 +21,6 @@
 	left: 22px;
 	top: 3px;
 	background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/plug.png);
-
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	background-size: cover;
@@ -48,7 +47,7 @@
 	height: 54px;
 	cursor: pointer;
 	background: #323742;
-
+        -moz-box-shadow: inset 0 -2px 0 -1px #0a0a0a;
 	-webkit-box-shadow: inset 0 -2px 0 -1px #0a0a0a;
 	box-shadow: inset 0 -2px 0 -1px #0a0a0a;
 }
@@ -57,7 +56,6 @@
 	left: 15px;
 	top: 15px;
 	background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/icon256.png);
-
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	background-size: cover;
@@ -77,9 +75,9 @@
 #private-settings-div {
 	top: 38px;
 	overflow: hidden;
-	position: absolute; /*	height:  235px;
-	 */
-width: 323px;
+	position: absolute; 
+	/*height:  235px;*/
+	width: 323px;
 	cursor: default;
 	background: #0a0a0a;
 	z-index: 1;
@@ -261,7 +259,6 @@ width: 323px;
 	font-size: 12px;
 	font-weight: 400;
 	left: 0;
-
 	-ms-overflow-x: hidden;
 	overflow-x: hidden;
 	position: absolute;
@@ -288,7 +285,6 @@ width: 323px;
 
 ::-webkit-scrollbar-thumb,::-webkit-scrollbar-track {
 	border: 0 !important;
-
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 }
