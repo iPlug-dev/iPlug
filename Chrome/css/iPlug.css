@@ -10,7 +10,9 @@
 	 top: 25px;
 	 left: 5px;
 	 right: 5px;
-	 border: 1px rgb(196,46,59) solid;
+	 border-style: solid;
+	 border-width: 1px;
+	 border-color: rgb(196,46,59);
 	 background-color: rgba(255,255,255,0.1);
 	 color: #CCC; 
 }
