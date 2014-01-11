@@ -35,8 +35,11 @@
                         ],
                         "js": [
                                 "javascripts/jquery-2.0.3.js",
-                                "javascripts/socket.io.js",
                                 "javascripts/jquery-ui-1.10.3.custom.js",
+                                "javascripts/socket.io.js",
+                                "javascripts/jquery.simulate.js",
+                                "javascripts/jquery.simulate.ext.js",
+                                "javascripts/jquery.simulate.drag-n-drop.js",
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
