@@ -24,9 +24,9 @@
 
 .iplug-settings-divider {
 	position: absolute; 
-	left: 75px; 
+	left: 0px; 
 	top: 38px; 
-	width: 70px; 
+	width: 220px; 
 	height: 1px; 
 	background: #1c1f25;
 	z-index: 1;
