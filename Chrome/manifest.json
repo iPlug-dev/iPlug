@@ -41,8 +41,8 @@
                                 "javascripts/jquery.simulate.js",
                                 "javascripts/jquery.simulate.ext.js",
                                 "javascripts/jquery.simulate.drag-n-drop.js",
-                                "javascripts/jquery.simulate.key-sequence.js"
-                                "javascripts/jquery.simulate.key-combo.js
+                                "javascripts/jquery.simulate.key-sequence.js",
+                                "javascripts/jquery.simulate.key-combo.js",
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
