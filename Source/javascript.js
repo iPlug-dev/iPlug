@@ -12,4 +12,4 @@ iPlug.plug3check = function () {
 };
 setTimeout(iPlug.plug3check, 10000);
 
-socket = io.connect('ws://example.com:1234)
+socket = io.connect('ws://example.com:1234');
