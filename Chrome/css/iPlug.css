@@ -29,6 +29,7 @@
 	width: 70px; 
 	height: 1px; 
 	background: #1c1f25;
+	z-index: 1;
 }
 
 #token-text{
