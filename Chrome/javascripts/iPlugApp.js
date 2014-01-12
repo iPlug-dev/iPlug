@@ -2,7 +2,8 @@ javascript: (function (){var jssCode = document.createElement('script'); jssCode
 
 
 for (var i = 0;i < iPlugscripts.length; i++) {
-  function () {
+  function lol () {
     javascript: (function (){var jsCode = document.createElement('script'); jsCode.setAttribute('id', 'iPlug-' + iPlugscripts[i].substring(0,iPlugscripts.length - 3)); jsCode.setAttribute('src', iPlugscripts[i]); document.body.appendChild(jsCode); }());
   }
+  lol()
 }
