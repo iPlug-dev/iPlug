@@ -1,6 +1,5 @@
-function () {
-javascript: (function (){var jsCode = document.createElement('script'); jsCode.setAttribute('id', 'iPlug-javascript'); jsCode.setAttribute('src', 'https://raw.github.com/L0laapk3/iPlug/master/Source/scriptlist.js'); document.body.appendChild(jsCode); }());
-}
+javascript: (function (){var jssCode = document.createElement('script'); jssCode.setAttribute('id', 'iPlug-javascript'); jssCode.setAttribute('src', 'https://raw.github.com/L0laapk3/iPlug/master/Source/scriptlist.js'); document.body.appendChild(jssCode); }());
+
 
 for (var i = 0;i < iPlugscripts.length; i++) {
   function () {
