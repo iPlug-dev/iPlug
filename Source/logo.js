@@ -1,5 +1,5 @@
-function lol() {
 //Put all code here
+
 $("#plug-dj").after("<div id='iplug-menu-icon'><i id='iplug-menu-plug'></i><i class='iplug-logo'></i></div>");
 iPlug = {};
 iPlug.plug3check = function () {
@@ -12,4 +12,4 @@ iPlug.plug3check = function () {
     },8000);
 };
 setTimeout(iPlug.plug3check, 10000);
-}
+
