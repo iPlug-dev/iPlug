@@ -1,6 +1,6 @@
 {
         "name": "iPlug",
-        "version": "0.0.1",
+        "version": "0.1.0",
         "manifest_version": 2,
         "description": "A free addon for http://plug.dj/ that allows autowoot, autojoin and many other things!",
         "icons": {
