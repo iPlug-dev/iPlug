@@ -1,5 +1,7 @@
 {
         "name": "iPlug",
+        "short_name": "iPlug",
+        "author": "CookieMichal & L0laapk3",
         "version": "0.1.0",
         "manifest_version": 2,
         "description": "A free addon for http://plug.dj/ that allows autowoot, autojoin and many other things!",
