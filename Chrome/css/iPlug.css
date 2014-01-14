@@ -77,6 +77,21 @@
     -o-backface-visibility:hidden;
     backface-visibility:hidden;
 }
+.iplug-left-arrow {
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+    -o-transform: rotateY(180deg);
+    -ms-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    -webkit-backface-visibility:visible;
+    -moz-backface-visibility:visible;
+    -ms-backface-visibility:visible;
+    -o-backface-visibility:visible;  
+    backface-visibility:visible;
+    cursor: pointer;
+    left: 0px;
+    top: 3px;
+}
 .iplug-right-arrow {
     right:10px;
     top:3px;
