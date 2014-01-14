@@ -4,7 +4,7 @@
     -o-perspective: 800px;
     perspective: 800px;
 }
-#autovote, #background, #first {
+#iplug-autovote, #iplug-autograb, #iplug-notifications, #iplug-background, #iplug-stuff, #iplug-first {
     width: 100%;
     height: 100%;
     position: absolute;
