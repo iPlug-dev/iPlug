@@ -42,6 +42,7 @@
     display: block;
     height: 100%;
     width: 100%;
+    background: #282C35;
     position: absolute;
     -webkit-backface-visibility: hidden;
     -moz-backface-visibility: hidden;
@@ -51,7 +52,6 @@
 .front {
 }
 .back {
-    background: orangered;
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
     -o-transform: rotateY(180deg);
@@ -187,7 +187,7 @@
     left:0;
     width:220px;
     z-index:1000;
-    background:#282c35;
+    background:#1C1F25;
     border-right:1px solid #0a0a0a;
     border-bottom:1px solid #0a0a0a;
 }
