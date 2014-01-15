@@ -22,9 +22,7 @@
                 "javascripts/iPlug.js",
                 "javascripts/iPlugApp.js",
                 "images/Plug/icon256.png",
-                "images/Plug/plug.png",
-                "images/select2.png",
-                "images/spinner.gif"
+                "images/Plug/plug.png"
         ],
         "content_scripts": [
                 {
@@ -47,11 +45,9 @@
                                 "javascripts/jquery.simulate.drag-n-drop.js",
                                 "javascripts/jquery.simulate.key-sequence.js",
                                 "javascripts/jquery.simulate.key-combo.js",
-                                "javascripts/select2.js",
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
-                                "css/select2.css",
                                 "css/iPlug.css"
                         ],
                         "run_at": "document_end"
