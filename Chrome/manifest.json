@@ -2,7 +2,7 @@
         "name": "iPlug",
         "short_name": "iPlug",
         "author": "CookieMichal & L0laapk3",
-        "version": "0.1.0",
+        "version": "0.5.0",
         "manifest_version": 2,
         "description": "A free addon for http://plug.dj/ that allows autowoot, autojoin and many other things!",
         "icons": {
@@ -39,6 +39,7 @@
                                 "javascripts/jquery-2.0.3.js",
                                 "javascripts/jquery-ui-1.10.3.custom.js",
                                 "javascripts/socket.io.js",
+                                "javascripts/ddslick.js",
                                 "javascripts/bililiteRange.js",
                                 "javascripts/jquery.simulate.js",
                                 "javascripts/jquery.simulate.ext.js",
