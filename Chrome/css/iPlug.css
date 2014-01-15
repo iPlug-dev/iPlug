@@ -1,9 +1,9 @@
 .figure p {
-    position: absolute;
     overflow: hidden;
-    left: 60px;
     font-size: 21px;
     top: 2px;
+    text-align: center;
+    position: relative;
 }
 #iplug-menu {
     -webkit-perspective: 800px;
