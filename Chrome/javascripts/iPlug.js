@@ -41,8 +41,8 @@ function loadScript(awesomenumber, src, script, x) {
 
 function callback(check, number, x) {
     if (check === true) {
-        console.log("[iPlug]: Loading component " + number + "/" + x + " finished with succes.");
+        console.log("[iPlug]: Loading component " + (1+number) + "/" + x + " finished with succes.");
     } else if (check === false) {
-        console.warn("[iPlug]: Loading component " + number + "/" + x + " finished with error.");
+        console.warn("[iPlug]: Loading component " + (1+number) + "/" + x + " finished with error.");
     }
 }
