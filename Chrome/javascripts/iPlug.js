@@ -1,31 +1,43 @@
-var _0x669f = ["\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x6A\x71\x75\x65\x72\x79\x2D\x75\x69\x2D\x31\x2E\x31\x30\x2E\x33\x2E\x63\x75\x73\x74\x6F\x6D\x2E\x6A\x73", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x64\x64\x73\x6C\x69\x63\x6B\x2E\x6A\x73", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x62\x69\x6C\x69\x6C\x69\x74\x65\x52\x61\x6E\x67\x65\x2E\x6A\x73", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x6A\x71\x75\x65\x72\x79\x2E\x73\x69\x6D\x75\x6C\x61\x74\x65\x2E\x6A\x73", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x6A\x71\x75\x65\x72\x79\x2E\x73\x69\x6D\x75\x6C\x61\x74\x65\x2E\x65\x78\x74\x2E\x6A\x73", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x6A\x71\x75\x65\x72\x79\x2E\x73\x69\x6D\x75\x6C\x61\x74\x65\x2E\x64\x72\x61\x67\x2D\x6E\x2D\x64\x72\x6F\x70\x2E\x6A\x73", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x6A\x71\x75\x65\x72\x79\x2E\x73\x69\x6D\x75\x6C\x61\x74\x65\x2E\x6B\x65\x79\x2D\x73\x65\x71\x75\x65\x6E\x63\x65\x2E\x6A\x73", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x6A\x71\x75\x65\x72\x79\x2E\x73\x69\x6D\x75\x6C\x61\x74\x65\x2E\x6B\x65\x79\x2D\x63\x6F\x6D\x62\x6F\x2E\x6A\x73", "\x6C\x65\x6E\x67\x74\x68", "\x23\x61\x75\x64\x69\x65\x6E\x63\x65", "\x70\x61\x74\x68\x6E\x61\x6D\x65", "\x6C\x6F\x63\x61\x74\x69\x6F\x6E", "\x2F", "\x5B\x69\x50\x6C\x75\x67\x5D\x3A\x20\x53\x63\x72\x69\x70\x74\x20\x77\x69\x6C\x6C\x20\x6E\x6F\x74\x20\x62\x65\x20\x6C\x6F\x61\x64\x65\x64\x21", "\x6C\x6F\x67", "\x5B\x69\x50\x6C\x75\x67\x5D\x3A\x20\x4C\x6F\x61\x64\x69\x6E\x67\x20\x63\x6F\x6D\x70\x6F\x6E\x65\x6E\x74\x73\x2E\x2E\x2E", "\x5B\x69\x50\x6C\x75\x67\x5D\x3A\x20\x4C\x6F\x61\x64\x69\x6E\x67\x20\x73\x63\x72\x69\x70\x74\x2E\x2E\x2E", "\x5B\x69\x50\x6C\x75\x67\x5D\x3A\x20\x53\x63\x72\x69\x70\x74\x20\x66\x61\x69\x6C\x65\x64\x20\x74\x6F\x20\x6C\x6F\x61\x64\x21", "\x77\x61\x72\x6E", "\x66\x61\x69\x6C", "\x5B\x69\x50\x6C\x75\x67\x5D\x3A\x20\x53\x63\x72\x69\x70\x74\x20\x6C\x6F\x61\x64\x65\x64\x21", "\x64\x6F\x6E\x65", "\x6A\x61\x76\x61\x73\x63\x72\x69\x70\x74\x73\x2F\x69\x50\x6C\x75\x67\x41\x70\x70\x2E\x6A\x73", "\x67\x65\x74\x55\x52\x4C", "\x65\x78\x74\x65\x6E\x73\x69\x6F\x6E", "\x67\x65\x74\x53\x63\x72\x69\x70\x74", "\x5B\x69\x50\x6C\x75\x67\x5D\x3A\x20\x4C\x6F\x61\x64\x69\x6E\x67\x20\x63\x6F\x6D\x70\x6F\x6E\x65\x6E\x74\x20\x66\x69\x6E\x69\x73\x68\x65\x64\x20\x77\x69\x74\x68\x20", "\x2E"]
+function init() {
+    scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
+    //"javascripts/socket.io.js", | plug already got it :o
+        "javascripts/ddslick.js",
+        "javascripts/bililiteRange.js",
+        "javascripts/jquery.simulate.js",
+        "javascripts/jquery.simulate.ext.js",
+        "javascripts/jquery.simulate.drag-n-drop.js",
+        "javascripts/jquery.simulate.key-sequence.js",
+        "javascripts/jquery.simulate.key-combo.js"];
+    if ($('#audience').length > 0) {
+        if (document.location.pathname == "/") {
+            console.log("[iPlug]: Script will not be loaded!");
+        } else {
+            console.log("[iPlug]: Loading components...");
+            for (i = 0; i <= scripts.length; i++) {
+                if (i == scripts.length) {
+                    console.log("[iPlug]: Loading script...");
+                    $.getScript(chrome.extension.getURL("javascripts/iPlugApp.js"))
+                        .done(function (script, status, statusid) {
+                        console.log("[iPlug]: Script loaded!");
+                    })
+                        .fail(function () {
+                        console.warn("[iPlug]: Script failed to load!");
+                    });
 
-    function init() {
-        scripts = [_0x669f[0], _0x669f[1], _0x669f[2], _0x669f[3], _0x669f[4], _0x669f[5], _0x669f[6], _0x669f[7]];
-        if ($(_0x669f[9])[_0x669f[8]] > 0) {
-            if (document[_0x669f[11]][_0x669f[10]] == _0x669f[12]) {
-                console[_0x669f[14]](_0x669f[13]);
-            } else {
-                console[_0x669f[14]](_0x669f[15]);
-                for (i = 0; i <= scripts[_0x669f[8]]; i++) {
-                    if (i == scripts[_0x669f[8]]) {
-                        console[_0x669f[14]](_0x669f[16]);
-                        $[_0x669f[25]](chrome[_0x669f[24]][_0x669f[23]](_0x669f[22]))[_0x669f[21]](function (_0x668fx2, _0x668fx3, _0x668fx4) {
-                            console[_0x669f[14]](_0x669f[20]);
-                        })[_0x669f[19]](function () {
-                            console[_0x669f[18]](_0x669f[17]);
-                        });
-                    } else {
-                        $[_0x669f[25]](chrome[_0x669f[24]][_0x669f[23]](scripts[i]))[_0x669f[21]](function (_0x668fx2, _0x668fx3, _0x668fx4) {
-                            console[_0x669f[14]](_0x669f[26] + _0x668fx3 + _0x669f[27]);
-                        })[_0x669f[19]](function () {
-                            console[_0x669f[18]](_0x669f[26] + status + _0x669f[27]);
-                        });
-                    }
+                } else {
+                    $.getScript(chrome.extension.getURL(scripts[i]))
+                        .done(function (script, status, statusid) {
+                        console.log("[iPlug]: Loading component finished with " + status + ".");
+                    })
+                        .fail(function () {
+                        console.warn("[iPlug]: Loading component finished with " + status + ".");
+                    });
                 }
             }
-        } else {
-            setTimeout(init, 500);
+
         }
-    };
+    } else {
+        setTimeout(init, 500);
+    }
+}
 init();
