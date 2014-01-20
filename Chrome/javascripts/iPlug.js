@@ -5,6 +5,7 @@ function init() {
         setTimeout(init, 500);
     }
 }
+
 init();
 
 function LoadScripts() {
@@ -35,7 +36,7 @@ function loadScript(awesomenumber, src, script) {
     script.onload = function () {
         callback(true, awesomenumber);
     };
-    script.src = src;
+    script.src = chrome.extension.getURL(src);
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
