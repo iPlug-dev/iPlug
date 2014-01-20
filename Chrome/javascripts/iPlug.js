@@ -46,11 +46,11 @@ function loadItall(scripts, num) {
         $.getScript(chrome.extension.getURL(scripts[num]))
             .done(function () {
             callback(true, num, scripts.length);
-            loadItall((num + 1));
+            loadItall(scripts,(num + 1));
         })
             .fail(function () {
             callback(false, num, scripts.length);
-            loadItall((num + 1));
+            loadItall(scripts,(num + 1));
         });
     }
 }
