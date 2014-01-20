@@ -50,6 +50,7 @@ function loadItall(scripts, num) {
         })
             .fail(function () {
             callback(false, num, scripts.length);
+            loadItall((num + 1));
         });
     }
 }
