@@ -5,7 +5,6 @@ function init() {
         setTimeout(init, 500);
     }
 }
-
 init();
 
 function LoadScripts() {
@@ -24,26 +23,26 @@ function LoadScripts() {
 
 function LoadScriptsAsync(_scripts, scripts) {
     for (var i = 0; i < _scripts.length; i++) {
-        loadScript(i, _scripts[i], scripts[i]);
+        loadScript(i, _scripts[i], scripts[i], _scripts.length);
     }
 }
 
-function loadScript(awesomenumber, src, script) {
+function loadScript(awesomenumber, src, script, x) {
     script = document.createElement('script');
     script.onerror = function () {
-        callback(false, awesomenumber);
+        callback(false, awesomenumber, x);
     };
     script.onload = function () {
-        callback(true, awesomenumber);
+        callback(true, awesomenumber, x);
     };
     script.src = chrome.extension.getURL(src);
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-function callback(check, number) {
+function callback(check, number, x) {
     if (check === true) {
-        console.log("[iPlug]: Loading component " + number + "/" + _scripts.length + " finished with succes.");
+        console.log("[iPlug]: Loading component " + number + "/" + x + " finished with succes.");
     } else if (check === false) {
-        console.warn("[iPlug]: Loading component " + number + "/" + _scripts.length + " finished with error.");
+        console.warn("[iPlug]: Loading component " + number + "/" + x + " finished with error.");
     }
 }
