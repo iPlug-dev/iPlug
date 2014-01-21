@@ -9,19 +9,6 @@ eval(function(p,a,c,k,e,r){e=String;if(!''.replace(/^/,String)){while(c--)r[c]=k
 
 
 (function(){
-iPlug = new Object;
-iPlug.plug3check = function () {
-    if (typeof plugCubed == "undefined") {
-        setTimeout(iPlug.plug3check, 10000);
-        console.log("a");
-        return;
-    }
-    console.log("b");
-    setTimeout(function(){
-        $("#room-bar").css('left', '162px');
-        console.log("c");
-    },8000);
-};
-setTimeout(iPlug.plug3check, 10000);
+
 var NaMe="[iPlug]: ";
 })();
