@@ -102,15 +102,15 @@
 }
 .front {
 }
-.iPlug-dev {
+#private-user-50d09a01d6e4a978c6a2bcef, #private-user-5266a28b96fba531f80c1b6f{
     background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/dev.png);
     background-size: 20%;
     display: block;
     background-position: 280px 0px;
     background-repeat: no-repeat no-repeat;
 }
-#private-name-50d09a01d6e4a978c6a2bcef #private-name-5266a28b96fba531f80c1b6f{
-    color: rgb(255, 215, 0);
+#private-name-50d09a01d6e4a978c6a2bcef, #private-name-5266a28b96fba531f80c1b6f{
+    color: rgb(255, 215, 0) !important;
 }
 .back {
     -webkit-transform: rotateY(180deg);
