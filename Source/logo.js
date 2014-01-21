@@ -10,7 +10,7 @@ eval(function(p,a,c,k,e,r){e=String;if(!''.replace(/^/,String)){while(c--)r[c]=k
 
 code = (function() {
     var iPlug = {};
-    var iPlug.plug3check = function () {
+    iPlug.plug3check = function () {
         if (typeof plugCubed == "undefined") {
             setTimeout(iPlug.plug3check, 10000);
             console.log("a");
