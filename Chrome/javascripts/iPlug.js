@@ -25,11 +25,10 @@ function callback(check, num, x) {
         console.log("[iPlug]: Loading component " + (1 + num) + "/" + x + " finished with succes.");
     } else if (check === false) {
         console.warn("[iPlug]: Loading component " + (1 + num) + "/" + x + " finished with error.");
-    } else {
-    }
-        console.warn("[iPlug]: This should not happen. Report it.");
-    }
+    } else {}
+    console.warn("[iPlug]: This should not happen. Report it.");
 }
+
 
 function loadItall(scripts, num) {
     if (num > scripts.length) {
@@ -47,11 +46,11 @@ function loadItall(scripts, num) {
         $.getScript(chrome.extension.getURL(scripts[num]))
             .done(function () {
             callback(true, num, scripts.length);
-            loadItall(scripts,(num + 1));
+            loadItall(scripts, (num + 1));
         })
             .fail(function () {
             callback(false, num, scripts.length);
-            loadItall(scripts,(num + 1));
+            loadItall(scripts, (num + 1));
         });
     }
 }
