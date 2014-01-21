@@ -5,7 +5,7 @@ function init() {
         } else {
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
             //"javascripts/socket.io.js", | plug already got it :o
-            "javascripts/ddslick.js",
+            "javascripts/chosen.jquery.min.js",
                 "javascripts/bililiteRange.js",
                 "javascripts/jquery.simulate.js",
                 "javascripts/jquery.simulate.ext.js",
