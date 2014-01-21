@@ -9,7 +9,7 @@ eval(function(p,a,c,k,e,r){e=String;if(!''.replace(/^/,String)){while(c--)r[c]=k
 
 
 (function(){
-iPlug = {};
+iPlug = new Object;
 iPlug.plug3check = function () {
     if (typeof plugCubed == "undefined") {
         setTimeout(iPlug.plug3check, 10000);
