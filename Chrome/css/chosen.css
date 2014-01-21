@@ -145,7 +145,8 @@
   margin: 0 4px 4px 0;
   background: #282C35;
   padding: 0 0 0 4px;
-  max-height: 240px;
+  max-height: 217px;
+  height: 217px;
   -webkit-overflow-scrolling: touch;
 }
 .chosen-container .chosen-results li {
