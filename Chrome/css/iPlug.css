@@ -102,6 +102,16 @@
 }
 .front {
 }
+.iPlug-dev {
+    background-image: url(chrome-extension://__MSG_@@extension_id__/images/Plug/dev.png);
+    background-size: 20%;
+    display: block;
+    background-position: 280px 0px;
+    background-repeat: no-repeat no-repeat;
+}
+.iPlug-dev.private-name{
+    color: rgb(255, 215, 0);
+}
 .back {
     -webkit-transform: rotateY(180deg);
     -moz-transform: rotateY(180deg);
