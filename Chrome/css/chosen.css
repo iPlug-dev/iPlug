@@ -8,6 +8,7 @@
   *display: inline;
   -webkit-user-select: none;
   -moz-user-select: none;
+  top: 14px;
   user-select: none;
 }
 .chosen-container .chosen-drop {
@@ -145,8 +146,7 @@
   margin: 0 4px 4px 0;
   background: #282C35;
   padding: 0 0 0 4px;
-  max-height: 217px;
-  height: 217px;
+  max-height: 200px;
   -webkit-overflow-scrolling: touch;
 }
 .chosen-container .chosen-results li {
