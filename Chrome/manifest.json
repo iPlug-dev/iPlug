@@ -30,6 +30,8 @@
                 "javascripts/jquery.simulate.key-combo.js",
                 "javascripts/iPlug.js",
                 "javascripts/iPlugApp.js",
+                "images/chosen/chosen-sprite.png",
+                "images/chosen/chosen-sprite@2x.png",
                 "images/Plug/dev.png",
                 "images/Plug/icon256.png",
                 "images/Plug/plug.png"
