@@ -50,6 +50,7 @@
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
+                                "css/chosen.css",
                                 "css/iPlug.css"
                         ],
                         "run_at": "document_end"
