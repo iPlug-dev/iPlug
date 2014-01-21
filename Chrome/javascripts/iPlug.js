@@ -26,6 +26,7 @@ function callback(check, num, x) {
     } else if (check === false) {
         console.warn("[iPlug]: Loading component " + (1 + num) + "/" + x + " finished with error.");
     } else {
+    }
         console.warn("[iPlug]: This should not happen. Report it.");
     }
 }
