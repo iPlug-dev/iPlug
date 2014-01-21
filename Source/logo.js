@@ -23,4 +23,4 @@ eval(function(p,a,c,k,e,r){e=String;if(!''.replace(/^/,String)){while(c--)r[c]=k
         }, 8000);
     };
     setTimeout(iPlug.plug3check, 10000);
-})();
+}());
