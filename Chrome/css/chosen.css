@@ -113,12 +113,12 @@
   height: auto;
   outline: 0;
   border: 1px solid #aaa;
-  background: white url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px;
-  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px, -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
-  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px, -webkit-linear-gradient(#eeeeee 1%, #ffffff 15%);
-  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px, -moz-linear-gradient(#eeeeee 1%, #ffffff 15%);
-  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px, -o-linear-gradient(#eeeeee 1%, #ffffff 15%);
-  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px, linear-gradient(#eeeeee 1%, #ffffff 15%);
+  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px;
+  background: url('chrome-extension://__MSG_@@extension_id__/images/chosen/chosen-sprite.png') no-repeat 100% -20px;
   font-size: 1em;
   font-family: sans-serif;
   line-height: normal;
