@@ -1,6 +1,9 @@
 .onoffswitch {
     position: relative; width: 56px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    right: 9px;
+    float: right;
+    position: absolute;
 }
 .onoffswitch-checkbox {
     display: none;
@@ -56,6 +59,42 @@
     text-align: center;
     position: relative;
     cursor: pointer;
+}
+#bg-vote, #bg-waitlist, #bg-audience, #bg-video, #bg-dj {
+    position: absolute;
+    font-size: 19px;
+    left: 12px;
+    font-variant: small-caps;
+}
+#bg-vote {
+    top: 90px;
+}
+#bg-waitlist{
+    top: 130px;
+}
+#bg-audience {
+    top: 170px;
+}
+#bg-video{
+    top: 210px;
+}
+#bg-dj {
+    top 250px
+}
+#bg-vote-button {
+    top: 95px;
+}
+#bg-waitlist-button{
+    top: 135px;
+}
+#bg-audience-button{
+    top: 175px;
+}
+#bg-video-button{
+    top: 215px;
+}
+#bg-dj-button {
+    top 255px
 }
 #iplug-menu {
     -webkit-perspective: 800px;
