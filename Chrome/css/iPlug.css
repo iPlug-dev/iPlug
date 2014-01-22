@@ -1,5 +1,5 @@
 .onoffswitch {
-    position: relative; width: 75px;
+    position: relative; width: 56px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
 }
 .onoffswitch-checkbox {
@@ -15,26 +15,26 @@
     -o-transition: margin 0.3s ease-in 0s; transition: margin 0.3s ease-in 0s;
 }
 .onoffswitch-inner:before, .onoffswitch-inner:after {
-    float: left; width: 50%; height: 25px; padding: 0; line-height: 25px;
-    font-size: 16px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    float: left; width: 50%; height: 21px; padding: 0; line-height: 21px;
+    font-size: 13px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
     -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
 }
 .onoffswitch-inner:before {
     content: "ON";
-    padding-left: 10px;
+    padding-left: 8px;
     background-color: #6194FD; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
     content: "OFF";
-    padding-right: 10px;
+    padding-right: 8px;
     background-color: #F8F8F8; color: #666666;
     text-align: right;
 }
 .onoffswitch-switch {
-    width: 22px; margin: 0px;
+    width: 14px; margin: 0px;
     background: #FFFFFF;
     border: 2px solid #666666; border-radius: 5px;
-    position: absolute; top: 0; bottom: 0; right: 49px;
+    position: absolute; top: 0; bottom: 0; right: 38px;
     -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
     -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
     background-image: -moz-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
@@ -47,14 +47,6 @@
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px; 
-}
-.iplug-title{
-    overflow: hidden;
-    font-size: 21px;
-    top: 3px;
-    text-align: center;
-    position: relative;
-    cursor: pointer;
 }
 #iplug-menu {
     -webkit-perspective: 800px;
