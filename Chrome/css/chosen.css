@@ -1,5 +1,6 @@
 /* @group Base */
 .chosen-container {
+  border: 0 !important;
   position: relative;
   display: inline-block;
   vertical-align: middle;
