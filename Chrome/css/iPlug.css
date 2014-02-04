@@ -48,6 +48,12 @@
 #bg-vote-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner, #bg-waitlist-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner, #bg-audience-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner, #bg-video-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner, #bg-dj-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
     margin-left: 0;
 }
+#bg-vote-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:before, #bg-waitlist-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:before, #bg-audience-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:before, #bg-video-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:before, #bg-dj-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:before {
+    background-color: rgb(168, 168, 168);
+}
+#bg-vote-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:after, #bg-waitlist-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:after, #bg-audience-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:after, #bg-video-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:after, #bg-dj-button-myonoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner:after {
+    background-color: rgb(168, 168, 168);
+}
 #bg-vote-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-waitlist-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-audience-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-video-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-dj-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px; 
 }
