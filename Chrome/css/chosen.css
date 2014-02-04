@@ -146,6 +146,7 @@
   margin: 0 4px 4px 0;
   background: #282C35;
   padding: 0 0 0 4px;
+  min-height: 100px;
   max-height: 200px;
   -webkit-overflow-scrolling: touch;
 }
@@ -300,8 +301,8 @@
 /* @end */
 /* @group Active  */
 .chosen-container-active .chosen-single {
-  border: 1px solid #5897fb;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  /*border: 1px solid #5897fb;*/
+  /*box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);*/
 }
 .chosen-container-active.chosen-with-drop .chosen-single {
   border: 1px solid #aaa;
