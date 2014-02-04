@@ -32,10 +32,13 @@
 .chosen-container a {
   cursor: pointer;
 }
-
+.chosen-container .chosen-single {
+  border: 0;
+}
 /* @end */
 /* @group Single Chosen */
 .chosen-container-single .chosen-single {
+  border: 0;
   position: relative;
   display: block;
   overflow: hidden;
