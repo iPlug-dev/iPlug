@@ -4,8 +4,8 @@ function init() {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
-            //"javascripts/socket.io.js", | plug already got it :o
-            "javascripts/chosen.jquery.min.js",
+                "javascripts/object-watch.js",
+                "javascripts/chosen.jquery.min.js",
                 "javascripts/bililiteRange.js",
                 "javascripts/jquery.simulate.js",
                 "javascripts/jquery.simulate.ext.js",
@@ -46,11 +46,11 @@ function loadItall(scripts, num) {
         $.getScript(chrome.extension.getURL(scripts[num]))
             .done(function () {
             callback(true, num, scripts.length);
-            loadItall(scripts,(num + 1));
+            loadItall(scripts, (num + 1));
         })
             .fail(function () {
             callback(false, num, scripts.length);
-            loadItall(scripts,(num + 1));
+            loadItall(scripts, (num + 1));
         });
     }
 }
