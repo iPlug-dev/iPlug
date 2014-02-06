@@ -20,7 +20,7 @@
         ],
         "web_accessible_resources": [
                 "javascripts/jquery-ui-1.10.3.custom.js",
-                "javascripts/socket.io.js",
+                "javascripts/object-watch.js",
                 "javascripts/chosen.jquery.min.js",
                 "javascripts/bililiteRange.js",
                 "javascripts/jquery.simulate.js",
