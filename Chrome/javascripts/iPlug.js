@@ -4,7 +4,7 @@ function init() {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
-                "javascripts/event-style.js",
+                "javascripts/attrchange.js",
                 "javascripts/chosen.jquery.min.js",
                 "javascripts/bililiteRange.js",
                 "javascripts/jquery.simulate.js",
