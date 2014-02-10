@@ -50,7 +50,7 @@
  *
  * http://docs.jquery.com/UI/Theming/API
  *
- * To view and modify this theme, visit http://jquit.com/builder/#gcc=ffffff&gcb=d4d4d4&gct=525252&gci=d4d4d4&pcc=d4d4d4&acb=525252&o=ffffff&ghc=3399ff&ght=ffffff&ghi=ffffff&gdc=d4d4d4&gdb=d4d4d4&gdt=525252&tdc=3399ff&tdb=3399ff&tdt=ffffff&tdi=ffffff&ddc=d4d4d4&ddb=d4d4d4&ddt=525252&pxd=000000&asc=3399ff&ast=ffffff&goc=C199FF&gob=C199FF&got=ffffff&toc=66B3FF&tob=66B3FF&tot=ffffff&toi=ffffff&doc=66B3FF&dob=66B3FF&dot=ffffff&pxa=525252&gac=AC76FF&gab=AC76FF&gat=ffffff&tac=ffffff&tab=d4d4d4&tat=525252&tai=d4d4d4&dac=3399ff&dab=3399ff&dat=ffffff&dic=d4d4d4&dib=3399ff&dit=ffffff&gic=efdca9&gib=efdca9&git=525252&gii=525252&ec=c31d1d&eb=c31d1d&et=ffffff&ei=ffffff
+ * To view and modify this theme, visit http://jquit.com/builder/#gcc=ffffff&gcb=d4d4d4&gct=525252&gci=d4d4d4&pcc=0a0a0a&acb=525252&o=ffffff&ghc=3399ff&ght=ffffff&ghi=ffffff&gdc=d4d4d4&gdb=d4d4d4&gdt=525252&tdc=3399ff&tdb=3399ff&tdt=ffffff&tdi=ffffff&ddc=d4d4d4&ddb=d4d4d4&ddt=525252&pxd=AC76FF&asc=3399ff&ast=ffffff&goc=C199FF&gob=C199FF&got=ffffff&toc=66B3FF&tob=66B3FF&tot=ffffff&toi=ffffff&doc=66B3FF&dob=66B3FF&dot=ffffff&pxa=C199FF&gac=AC76FF&gab=AC76FF&gat=ffffff&tac=ffffff&tab=d4d4d4&tat=525252&tai=d4d4d4&dac=3399ff&dab=3399ff&dat=ffffff&dic=d4d4d4&dib=3399ff&dit=ffffff&gic=efdca9&gib=efdca9&git=525252&gii=525252&ec=c31d1d&eb=c31d1d&et=ffffff&ei=ffffff
  */
 
 
@@ -705,15 +705,15 @@ html, body{background-color:#ffffff;}
 
 
 /* Slider */
-.ui-slider{background:#d4d4d4;}
+.ui-slider{background:#0a0a0a;}
 .ui-slider .ui-slider-range{background:#3399ff;}
-.ui-slider .ui-state-default{background-color:#000000;}
-.ui-slider .ui-state-active{background-color:#525252 !important;}
-.ui-slider .ui-state-focus{background-color:#000000;}
-.ui-slider .ui-state-hover{background-color:#525252;}
+.ui-slider .ui-state-default{background-color:#AC76FF;}
+.ui-slider .ui-state-active{background-color:#C199FF !important;}
+.ui-slider .ui-state-focus{background-color:#AC76FF;}
+.ui-slider .ui-state-hover{background-color:#C199FF;}
 
 /* Progressbar */
-.ui-progressbar{background:#d4d4d4;}
+.ui-progressbar{background:#0a0a0a;}
 .ui-progressbar .ui-progressbar-value{background-color:#3399ff;}
 
 /* Autocomplete */
