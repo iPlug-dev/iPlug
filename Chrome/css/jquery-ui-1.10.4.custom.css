@@ -568,7 +568,6 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
 
 /* General */
-html, body{background-color:#ffffff;}
 .ui-widget{font-family:"Segoe UI", Helvetica, Verdana;}
 
 /* Interaction states
