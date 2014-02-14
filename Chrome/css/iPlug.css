@@ -1,4 +1,16 @@
-.onoffswitch {
+.bg-onoffswitch-left{
+    left: 2px;
+}
+.bg-onoffswitch-right{
+    right: 2px;
+}
+.bg-onoffswitch{
+    width: 2px;
+    height: 21px;
+    position: absolute;
+    background: #282C35;
+}
+    .onoffswitch {
     position: relative; width: 56px;
     -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
     right: 9px;
