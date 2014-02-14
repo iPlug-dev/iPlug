@@ -32,7 +32,7 @@
 .onoffswitch-inner:after {
     content: "";
     padding-right: 10px;
-    background-color: #CCCCCC; color: #333333;
+    background-color: #282C35; color: #333333;
     text-align: right;
 }
 .onoffswitch-switch {
