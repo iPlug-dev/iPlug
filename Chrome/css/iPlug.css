@@ -10,7 +10,7 @@
 }
 .onoffswitch-label {
     display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #666666; border-radius: 0px;
+    border: 2px solid #FFFFFF; border-radius: 0px;
 }
 .onoffswitch-inner {
     width: 200%; margin-left: -100%;
@@ -27,7 +27,7 @@
 .onoffswitch-inner:before {
     content: "";
     padding-left: 10px;
-    background-color: #2E8DEF; color: #FFFFFF;
+    background-color: #00B5E6; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
     content: "";
@@ -36,7 +36,9 @@
     text-align: right;
 }
 .onoffswitch-switch {
-    width: 15px; margin: 0px;
+    width: 15px; margin: 0px;    
+    border-left: 0px #000 solid;
+    border-right: 2px #000 solid;
     background: #000000;
     position: absolute; top: 0; bottom: 0; right: 41px;
     -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
@@ -52,7 +54,9 @@
     background-color: rgb(168, 168, 168);
 }
 #bg-vote-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-waitlist-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-audience-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-video-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch, #bg-dj-button-myonoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
+    right: 0px;
+    border-left: 2px #000 solid;
+    border-right: 0px #000 solid;
 }
 
 
