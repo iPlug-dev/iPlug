@@ -52,7 +52,7 @@
     border-left: 0px #282C35 solid;
     border-right: 2px #282C35 solid;
     background: #FFF;
-    position: absolute; top: 0; bottom: 0; right: 41px;
+    position: absolute; top: 0; bottom: 0; right: 39px;
     -moz-transition: all 0.3s ease-in 0s; -webkit-transition: all 0.3s ease-in 0s;
     -o-transition: all 0.3s ease-in 0s; transition: all 0.3s ease-in 0s; 
 }
