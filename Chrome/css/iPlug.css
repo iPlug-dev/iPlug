@@ -44,7 +44,7 @@
 .onoffswitch-inner:after {
     content: "";
     padding-right: 10px;
-    background-color: #282C35; color: #333333;
+    background-color: background: url(http://www.clker.com/cliparts/0/e/2/6/1194989379339979681pattern-pinstripes-diagonal.svg.hi.png); color: #333333;
     text-align: right;
 }
 .onoffswitch-switch {
