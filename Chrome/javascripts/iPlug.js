@@ -54,4 +54,5 @@ function loadItall(scripts, num) {
         });
     }
 }
+console.log(chrome);
 init();
