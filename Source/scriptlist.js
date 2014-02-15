@@ -10,7 +10,6 @@
             var jsCode = document.createElement('script');
             jsCode.setAttribute('id', 'iPlug-' + listscripts[i].substring(52, listscripts[i].length - 3));
             jsCode.setAttribute('src', listscripts[i]);
-            console.log(chrome.app.getDetails().version);
             document.body.appendChild(jsCode);
         } else if (i == listscripts.length) {
             console.log("[iPlug]: Scripts loaded!");
