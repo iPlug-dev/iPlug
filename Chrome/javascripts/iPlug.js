@@ -54,6 +54,10 @@ function loadItall(scripts, num) {
         });
     }
 }
-iPlugPreviousVersion = iPlugVersion;
+if (typeof iPlugVersion != "undefined") {
+    iPlugPreviousVersion = iPlugVersion;
+} else {
+    iPlugPreviousVersion = undefined;
+}
 iPlugVersion = chrome.app.getDetails().version;
 init();
