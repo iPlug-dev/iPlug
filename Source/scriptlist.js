@@ -1,7 +1,7 @@
 (function () {
     listscripts = [
-        "https://raw.github.com/L0laapk3/iPlug/master/Source/" + version + "/logo.js",
-        "https://raw.github.com/L0laapk3/iPlug/master/Source/" + version + "/chatterbox.js"];
+        "https://raw.github.com/L0laapk3/iPlug/master/Source/" + localStorage['iPlug|version'] + "/logo.js",
+        "https://raw.github.com/L0laapk3/iPlug/master/Source/" + localStorage['iPlug|version'] + "/chatterbox.js"];
 
     
 
