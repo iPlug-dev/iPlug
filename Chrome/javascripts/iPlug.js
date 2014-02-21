@@ -3,6 +3,7 @@ function init() {
         if (document.location.pathname == "/") {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
+            hrome = chrome;
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
                 "javascripts/attrchange.js",
                 "javascripts/chosen.jquery.min.js",
