@@ -26,7 +26,7 @@
                         "*://plug.dj/about",
                         "*://plug.dj/terms",
                         "*://plug.dj/privacy" ]
-        }
+        },
         "web_accessible_resources": [
                 "javascripts/jquery-ui-1.10.3.custom.js",
                 "javascripts/attrchange.js",
