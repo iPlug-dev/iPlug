@@ -9,7 +9,7 @@
         if (i < listscripts.length) {
             $.getScript(listscripts[i])
                 .fail(function() {
-                    console.warn("[iPlug]: Script number " + (i+1) + " wasn't loaded!")
+                    console.warn("[iPlug]: Script " + (i+1) + " wasn't loaded!")
                 });
         } else if (i == listscripts.length) {
             console.log("[iPlug]: Scripts loaded!");
