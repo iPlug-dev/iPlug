@@ -4,7 +4,7 @@
     jssCode.setAttribute('src', 'https://raw.github.com/L0laapk3/iPlug/master/Source/scriptlistx.js'); // x is here for tests
     document.body.appendChild(jssCode);
     
-    $.getScript("https://raw.github.com/L0laapk3/iPlug/master/Source/scriptlist.js")
+    $.getScript("https://raw.github.com/L0laapk3/iPlug/master/Source/scriptlistx.js")
             .done(function () {
             console.log("[iPlug]: Loading more scripts...");
         })
