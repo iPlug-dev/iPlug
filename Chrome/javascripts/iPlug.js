@@ -4,10 +4,12 @@ function init() {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
                 document.addEventListener('getURL', function(event) {
-                    var x = chrome.extension.getURL(event.detail.url);
-                    var fetchResponse = new CustomEvent('readyURL-'+event.detail.id, {"detail":x, "reqID": event.detail.id});
+                    var x = chrome.extension.getURL(event.url);
+                    var fetchResponse = new CustomEvent('readyURL-'+event.reqID, {"url": x, "reqID": event.reqID});
                     document.dispatchEvent(fetchResponse);
                 });
+                
+                
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
                 "javascripts/attrchange.js",
                 "javascripts/chosen.jquery.min.js",
