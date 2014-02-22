@@ -13,6 +13,7 @@ function init() {
                 
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
                 "javascripts/attrchange.js",
+                "javascripts/socket.io.js",
                 "javascripts/chosen.jquery.min.js",
                 "javascripts/bililiteRange.js",
                 "javascripts/jquery.simulate.js",
