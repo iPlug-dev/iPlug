@@ -4,6 +4,7 @@ function init() {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
                 document.addEventListener('getURL', function(event) {
+                    console.log(event);
                     var x = chrome.extension.getURL(event.url);
                     var fetchResponse = new CustomEvent('readyURL-'+event.reqID, {"url": x, "reqID": event.reqID});
                     document.dispatchEvent(fetchResponse);
