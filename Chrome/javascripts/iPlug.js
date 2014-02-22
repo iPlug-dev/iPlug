@@ -3,7 +3,11 @@ function init() {
         if (document.location.pathname == "/") {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
-            localStorage['iPlug|chrome'] = JSON.stringify(chrome.extension.getURL);
+                document.addEventListener('getURL', function(event) {
+                    var x = chrome.extension.getURL(event.detail.url);
+                    var fetchResponse = new CustomEvent('readyURL-'+event.detail.id, {"detail":x, "reqID": event.detail.id});
+                    document.dispatchEvent(fetchResponse);
+                });
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
                 "javascripts/attrchange.js",
                 "javascripts/chosen.jquery.min.js",
