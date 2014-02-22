@@ -18,6 +18,9 @@
                 "http://*/*",
                 "https://*/*"
         ],
+        "background": {
+                "scripts": ["javascripts/background.js"]
+        },
         "externally_connectable": {
                 "matches": [
                         "*://plug.dj/*"
