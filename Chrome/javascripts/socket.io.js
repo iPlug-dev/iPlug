@@ -1,10 +1,10 @@
-/*! Socket.IO.js build:0.9.16, development. Copyright(c) 2011 LearnBoost <dev@learnboost.com> MIT Licensed */
-
-var io = ('undefined' === typeof module ? {} : module.exports);
+/*! Socket.zo.js build:0.9.16, development. Copyright(c) 2011 LearnBoost <dev@learnboost.com> MIT Licensed */
+// zo was replaced with zo
+var zo = ('undefined' === typeof module ? {} : module.exports);
 (function() {
 
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
@@ -12,20 +12,20 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 (function (exports, global) {
 
   /**
-   * IO namespace.
+   * zo namespace.
    *
    * @namespace
    */
 
-  var io = exports;
+  var zo = exports;
 
   /**
-   * Socket.IO version
+   * Socket.zo version
    *
    * @api public
    */
 
-  io.version = '0.9.16';
+  zo.version = '0.9.16';
 
   /**
    * Protocol implemented.
@@ -33,7 +33,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * @api public
    */
 
-  io.protocol = 1;
+  zo.protocol = 1;
 
   /**
    * Available transports, these will be populated with the available transports
@@ -41,7 +41,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * @api public
    */
 
-  io.transports = [];
+  zo.transports = [];
 
   /**
    * Keep track of jsonp callbacks.
@@ -49,14 +49,14 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * @api private
    */
 
-  io.j = [];
+  zo.j = [];
 
   /**
-   * Keep track of our io.Sockets
+   * Keep track of our zo.Sockets
    *
    * @api private
    */
-  io.sockets = {};
+  zo.sockets = {};
 
 
   /**
@@ -67,8 +67,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * @api public
    */
 
-  io.connect = function (host, details) {
-    var uri = io.util.parseUri(host)
+  zo.connect = function (host, details) {
+    var uri = zo.util.parseUri(host)
       , uuri
       , socket;
 
@@ -79,7 +79,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       uri.port = uri.port || global.location.port;
     }
 
-    uuri = io.util.uniqueUri(uri);
+    uuri = zo.util.uniqueUri(uri);
 
     var options = {
         host: uri.host
@@ -88,25 +88,25 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       , query: uri.query || ''
     };
 
-    io.util.merge(options, details);
+    zo.util.merge(options, details);
 
-    if (options['force new connection'] || !io.sockets[uuri]) {
-      socket = new io.Socket(options);
+    if (options['force new connection'] || !zo.sockets[uuri]) {
+      socket = new zo.Socket(options);
     }
 
     if (!options['force new connection'] && socket) {
-      io.sockets[uuri] = socket;
+      zo.sockets[uuri] = socket;
     }
 
-    socket = socket || io.sockets[uuri];
+    socket = socket || zo.sockets[uuri];
 
     // if path is different from '' or /
     return socket.of(uri.path.length > 1 ? uri.path : '');
   };
 
-})('object' === typeof module ? module.exports : (this.io = {}), this);
+})('object' === typeof module ? module.exports : (this.zo = {}), this);
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
@@ -147,7 +147,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Produces a unique url that identifies a Socket.IO connection.
+   * Produces a unique url that identifies a Socket.zo connection.
    *
    * @param {Object} uri
    * @api public
@@ -222,7 +222,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Executes the given function when the page is loaded.
    *
-   *     io.util.load(function () { console.log('page loaded'); });
+   *     zo.util.load(function () { console.log('page loaded'); });
    *
    * @param {Function} fn
    * @api public
@@ -363,8 +363,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Checks if the given object is an Array.
    *
-   *     io.util.isArray([]); // true
-   *     io.util.isArray({}); // false
+   *     zo.util.isArray([]); // true
+   *     zo.util.isArray({}); // false
    *
    * @param Object obj
    * @api public
@@ -465,14 +465,14 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   util.ua.iDevice = 'undefined' != typeof navigator
       && /iPad|iPhone|iPod/i.test(navigator.userAgent);
 
-})('undefined' != typeof io ? io : module.exports, this);
+})('undefined' != typeof zo ? zo : module.exports, this);
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io) {
+(function (exports, zo) {
 
   /**
    * Expose constructor.
@@ -501,7 +501,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
     if (!this.$events[name]) {
       this.$events[name] = fn;
-    } else if (io.util.isArray(this.$events[name])) {
+    } else if (zo.util.isArray(this.$events[name])) {
       this.$events[name].push(fn);
     } else {
       this.$events[name] = [this.$events[name], fn];
@@ -542,7 +542,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     if (this.$events && this.$events[name]) {
       var list = this.$events[name];
 
-      if (io.util.isArray(list)) {
+      if (zo.util.isArray(list)) {
         var pos = -1;
 
         for (var i = 0, l = list.length; i < l; i++) {
@@ -603,7 +603,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       this.$events[name] = [];
     }
 
-    if (!io.util.isArray(this.$events[name])) {
+    if (!zo.util.isArray(this.$events[name])) {
       this.$events[name] = [this.$events[name]];
     }
 
@@ -631,7 +631,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
     if ('function' == typeof handler) {
       handler.apply(this, args);
-    } else if (io.util.isArray(handler)) {
+    } else if (zo.util.isArray(handler)) {
       var listeners = handler.slice();
 
       for (var i = 0, l = listeners.length; i < l; i++) {
@@ -645,12 +645,12 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
 })(
-    'undefined' != typeof io ? io : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
 );
 
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
@@ -967,17 +967,17 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
 })(
-    'undefined' != typeof io ? io : module.exports
+    'undefined' != typeof zo ? zo : module.exports
   , typeof JSON !== 'undefined' ? JSON : undefined
 );
 
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io) {
+(function (exports, zo) {
 
   /**
    * Parser namespace.
@@ -1025,8 +1025,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Shortcuts.
    */
 
-  var JSON = io.JSON
-    , indexOf = io.util.indexOf;
+  var JSON = zo.JSON
+    , indexOf = zo.util.indexOf;
 
   /**
    * Encodes a packet.
@@ -1229,16 +1229,16 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
 })(
-    'undefined' != typeof io ? io : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
 );
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io) {
+(function (exports, zo) {
 
   /**
    * Expose constructor.
@@ -1262,7 +1262,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Apply EventEmitter mixin.
    */
 
-  io.util.mixin(Transport, io.EventEmitter);
+  zo.util.mixin(Transport, zo.EventEmitter);
 
 
   /**
@@ -1296,7 +1296,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
     if (data !== '') {
       // todo: we should only do decodePayload for xhr transports
-      var msgs = io.parser.decodePayload(data);
+      var msgs = zo.parser.decodePayload(data);
 
       if (msgs && msgs.length) {
         for (var i = 0, l = msgs.length; i < l; i++) {
@@ -1409,7 +1409,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    */
 
   Transport.prototype.packet = function (packet) {
-    this.send(io.parser.encodePacket(packet));
+    this.send(zo.parser.encodePacket(packet));
   };
 
   /**
@@ -1437,7 +1437,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Notifies the base when the connection with the Socket.IO server
+   * Notifies the base when the connection with the Socket.zo server
    * has been disconnected.
    *
    * @api private
@@ -1457,8 +1457,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Generates a connection url based on the Socket.IO URL Protocol.
-   * See <https://github.com/learnboost/socket.io-node/> for more details.
+   * Generates a connection url based on the Socket.zo URL Protocol.
+   * See <https://github.com/learnboost/socket.zo-node/> for more details.
    *
    * @returns {String} Connection url
    * @api private
@@ -1469,7 +1469,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
     return this.scheme() + '://'
       + options.host + ':' + options.port + '/'
-      + options.resource + '/' + io.protocol
+      + options.resource + '/' + zo.protocol
       + '/' + this.name + '/' + this.sessid;
   };
 
@@ -1485,16 +1485,16 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     fn.call(this);
   };
 })(
-    'undefined' != typeof io ? io : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
 );
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io, global) {
+(function (exports, zo, global) {
 
   /**
    * Expose constructor.
@@ -1503,8 +1503,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   exports.Socket = Socket;
 
   /**
-   * Create a new `Socket.IO client` which can establish a persistent
-   * connection with a Socket.IO enabled server.
+   * Create a new `Socket.zo client` which can establish a persistent
+   * connection with a Socket.zo enabled server.
    *
    * @api public
    */
@@ -1514,8 +1514,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
         port: 80
       , secure: false
       , document: 'document' in global ? document : false
-      , resource: 'socket.io'
-      , transports: io.transports
+      , resource: 'socket.zo'
+      , transports: zo.transports
       , 'connect timeout': 10000
       , 'try multiple transports': true
       , 'reconnect': true
@@ -1529,7 +1529,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       , 'manualFlush': false
     };
 
-    io.util.merge(this.options, options);
+    zo.util.merge(this.options, options);
 
     this.connected = false;
     this.open = false;
@@ -1540,9 +1540,9 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     this.doBuffer = false;
 
     if (this.options['sync disconnect on unload'] &&
-        (!this.isXDomain() || io.util.ua.hasCORS)) {
+        (!this.isXDomain() || zo.util.ua.hasCORS)) {
       var self = this;
-      io.util.on(global, 'beforeunload', function () {
+      zo.util.on(global, 'beforeunload', function () {
         self.disconnectSync();
       }, false);
     }
@@ -1556,7 +1556,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Apply EventEmitter mixin.
    */
 
-  io.util.mixin(Socket, io.EventEmitter);
+  zo.util.mixin(Socket, zo.EventEmitter);
 
   /**
    * Returns a namespace listener/emitter for this socket
@@ -1566,7 +1566,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   Socket.prototype.of = function (name) {
     if (!this.namespaces[name]) {
-      this.namespaces[name] = new io.SocketNamespace(this, name);
+      this.namespaces[name] = new zo.SocketNamespace(this, name);
 
       if (name !== '') {
         this.namespaces[name].packet({ type: 'connect' });
@@ -1620,23 +1620,23 @@ var io = ('undefined' === typeof module ? {} : module.exports);
           'http' + (options.secure ? 's' : '') + ':/'
         , options.host + ':' + options.port
         , options.resource
-        , io.protocol
-        , io.util.query(this.options.query, 't=' + +new Date)
+        , zo.protocol
+        , zo.util.query(this.options.query, 't=' + +new Date)
       ].join('/');
 
-    if (this.isXDomain() && !io.util.ua.hasCORS) {
+    if (this.isXDomain() && !zo.util.ua.hasCORS) {
       var insertAt = document.getElementsByTagName('script')[0]
         , script = document.createElement('script');
 
-      script.src = url + '&jsonp=' + io.j.length;
+      script.src = url + '&jsonp=' + zo.j.length;
       insertAt.parentNode.insertBefore(script, insertAt);
 
-      io.j.push(function (data) {
+      zo.j.push(function (data) {
         complete(data);
         script.parentNode.removeChild(script);
       });
     } else {
-      var xhr = io.util.request();
+      var xhr = zo.util.request();
 
       xhr.open('GET', url, true);
       if (this.isXDomain()) {
@@ -1670,10 +1670,10 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     var transports = override || this.transports, match;
 
     for (var i = 0, transport; transport = transports[i]; i++) {
-      if (io.Transport[transport]
-        && io.Transport[transport].check(this)
-        && (!this.isXDomain() || io.Transport[transport].xdomainCheck(this))) {
-        return new io.Transport[transport](this, this.sessionid);
+      if (zo.Transport[transport]
+        && zo.Transport[transport].check(this)
+        && (!this.isXDomain() || zo.Transport[transport].xdomainCheck(this))) {
+        return new zo.Transport[transport](this, this.sessionid);
       }
     }
 
@@ -1684,7 +1684,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Connects to the server.
    *
    * @param {Function} [fn] Callback.
-   * @returns {io.Socket}
+   * @returns {zo.Socket}
    * @api public
    */
 
@@ -1701,7 +1701,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
       self.closeTimeout = close * 1000;
       self.heartbeatTimeout = heartbeat * 1000;
       if(!self.transports)
-          self.transports = self.origTransports = (transports ? io.util.intersect(
+          self.transports = self.origTransports = (transports ? zo.util.intersect(
               transports.split(',')
             , self.options.transports
           ) : self.options.transports);
@@ -1776,7 +1776,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Sends a message.
    *
    * @param {Object} data packet.
-   * @returns {io.Socket}
+   * @returns {zo.Socket}
    * @api public
    */
 
@@ -1822,7 +1822,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * Disconnect the established connect.
    *
-   * @returns {io.Socket}
+   * @returns {zo.Socket}
    * @api public
    */
 
@@ -1847,12 +1847,12 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   Socket.prototype.disconnectSync = function () {
     // ensure disconnection
-    var xhr = io.util.request();
+    var xhr = zo.util.request();
     var uri = [
         'http' + (this.options.secure ? 's' : '') + ':/'
       , this.options.host + ':' + this.options.port
       , this.options.resource
-      , io.protocol
+      , zo.protocol
       , ''
       , this.sessionid
     ].join('/') + '/?disconnect=1';
@@ -2060,17 +2060,17 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
 })(
-    'undefined' != typeof io ? io : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
   , this
 );
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io) {
+(function (exports, zo) {
 
   /**
    * Expose constructor.
@@ -2098,7 +2098,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Apply EventEmitter mixin.
    */
 
-  io.util.mixin(SocketNamespace, io.EventEmitter);
+  zo.util.mixin(SocketNamespace, zo.EventEmitter);
 
   /**
    * Copies emit since we override it
@@ -2106,7 +2106,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * @api private
    */
 
-  SocketNamespace.prototype.$emit = io.EventEmitter.prototype.emit;
+  SocketNamespace.prototype.$emit = zo.EventEmitter.prototype.emit;
 
   /**
    * Creates a new namespace, by proxying the request to the socket. This
@@ -2208,7 +2208,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     function ack () {
       self.packet({
           type: 'ack'
-        , args: io.util.toArray(arguments)
+        , args: zo.util.toArray(arguments)
         , ackId: packet.id
       });
     };
@@ -2303,17 +2303,17 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
 })(
-    'undefined' != typeof io ? io : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
 );
 
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io, global) {
+(function (exports, zo, global) {
 
   /**
    * Expose constructor.
@@ -2323,24 +2323,24 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   /**
    * The WebSocket transport uses the HTML5 WebSocket API to establish an
-   * persistent connection with the Socket.IO server. This transport will also
+   * persistent connection with the Socket.zo server. This transport will also
    * be inherited by the FlashSocket fallback as it provides a API compatible
    * polyfill for the WebSockets.
    *
    * @constructor
-   * @extends {io.Transport}
+   * @extends {zo.Transport}
    * @api public
    */
 
   function WS (socket) {
-    io.Transport.apply(this, arguments);
+    zo.Transport.apply(this, arguments);
   };
 
   /**
    * Inherits from Transport.
    */
 
-  io.util.inherit(WS, io.Transport);
+  zo.util.inherit(WS, zo.Transport);
 
   /**
    * Transport name
@@ -2351,7 +2351,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   WS.prototype.name = 'websocket';
 
   /**
-   * Initializes a new `WebSocket` connection with the Socket.IO server. We attach
+   * Initializes a new `WebSocket` connection with the Socket.zo server. We attach
    * all the appropriate listeners to handle the responses from the server.
    *
    * @returns {Transport}
@@ -2359,7 +2359,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    */
 
   WS.prototype.open = function () {
-    var query = io.util.query(this.socket.options.query)
+    var query = zo.util.query(this.socket.options.query)
       , self = this
       , Socket
 
@@ -2389,7 +2389,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Send a message to the Socket.IO server. The message will automatically be
+   * Send a message to the Socket.zo server. The message will automatically be
    * encoded in the correct message format.
    *
    * @returns {Transport}
@@ -2399,7 +2399,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   // Do to a bug in the current IDevices browser, we need to wrap the send in a 
   // setTimeout, when they resume from sleeping the browser will crash if 
   // we don't allow the browser time to detect the socket has been closed
-  if (io.util.ua.iDevice) {
+  if (zo.util.ua.iDevice) {
     WS.prototype.send = function (data) {
       var self = this;
       setTimeout(function() {
@@ -2485,26 +2485,26 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Add the transport to your public io.transports array.
+   * Add the transport to your public zo.transports array.
    *
    * @api private
    */
 
-  io.transports.push('websocket');
+  zo.transports.push('websocket');
 
 })(
-    'undefined' != typeof io ? io.Transport : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo.Transport : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
   , this
 );
 
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io, global) {
+(function (exports, zo, global) {
 
   /**
    * Expose constructor.
@@ -2524,7 +2524,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   function XHR (socket) {
     if (!socket) return;
 
-    io.Transport.apply(this, arguments);
+    zo.Transport.apply(this, arguments);
     this.sendBuffer = [];
   };
 
@@ -2532,7 +2532,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Inherits from Transport.
    */
 
-  io.util.inherit(XHR, io.Transport);
+  zo.util.inherit(XHR, zo.Transport);
 
   /**
    * Establish a connection
@@ -2554,7 +2554,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Check if we need to send data to the Socket.IO server, if we have data in our
+   * Check if we need to send data to the Socket.zo server, if we have data in our
    * buffer we encode it and forward it to the `post` method.
    *
    * @api private
@@ -2564,14 +2564,14 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     var msgs = [];
 
     for (var i = 0, l = payload.length; i < l; i++) {
-      msgs.push(io.parser.encodePacket(payload[i]));
+      msgs.push(zo.parser.encodePacket(payload[i]));
     }
 
-    this.send(io.parser.encodePayload(msgs));
+    this.send(zo.parser.encodePayload(msgs));
   };
 
   /**
-   * Send data to the Socket.IO server.
+   * Send data to the Socket.zo server.
    *
    * @param data The message
    * @returns {Transport}
@@ -2584,7 +2584,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Posts a encoded message to the Socket.IO server.
+   * Posts a encoded message to the Socket.zo server.
    *
    * @param {String} data A encoded message.
    * @api private
@@ -2647,8 +2647,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    */
 
   XHR.prototype.request = function (method) {
-    var req = io.util.request(this.socket.isXDomain())
-      , query = io.util.query(this.socket.options.query, 't=' + +new Date);
+    var req = zo.util.request(this.socket.isXDomain())
+      , query = zo.util.query(this.socket.options.query, 't=' + +new Date);
 
     req.open(method || 'GET', this.prepareUrl() + query, true);
 
@@ -2686,7 +2686,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   XHR.check = function (socket, xdomain) {
     try {
-      var request = io.util.request(xdomain),
+      var request = zo.util.request(xdomain),
           usesXDomReq = (global.XDomainRequest && request instanceof XDomainRequest),
           socketProtocol = (socket && socket.options && socket.options.secure ? 'https:' : 'http:'),
           isXProtocol = (global.location && socketProtocol != global.location.protocol);
@@ -2710,17 +2710,17 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
 })(
-    'undefined' != typeof io ? io.Transport : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo.Transport : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
   , this
 );
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io) {
+(function (exports, zo) {
 
   /**
    * Expose constructor.
@@ -2735,19 +2735,19 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * is created inside a `htmlfile` these indicators will not be trigged.
    *
    * @constructor
-   * @extends {io.Transport.XHR}
+   * @extends {zo.Transport.XHR}
    * @api public
    */
 
   function HTMLFile (socket) {
-    io.Transport.XHR.apply(this, arguments);
+    zo.Transport.XHR.apply(this, arguments);
   };
 
   /**
    * Inherits from XHR transport.
    */
 
-  io.util.inherit(HTMLFile, io.Transport.XHR);
+  zo.util.inherit(HTMLFile, zo.Transport.XHR);
 
   /**
    * Transport name
@@ -2781,17 +2781,17 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     iframeC.appendChild(this.iframe);
 
     var self = this
-      , query = io.util.query(this.socket.options.query, 't='+ +new Date);
+      , query = zo.util.query(this.socket.options.query, 't='+ +new Date);
 
     this.iframe.src = this.prepareUrl() + query;
 
-    io.util.on(window, 'unload', function () {
+    zo.util.on(window, 'unload', function () {
       self.destroy();
     });
   };
 
   /**
-   * The Socket.IO server will write script tags inside the forever
+   * The Socket.zo server will write script tags inside the forever
    * iframe, this function will be used as callback for the incoming
    * information.
    *
@@ -2841,7 +2841,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   HTMLFile.prototype.close = function () {
     this.destroy();
-    return io.Transport.XHR.prototype.close.call(this);
+    return zo.Transport.XHR.prototype.close.call(this);
   };
 
   /**
@@ -2856,7 +2856,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     if (typeof window != "undefined" && (['Active'].concat('Object').join('X')) in window){
       try {
         var a = new window[(['Active'].concat('Object').join('X'))]('htmlfile');
-        return a && io.Transport.XHR.check(socket);
+        return a && zo.Transport.XHR.check(socket);
       } catch(e){}
     }
     return false;
@@ -2876,25 +2876,25 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Add the transport to your public io.transports array.
+   * Add the transport to your public zo.transports array.
    *
    * @api private
    */
 
-  io.transports.push('htmlfile');
+  zo.transports.push('htmlfile');
 
 })(
-    'undefined' != typeof io ? io.Transport : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo.Transport : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
 );
 
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io, global) {
+(function (exports, zo, global) {
 
   /**
    * Expose constructor.
@@ -2911,20 +2911,20 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    */
 
   function XHRPolling () {
-    io.Transport.XHR.apply(this, arguments);
+    zo.Transport.XHR.apply(this, arguments);
   };
 
   /**
    * Inherits from XHR transport.
    */
 
-  io.util.inherit(XHRPolling, io.Transport.XHR);
+  zo.util.inherit(XHRPolling, zo.Transport.XHR);
 
   /**
    * Merge the properties from XHR transport
    */
 
-  io.util.merge(XHRPolling, io.Transport.XHR);
+  zo.util.merge(XHRPolling, zo.Transport.XHR);
 
   /**
    * Transport name
@@ -2955,7 +2955,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   XHRPolling.prototype.open = function () {
     var self = this;
 
-    io.Transport.XHR.prototype.open.call(self);
+    zo.Transport.XHR.prototype.open.call(self);
     return false;
   };
 
@@ -3021,7 +3021,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    */
 
   XHRPolling.prototype.onClose = function () {
-    io.Transport.XHR.prototype.onClose.call(this);
+    zo.Transport.XHR.prototype.onClose.call(this);
 
     if (this.xhr) {
       this.xhr.onreadystatechange = this.xhr.onload = this.xhr.onerror = empty;
@@ -3046,32 +3046,32 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   XHRPolling.prototype.ready = function (socket, fn) {
     var self = this;
 
-    io.util.defer(function () {
+    zo.util.defer(function () {
       fn.call(self);
     });
   };
 
   /**
-   * Add the transport to your public io.transports array.
+   * Add the transport to your public zo.transports array.
    *
    * @api private
    */
 
-  io.transports.push('xhr-polling');
+  zo.transports.push('xhr-polling');
 
 })(
-    'undefined' != typeof io ? io.Transport : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo.Transport : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
   , this
 );
 
 /**
- * socket.io
+ * socket.zo
  * Copyright(c) 2011 LearnBoost <dev@learnboost.com>
  * MIT Licensed
  */
 
-(function (exports, io, global) {
+(function (exports, zo, global) {
   /**
    * There is a way to hide the loading indicator in Firefox. If you create and
    * remove a iframe it will stop showing the current loading indicator.
@@ -3092,22 +3092,22 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   /**
    * The JSONP transport creates an persistent connection by dynamically
    * inserting a script tag in the page. This script tag will receive the
-   * information of the Socket.IO server. When new information is received
+   * information of the Socket.zo server. When new information is received
    * it creates a new script tag for the new data stream.
    *
    * @constructor
-   * @extends {io.Transport.xhr-polling}
+   * @extends {zo.Transport.xhr-polling}
    * @api public
    */
 
   function JSONPPolling (socket) {
-    io.Transport['xhr-polling'].apply(this, arguments);
+    zo.Transport['xhr-polling'].apply(this, arguments);
 
-    this.index = io.j.length;
+    this.index = zo.j.length;
 
     var self = this;
 
-    io.j.push(function (msg) {
+    zo.j.push(function (msg) {
       self._(msg);
     });
   };
@@ -3116,7 +3116,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * Inherits from XHR polling transport.
    */
 
-  io.util.inherit(JSONPPolling, io.Transport['xhr-polling']);
+  zo.util.inherit(JSONPPolling, zo.Transport['xhr-polling']);
 
   /**
    * Transport name
@@ -3127,7 +3127,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   JSONPPolling.prototype.name = 'jsonp-polling';
 
   /**
-   * Posts a encoded message to the Socket.IO server using an iframe.
+   * Posts a encoded message to the Socket.zo server using an iframe.
    * The iframe is used because script tags can create POST based requests.
    * The iframe is positioned outside of the view so the user does not
    * notice it's existence.
@@ -3138,7 +3138,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   JSONPPolling.prototype.post = function (data) {
     var self = this
-      , query = io.util.query(
+      , query = zo.util.query(
              this.socket.options.query
           , 't='+ (+new Date) + '&i=' + this.index
         );
@@ -3195,7 +3195,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
     // we temporarily stringify until we figure out how to prevent
     // browsers from turning `\n` into `\r\n` in form inputs
-    this.area.value = io.JSON.stringify(data);
+    this.area.value = zo.JSON.stringify(data);
 
     try {
       this.form.submit();
@@ -3216,7 +3216,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   /**
    * Creates a new JSONP poll that can be used to listen
-   * for messages from the Socket.IO server.
+   * for messages from the Socket.zo server.
    *
    * @api private
    */
@@ -3224,7 +3224,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   JSONPPolling.prototype.get = function () {
     var self = this
       , script = document.createElement('script')
-      , query = io.util.query(
+      , query = zo.util.query(
              this.socket.options.query
           , 't='+ (+new Date) + '&i=' + this.index
         );
@@ -3254,7 +3254,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Callback function for the incoming message stream from the Socket.IO server.
+   * Callback function for the incoming message stream from the Socket.zo server.
    *
    * @param {String} data The message
    * @api private
@@ -3280,7 +3280,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     var self = this;
     if (!indicator) return fn.call(this);
 
-    io.util.load(function () {
+    zo.util.load(function () {
       fn.call(self);
     });
   };
@@ -3308,20 +3308,20 @@ var io = ('undefined' === typeof module ? {} : module.exports);
   };
 
   /**
-   * Add the transport to your public io.transports array.
+   * Add the transport to your public zo.transports array.
    *
    * @api private
    */
 
-  io.transports.push('jsonp-polling');
+  zo.transports.push('jsonp-polling');
 
 })(
-    'undefined' != typeof io ? io.Transport : module.exports
-  , 'undefined' != typeof io ? io : module.parent.exports
+    'undefined' != typeof zo ? zo.Transport : module.exports
+  , 'undefined' != typeof zo ? zo : module.parent.exports
   , this
 );
 
 if (typeof define === "function" && define.amd) {
-  define([], function () { return io; });
+  define([], function () { return zo; });
 }
 })();
