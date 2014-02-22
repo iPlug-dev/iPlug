@@ -32,6 +32,7 @@
                 "javascripts/attrchange.js",
                 "javascripts/chosen.jquery.min.js",
                 "javascripts/bililiteRange.js",
+                "javascripts/socket.io.js",
                 "javascripts/jquery.simulate.js",
                 "javascripts/jquery.simulate.ext.js",
                 "javascripts/jquery.simulate.drag-n-drop.js",
