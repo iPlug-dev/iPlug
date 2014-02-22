@@ -6,7 +6,7 @@ function init() {
                 document.addEventListener('getURL', function(event) {
                     console.log(event);
                     var x = chrome.extension.getURL(event.detail.url);
-                    var fetchResponse = new CustomEvent('readyURL-'+event.detail.reqID, {"url": x, "reqID": event.detail.reqID});
+                    var fetchResponse = new CustomEvent('readyURL-'+event.detail.reqID, {"detail": {"url": x, "reqID": event.detail.reqID}});
                     document.dispatchEvent(fetchResponse);
                 });
                 
