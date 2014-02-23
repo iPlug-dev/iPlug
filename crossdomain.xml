@@ -4,6 +4,7 @@
   <!--
       I have no idea what I am doing
   -->
+  <allow-access-from domain="*" secure="true" to-ports="*" />
   <allow-access-from domain="*" secure="false" to-ports="*" />
   <allow-access-from domain="*" />
 </cross-domain-policy>
