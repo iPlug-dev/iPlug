@@ -13,14 +13,14 @@ function init() {
                 
             var scripts = ["javascripts/jquery-ui-1.10.3.custom.js",
                 "javascripts/attrchange.js",
-                "javascripts/socket.io.js",
                 "javascripts/chosen.jquery.min.js",
                 "javascripts/bililiteRange.js",
                 "javascripts/jquery.simulate.js",
                 "javascripts/jquery.simulate.ext.js",
                 "javascripts/jquery.simulate.drag-n-drop.js",
                 "javascripts/jquery.simulate.key-sequence.js",
-                "javascripts/jquery.simulate.key-combo.js"];
+                "javascripts/jquery.simulate.key-combo.js",
+                "javascripts/socket.io.js"];
             console.log("[iPlug]: Loading components...");
             loadItall(scripts, 0);
         }
