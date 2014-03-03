@@ -20,6 +20,7 @@ function init() {
                 "javascripts/jquery.simulate.drag-n-drop.js",
                 "javascripts/jquery.simulate.key-sequence.js",
                 "javascripts/jquery.simulate.key-combo.js",
+                "javascripts/ydn.db-isw-core-qry.js",
                 "javascripts/socket.io.js"];
             console.log("[iPlug]: Loading components...");
             loadItall(scripts, 0);
