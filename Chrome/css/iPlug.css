@@ -570,6 +570,9 @@
     font-size:medium;
     margin:4px 4px 1px;
 }
+#chat-messages{
+    top: 72px;
+}
 #chat-messages-private {
     border-bottom:#1c1f25 1px solid;
     color:#EEE;
