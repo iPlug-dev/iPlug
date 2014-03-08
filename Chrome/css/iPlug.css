@@ -571,7 +571,7 @@
     margin:4px 4px 1px;
 }
 #chat-messages{
-    top: 72px;
+    top: 72px !important;
 }
 #chat-messages-private {
     border-bottom:#1c1f25 1px solid;
@@ -583,7 +583,7 @@
     -ms-overflow-x:hidden;
     overflow-x:hidden;
     position:absolute;
-    top:47px;
+    top:72px !important;
     width:345px;
 }
 ::selection {
