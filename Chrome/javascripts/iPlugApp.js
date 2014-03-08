@@ -1,5 +1,5 @@
 (function () {
-    var version = "0.6.2";
+    var version = "0.6.3";
     
     
     if (localStorage['iPlug|version'] != version) {
