@@ -49,12 +49,9 @@
                                 "*://plug.dj/privacy"
                         ],
                         "js": [
-                                //"javascripts/jquery-2.0.3.js",
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
-                                //"css/jquery-ui-1.10.4.custom.css",
-                                //"css/chosen.css",
                                 "css/iPlug.css"
                         ],
                         "run_at": "document_end"
