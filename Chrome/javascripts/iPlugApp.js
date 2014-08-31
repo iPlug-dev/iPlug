@@ -15,26 +15,39 @@
         },5000);
     });
     
-    $.expr[':'].textEquals = function(a, i, m) {
+    var mehupdate = false;
+    var lasttimeout = 0;
+    
+    
+    $.expr[':'].textEquals = function (a, i, m) {
         return $(a).text().match("^" + m[3] + "$");
     };
-
-    var mehupdate = false;
-    $("#user-lists, #vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMehs);
+    
+    $("#vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMehs);
     $("#users-button").bind("click", displayMehs);
-
+    
     function displayMehs() {
+        displayMeh();
+        clearTimeout(lasttimeout);
+        lasttimeout = setTimeout(displayMeh(), 1000);
+    }
+    
+    function displayMeh() {
         if ($("#users-button").attr("class").indexOf("selected") == -1 || $(".header > .room").attr("class").indexOf("selected") == -1 || mehupdate) {
             return;
         }
         mehupdate = true;
-        setTimeout(function() {mehupdate = false;}, 0);
+        setTimeout(function () {
+            mehupdate = false;
+        }, 0);
         $("#wootchangetracker").unbind().remove();
         var users = API.getUsers();
-        $(".user > .icon-grab").attr("style","margin-right: 30px;");
+        console.log(users);
+        $(".user > .icon-grab").attr("style", "margin-right: 30px;");
         $(".user > .icon-woot").remove();
         for (i = 0; i < users.length; i++) {
-            $(".user > .name:textEquals('" + users[i].username + "')").parent().append(["<i class='icon icon-woot' style='background-position: -174px -280px'></i>","","<i class='icon icon-woot'></i>"][users[i].vote + 1]);
+            console.log(users[i].username + ", " + users[i].vote);
+            $(".user > .name:textEquals('" + users[i].username + "')").parent().append(["<i class='icon icon-woot' style='background-position: -174px -280px'></i>", "", "<i class='icon icon-woot'></i>"][users[i].vote + 1]);
         }
     }
     
