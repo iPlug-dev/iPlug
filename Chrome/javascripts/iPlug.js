@@ -8,7 +8,8 @@ function init() {
                 var fetchResponse = new CustomEvent('readyURL-'+event.detail.reqID, {"detail": {"url": x, "reqID": event.detail.reqID}});
                 document.dispatchEvent(fetchResponse);
             });    
-            var scripts = [];
+            var scripts = [
+            ];
             console.log("[iPlug]: Loading components...");
             loadItall(scripts, 0);
         }
