@@ -2,7 +2,7 @@
         "name": "iPlug BETA",
         "short_name": "iPlug",
         "author": "CookieMichal & L0laapk3",
-        "version": "0.6.3",
+        "version": "0.0.1",
         "manifest_version": 2,
         "description": "A free addon for http://plug.dj/ that allows autowoot, autojoin and many other things!",
         "icons": {
@@ -28,18 +28,6 @@
                         "*://plug.dj/privacy" ]
         },
         "web_accessible_resources": [
-                "javascripts/jquery-ui-1.10.3.custom.js",
-                "javascripts/attrchange.js",
-                "javascripts/ydn.db-isw-core-qry.js",
-                "javascripts/ydn.db-isw-core-qry.js.map",
-                "javascripts/chosen.jquery.min.js",
-                "javascripts/bililiteRange.js",
-                "javascripts/socket.io.js",
-                "javascripts/jquery.simulate.js",
-                "javascripts/jquery.simulate.ext.js",
-                "javascripts/jquery.simulate.drag-n-drop.js",
-                "javascripts/jquery.simulate.key-sequence.js",
-                "javascripts/jquery.simulate.key-combo.js",
                 "javascripts/iPlug.js",
                 "javascripts/iPlugApp.js",
                 "images/chosen/chosen-sprite.png",
@@ -61,7 +49,7 @@
                                 "*://plug.dj/privacy"
                         ],
                         "js": [
-                                "javascripts/jquery-2.0.3.js",
+                                //"javascripts/jquery-2.0.3.js",
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
