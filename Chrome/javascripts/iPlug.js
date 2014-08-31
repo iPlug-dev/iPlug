@@ -19,7 +19,7 @@ function init() {
 
 function callback(check, num, x) {
     if (check === true) {
-        console.log("[iPlug]: Loading component " + (1 + num) + "/" + x + " finished with succes.");
+        console.log("[iPlug]: Loading component " + (1 + num) + "/" + x + " finished with success.");
     } else if (check === false) {
         console.warn("[iPlug]: Loading component " + (1 + num) + "/" + x + " finished with error.");
     } else {
