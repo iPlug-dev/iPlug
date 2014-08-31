@@ -53,8 +53,8 @@
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
-                                "css/jquery-ui-1.10.4.custom.css",
-                                "css/chosen.css",
+                                //"css/jquery-ui-1.10.4.custom.css",
+                                //"css/chosen.css",
                                 "css/iPlug.css"
                         ],
                         "run_at": "document_end"
