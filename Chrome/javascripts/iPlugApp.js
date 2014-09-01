@@ -1,13 +1,10 @@
 (function () {
     "use strict";
-    var version = "0.0.1";
-    
     API.on(API.ADVANCE, function(){
         setTimeout(function(){
             $("#woot").click();
         },5000);
     });
-1
     API.on(API.WAIT_LIST_UPDATE, function(){
         $(".is-wait").click();
         setTimeout(function(){
@@ -15,6 +12,13 @@
         },5000);
     });
     
+    $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'>\
+        <div class='box'>\
+            <i class='icon-iplug'></i>\
+            <span>iPlug</span>\
+        </div>\
+    </div>");
+
     var mehupdate = false;
     var lasttimeout = 0;
     

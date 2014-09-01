@@ -21,3 +21,43 @@
 ::-webkit-scrollbar-button {
     display:none !important;
 }
+
+.icon-iplug{
+    background: url(chrome-extension://__MSG_@@extension_id__/images/iplug-button.png);
+	width: 30px;
+    height: 30px;
+}
+
+#chat-button{
+    left: 0 !important;
+	width: 80px !important;
+}
+
+#users-button
+{
+	left: 80px !important;
+	width: 90px !important;
+}
+
+#waitlist-button {
+	left: 170px !important;
+	width: 90px !important;
+}
+
+#iplug-button{
+    left: 260px !important;
+	width: 90px !important;
+}
+#iplug-button i{
+	position: relative;
+	float: left;
+	margin-right: 6px;
+}
+#iplug-button span{
+	position: relative;
+	float: left;
+	font-weight: 400;
+	top: 4px;
+	color: #808691;
+	font-size: 14px;
+}
