@@ -3,11 +3,21 @@ function init() {
         if (document.location.pathname == "/") {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
-            document.addEventListener('getURL', function(event) { //communication between plugin and injected script (currently useless)
-                var x = chrome.extension.getURL(event.detail.url);
-                var fetchResponse = new CustomEvent('readyURL-'+event.detail.reqID, {"detail": {"url": x, "reqID": event.detail.reqID}});
+            document.addEventListener('checkVersion', function(event) { //communication between plugin and injected script
+                var currVersion = getVersion();
+                var prevVersion = localStorage['version'];
+                var updated = false;
+                if (currVersion != prevVersion) {
+                    if (typeof prevVersion == 'undefined') {
+                        updated = true;
+                    } else {
+                        updated = true;
+                    }
+                    localStorage['version'] = currVersion;
+                }
+                var fetchResponse = new CustomEvent('checkedVersion-'+event.detail.reqID, {"detail": {"updated": updated , "reqID": event.detail.reqID}});
                 document.dispatchEvent(fetchResponse);
-            });    
+            });
             var scripts = [
             ];
             console.log("[iPlug]: Loading components...");
@@ -16,6 +26,11 @@ function init() {
     } else {
         setTimeout(init, 500);
     }
+}
+
+function getVersion() {
+    var details = chrome.app.getDetails();
+    return details.version;
 }
 
 function callback(check, num, x) {
