@@ -78,8 +78,11 @@
     };
     
     if(version){
-        $('#iplug-overlay').css('display', 'block');
-        alert("iPlug has been updated!\n\nNext update: fix this alert!\nNext update: working menu!");
+        setTimeout(function(){
+            $('#iplug-overlay').css('display', 'block');
+            alert("iPlug has been updated!\n\nNext update: fix this alert!\nNext update: working menu!");
+            $('#iplug-overlay').css('display', 'none');
+        }, 5000);
     }
     
 }());
