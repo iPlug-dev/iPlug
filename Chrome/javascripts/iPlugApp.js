@@ -25,11 +25,6 @@
     var mehupdate = false;
     var lasttimeout = 0;
     
-    
-    $.expr[':'].textEquals = function (a, i, m) {
-        return $(a).text().match("^" + m[3] + "$");
-    };
-    
     $("#vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMehs);
     $("#users-button, .icon-clear-input").bind("click", displayMehs);
     $("#list-filter-input").bind("keyup", displayMehs);
