@@ -28,6 +28,20 @@
     height: 30px;
 }
 
+#user-lists > div.header > div.divider.right {
+    width: 175px !important;
+}
+
+#waitlist > div.header > div.divider.left {
+    width: 170px !important;
+}
+
+#waitlist > div.header > div.divider.right {
+    right: 0 !important;
+	width: 85px !important;
+	left: initial !important;
+}
+
 #chat-button{
     left: 0 !important;
 	width: 80px !important;
