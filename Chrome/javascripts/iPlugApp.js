@@ -31,7 +31,8 @@
     };
     
     $("#vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMehs);
-    $("#users-button").bind("click", displayMehs);
+    $("#users-button, .icon-clear-input").bind("click", displayMehs);
+    $("#list-filter-input").bind("keyup", displayMehs);
     
     function displayMehs() {
         displayMeh();
@@ -52,8 +53,11 @@
         $(".user > .icon-grab").attr("style", "margin-right: 30px;");
         $(".user > .name").attr("style", "left: 68px");
         $(".user > .icon-woot, .leveldisplay").remove();
+        console.log(users, $("#list-filter-input").val());
+        users = users.filter(function(user) {return -1 != user.username.toLowerCase().indexOf($("#list-filter-input").val().toLowerCase());});
+        console.log(users);
         for (i = 0; i < users.length; i++) {
-            $(".user > .name:textEquals('" + users[i].username + "')").parent().append(["<i class='icon icon-woot' style='background-position: -174px -280px'></i>", "", "<i class='icon icon-woot'></i>"][users[i].vote + 1] + "<div class='leveldisplay' style='left:30px; height: 30px; width: 46px'><span class='name' style='top: 7px; margin-left: auto; margin-right: auto; color: #eee; font-size: 10px'>lvl" + users[i].level + "</span></div>");
+            $($(".user > .name")[i]).parent().append(["<i class='icon icon-woot' style='background-position: -174px -280px'></i>", "", "<i class='icon icon-woot'></i>"][users[i].vote + 1] + "<div class='leveldisplay' style='left:30px; height: 30px; width: 46px'><span class='name' style='top: 7px; margin-left: auto; margin-right: auto; color: #eee; font-size: 10px'>lvl" + users[i].level + "</span></div>");
         }
     }
     
