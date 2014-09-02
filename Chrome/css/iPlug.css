@@ -28,6 +28,17 @@
     height: 30px;
 }
 
+#iplug-overlay {
+	background: #0a0a0a;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 100;
+	opacity:0.5;
+}
+
 #user-lists > div.header > div.divider.right {
     width: 175px !important;
 }
