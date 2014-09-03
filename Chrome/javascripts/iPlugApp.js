@@ -1,6 +1,7 @@
 (function () {
     "use strict";
-    if (typeof(window.iPlugDebug) != "boolean") window.iPlugDebug = false;setTimeout(function () {
+    if (typeof(window.iPlugDebug) != "boolean") window.iPlugDebug = false;
+    setTimeout(function () {
         $("#dialog-container").remove();
     }, 5000);
     
