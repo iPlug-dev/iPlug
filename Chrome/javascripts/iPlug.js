@@ -4,14 +4,6 @@ function init() {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
             document.addEventListener('KrisDontTouchMyCode', function(event) { //communication between plugin and injected script
-                var currVersion = getVersion();
-                var prevVersion = localStorage['version'];
-                var updated = false;
-                if (currVersion != prevVersion) {
-                    updated = true;
-                    localStorage['version'] = getVersion();
-                }
-                localStorage['version'] = getVersion();
                 var fetchResponse = new CustomEvent('KrisDontTouchMyCodeOK-'+event.detail.reqID, {"detail": {"v": getVersion() , "reqID": event.detail.reqID}});
                 document.dispatchEvent(fetchResponse);
             });
