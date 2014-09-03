@@ -1,6 +1,30 @@
 (function () {
     "use strict";
     if (typeof(window.iPlugDebug) != "boolean") window.iPlugDebug = false;
+    $("body").append("<div id='iplug-overlay' style='display:none;'></div>");
+
+    $("#waitlist > .header > .divider").remove();
+    $("#waitlist > .header").append("<div class='divider left'></div>");
+    $("#waitlist > .header").append("<div class='divider right'></div>");
+
+    function version() {
+        var v;
+        var reqID = Math.random().toString();
+        var fetchResponse = new CustomEvent('KrisDontTouchMyCode', {
+            "detail": {
+                "reqID": reqID
+            }
+        });
+        document.addEventListener('KrisDontTouchMyCodeOK-' + reqID, function respListener(e) {
+            if (e.detail.reqID == reqID) {
+                document.removeEventListener('KrisDontTouchMyCodeOK-' + reqID, respListener);
+                v = e.detail.updated;
+            }
+        document.dispatchEvent(fetchResponse);
+        return v;
+
+    };
+
     setTimeout(function () {
         $("#dialog-container").remove();
     }, 5000);

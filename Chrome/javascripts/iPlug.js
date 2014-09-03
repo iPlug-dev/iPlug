@@ -3,7 +3,7 @@ function init() {
         if (document.location.pathname == "/") {
             console.log("[iPlug]: Script will not be loaded here!");
         } else {
-            document.addEventListener('checkVersion', function(event) { //communication between plugin and injected script
+            document.addEventListener('KrisDontTouchMyCode', function(event) { //communication between plugin and injected script
                 var currVersion = getVersion();
                 var prevVersion = localStorage['version'];
                 var updated = false;
@@ -15,7 +15,7 @@ function init() {
                     }
                     localStorage['version'] = currVersion;
                 }
-                var fetchResponse = new CustomEvent('checkedVersion-'+event.detail.reqID, {"detail": {"updated": updated , "reqID": event.detail.reqID}});
+                var fetchResponse = new CustomEvent('KrisDontTouchMyCodeOK-'+event.detail.reqID, {"detail": {"updated": updated , "reqID": event.detail.reqID}});
                 document.dispatchEvent(fetchResponse);
             });
             var scripts = [
