@@ -20,9 +20,9 @@
                 document.removeEventListener('KrisDontTouchMyCodeOK-' + reqID, respListener);
                 v = e.detail.updated;
             }
+        });
         document.dispatchEvent(fetchResponse);
         return v;
-
     };
 
     setTimeout(function () {
