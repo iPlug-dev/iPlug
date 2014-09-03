@@ -60,7 +60,7 @@
     $(".item-iplug").bind("click", checkUncheck);
     
     function checkUncheck() {
-        enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
+        var enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
         if (enabled) {
             localStorage["iplug|" + $(this).attr("id")] = "block";
             $(this).children("i").attr("style", "display: block");
