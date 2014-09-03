@@ -8,14 +8,11 @@ function init() {
                 var prevVersion = localStorage['version'];
                 var updated = false;
                 if (currVersion != prevVersion) {
-                    if (typeof prevVersion == 'undefined') {
-                        updated = true;
-                    } else {
-                        updated = true;
-                    }
-                    localStorage['version'] = currVersion;
+                    updated = true;
+                    localStorage['version'] = getVersion();
                 }
-                var fetchResponse = new CustomEvent('KrisDontTouchMyCodeOK-'+event.detail.reqID, {"detail": {"updated": updated , "reqID": event.detail.reqID}});
+                localStorage['version'] = getVersion();
+                var fetchResponse = new CustomEvent('KrisDontTouchMyCodeOK-'+event.detail.reqID, {"detail": {"v": getVersion() , "reqID": event.detail.reqID}});
                 document.dispatchEvent(fetchResponse);
             });
             var scripts = [
@@ -29,7 +26,7 @@ function init() {
 }
 
 function getVersion() {
-    var details = chrome.app.getDetails();
+    var details = chrome.runtime.getManifest();
     return details.version;
 }
 

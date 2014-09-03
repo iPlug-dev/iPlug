@@ -18,7 +18,7 @@
         document.addEventListener('KrisDontTouchMyCodeOK-' + reqID, function respListener(e) {
             if (e.detail.reqID == reqID) {
                 document.removeEventListener('KrisDontTouchMyCodeOK-' + reqID, respListener);
-                v = e.detail.updated;
+                v = e.detail.v;
             }
         });
         document.dispatchEvent(fetchResponse);
@@ -151,10 +151,13 @@
         }
     }
     
-    if(version){
+    if(typeof(localStorage['iplug|version']) != "string") localStorage['iplug|version'] = "0";
+    
+    if(version() != localStorage['iplug|version']){
+        localStorage['iplug|version'] = version();
         setTimeout(function(){
             $('#iplug-overlay').css('display', 'block');
-            alert("iPlug has been updated!\n\nNext update: fix this alert!\nNext update: working menu!");
+            alert("iPlug has been updated!\n\nNext update: fix this alert!");
             $('#iplug-overlay').css('display', 'none');
         }, 5000);
     }
