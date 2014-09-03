@@ -95,16 +95,14 @@
     width:100%;
     height:100%
 }
-
 #iplug-menu .header {
-    position:absolute;
+    position: relative;
     top:0;
     left:0;
     width:345px;
     height:46px;
     border-bottom:#1c1f25 1px solid
 }
-
 #iplug-menu .header .divider {
     position:absolute;
     top:0;
@@ -112,10 +110,97 @@
     height:1px;
     background:#1c1f25
 }
-
 #iplug-menu .header .title {
     position:relative;
     top:11px;
     margin-left:17px;
     font-size:18px
+}
+#iplug-menu-container {
+    margin-left: 15px
+}
+#iplug-menu-container .spacing {
+    height: 50px
+}
+#iplug-menu-container .item {
+    position:relative;
+    margin-top:6px;
+    height:25px;
+    cursor:pointer
+}
+#iplug-menu-container .item i {
+    top:2px;
+    left:0;
+}
+#iplug-menu-container .item span {
+    position:absolute;
+    left:17px;
+    margin-left:10px;
+    color:#808691
+}
+#iplug-menu-container .slider {
+    position:relative;
+    top:6px;
+    width:315px;
+    height:88px
+}
+#iplug-menu-container .slider .titlecontainer .title {
+    position:relative;
+    color:#808691
+}
+#iplug-menu-container .slider .titlecontainer .value {
+    position:relative;
+    float:right;
+    color:#808691;
+    text-align:right;
+    right:15px
+}
+#iplug-menu-container .slider .counts {
+    position:relative;
+    margin-top:5px;
+    margin-left:3px;
+    max-width:309px;
+    height:25px;
+    text-align:justify;
+    -ms-text-justify:distribute-all-lines;
+    text-justify:distribute-all-lines
+}
+#iplug-menu-container .slider .counts .count {
+    display:inline-block;
+    width:23px;
+    height:15px;
+    vertical-align:top;
+    font-size:14px
+}
+#iplug-menu-container .slider .counts .stretch {
+    display:inline-block;
+    width:300px;
+    font-size:0;
+    line-height:0
+}
+#iplug-menu-container .slider .barcontainer {
+    position:relative;
+    width:300px;
+    height:18px
+}
+#iplug-menu-container .slider .barcontainer .bar {
+    position:absolute;
+    top:5px;
+    left:0;
+    width:100%;
+    height:6px;
+    border-radius:10px;
+    background:#282c35
+}
+#iplug-menu-container .slider .barcontainer .bar.selected {
+    background:#009cdd
+}
+#iplug-menu-container .slider .barcontainer .circle {
+    position:absolute;
+    top:0;
+    width:15px;
+    height:15px;
+    border-radius:50%;
+    background:#808691;
+    cursor: pointer
 }
