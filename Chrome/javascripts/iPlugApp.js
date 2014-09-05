@@ -126,10 +126,10 @@
     }
     
     
-    
-    setTimeout(function () {
-        $("#dialog-container").remove();
-    }, 5000);
+    // Uncomment = Not working preview
+    //setTimeout(function () {
+    //    $("#dialog-container").remove();
+    //}, 5000);
     
     if (isNaN(parseInt(localStorage["iplug|autowootdelaymin"]))) {
         localStorage["iplug|autowootdelaymin"] = 0;
