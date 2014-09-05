@@ -39,18 +39,19 @@
         }, 5000);
     }
     
-    function autoWT() {
-        //woot on join to make ppl happy
+    function WT() {
         if ($('#woot').length > 0) {
-            $("#woot").click();
             if($("#woot")[0] != $("#vote > .selected")[0]) { //didn't work
-                setTimeout(autoWT, 2000); //try again
+                $("#woot").click();
+                setTimeout(WT, 500); //try again
             }
         } else {
-            setTimeout(autoWT, 2000); // if someone's pc is mega slow ;-;
+            setTimeout(WT, 1000); // object not created yet || slow pc 
         };
     }
-    setTimeout(autoWT, 3000);
+
+
+    setTimeout(WT, 3000); // AUTO WOOT ON JOIN
     
     
     
@@ -161,9 +162,7 @@
         if (localStorage["iplug|autowootenabled"] != "block") {
             return;
         }
-        setTimeout(function() {
-            $("#woot").click();
-        }, Math.round(10 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random * (parseInt(10 * (localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0));
+        setTimeout(WT, Math.round(10 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random * (parseInt(10 * (localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0));
     });
     
     API.on(API.WAIT_LIST_UPDATE, function () {
