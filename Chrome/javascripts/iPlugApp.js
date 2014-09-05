@@ -81,7 +81,7 @@
     
     
     
-var mehupdate = false;
+    var mehupdate = false;
     var lasttimer = 0;
     
     $("#vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMeh);
