@@ -2,7 +2,7 @@
         "name": "iPlug BETA",
         "short_name": "iPlug",
         "author": "CookieMichal & L0laapk3",
-        "version": "0.1.2",
+        "version": "0.1.3",
         "manifest_version": 2,
         "description": "A free addon for http://plug.dj/ that allows autowoot, autojoin and many other things!",
         "icons": {
