@@ -81,27 +81,21 @@
     
     
     
-    var mehupdate = false;
-    var lasttimeout = 0;
+var mehupdate = false;
     var lasttimer = 0;
     
-    $("#vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMehs);
-    $("#users-button, .icon-clear-input").bind("click", displayMehs);
-    $("#list-filter-input").bind("keyup", displayMehs);
-    
-    function displayMehs() {
-        displayMeh();
-        clearTimeout(lasttimeout);
-        lasttimeout = setTimeout(displayMeh(), 1000);
-    }
+    $("#vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMeh);
+    $("#users-button, .icon-clear-input").bind("click", displayMeh);
+    $("#list-filter-input").bind("keyup", displayMeh);
     
     function displayMeh() {
-        clearInterval(lasttimer);
-        if ($("#users-button").attr("class").indexOf("selected") == -1 || $(".header > .room").attr("class").indexOf("selected") == -1 || mehupdate) {
+        if (mehupdate) {
             return;
         }
-        $("#user-lists > .jspScrollable > .jspContainer > .jspPane").prepend("<div id='removedcheck'></div>");
-        lasttimer = setInterval(checkplugrefresh, 50);
+        if ($("#users-button").attr("class").indexOf("selected") == -1 || $(".header > .room").attr("class").indexOf("selected") == -1) {
+            clearInterval(lasttimer);
+            return;
+        }
         mehupdate = true;
         setTimeout(function () {
             mehupdate = false;
@@ -117,6 +111,11 @@
         for (i = 0; i < users.length; i++) {
             $($(".user > .name")[i]).parent().append(["<i class='icon icon-woot' style='background-position: -174px -280px'></i>", "", "<i class='icon icon-woot'></i>"][users[i].vote + 1] + "<div class='leveldisplay' style='left:30px; height: 30px; width: 46px'><span class='name' style='top: 7px; margin-left: auto; margin-right: auto; color: #eee; font-size: 10px'>lvl" + users[i].level + "</span></div>");
         }
+        if (0===$("#removedcheck").length) {
+            $("#user-lists > .jspScrollable > .jspContainer > .jspPane").prepend("<div id='removedcheck'></div>");
+        }
+        clearInterval(lasttimer);
+        lasttimer = setInterval(checkplugrefresh, 50);
     }
     
     
