@@ -34,7 +34,7 @@
         localStorage['iplug|version'] = version();
         setTimeout(function(){
             $('#iplug-overlay').css('display', 'block');
-            alert("iPlug has been updated!\n\nNext update: fix this alert!");
+            alert("iPlug has been updated!\n\nVersion: " + localStorage['iplug|version']);
             $('#iplug-overlay').css('display', 'none');
         }, 5000);
     }
