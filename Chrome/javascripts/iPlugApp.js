@@ -83,6 +83,7 @@
     
     var mehupdate = false;
     var lasttimeout = 0;
+    var lasttimer = 0;
     
     $("#vote").bind("DOMNodeInserted DOMNodeRemoved DOMSubtreeModified", displayMehs);
     $("#users-button, .icon-clear-input").bind("click", displayMehs);
@@ -95,9 +96,12 @@
     }
     
     function displayMeh() {
+        clearInterval(lasttimer);
         if ($("#users-button").attr("class").indexOf("selected") == -1 || $(".header > .room").attr("class").indexOf("selected") == -1 || mehupdate) {
             return;
         }
+        $("#user-lists > .jspScrollable > .jspContainer > .jspPane").prepend("<div id='removedcheck'></div>");
+        lasttimer = setInterval(checkplugrefresh, 50);
         mehupdate = true;
         setTimeout(function () {
             mehupdate = false;
@@ -107,11 +111,24 @@
         $(".user > .icon-grab").attr("style", "margin-right: 30px;");
         $(".user > .name").attr("style", "left: 68px");
         $(".user > .icon-woot, .leveldisplay").remove();
-        if (window.iPlugDebug){console.log(users, $("#list-filter-input").val());}
-        users = users.filter(function(user) {return -1 != user.username.toLowerCase().indexOf($("#list-filter-input").val().toLowerCase());});
-        if (window.iPlugDebug){console.log(users);}
+        if (window.iPlugDebug) {
+            console.log(users, $("#list-filter-input").val());
+        }
+        users = users.filter(function (user) {
+            return -1 != user.username.toLowerCase().indexOf($("#list-filter-input").val().toLowerCase());
+        });
+        if (window.iPlugDebug) {
+            console.log(users);
+        }
         for (i = 0; i < users.length; i++) {
             $($(".user > .name")[i]).parent().append(["<i class='icon icon-woot' style='background-position: -174px -280px'></i>", "", "<i class='icon icon-woot'></i>"][users[i].vote + 1] + "<div class='leveldisplay' style='left:30px; height: 30px; width: 46px'><span class='name' style='top: 7px; margin-left: auto; margin-right: auto; color: #eee; font-size: 10px'>lvl" + users[i].level + "</span></div>");
+        }
+    }
+    
+    
+    function checkplugrefresh() {
+        if (0===$("#removedcheck").length) {
+            displayMeh();
         }
     }
     
