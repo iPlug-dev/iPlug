@@ -118,7 +118,7 @@
             for (i = 0; i < users.length; i++) {
                 $($(".user > .name")[i]).parent().append(["<i class='icon icon-woot' style='background-position: -174px -280px'></i>", "", "<i class='icon icon-woot'></i>"][users[i].vote + 1] + "<div class='leveldisplay' style='left:30px; height: 30px; width: 46px'><span class='name' style='top: 5px; margin-left: auto; margin-right: auto; left: 25px;width: 43px;text-align: center;color: rgb(128, 134, 145); font-size: 15px'>" + users[i].level + "</span></div>");
             }
-        } else console.error("AAA!");
+        }
         if (0===$("#removedcheck").length) {
             $("#user-lists > .jspScrollable > .jspContainer > .jspPane").prepend("<div id='removedcheck'></div>");
         }
@@ -193,7 +193,7 @@
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
     });
-    $("#iplug-button").bind("mouseover mouseenter", function() {$("#tooltip").remove();$("body").append('<div id="tooltip" style="top: 0px; left: ' + (window.innerWidth - 120) + 'px;" class="right"><span>IPlug Menu</span><div class="corner"></div></div>');}).bind("mouseout mouseleave", function() {$("#tooltip").remove();}).bind("click", function () {
+    $("#iplug-button").bind("mouseover mouseenter", function() {$("#tooltip").remove();$("body").append('<div id="tooltip" style="top: 0px; left: ' + (window.innerWidth - 120) + 'px;" class="right"><span>iPlug Menu</span><div class="corner"></div></div>');}).bind("mouseout mouseleave", function() {$("#tooltip").remove();}).bind("click", function () {
         $("#waitlist-button").trigger("click");
         $("#iplug-button").attr("class", "header-panel-button selected");
         $("#iplug-menu").attr("style", "display: block");
