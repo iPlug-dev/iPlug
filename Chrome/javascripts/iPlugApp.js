@@ -172,7 +172,7 @@
         if (localStorage["iplug|autowootenabled"] != "block") {
             return;
         }
-        setTimeout(WT, Math.round(10 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random * (parseInt(10 * (localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0));
+        setTimeout(WT, Math.round(10 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random() * (10 * parseInt((localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0));
     });
     
     API.on(API.WAIT_LIST_UPDATE, function () {
