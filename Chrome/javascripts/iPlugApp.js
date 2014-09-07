@@ -134,10 +134,10 @@
     }
     
     
-    // Uncomment = Not working preview
-    //setTimeout(function () {
-    //    $("#dialog-container").remove();
-    //}, 5000);
+    //remove style="display: block;" that sometimes happends cuz plug
+    setTimeout(function () {
+        $("#dialog-container").attr("style","");
+    }, 5000);
     
     if (isNaN(parseInt(localStorage["iplug|autowootdelaymin"]))) {
         localStorage["iplug|autowootdelaymin"] = 0;
