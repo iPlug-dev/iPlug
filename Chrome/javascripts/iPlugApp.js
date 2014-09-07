@@ -134,7 +134,8 @@
     }
     
     
-    //remove style="display: block;" that sometimes happends cuz plug
+    //remove style="display: block;" that sometimes happens cuz plug
+    //how about $().css("display", "none")
     setTimeout(function () {
         $("#dialog-container").attr("style","");
     }, 5000);
