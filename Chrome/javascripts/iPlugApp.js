@@ -158,6 +158,47 @@
     if (undefined === localStorage["iplug|bigtxtenabled"]) {
         localStorage["iplug|bigtxtenabled"] = "none";
     }
+    if (undefined === localStorage["iplug|youtubevideodisabled"]) {
+        localStorage["iplug|youtubevideodisabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|curatedisabled"]) {
+        localStorage["iplug|curatedisabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|waitlistdisabled"]) {
+        localStorage["iplug|waitlistdisabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|audiencedisabled"]) {
+        localStorage["iplug|audiencedisabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|djdisabled"]) {
+        localStorage["iplug|djdisabled"] = "none";
+    }
+    
+    if (localStorage["iplug|youtubevideodisabled"] == "none") {
+        $("#playback").css("display", "block");
+    } else {
+        $("#playback").css("display", "none");
+    }
+    if (localStorage["iplug|curatedisabled"] == "none") {
+        $("#vote").css("display", "block");
+    } else {
+        $("#vote").css("display", "none");
+    }
+    if (localStorage["iplug|waitlistdisabled"] == "none") {
+        $("#audience").css("display", "block");
+    } else {
+        $("#audience").css("display", "none");
+    }
+    if (localStorage["iplug|audiencedisabled"] == "none") {
+        $("#dj-button").css("display", "block");
+    } else {
+        $("#dj-button").css("display", "none");
+    }
+    if (localStorage["iplug|djdisabled"] == "none") {
+        $("#dj-booth").css("display", "block");
+    } else {
+        $("#dj-booth").css("display", "none");
+    }
     
     var mouseX;
     
@@ -189,20 +230,35 @@
     
     
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
-    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div id="iplug-menu-container"> <div class="iplug-menu-autowoot iplug-container"> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span>Enable Autowoot</span> </div> <div id="autowootdelay" class="iplug-menu-autowoot-delay slider">' + {block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>',none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax']/ 10).toFixed(1)) + 's</span> </div>'}[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle circlefirst" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle circlesecond" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> <div class="spacing"></div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Enable Autojoin</span> </div> <div id="bigtxtenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|bigtxtenabled'] + '"></i> <span>Alternative LVL indicator</span> </div> </div> </div></div>');
+    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div id="iplug-menu-container"> <div class="iplug-menu-autowoot iplug-container"> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span>Autowoot</span> </div> <div id="autowootdelay" class="iplug-menu-autowoot-delay slider">' + { block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>' }[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle circlefirst" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle circlesecond" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="subtitle"><span>Visual Options</span></div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="subtitle"><span>Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="bigtxtenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|bigtxtenabled'] + '"></i> <span>Alternative Level Indicator</span> </div> </div> </div> </div>');
     $("#chat-button, #users-button, #waitlist-button").bind("click", function () {
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
     });
-    $("#iplug-button").bind("mouseover mouseenter", function() {$("#tooltip").remove();$("body").append('<div id="tooltip" style="top: 0px; left: ' + (window.innerWidth - 120) + 'px;" class="right"><span>iPlug Menu</span><div class="corner"></div></div>');}).bind("mouseout mouseleave", function() {$("#tooltip").remove();}).bind("click", function () {
+    $("#iplug-button").bind("mouseover mouseenter", function () {
+        $("#tooltip").remove();
+        $("body").append('<div id="tooltip" style="top: 0px; left: ' + (window.innerWidth - 120) + 'px;" class="right"><span>iPlug Menu</span><div class="corner"></div></div>');
+    }).bind("mouseout mouseleave", function () {
+        $("#tooltip").remove();
+    }).bind("click", function () {
         $("#waitlist-button").trigger("click");
         $("#iplug-button").attr("class", "header-panel-button selected");
         $("#iplug-menu").attr("style", "display: block");
         $("#waitlist-button").attr("class", "header-panel-button");
         $("#waitlist").attr("style", "display: none");
+    }).one("click", function () {
+        $(".iplug-container .item").each(function (i, item) {
+            $(item).css("width", parseInt($(item).children("span").css("width")) + 30 + "px");
+        });
+        $(".iplug-container > .subcontainer").each(function (i, item) {
+            $(item).attr("maxheight", $(item).css("height")).css("height", "30px");
+        });
+        $("#chat-button, #users-button, #waitlist-button").bind("click", function () {
+            $(".iplug-container > .subcontainer").css("height", "30px").children(".iplug-collapse").attr("class", "iplug-collapse icon icon-arrow-up");
+        });
     });
     
-    $(".item-iplug").bind("click", checkUncheck);
+    $(".iplug-container .item-iplug").bind("click", checkUncheck);
     
     function checkUncheck() {
         var enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
@@ -214,20 +270,51 @@
             $(this).children("i").attr("style", "display: none");
         }
         switch ($(this).attr("id")) {
-            case "autowootenabled":
+            case "youtubevideodisabled":
+                if (enabled) {
+                    $("#playback").css("display", "none");
+                } else {
+                    $("#playback").css("display", "block");
+                }
                 break;
-            case "autojoinenabled":
+            case "curatedisabled":
+                if (enabled) {
+                    $("#vote").css("display", "none");
+                } else {
+                    $("#vote").css("display", "block");
+                }
+                break;
+            case "waitlistdisabled":
+                if (enabled) {
+                    $("#dj-button").css("display", "none");
+                } else {
+                    $("#dj-button").css("display", "block");
+                }
+                break;
+            case "audiencedisabled":
+                if (enabled) {
+                    $("#audience").css("display", "none");
+                } else {
+                    $("#audience").css("display", "block");
+                }
+                break;
+            case "djdisabled":
+                if (enabled) {
+                    $("#dj-booth").css("display", "none");
+                } else {
+                    $("#dj-booth").css("display", "block");
+                }
                 break;
             case "autowootdelayrandom":
                 if (enabled) {
-                    $("#autowootdelay > .titlecontainer.max >").attr("style","display: inline");
+                    $("#autowootdelay > .titlecontainer.max >").attr("style", "display: inline");
                     $("#autowootdelay > .titlecontainer.min > .title").html("Autowoot Minimum Delay (seconds)");
                     $("#autowootdelay > .titlecontainer.max > .title").html("Autowoot Maximum Delay (seconds)");
                 } else {
                     var average = Math.floor((parseInt(localStorage["iplug|autowootdelaymax"]) + parseInt(localStorage["iplug|autowootdelaymin"])) / 2);
                     localStorage["iplug|autowootdelaymax"] = average;
                     localStorage["iplug|autowootdelaymin"] = average;
-                    $("#autowootdelay > .titlecontainer > .value").html((average/10).toFixed(1) + "s")
+                    $("#autowootdelay > .titlecontainer > .value").html((average / 10).toFixed(1) + "s")
                     $("#autowootdelay > .titlecontainer.max >").attr("style", "display: none");
                     $("#autowootdelay > .titlecontainer.min > .title").html("Autowoot Delay (seconds)");
                     $("#autowootdelay > .barcontainer > .circle").attr("style", "left: " + localStorage["iplug|autowootdelaymin"] + "px");
@@ -241,7 +328,7 @@
     
     
     
-    $(".iplug-container > .slider > .barcontainer > .circle").bind("mousedown", function () {
+    $(".iplug-container .slider > .barcontainer > .circle").bind("mousedown", function () {
         if (dragging) {
             return;
         }
@@ -258,32 +345,51 @@
         dragging = false;
     });
     
-    $(".iplug-container > .slider > .barcontainer > .hit").bind("mousedown", function() {
+    $(".iplug-container .slider > .barcontainer > .hit").bind("mousedown", function () {
         if (dragging) {
             return;
         }
-        dragging = true;
         var mousepos = Math.max(0, Math.min(300, mouseX - $(this).offset().left));
-        var closest = [$(this).parent().children(".circlefirst"), $(this).parent().children(".circlesecond")].sort(function(a, b){return Math.abs(mousepos - parseInt(a.css("left"))) - Math.abs(mousepos - parseInt(b.css("left")));})[0]
+        var closest = [$(this).parent().children(".circlefirst"), $(this).parent().children(".circlesecond")].sort(function (a, b) {
+            return Math.abs(mousepos - parseInt(a.css("left"))) - Math.abs(mousepos - parseInt(b.css("left")));
+        })[0]
         var victim;
         if (localStorage['iplug|' + $(this).parent().parent().attr("id") + 'random'] == "block") {
             victim = closest;
         } else {
             victim = $(this).parent().children(".circle");
         }
-        drag(victim, $(this).parent().children(".bar.selected"), $(this).parent().children(".circlefirst"), $(this).parent().children(".circlesecond"), $(this).parent().parent().children(".titlecontainer.min").children(".value"), $(this).parent().parent().children(".titlecontainer.max").children(".value"), mouseX, mousepos - 6, $(this).parent().parent().attr("id"));
+        //dragging = true;
+        //drag(victim, $(this).parent().children(".bar.selected"), $(this).parent().children(".circlefirst"), $(this).parent().children(".circlesecond"), $(this).parent().parent().children(".titlecontainer.min").children(".value"), $(this).parent().parent().children(".titlecontainer.max").children(".value"), mouseX, mousepos - 6, $(this).parent().parent().attr("id"));
+        var add;
+        if (mousepos > parseInt(closest.css("left"))) {
+            add = 1;
+        } else {
+            add = -1;
+        }
+        victim.css("left", parseInt(closest.css("left")) + add + "px");
+        var values = [parseInt($(this).parent().children(".circlefirst").attr("style").split(" ")[1]), parseInt($(this).parent().children(".circlesecond").attr("style").split(" ")[1])].sort(function (a, b) {
+            return a - b;
+        });
+        localStorage["iplug|" + name + "min"] = values[0];
+        localStorage["iplug|" + name + "max"] = values[1];
+        $(this).parent().children(".bar.selected").attr("style", "left: " + (7 + values[0]) + "px; width: " + (values[1] - values[0]) + "px");
+        $(this).parent().parent().children(".titlecontainer.min").children(".value").html((values[0] / 10).toFixed(1) + "s");
+        $(this).parent().parent().children(".titlecontainer.max").children(".value").html((values[1] / 10).toFixed(1) + "s");
     });
-    $(".iplug-container > .slider").on('mousedown', function (e) {
+    
+    
+    $(".iplug-container .slider").on('mousedown', function (e) {
         var handler, doc = jQuery(document);
         e.preventDefault();
         doc.on('mousemove', handler = function (e) {
             e.preventDefault();
-            // refresh your screen here
         });
         doc.one('mouseup', function (e) {
             doc.off('mousemove', handler);
         });
     });
+    
     
     function drag(victim, selection, one, two, min, max, startx, original, name) {
         victim.attr("style", "left: " + Math.max(0, Math.min(300, (original - startx + mouseX))) + "px");
@@ -293,14 +399,57 @@
         localStorage["iplug|" + name + "min"] = values[0];
         localStorage["iplug|" + name + "max"] = values[1];
         selection.attr("style", "left: " + (7 + values[0]) + "px; width: " + (values[1] - values[0]) + "px");
-        min.html((values[0]/10).toFixed(1) + "s");
-        max.html((values[1]/10).toFixed(1) + "s");
+        min.html((values[0] / 10).toFixed(1) + "s");
+        max.html((values[1] / 10).toFixed(1) + "s");
         if (dragging) {
             setTimeout(function () {
                 drag(victim, selection, one, two, min, max, startx, original, name);
             }, 1);
         }
     }
+    
+    
+    
+    
+    
+    $(".iplug-container > .subcontainer > .iplug-collapse").bind("mousedown", function () {
+        if ($(this).css("text-indent") != "0px") {
+            $(this).attr("queue", "true");
+            return;
+        }
+        var newclass, newheight, rotate;
+        if ($(this).attr("class") == "iplug-collapse icon icon-arrow-up") {
+            newclass = "iplug-collapse icon icon-arrow-down";
+            newheight = $(this).parent().attr("maxheight");
+            rotate = "-180px";
+        } else {
+            newclass = "iplug-collapse icon icon-arrow-up";
+            newheight = "30px";
+            rotate = "180px";
+        }
+        $(this).attr("class", newclass).css("text-indent", "180px").css("margin-top", "-2px").css("text-indent", rotate).animate({
+            marginTop: "0px",
+            textIndent: 0
+        }, {
+            step: function (go) {
+                $(this).css('-moz-transform', 'rotate(' + go + 'deg)');
+                $(this).css('-webkit-transform', 'rotate(' + go + 'deg)');
+                $(this).css('-o-transform', 'rotate(' + go + 'deg)');
+                $(this).css('transform', 'rotate(' + go + 'deg)');
+            },
+            duration: 750,
+            complete: function () {
+                if ($(this).attr("queue") == "true") {
+                    $(this).mousedown();
+                }
+                $(this).attr("queue", "false");
+            }
+        }).parent().animate({
+            height: newheight
+        }, {
+            duration: 750
+        });
+    });
     
     
     
