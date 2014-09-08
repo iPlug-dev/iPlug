@@ -21,70 +21,65 @@
 ::-webkit-scrollbar-button {
     display:none !important;
 }
-
-.icon-iplug{
+.icon-iplug {
     background: url(chrome-extension://__MSG_@@extension_id__/images/iplug-button.png);
-	width: 30px;
+    width: 30px;
     height: 30px;
 }
-
 #iplug-overlay {
-	background: #0a0a0a;
-	bottom: 0;
-	left: 0;
-	position: fixed;
-	right: 0;
-	top: 0;
-	z-index: 1000000; /*super serious*/
-	opacity:0.5;
+    background: #0a0a0a;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 1000000;
+    /*super serious*/
+    opacity:0.5;
 }
-
 #user-lists > div.header > div.divider.right {
     width: 175px !important;
 }
-
 #waitlist > div.header > div.divider.left {
     width: 170px !important;
 }
-
 #waitlist > div.header > div.divider.right {
     right: 0 !important;
-	width: 85px !important;
-	left: initial !important;
+    width: 85px !important;
+    left: initial !important;
 }
-
-#chat-button{
+#chat-button {
     left: 0 !important;
-	width: 80px !important;
+    width: 80px !important;
 }
-
-#users-button
-{
-	left: 80px !important;
-	width: 90px !important;
+#users-button {
+    left: 80px !important;
+    width: 90px !important;
+}
+#playback-controls .button.snooze {
+    height: 56px !important;
 }
 
 #waitlist-button {
-	left: 170px !important;
-	width: 90px !important;
+    left: 170px !important;
+    width: 90px !important;
 }
-
-#iplug-button{
+#iplug-button {
     left: 260px !important;
-	width: 90px !important;
+    width: 90px !important;
 }
-#iplug-button i{
-	position: relative;
-	float: left;
-	margin-right: 6px;
+#iplug-button i {
+    position: relative;
+    float: left;
+    margin-right: 6px;
 }
-#iplug-button span{
-	position: relative;
-	float: left;
-	font-weight: 400;
-	top: 4px;
-	color: #808691;
-	font-size: 14px;
+#iplug-button span {
+    position: relative;
+    float: left;
+    font-weight: 400;
+    top: 4px;
+    color: #808691;
+    font-size: 14px;
 }
 #iplug-menu {
     position:absolute;
@@ -115,49 +110,65 @@
     margin-left:17px;
     font-size:18px
 }
-#iplug-menu-container {
-    margin-left: 15px
+.iplug-container {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px
 }
-#iplug-menu-container .spacing {
-    height: 50px
+.iplug-container .subcontainer {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #111317;
+    overflow: hidden
 }
-#iplug-menu-container .item {
+.iplug-container .subcontainer .subtitle {
+    color:#808691;
+    margin-left: 27px;
+    margin-top: 6px;
+    margin-bottom: 12px
+}
+.iplug-container .subcontainer .iplug-collapse {
+    right: 15px;
+    cursor: pointer
+}
+.iplug-container .item {
     position:relative;
     margin-top:6px;
     height:25px;
     cursor:pointer
 }
-#iplug-menu-container .item i {
+.iplug-container .item i {
     top:2px;
-    left:0;
+    left:4px;
 }
-#iplug-menu-container .item span {
+.iplug-container .item span {
     position:absolute;
     left:17px;
     margin-left:10px;
     color:#808691
 }
-#iplug-menu-container .slider {
+.iplug-container .slider {
     position:relative;
     top:6px;
     width:315px;
     height:88px
 }
-#iplug-menu-container .slider .titlecontainer {
+.iplug-container .slider .titlecontainer {
     height: 20px;
 }
-#iplug-menu-container .slider .titlecontainer .title {
+.iplug-container .slider .titlecontainer .title {
     position:relative;
-    color:#808691
+    color:#808691;
+    left: 27px
 }
-#iplug-menu-container .slider .titlecontainer .value {
+.iplug-container .slider .titlecontainer .value {
     position:relative;
     float:right;
     color:#808691;
     text-align:right;
-    right:15px
+    right:3px
 }
-#iplug-menu-container .slider .counts {
+.iplug-container .slider .counts {
     position:relative;
     margin-top:5px;
     margin-left:3px;
@@ -167,25 +178,25 @@
     -ms-text-justify:distribute-all-lines;
     text-justify:distribute-all-lines
 }
-#iplug-menu-container .slider .counts .count {
+.iplug-container .slider .counts .count {
     display:inline-block;
     width:23px;
     height:15px;
     vertical-align:top;
     font-size:14px
 }
-#iplug-menu-container .slider .counts .stretch {
+.iplug-container .slider .counts .stretch {
     display:inline-block;
     width:300px;
     font-size:0;
     line-height:0
 }
-#iplug-menu-container .slider .barcontainer {
+.iplug-container .slider .barcontainer {
     position:relative;
     width:300px;
     height:18px
 }
-#iplug-menu-container .slider .barcontainer .bar {
+.iplug-container .slider .barcontainer .bar {
     position:absolute;
     top:5px;
     left:0;
@@ -194,7 +205,7 @@
     border-radius:10px;
     background:#282c35
 }
-#iplug-menu-container .slider .barcontainer .hit {
+.iplug-container .slider .barcontainer .hit {
     position:absolute;
     top:5px;
     left:0;
@@ -203,10 +214,10 @@
     border-radius:10px;
     cursor: pointer
 }
-#iplug-menu-container .slider .barcontainer .bar.selected {
+.iplug-container .slider .barcontainer .bar.selected {
     background:#009cdd
 }
-#iplug-menu-container .slider .barcontainer .circle {
+.iplug-container .slider .barcontainer .circle {
     position:absolute;
     top:0;
     width:15px;
