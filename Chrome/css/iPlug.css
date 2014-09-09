@@ -122,7 +122,11 @@
     overflow: hidden
 }
 .iplug-container .subcontainer .subtitle {
-    color:#808691;
+    color: #555d70;
+    text-transform: uppercase
+}
+.iplug-container .subcontainer .noitem {
+    color: #808691;
     margin-left: 27px;
     margin-top: 6px;
     margin-bottom: 12px
