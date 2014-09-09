@@ -371,8 +371,8 @@
         var values = [parseInt($(this).parent().children(".circlefirst").attr("style").split(" ")[1]), parseInt($(this).parent().children(".circlesecond").attr("style").split(" ")[1])].sort(function (a, b) {
             return a - b;
         });
-        localStorage["iplug|" + name + "min"] = values[0];
-        localStorage["iplug|" + name + "max"] = values[1];
+        localStorage["iplug|" + $(this).parent().parent().attr("id") + "min"] = values[0];
+        localStorage["iplug|" + $(this).parent().parent().attr("id") + "max"] = values[1];
         $(this).parent().children(".bar.selected").attr("style", "left: " + (7 + values[0]) + "px; width: " + (values[1] - values[0]) + "px");
         $(this).parent().parent().children(".titlecontainer.min").children(".value").html((values[0] / 10).toFixed(1) + "s");
         $(this).parent().parent().children(".titlecontainer.max").children(".value").html((values[1] / 10).toFixed(1) + "s");
