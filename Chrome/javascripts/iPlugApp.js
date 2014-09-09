@@ -234,6 +234,7 @@
     $("#chat-button, #users-button, #waitlist-button").bind("click", function () {
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
+        $(".iplug-container > .subcontainer").css("height", "30px").children(".iplug-collapse").attr("class", "iplug-collapse icon icon-arrow-up");
     });
     $("#iplug-button").bind("mouseover mouseenter", function () {
         $("#tooltip").remove();
@@ -249,12 +250,6 @@
     }).one("click", function () {
         $(".iplug-container .item").each(function (i, item) {
             $(item).css("width", parseInt($(item).children("span").css("width")) + 30 + "px");
-        });
-        $(".iplug-container > .subcontainer").each(function (i, item) {
-            $(item).attr("maxheight", $(item).css("height")).css("height", "30px");
-        });
-        $("#chat-button, #users-button, #waitlist-button").bind("click", function () {
-            $(".iplug-container > .subcontainer").css("height", "30px").children(".iplug-collapse").attr("class", "iplug-collapse icon icon-arrow-up");
         });
     });
     
