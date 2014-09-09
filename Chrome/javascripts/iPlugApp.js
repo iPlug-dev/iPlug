@@ -412,15 +412,18 @@
             $(this).attr("queue", "true");
             return;
         }
-        var newclass, newheight, rotate;
+        var newclass, newheight, rotate, clearheight;
         if ($(this).attr("class") == "iplug-collapse icon icon-arrow-up") {
             newclass = "iplug-collapse icon icon-arrow-down";
-            newheight = $(this).parent().attr("maxheight");
+            newheight = $(this).parent().css("height", "").css("height");
+            $(this).parent().css("height", "30px");
             rotate = "-180px";
+            clearheight = true;
         } else {
             newclass = "iplug-collapse icon icon-arrow-up";
             newheight = "30px";
             rotate = "180px";
+            clearheight = false;
         }
         $(this).attr("class", newclass).css("text-indent", "180px").css("margin-top", "-2px").css("text-indent", rotate).animate({
             marginTop: "0px",
@@ -438,6 +441,10 @@
                     $(this).mousedown();
                 }
                 $(this).attr("queue", "false");
+                if (clearheight == true) {
+                    var lol = $(this).parent();
+                    setTimeout(function() {lol.css("height", "")}, 0);;
+                }
             }
         }).parent().animate({
             height: newheight
