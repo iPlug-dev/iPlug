@@ -61,8 +61,6 @@
     
     
     
-    
-    
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
@@ -210,9 +208,11 @@
     }
     
     var mouseX;
+    var mouseChange;
     
     $(window).bind("mousemove", function (event) {
         mouseX = event.pageX;
+        mouseChange = true;
     });
     
     
@@ -263,6 +263,7 @@
     });
     
     $(".iplug-container .item-iplug").bind("click", checkUncheck);
+    
     
     function checkUncheck() {
         var enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
@@ -352,6 +353,7 @@
         dragging = false;
     });
     
+    
     $(".iplug-container .slider > .barcontainer > .hit").bind("mousedown", function () {
         if (dragging) {
             return;
@@ -412,6 +414,14 @@
                 drag(victim, selection, one, two, min, max, startx, original, name);
             }, 1);
         }
+        if(mouseChange) {
+            switch(victim.parent().parent().attr("id")) {
+                case "scvisualsbars":
+                    /*REPLACE WITH FUNCTION HERE MICHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL*/
+                    break;
+            }
+            mouseChange = false;
+        }
     }
     
     
@@ -467,5 +477,21 @@
     });
     
     
+    
+    
+    
+    
+    
+    
+    var colorscheme = [[0, [255,0,0]], [0.25, [255,255,0]], [0.5, [0,255,0]], [0.75, [0,255,255]], [1, [0,0,255]]];
+
+    function getGradientColor(i) {
+        var min = colorscheme.filter(function(a) {return a[0] < i;}).reverse()[0];
+        var max = colorscheme.filter(function(a) {return a[0] >= i;})[0];
+        var inbetween = max[0] - min[0];
+        var a = (i - min[0]) / inbetween;
+        var b = (max[0] - i) / inbe    tween;
+        return"rgb(" + Math.round(min[1][0] * a + max[1][0] * b) + "," + Math.round(min[1][1] * a + max[1][1] * b) + "," + Math.round(min[1][2] * a + max[1][2] * b) + ")";
+}
     
 }());
