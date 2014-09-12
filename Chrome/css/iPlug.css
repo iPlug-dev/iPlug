@@ -155,7 +155,7 @@
     position:relative;
     top:6px;
     width:315px;
-    height:88px
+    margin-bottom: 6px
 }
 .iplug-container .slider .titlecontainer {
     height: 20px;
