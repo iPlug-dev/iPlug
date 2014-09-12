@@ -278,7 +278,7 @@
                 if (enabled) {
                     $("#playback").css("display", "none");
                 } else {
-                    $("#playback").css("display", "<b></b>lock");
+                    $("#playback").css("display", "block");
                 }
                 break;
             case "curatedisabled":
