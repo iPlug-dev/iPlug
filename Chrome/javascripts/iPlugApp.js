@@ -146,6 +146,12 @@
     if (isNaN(parseInt(localStorage["iplug|autowootdelaymax"]))) {
         localStorage["iplug|autowootdelaymax"] = 0;
     }
+    if (isNaN(parseInt(localStorage["iplug|scvisualsbarsmin"]))) {
+        localStorage["iplug|scvisualsbarsmin"] = 0;
+    }
+    if (isNaN(parseInt(localStorage["iplug|scvisualsbarsmax"]))) {
+        localStorage["iplug|scvisualsbarsmax"] = 0;
+    }
     if (undefined === localStorage["iplug|autowootdelayrandom"]) {
         localStorage["iplug|autowootdelayrandom"] = "none";
     }
@@ -172,6 +178,9 @@
     }
     if (undefined === localStorage["iplug|djdisabled"]) {
         localStorage["iplug|djdisabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|scvisualsenabled"]) {
+        localStorage["iplug|scvisualsenabled"] = "block";
     }
     
     if (localStorage["iplug|youtubevideodisabled"] == "none") {
@@ -230,7 +239,7 @@
     
     
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
-    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div id="iplug-menu-container"> <div class="iplug-menu-autowoot iplug-container"> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="iplug-menu-autowoot-delay slider">' + { block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>'}[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle circlefirst" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle circlesecond" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span></div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="bigtxtenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|bigtxtenabled'] + '"></i> <span>Alternative Level Indicator</span> </div> </div> </div> </div>');
+    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div id="iplug-menu-container"> <div class="iplug-menu-autowoot iplug-container"> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="iplug-menu-autowoot-delay slider">' + { block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>'}[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle circlefirst" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle circlesecond" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="bigtxtenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|bigtxtenabled'] + '"></i> <span>Alternative Level Indicator</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="scvisualsbars" class="iplug-menu-autowoot-delay slider"> <div class="counts"> <span class="count">Fast</span> <span class="count">Fancy</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected"></div> <div class="hit"></div> <div class="circle circlefirst" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> <div class="circle circlesecond" style="left: ' + localStorage['iplug|scvisualsbarsmax'] + 'px;"></div> </div> </div> </div> </div> </div> </div>');
     $("#chat-button, #users-button, #waitlist-button").bind("click", function () {
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
@@ -269,7 +278,7 @@
                 if (enabled) {
                     $("#playback").css("display", "none");
                 } else {
-                    $("#playback").css("display", "block");
+                    $("#playback").css("display", "<b></b>lock");
                 }
                 break;
             case "curatedisabled":
@@ -300,6 +309,9 @@
                     $("#dj-booth").css("display", "block");
                 }
                 break;
+            case "scvisualsenabled":
+                  API.trigger(API.ADVANCE);
+            break;
             case "autowootdelayrandom":
                 if (enabled) {
                     $("#autowootdelay > .titlecontainer.max >").attr("style", "display: inline");
@@ -348,29 +360,28 @@
         var closest = [$(this).parent().children(".circlefirst"), $(this).parent().children(".circlesecond")].sort(function (a, b) {
             return Math.abs(mousepos - parseInt(a.css("left"))) - Math.abs(mousepos - parseInt(b.css("left")));
         })[0]
-        var victim;
         if (localStorage['iplug|' + $(this).parent().parent().attr("id") + 'random'] == "block") {
-            victim = closest;
+            var victim = closest;
+            var add;
+            if (mousepos > parseInt(closest.css("left"))) {
+                add = 1;
+            } else {
+                add = -1;
+            }
+            victim.css("left", parseInt(closest.css("left")) + add + "px");
+            var values = [parseInt($(this).parent().children(".circlefirst").attr("style").split(" ")[1]), parseInt($(this).parent().children(".circlesecond").attr("style").split(" ")[1])].sort(function (a, b) {
+                return a - b;
+            });
+            localStorage["iplug|" + $(this).parent().parent().attr("id") + "min"] = values[0];
+            localStorage["iplug|" + $(this).parent().parent().attr("id") + "max"] = values[1];
+            $(this).parent().children(".bar.selected").attr("style", "left: " + (7 + values[0]) + "px; width: " + (values[1] - values[0]) + "px");
+            $(this).parent().parent().children(".titlecontainer.min").children(".value").html((values[0] / 10).toFixed(1) + "s");
+            $(this).parent().parent().children(".titlecontainer.max").children(".value").html((values[1] / 10).toFixed(1) + "s");
         } else {
             victim = $(this).parent().children(".circle");
+            dragging = true;
+            drag(victim, $(this).parent().children(".bar.selected"), $(this).parent().children(".circlefirst"), $(this).parent().children(".circlesecond"), $(this).parent().parent().children(".titlecontainer.min").children(".value"), $(this).parent().parent().children(".titlecontainer.max").children(".value"), mouseX, mousepos - 6, $(this).parent().parent().attr("id"));
         }
-        //dragging = true;
-        //drag(victim, $(this).parent().children(".bar.selected"), $(this).parent().children(".circlefirst"), $(this).parent().children(".circlesecond"), $(this).parent().parent().children(".titlecontainer.min").children(".value"), $(this).parent().parent().children(".titlecontainer.max").children(".value"), mouseX, mousepos - 6, $(this).parent().parent().attr("id"));
-        var add;
-        if (mousepos > parseInt(closest.css("left"))) {
-            add = 1;
-        } else {
-            add = -1;
-        }
-        victim.css("left", parseInt(closest.css("left")) + add + "px");
-        var values = [parseInt($(this).parent().children(".circlefirst").attr("style").split(" ")[1]), parseInt($(this).parent().children(".circlesecond").attr("style").split(" ")[1])].sort(function (a, b) {
-            return a - b;
-        });
-        localStorage["iplug|" + $(this).parent().parent().attr("id") + "min"] = values[0];
-        localStorage["iplug|" + $(this).parent().parent().attr("id") + "max"] = values[1];
-        $(this).parent().children(".bar.selected").attr("style", "left: " + (7 + values[0]) + "px; width: " + (values[1] - values[0]) + "px");
-        $(this).parent().parent().children(".titlecontainer.min").children(".value").html((values[0] / 10).toFixed(1) + "s");
-        $(this).parent().parent().children(".titlecontainer.max").children(".value").html((values[1] / 10).toFixed(1) + "s");
     });
     
     
@@ -443,7 +454,9 @@
                 $(this).attr("queue", "false");
                 if (clearheight == true) {
                     var lol = $(this).parent();
-                    setTimeout(function() {lol.css("height", "")}, 0);;
+                    setTimeout(function () {
+                        lol.css("height", "")
+                    }, 0);;
                 }
             }
         }).parent().animate({
