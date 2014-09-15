@@ -1,17 +1,21 @@
 function init() {
-    if ($('#audience').length > 0) {
+    if (($('#audience').length >0 )&&($('#room-loader').length > 0 )) {
         if (document.location.pathname == "/") {
-            console.log("[iPlug]: Script will not be loaded here!");
-        } else {
-            document.addEventListener('KrisDontTouchMyCode', function(event) { //communication between plugin and injected script
-                var fetchResponse = new CustomEvent('KrisDontTouchMyCodeOK-'+event.detail.reqID, {"detail": {"v": getVersion() , "reqID": event.detail.reqID}});
-                document.dispatchEvent(fetchResponse);
-            });
-            var scripts = [
-            ];
-            console.log("[iPlug]: Loading components...");
-            loadItall(scripts, 0);
-        }
+                    console.log("[iPlug]: Script will not be loaded here!");
+                } else {
+                    document.addEventListener('KrisDontTouchMyCode', function (event) { //communication between plugin and injected script
+                        var fetchResponse = new CustomEvent('KrisDontTouchMyCodeOK-' + event.detail.reqID, {
+                            "detail": {
+                                "v": getVersion(),
+                                "reqID": event.detail.reqID
+                            }
+                        });
+                        document.dispatchEvent(fetchResponse);
+                    });
+                    var scripts = [];
+                    console.log("[iPlug]: Loading components...");
+                    loadItall(scripts, 0);
+                }
     } else {
         setTimeout(init, 500);
     }
