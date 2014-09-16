@@ -539,7 +539,7 @@
     $(".iplug-container .slider > .barcontainer > .circle").bind("mousedown", startdrag);
 
 
-    $(".iplug-container .slider > .barcontainer > .hit").unbind().bind("mousedown", function () {
+    $(".iplug-container .slider > .barcontainer > .hit").bind("mousedown", function () {
         if (dragging) {
             return;
         }
@@ -620,7 +620,6 @@
             rotate = "180px";
             clearheight = false;
             complete = function () {
-                console.log(dis, dis.siblings(".gradientpicker").children(".settings").children(), dis.siblings(".gradientpicker").children(".slider").children(".barcontainer").children(".circle.selected"));
                 dis.siblings(".gradientpicker").children(".settings").children().css("display", "none");
                 dis.siblings(".gradientpicker").children(".slider").children(".barcontainer").children(".circle.selected").removeClass("selected").css({
                     height: "10px",
