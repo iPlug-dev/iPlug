@@ -310,7 +310,7 @@
     Visualizations.getRainbowGradient = function (ctx, width) {
       var grd = ctx.createLinearGradient(0,0,width,0);
       for (i=0; i < colorscheme.length; i++) {
-        grd.AddColorStop(colorscheme[i][0], "rgb(" + colorscheme[i][1].join(",") + ")");
+        grd.addColorStop(colorscheme[i][0], "rgb(" + colorscheme[i][1].join(",") + ")");
       }
       return grd;
     }
