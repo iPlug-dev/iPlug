@@ -59,7 +59,6 @@
 #playback-controls .button.snooze {
     height: 56px !important;
 }
-
 #waitlist-button {
     left: 170px !important;
     width: 90px !important;
@@ -129,7 +128,8 @@
     color: #808691;
     margin-left: 27px;
     margin-top: 6px;
-    margin-bottom: 12px
+    margin-bottom: 12px;
+    height: 19px;
 }
 .iplug-container .subcontainer .iplug-collapse {
     right: 15px;
@@ -154,7 +154,6 @@
 .iplug-container .slider {
     position:relative;
     top:6px;
-    width:315px;
     margin-bottom: 6px
 }
 .iplug-container .slider .titlecontainer {
@@ -176,7 +175,6 @@
     position:relative;
     margin-top:5px;
     margin-left:8px;
-    max-width:309px;
     height:25px;
     text-align:justify;
     -ms-text-justify:distribute-all-lines;
@@ -191,17 +189,17 @@
 }
 .iplug-container .slider .counts .stretch {
     display:inline-block;
-    width:300px;
+    width:100%;
     font-size:0;
     line-height:0
 }
-.iplug-container .slider .barcontainer {
+.iplug-container .barcontainer {
     position:relative;
-    width:300px;
     height:18px;
-    margin-left:8px
+    margin-left:8px;
+    margin-right:8px;
 }
-.iplug-container .slider .barcontainer .bar {
+.iplug-container .barcontainer .bar {
     position:absolute;
     top:5px;
     left:0;
@@ -210,7 +208,7 @@
     border-radius:10px;
     background:#282c35
 }
-.iplug-container .slider .barcontainer .hit {
+.iplug-container .barcontainer .hit {
     position:absolute;
     top:5px;
     left:0;
@@ -227,10 +225,59 @@
 .iplug-container .slider .barcontainer .circle {
     position:absolute;
     top:0;
-    width:15px;
-    height:15px;
+    width:10px;
+    height:10px;
+    border: 2px solid;
+    border-color: #808691;
     border-radius:50%;
-    background:#808691;
+    background-color:#808691;
     cursor: pointer;
-    margin-left: -7px
+    margin-left: -7px;
+    margin-top: 1px;
+}
+.iplug-container .gradientpicker .barcontainer.gradient .circle {
+    position:absolute;
+    top:0;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    border:solid 3px;
+    border-color: #f00;
+    cursor: pointer;
+    margin-left: -8px;
+    margin-top: 0;
+    background-color: transparent;
+}
+.iplug-container .gradientpicker .settings {
+    margin-top: 40px;
+    margin-bottom: 10px;
+    border: solid 3px;
+    color: #282c35;
+    border-radius: 10px;
+    height: 105px;
+}
+.iplug-container .gradientpicker .settings .delete {
+    cursor: pointer;
+}
+.iplug-container .gradientpicker .centerall {
+    cursor: pointer;
+    margin-top: 12px;
+}
+.iplug-container .colorpicker {
+    margin-top: -15px;
+    margin-left: 1px;
+}
+.iplug-container .colorpicker .slider {
+    width: 271px;
+}
+.iplug-container .colorpicker .colorblock {
+    position:relative;
+    width: 27px;
+    height: 60px;
+    margin-left: 273px;
+    margin-top: -67px;
+    margin-bottom: 12px;
+    border: solid 3px;
+    color: #282c35;
+    border-radius: 10px;
 }
