@@ -460,8 +460,6 @@
     }
 
 
-    //remove style="display: block;" that sometimes happens cuz plug
-    //how about $().css("display", "none")
     setTimeout(function () {
         $("#dialog-container").attr("style", "");
     }, 5000);
@@ -546,6 +544,7 @@
 
 
     $(".iplug-container .slider > .barcontainer > .hit").bind("mousedown", function () {
+        var mousepos = Math.max(0, Math.min(300, mouseX - $(this).offset().left));
         if (dragging) {
             return;
         }
@@ -559,20 +558,17 @@
             }).bind("mousedown", startdrag);
             bindGradientCircleEvents(newb);
             newb.trigger("mousedown");
+        } else if ($(this).parent().parent().parent().hasClass("colorpicker")) {
+            var circle = $(this).siblings(".circle");
+            circle.css("left", parseInt((((mousepos < parseInt(circle.css("left"))) ? 0 : 255) + parseInt(circle.css("left")) + 2) / 2) - 1 + "px");
         } else {
-            var mousepos = Math.max(0, Math.min(300, mouseX - $(this).offset().left));
             var closest = $(this).parent().children(".circle").sort(function (a, b) {
                 return Math.abs(mousepos - parseInt($(a).css("left"))) - Math.abs(mousepos - parseInt($(b).css("left")));
             }).eq(0);
             var victim;
             if (localStorage['iplug|' + $(this).parent().parent().attr("id") + 'random'] == "block") {
                 victim = closest;
-                var add;
-                if (mousepos > parseInt(closest.css("left"))) {
-                    add = 1;
-                } else {
-                    add = -1;
-                }
+                var add = (mousepos > parseInt(closest.css("left"))) ? 1 : -1;
                 victim.css("left", parseInt(closest.css("left")) + add + "px");
                 var values = [];
                 $(this).parent().children(".circle").each(function (i, item) {
@@ -942,7 +938,7 @@
         if (i === 1) return "rgb(" + colorscheme.last()[1].join(",") + ")";
         var min = colorscheme.filter(function (a) {
             return a[0] <= i;
-        }).last() || scheme.last();
+        }).last() || colorscheme.last();
         var max = colorscheme.filter(function (a) {
             return a[0] > i;
         })[0] || colorscheme[0];
