@@ -295,7 +295,7 @@
     Visualizations.canvas = $("#iplug-playback")[0];
     Visualizations.ctx = Visualizations.canvas.getContext('2d');
     var SPACER_WIDTH = Math.floor((((300 - (parseInt(localStorage["iplug|scvisualsbarsmin"], 10))) / 12) + 0.5) * 2) / 2;
-    Visualizations.colors = ['red', 'yellow', 'green', 'aqua', 'blue'];
+    /*Visualizations.colors = ['red', 'yellow', 'green', 'aqua', 'blue'];
     Visualizations.getRainbowGradient = function (ctx, width) {
         var grd = ctx.createLinearGradient(0, 0, width, 0);
         {
@@ -306,8 +306,14 @@
             });
         }
         return grd;
+    }*/
+    Visualizations.getRainbowGradient = function (ctx, width) {
+      var grd = ctx.CreateLinearGradient(0,0,width,0);
+      for (i=0; i < colorscheme.length; i++) {
+        grd.AddColorStop(colorscheme[i][0], "rgb(" + colorscheme[i][1].join(",") + ")");
+      }
+      return grd;
     }
-
 
     Visualizations.compressArray = function (a, b) {
         var n = a.length / b;
