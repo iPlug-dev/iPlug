@@ -206,7 +206,9 @@
     width:100%;
     height:6px;
     border-radius:10px;
-    background:#282c35
+    background:#282c35;
+    margin-left: -3px;
+    padding-right: 6px;
 }
 .iplug-container .barcontainer .hit {
     position:absolute;
