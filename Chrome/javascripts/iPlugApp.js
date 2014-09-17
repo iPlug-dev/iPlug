@@ -561,6 +561,7 @@
         } else if ($(this).parent().parent().parent().hasClass("colorpicker")) {
             var circle = $(this).siblings(".circle");
             circle.css("left", parseInt((((mousepos < parseInt(circle.css("left"))) ? 0 : 255) + parseInt(circle.css("left")) + 2) / 2) - 1 + "px");
+            callbacks($(this).parent().parent().attr("id"))();
         } else {
             var closest = $(this).parent().children(".circle").sort(function (a, b) {
                 return Math.abs(mousepos - parseInt($(a).css("left"))) - Math.abs(mousepos - parseInt($(b).css("left")));
