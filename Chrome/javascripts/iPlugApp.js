@@ -353,7 +353,7 @@
         Visualizations.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         Visualizations.ctx.lineCap = 'round';
 
-        Visualizations.ctx.fillStyle = Visualizations.getRainbowGradient(Visualizations.ctx, CANVAS_WIDTH / 2);
+        Visualizations.ctx.fillStyle = Visualizations.getRainbowGradient(Visualizations.ctx, CANVAS_WIDTH / 2 + CUTOFF);
         for (var i = 0; i < numBars; ++i) {
             var magnitude = freqByteData2[i /*+ OFFSET*/ ];
             Visualizations.ctx.fillRect(i * SPACER_WIDTH, CANVAS_HEIGHT, BAR_WIDTH, -magnitude);
