@@ -60,14 +60,14 @@
         $("#vote").css("display", "none");
     }
     if (localStorage["iplug|waitlistdisabled"] == "none") {
-        $("#audience").css("display", "block");
-    } else {
-        $("#audience").css("display", "none");
-    }
-    if (localStorage["iplug|audiencedisabled"] == "none") {
         $("#dj-button").css("display", "block");
     } else {
         $("#dj-button").css("display", "none");
+    }
+    if (localStorage["iplug|audiencedisabled"] == "none") {
+        $("#audience").css("display", "block");
+    } else {
+        $("#audience").css("display", "none");
     }
     if (localStorage["iplug|djdisabled"] == "none") {
         $("#dj-booth").css("display", "block");
