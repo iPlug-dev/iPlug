@@ -522,7 +522,7 @@
         $("#waitlist").attr("style", "display: none");
     }).one("click", function () {
         $(".iplug-container .item, .iplug-container .noitem").each(function (i, item) {
-            $(item).css("width", parseInt($(item).children("span").css("width")) + 30 + "px");
+            $(item).css("width", parseInt($(item).children("span").css("width")) + $(item).hasClass(".item") ? 30 : 0 + "px");
         });
     });
 
