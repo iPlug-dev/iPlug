@@ -26,6 +26,9 @@
     width: 30px;
     height: 30px;
 }
+#dialog-container {
+    right: 345px !important;
+}
 #iplug-overlay {
     background: #0a0a0a;
     bottom: 0;
