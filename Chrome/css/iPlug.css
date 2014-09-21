@@ -29,6 +29,9 @@
 #dialog-container {
     right: 345px !important;
 }
+#dialog-preview {
+    margin-left: 345px !important;
+}
 #iplug-overlay {
     background: #0a0a0a;
     bottom: 0;
