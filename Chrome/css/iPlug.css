@@ -32,6 +32,10 @@
 #dialog-preview {
     margin-left: 345px !important;
 }
+#user-rollover {
+    z-index: 1000000 !important;
+    /*super serious*/
+}
 #iplug-overlay {
     background: #0a0a0a;
     bottom: 0;
@@ -39,8 +43,8 @@
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 1000000;
-    /*super serious*/
+    z-index: 1000001;
+    /*super super serious*/
     opacity:0.5;
 }
 #user-lists > div.header > div.divider.right {
