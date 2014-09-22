@@ -43,8 +43,8 @@
     position: fixed;
     right: 0;
     top: 0;
-    z-index: 1000001;
-    /*super super serious*/
+    z-index: 1234321;
+    /*super super mega serious ;D*/
     opacity:0.5;
 }
 #user-lists > div.header > div.divider.right {
