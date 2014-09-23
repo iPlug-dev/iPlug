@@ -242,19 +242,22 @@
         } catch (f) {}
     }
     setInterval(Visualizations.killFlash, 2000);
+    Visualizations.stopRafCallback = function(){
+        return window.cancelAnimationFrame(Visualizations.frameID);
+    }
     Visualizations.onEvent = function (event) {
         if (!Visualizations.audio.paused) Visualizations.audio.pause();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
         if (typeof event != "object") {
             var superTemp = API.getMedia();
-            if (superTemp === undefined) return;
-            if (superTemp.format != "2") return;
+            if (superTemp === undefined) return setTimeout(function(){Visualizations.stopRafCallback()},5123);
+            if (superTemp.format != "2") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
             cid = superTemp.cid;
             yesNo = true;
         } else {
-            if (typeof (event.media) != "object") return;
-            if (event.media.format != "2") return;
+            if (typeof (event.media) != "object") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
+            if (event.media.format != "2") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
             cid = event.media.cid;
             yesNo = false;
         }
@@ -263,6 +266,7 @@
         $.get('https://api.soundcloud.com/tracks/' + cid + '.json?client_id=' + Visualizations.clientID).always(function (data, data2) {
             if (data2 == "success") {
                 if (data.streamable === true) { //start working now
+                    window.requestAnimationFrame(Visualizations.rafCallback);
                     Visualizations.streamURL = data.stream_url + '?client_id=' + Visualizations.clientID;
                     Visualizations.permURL = data.permalink_url;
                     Visualizations.playIt(yesNo);
@@ -294,19 +298,8 @@
 
     Visualizations.canvas = $("#iplug-playback")[0];
     Visualizations.ctx = Visualizations.canvas.getContext('2d');
-    var SPACER_WIDTH = Math.floor((((300 - (parseInt(localStorage["iplug|scvisualsbarsmin"], 10))) / 12) + 0.5) * 2) / 2;
-    /*Visualizations.colors = ['red', 'yellow', 'green', 'aqua', 'blue'];
-    Visualizations.getRainbowGradient = function (ctx, width) {
-        var grd = ctx.createLinearGradient(0, 0, width, 0);
-        {
-            var arrLength = Visualizations.colors.length - 1;
-            Visualizations.colors.forEach(function(a,i){
-            
-            grd.addColorStop(i/arrLength, a);
-            });
-        }
-        return grd;
-    }*/
+    // Math.floor((((300 - (parseInt(localStorage["iplug|scvisualsbarsmin"], 10))) / 12) + 0.5) * 2) / 2;
+    var SPACER_WIDTH = Math.floor(51 - parseInt(localStorage["iplug|scvisualsbarsmin"]) / 6) / 2;
     Visualizations.getRainbowGradient = function (ctx, width) {
       var grd = ctx.createLinearGradient(0,0,width,0);
       for (i=0; i < colorscheme.length; i++) {
@@ -332,10 +325,11 @@
         }
         return c;
     }
-
-    Visualizations.rafCallback = function (time) {
-        window.requestAnimationFrame(Visualizations.rafCallback, Visualizations.canvas);
-
+    Visualizations.frameID = 0;
+    var SMTH = 0;
+    Visualizations.rafCallback = function () {
+        Visualizations.frameID = window.requestAnimationFrame(Visualizations.rafCallback);
+        if (SMTH % 600 == 0) console.log(SMTH);
         var freqByteData = new Uint8Array(Visualizations.analyser.frequencyBinCount);
         if (typeof (window.flap) == "undefined") window.flap = freqByteData;
         Visualizations.analyser.getByteFrequencyData(freqByteData);
@@ -345,7 +339,7 @@
         } else {
             BAR_WIDTH = (SPACER_WIDTH);
         }
-
+SMTH++;
         var OFFSET = 100;
         var CUTOFF = 23;
         var numBars = Math.round(CANVAS_WIDTH / SPACER_WIDTH);
@@ -353,11 +347,12 @@
         Visualizations.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         Visualizations.ctx.lineCap = 'round';
 
-        Visualizations.ctx.fillStyle = Visualizations.getRainbowGradient(Visualizations.ctx, CANVAS_WIDTH / 2 + CUTOFF);
+        Visualizations.ctx.fillStyle = Visualizations.getRainbowGradient(Visualizations.ctx, CANVAS_WIDTH / 2 + CUTOFF + OFFSET /*???*/);
         for (var i = 0; i < numBars; ++i) {
             var magnitude = freqByteData2[i /*+ OFFSET*/ ];
             Visualizations.ctx.fillRect(i * SPACER_WIDTH, CANVAS_HEIGHT, BAR_WIDTH, -magnitude);
         }
+        
     };
     API.on(API.ADVANCE, Visualizations.callEvent);
     Visualizations.rafCallback(); // CALL ONLY ONCE!
@@ -799,7 +794,7 @@
             case "scvisualsbars":
                 return function () {
                     //SPACER_WIDTH = Math.floor((((300 - (parseInt(localStorage["iplug|scvisualsbarsmin"], 10))) / 12) + 0.5) * 2) / 2;
-                    SPACER_WIDTH = Math.floor(51 - parseInt(localStorage["iplug|scvisualsbarsmin"]) / 6) * 2
+                    SPACER_WIDTH = Math.floor(51 - parseInt(localStorage["iplug|scvisualsbarsmin"]) / 6) / 2
                 };
             case "sccolorred":
             case "sccolorgreen":
