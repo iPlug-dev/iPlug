@@ -504,10 +504,10 @@ SMTH++;
         $("#iplug-menu").attr("style", "display: none");
         $(".iplug-container > .subcontainer").css("height", "30px").children(".iplug-collapse").attr("class", "iplug-collapse icon icon-arrow-up");
     });
-    $("#iplug-button").bind("mouseover mouseenter", function () {
+    $("#iplug-button").bind("mouseenter", function () {
         $("#tooltip").remove();
         $("body").append('<div id="tooltip" style="top: 0px; left: ' + (window.innerWidth - 120) + 'px;" class="right"><span>iPlug Menu</span><div class="corner"></div></div>');
-    }).bind("mouseout mouseleave", function () {
+    }).bind("mouseleave", function () {
         $("#tooltip").remove();
     }).bind("click", function () {
         $("#waitlist-button").trigger("click");
