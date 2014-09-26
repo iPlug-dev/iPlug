@@ -21,6 +21,9 @@
 ::-webkit-scrollbar-button {
     display:none !important;
 }
+#tooltip span {
+    display:block;
+}
 .icon-iplug {
     background: url(chrome-extension://__MSG_@@extension_id__/images/iplug-button.png);
     width: 30px;
