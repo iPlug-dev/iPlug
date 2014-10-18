@@ -410,7 +410,7 @@ Visualizations.rafCallbackT++;
     
     
     
-    var pos = -1, prevpos = -1;
+    var pos = -3, prevpos = -3;
 	function smartAutoJoin(){
 		if (API.getDJ() != undefined && API.getDJ().id == API.getUser().id) {
 			pos = -2;
@@ -433,6 +433,7 @@ Visualizations.rafCallbackT++;
 	}
 	/*INIT CALL*/
 	function smartAutoJoinInit(){
+		if ((pos != -3)||(prevpos != -3)) return; // event was faster hehe
 		if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
 			if (API.getDJ() != undefined && API.getDJ().id == API.getUser().id) {
 				prevpos = -2;
@@ -445,7 +446,7 @@ Visualizations.rafCallbackT++;
 				} 
 			}
 		} else {
-			setTimeout(smartAutoJoinInit, 500);
+			setTimeout(smartAutoJoinInit, 500); // must be uber fast or errors :c
 		}
 	}
 	/**********/
@@ -807,6 +808,10 @@ Visualizations.rafCallbackT++;
         switch (id) {
 			case "autojoinenabled":
 				return function(){
+					if (pos == -1 && localStorage["iplug|autojoinenabled"] == "block") {
+						$("#autojoinenabled > i").removeClass("blackandwhite");
+						tempAutoJoinDisabled = false;
+					}
 					if (tempAutoJoinDisabled && localStorage["iplug|autojoinenabled"] != "block") {
 						$("#autojoinenabled").click();
 						tempAutoJoin(false);
