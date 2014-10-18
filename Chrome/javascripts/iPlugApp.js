@@ -962,6 +962,7 @@ SMTH++;
 
 
 
+    
     var callbackstate = false;
     
     $("#grab, #meh").bind("mouseenter", function () {
@@ -984,14 +985,15 @@ SMTH++;
                 break;
         }
         if (list.length === 0) return;
-        console.log($("#tooltip"));
         if (API.getDJ().id == API.getUser().id) $("body").append('<div id="tooltip" style="top: ' + ($("this").offset().top - 34) + 'px; left: ' + ($(this).offset().left + 42) + 'px;" class="right"><span></span><div class="corner"></div></div>');
         $("#tooltip > span").html(list.shift().username);
-        $("#tooltip").css("top", parseInt($("#tooltip").offset().top) - 24 * list.length + "px");
+        console.log(lol = list);
+        $("#tooltip").css("top", parseInt($("#tooltip").css("top")) - 24 * list.length + "px");
         var string = "";
         list.forEach(function (a) {
             string += "<span>" + a.username + "</span>";
         });
+        $("#tooltip").append(string);
     }).bind("mouseleave", function () {
         if (localStorage["iplug|listgrabmehenabled"] !== "block") return;
         if (callbackstate = !callbackstate) $(this).trigger("mouseenter");
