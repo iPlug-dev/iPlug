@@ -127,6 +127,7 @@
     }
 
     function WT() {
+        if (localStorage["iplug|autowootenabled"] != "block") return;
         if ($('#woot').length > 0) {
             var v1 = $("#meh")[0] == $("#vote > .selected")[0];
             var v2 = $("#woot")[0] == $("#vote > .selected")[0];
@@ -138,10 +139,26 @@
             setTimeout(WT, 1000); // object not created yet || slow pc 
         }
     }
+	function JN(){
+	    if (localStorage["iplug|autojoinenabled"] != "block") return;
+		if (tempAutoJoinDisabled) return;
+		if ($("#dj-button").length > 0) {
+            var t = $("#dj-button")[0];
+			if ((t == $(".is-leave")[0])||(t == $(".is-quit")[0])) return; //done
+			if ((t == $(".is-full")[0])||(t == $(".is-locked")[0])) {
+				return setTimeout(JN, 500);
+			}
+			if (t == $(".is-wait")[0]){
+				$("#dj-button").click();
+                return;
+			}
+		} else {
+			setTimeout(JN, 1000); // object not created yet || slow pc || loll
+		}
+	}
 
-
-    setTimeout(WT, 3000); // AUTO WOOT ON JOIN
-
+    setTimeout(WT, 3000);// AUTO WOOT ON JOIN
+	setTimeout(JN, 3000);// AUTO JOIN ON JOIN, and butter on butter is butter
 
 
     var Visualizations = {};
@@ -161,7 +178,7 @@
             volume = API.getVolume();
         } catch (f) {}
         if (!isFinite(volume / 100)) {
-            setTimeout(Visualizations.initVolume, 1000);
+            setTimeout(Visualizations.initVolume, 600); //Faster
         } else {
             Visualizations.audio.volume = (volume / 100);
         }
@@ -170,6 +187,7 @@
     Visualizations.roomChecker = setInterval(function () {
         var u = window.location.href;
         if (u != Visualizations.currentRoom) {
+		    onRoomChanged();
             Visualizations.currentRoom = u;
             if (!Visualizations.audio.paused) Visualizations.audio.pause();
         }
@@ -181,12 +199,16 @@
     Visualizations.analyser.connect(Visualizations.context.destination);
 
     $("#playback-container").parent().append("<canvas id='iplug-playback' style='z-index: 6;'></canvas>");
-
+	Visualizations.chatErrorID = 0;
     Visualizations.chatError = function (message) {
-        $("#chat-messages").append('<div class="system" style="border-left-color: transparent;padding-left: 27px;">\
+		var r = API.getMedia().id;
+		if(Visualizations.chatErrorID != r){
+			Visualizations.chatErrorID = API.getMedia().id;
+			$("#chat-messages").append('<div class="system" style="border-left-color: transparent;padding-left: 27px;">\
     <i class="icon icon-support-white" style="background: url(https://w.soundcloud.com/icon/assets/images/orange_transparent_32-94fc761.png);"></i>\
     <span class="text" style="color: #d1d1d1;">' + message + '</span>\
     </div>');
+		}
     }
 
     Visualizations.ObsrvOne = new MutationObserver(function (mutations) {
@@ -207,7 +229,9 @@
     });
     Visualizations.ObsrvTwo = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
-            Visualizations.audio.volume = (API.getVolume() / 100);
+			var temp = (API.getVolume() / 100);
+			if (isFinite(temp))
+				Visualizations.audio.volume = temp;
             CANVAS_HEIGHT = (parseInt($("#playback-container")[0].style.height, 10) - 30 - (100 - API.getVolume()));
         });
     });
@@ -252,6 +276,7 @@
         if (!Visualizations.audio.paused) Visualizations.audio.pause();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
+		if (localStorage['iplug|scvisualsenabled'] != "block") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
         if (typeof event != "object") {
             var superTemp = API.getMedia();
             if (superTemp === undefined) return setTimeout(function(){Visualizations.stopRafCallback()},5123);
@@ -330,9 +355,13 @@
     }
     Visualizations.frameID = 0;
     var SMTH = 0;
-    Visualizations.rafCallback = function () {
-        Visualizations.frameID = window.requestAnimationFrame(Visualizations.rafCallback);
-        if (SMTH % 600 == 0) console.log(SMTH);
+	Visualizations.rafCallbackT = 0;
+	Visualizations.rafCallback = function () {
+		if (Visualizations.rafCallbackT % 100) {
+			var superTemp = API.getMedia();
+			if ((localStorage['iplug|scvisualsenabled'] != "block")||($("#playback-controls")[0] == $(".snoozed")[0])||(superTemp === undefined)||(superTemp.format != "2")) 
+				Visualizations.stopRafCallback();
+		}
         var freqByteData = new Uint8Array(Visualizations.analyser.frequencyBinCount);
         if (typeof (window.flap) == "undefined") window.flap = freqByteData;
         Visualizations.analyser.getByteFrequencyData(freqByteData);
@@ -342,7 +371,7 @@
         } else {
             BAR_WIDTH = (SPACER_WIDTH);
         }
-SMTH++;
+Visualizations.rafCallbackT++;
         var OFFSET = 100;
         var CUTOFF = 23;
         var numBars = Math.round(CANVAS_WIDTH / SPACER_WIDTH);
@@ -350,15 +379,15 @@ SMTH++;
         Visualizations.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         Visualizations.ctx.lineCap = 'round';
 
-        Visualizations.ctx.fillStyle = Visualizations.getRainbowGradient(Visualizations.ctx, CANVAS_WIDTH / 2 + CUTOFF + OFFSET /*???*/);
+        Visualizations.ctx.fillStyle = Visualizations.getRainbowGradient(Visualizations.ctx, CANVAS_WIDTH+ OFFSET/* / 2 + CUTOFF + OFFSET /*???*/);
         for (var i = 0; i < numBars; ++i) {
             var magnitude = freqByteData2[i /*+ OFFSET*/ ];
             Visualizations.ctx.fillRect(i * SPACER_WIDTH, CANVAS_HEIGHT, BAR_WIDTH, -magnitude);
         }
-        
+        Visualizations.frameID = window.requestAnimationFrame(Visualizations.rafCallback);
     };
     API.on(API.ADVANCE, Visualizations.callEvent);
-    Visualizations.rafCallback(); // CALL ONLY ONCE!
+    //Visualizations.rafCallback(); // CALL ONLY ONCE!
 
     $("#playback-controls > div.button.refresh").click(function () {
         API.trigger(API.ADVANCE);
@@ -369,7 +398,7 @@ SMTH++;
     });
 
     Visualizations.initCall = function () {
-        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0)) {
+        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
             Visualizations.callEvent();
         } else {
             setTimeout(Visualizations.initCall, 1000);
@@ -381,12 +410,63 @@ SMTH++;
     
     
     
+    var pos = -1, prevpos = -1;
+	function smartAutoJoin(){
+		if (API.getDJ() != undefined && API.getDJ().id == API.getUser().id) {
+			pos = -2;
+		} else {
+			if (API.getWaitListPosition() > -1)
+				pos = 0;
+			else pos = -1;
+		}
+		if (prevpos == 0) {
+			if (pos ==  0) {prevpos = pos; return;}
+			if (pos == -2) {prevpos = pos; return;}
+			if (pos == -1) {prevpos = pos; tempAutoJoin(true);} // TEMP DISABLE AUTO JOIN
+		} else if (prevpos == -2) {
+			if (pos == -1) {prevpos = pos; return;} // DJ CYCLE OFF
+			if (pos ==  0) {prevpos = pos; return;} // DJ CYCLE ON
+		} else if (prevpos == -1) {
+			if (pos ==  0) {prevpos = pos; tempAutoJoin(false);} // MAKE IT WORK NORMALLY
+			if (pos == -2) {prevpos = pos; tempAutoJoin(false);}
+		}
+	}
+	/*INIT CALL*/
+	function smartAutoJoinInit(){
+		if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
+			if (API.getDJ() != undefined && API.getDJ().id == API.getUser().id) {
+				prevpos = -2;
+				pos = -2;
+			} else {
+				if (API.getWaitListPosition() > -1){
+					prevpos = 0; pos = 0;
+				} else { 
+					prevpos = -1; pos = -1; 
+				} 
+			}
+		} else {
+			setTimeout(smartAutoJoinInit, 500);
+		}
+	}
+	/**********/
+    var tempAutoJoinDisabled = false;
+    function tempAutoJoin(enabled){
+	    if (!(pos != -1 && localStorage["iplug|autojoinenabled"] != "block")) {
+			tempAutoJoinDisabled = enabled;
+			if (enabled)
+				$("#autojoinenabled > i").addClass("blackandwhite");
+			else 
+				$("#autojoinenabled > i").removeClass("blackandwhite");
+		} else if (localStorage["iplug|autojoinenabled"] != "block") {
+			tempAutoJoinDisabled = false;
+		    $("#autojoinenabled > i").removeClass("blackandwhite");
+		}
+    }
     
-    
-    
-    
-    
-    
+	function onRoomChanged(){
+		JN();
+		WT();
+	}
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
@@ -483,20 +563,12 @@ SMTH++;
     var dragging = false;
 
     API.on(API.ADVANCE, function () {
-        if (localStorage["iplug|autowootenabled"] != "block") {
-            return;
-        }
         setTimeout(WT, Math.round(100 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random() * (100 * parseInt((localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0));
     });
 
     API.on(API.WAIT_LIST_UPDATE, function () {
-        if (localStorage["iplug|autojoinenabled"] != "block") {
-            return;
-        }
-        $(".is-wait").click();
-        setTimeout(function () {
-            $(".is-wait").click();
-        }, 5000);
+		smartAutoJoin(); // init settings
+		JN();
     });
 
 
@@ -733,6 +805,16 @@ SMTH++;
 
     function callbacks(id, enabled) {
         switch (id) {
+			case "autojoinenabled":
+				return function(){
+					if (tempAutoJoinDisabled && localStorage["iplug|autojoinenabled"] != "block") {
+						$("#autojoinenabled").click();
+						tempAutoJoin(false);
+						JN();
+					} else if (localStorage["iplug|autojoinenabled"] == "block") {
+						JN();
+					}
+				};
             case "youtubevideodisabled":
                 return function () {
                     if (enabled) {
@@ -775,7 +857,13 @@ SMTH++;
                 };
             case "scvisualsenabled":
                 return function () {
-                    API.trigger(API.ADVANCE);
+                    if (typeof(API.getMedia()) == "object") {
+						if (typeof(API.getMedia().format) == "number" && API.getMedia().format == 2) {
+							$("#playback-controls > div.button.refresh").click();
+						} else {
+							API.trigger(API.ADVANCE);
+						}
+					}
                 };
             case "autowootdelayrandom":
                 return function () {
@@ -962,7 +1050,6 @@ SMTH++;
 
 
 
-    
     var callbackstate = false;
     
     $("#grab, #meh").bind("mouseenter", function () {
