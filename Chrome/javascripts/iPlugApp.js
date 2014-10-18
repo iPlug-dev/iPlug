@@ -987,7 +987,6 @@ SMTH++;
         if (list.length === 0) return;
         if (API.getDJ().id == API.getUser().id) $("body").append('<div id="tooltip" style="top: ' + ($("this").offset().top - 34) + 'px; left: ' + ($(this).offset().left + 42) + 'px;" class="right"><span></span><div class="corner"></div></div>');
         $("#tooltip > span").html(list.shift().username);
-        console.log(lol = list);
         $("#tooltip").css("top", parseInt($("#tooltip").css("top")) - 24 * list.length + "px");
         var string = "";
         list.forEach(function (a) {
