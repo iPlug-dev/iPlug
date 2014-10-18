@@ -120,9 +120,11 @@
     if (version() != localStorage['iplug|version']) {
         localStorage['iplug|version'] = version();
         setTimeout(function () {
-            $('#iplug-overlay').css('display', 'block');
-            alert("iPlug has been updated!\n\n\nVersion: " + localStorage['iplug|version']);
-            $('#iplug-overlay').css('display', 'none');
+		    var text = "We are happy that you use iPlug!\nThis version is: "+localStorage['iplug|version'];
+			$("#iplug-overlay").append("<div class='iplug-overlay-bg'></div><div class='iplug-alert'><div class='iplug-alert-frame'><span class='iplug-alert-frame-title'>iPlug has been updated!</span></div><div class='iplug-alert-body'><span class='iplug-alert-body-message'>"+text+"</span></div><div class='iplug-alert-frame'><div class='iplug-alert-button-submit'> <span>OK</span></div></div></div>").css('display', 'block');
+            $(".iplug-alert-button-submit").click(function(){
+				$('#iplug-overlay').css('display', 'none');
+			});
         }, 5000);
     }
 
