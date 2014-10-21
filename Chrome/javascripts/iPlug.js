@@ -66,7 +66,7 @@ init();
 var updateStatus = {none:0, available:1, downloaded:2, throtled:-1}, timeoutID = 0, port = chrome.runtime.connect({name:"updateChannel"});
 port.onMessage.addListener(function(a) {
   clearTimeout(timeoutID);
-  a == updateStatus.downloaded ? (console.log("ready to use. reload"), port.disconnect();) : a == updateStatus.throtled ? (console.log("thr"), setTimeout(function() {
+  a == updateStatus.downloaded ? (console.log("ready to use. reload"), port.disconnect()) : a == updateStatus.throtled ? (console.log("thr"), setTimeout(function() {
     port.postMessage();
   }, 1E3)) : a == updateStatus.available ? (alert("iPlug update found"), console.log("ye")) : a == updateStatus.none && (console.log("none"), timeoutID = setTimeout(function() {
     port.postMessage();
