@@ -92,41 +92,28 @@
     $("#waitlist > .header > .divider").remove();
     $("#waitlist > .header").append("<div class='divider left'></div>");
     $("#waitlist > .header").append("<div class='divider right'></div>");
-
-
+    $(".app-right > div.friends > div.header > div.divider").remove();
+	$(".app-right > div.friends > div.header").append("<div class='divider left'></div>");
+	$(".app-right > div.friends > div.header").append("<div class='divider right'></div>");
 
     function version() {
-        var v;
-        var reqID = Math.random().toString();
-        var fetchResponse = new CustomEvent('KrisDontTouchMyCode', {
-            "detail": {
-                "reqID": reqID
-            }
-        });
-        document.addEventListener('KrisDontTouchMyCodeOK-' + reqID, function respListener(e) {
-            if (e.detail.reqID == reqID) {
-                document.removeEventListener('KrisDontTouchMyCodeOK-' + reqID, respListener);
-                v = e.detail.v;
-            }
-        });
-        document.dispatchEvent(fetchResponse);
-        return v;
-    }
-
-
+		var b, a = Math.random().toString(), d = new CustomEvent("KrisDontTouchMyCode", {detail:{reqID:a}});
+		document.addEventListener("KrisDontTouchMyCodeOK-" + a, function e(c) {
+			c.detail.reqID == a && (document.removeEventListener("KrisDontTouchMyCodeOK-" + a, e), b = c.detail.v);
+		});
+		document.dispatchEvent(d);
+		return b;
+	}
 
     if (typeof (localStorage['iplug|version']) != "string") localStorage['iplug|version'] = "0";
 
-    if (version() != localStorage['iplug|version']) {
-        localStorage['iplug|version'] = version();
-        setTimeout(function () {
-		    var text = "We are happy that you use iPlug!\nThis version is: "+localStorage['iplug|version'];
-			$("#iplug-overlay").append("<div class='iplug-overlay-bg'></div><div class='iplug-alert'><div class='iplug-alert-frame'><span class='iplug-alert-frame-title'>iPlug has been updated!</span></div><div class='iplug-alert-body'><span class='iplug-alert-body-message'>"+text+"</span></div><div class='iplug-alert-frame'><div class='iplug-alert-button-submit'> <span>OK</span></div></div></div>").css('display', 'block');
-            $(".iplug-alert-button-submit").click(function(){
-				$('#iplug-overlay').css('display', 'none');
-			});
-        }, 5000);
-    }
+    version() != localStorage["iplug|version"] && (localStorage["iplug|version"] = version(), setTimeout(function() {
+		var a = "Say hello to new visualizations!\nOld visualizations will be back soon.\nThis version is: " + localStorage["iplug|version"];
+		$("#iplug-overlay").append("<div class='iplug-overlay-bg'></div><div class='iplug-alert'><div class='iplug-alert-frame'><span class='iplug-alert-frame-title'>iPlug has been updated!</span></div><div class='iplug-alert-body'><span class='iplug-alert-body-message'>" + a + "</span></div><div class='iplug-alert-frame'><div class='iplug-alert-button-submit'> <span>OK</span></div></div></div>").css("display", "block");
+		$(".iplug-alert-button-submit").click(function() {
+			$("#iplug-overlay").css("display", "none");
+		});
+	}, 5E3)); //5 * 10^3
 
     function WT() {
         if (localStorage["iplug|autowootenabled"] != "block") return;
@@ -163,103 +150,350 @@
 	setTimeout(JN, 3000);// AUTO JOIN ON JOIN, and butter on butter is butter
 
 
-    var Visualizations = {};
-    var CANVAS_HEIGHT = 9;
-    var CANVAS_WIDTH = 16;
-
-    Visualizations.currentRoom = window.location.href;
-    Visualizations.audio = new Audio();
-    Visualizations.audio.src = "";
-    Visualizations.audio.controls = false;
-    Visualizations.audio.autoplay = true;
-    Visualizations.audio.preload = "auto";
-    Visualizations.audio.loop = false;
-    Visualizations.initVolume = function () {
+    var VisualizationsHelper = {};
+	
+    VisualizationsHelper.currentRoom = window.location.href;
+    VisualizationsHelper.initVolume = function () {
         var volume;
         try {
             volume = API.getVolume();
         } catch (f) {}
         if (!isFinite(volume / 100)) {
-            setTimeout(Visualizations.initVolume, 600); //Faster
+            setTimeout(VisualizationsHelper.initVolume, 600); //Faster
         } else {
-            Visualizations.audio.volume = (volume / 100);
+            Visualizations.setVolume(volume / 100);
         }
     }
-    Visualizations.initVolume();
-    Visualizations.roomChecker = setInterval(function () {
+    VisualizationsHelper.initVolume();
+    VisualizationsHelper.roomChecker = setInterval(function () {
         var u = window.location.href;
-        if (u != Visualizations.currentRoom) {
+        if (u != VisualizationsHelper.currentRoom) {
 		    onRoomChanged();
-            Visualizations.currentRoom = u;
-            if (!Visualizations.audio.paused) Visualizations.audio.pause();
+            VisualizationsHelper.currentRoom = u;
+            if (!Visualizations.paused()) Visualizations.pause();
         }
-    }, 1000);
-    Visualizations.context = new webkitAudioContext(); // ONLY 1 !!!!!!
-    Visualizations.analyser = Visualizations.context.createAnalyser();
-    Visualizations.source = Visualizations.context.createMediaElementSource(Visualizations.audio);
-    Visualizations.source.connect(Visualizations.analyser);
-    Visualizations.analyser.connect(Visualizations.context.destination);
+    }, 1000); 
+	VisualizationsHelper.hide = function() {
+		$("#iplug-playback").animate({opacity:"0"}, {duration:2E3, queue:!1,  step: function(now) {
+		VisualizationsHelper.opacity=now;
+		},complete:function() {
+			this.style.display = "none";
+			Visualizations.stop();
+			VisualizationsHelper.visible =  !1;
+		}});
+	};
+	VisualizationsHelper.show = function() {
+		$("#iplug-playback").animate({opacity:"1"}, {duration:2E3, queue:!1, step: function(now) {
+		VisualizationsHelper.opacity=now;
+		},start:function() {
+			this.style.display = "block";
+			Visualizations.start();
+			VisualizationsHelper.visible = !0;
+	}});
+	};
+	VisualizationsHelper.visible = false;
+	VisualizationsHelper.opacity = 1;
+    VisualizationsHelper.location = $("#playback-container").parent()[0];
+	
+	/*           INIT HERE              */
+	
+	var ALPHA, AudioAnalyser, COLORS, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN;
 
-    $("#playback-container").parent().append("<canvas id='iplug-playback' style='z-index: 6;'></canvas>");
-	Visualizations.chatErrorID = 0;
-    Visualizations.chatError = function (message) {
+NUM_PARTICLES = 50; // cuz small area eh
+NUM_BANDS = 256;
+SMOOTHING = 0.6; // was 0.5
+MP3_PATH = ""; // init
+SCALE = {
+  MIN: 5.0,
+  MAX: 25.0
+};
+SPEED = {
+  MIN: 0.2,
+  MAX: 1.0
+};
+ALPHA = {
+  MIN: 0.8,
+  MAX: 0.9
+};
+SPIN = {
+  MIN: 0.001,
+  MAX: 0.005
+};
+SIZE = {
+  MIN: 0.2,
+  MAX: 0.85
+};
+//remove "window." !!!!!!!!!!!!!!!!!!!
+window.COLORS = ['#69D2E7', '#1B676B', '#BEF202', '#EBE54D', '#00CDAC', '#1693A5', '#F9D423', '#FF4E50', '#E7204E', '#0CCABA', '#FF006F'];
+
+AudioAnalyser = (function() {
+  AudioAnalyser.AudioContext = self.AudioContext || self.webkitAudioContext;
+
+  AudioAnalyser.enabled = AudioAnalyser.AudioContext != null;
+
+  function AudioAnalyser(audio, numBands, smoothing) {
+    var src;
+    this.audio = audio != null ? audio : new Audio();
+    this.numBands = numBands != null ? numBands : 256;
+    this.smoothing = smoothing != null ? smoothing : 0.3;
+    if (typeof this.audio === 'string') {
+      src = this.audio;
+      this.audio = new Audio();
+      this.audio.controls = false;
+      this.audio.src = src;
+	  this.audio.loop = false;
+	  this.audio.preload = "auto";
+    }
+    this.context = new AudioAnalyser.AudioContext();
+    this.jsNode = this.context.createScriptProcessor(2048, 1, 1);
+    this.analyser = this.context.createAnalyser();
+    this.analyser.smoothingTimeConstant = this.smoothing;
+    this.analyser.fftSize = this.numBands * 2;
+    this.bands = new Uint8Array(this.analyser.frequencyBinCount);
+	this.canPlayCalled = false;
+    this.audio.addEventListener('canplay', (function(_this) {
+      return function() {
+        if(this.canPlayCalled) return;
+        this.canPlayCalled = true;
+        _this.source = _this.context.createMediaElementSource(_this.audio);
+        _this.source.connect(_this.analyser);
+        _this.analyser.connect(_this.jsNode);
+        _this.jsNode.connect(_this.context.destination);
+        _this.source.connect(_this.context.destination);
+        return _this.jsNode.onaudioprocess = function() {
+          _this.analyser.getByteFrequencyData(_this.bands);
+          if (!_this.audio.paused) {
+            return typeof _this.onUpdate === "function" ? _this.onUpdate(_this.bands) : void 0;
+          }
+        };
+      };
+    })(this));
+  }
+
+  AudioAnalyser.prototype.start = function() {
+    return this.audio.play();
+  };
+
+  AudioAnalyser.prototype.stop = function() {
+    return this.audio.pause();
+  };
+
+  return AudioAnalyser;
+
+})();
+
+Particle = (function() {
+  function Particle(x, y) {
+    this.x = x != null ? x : 0;
+    this.y = y != null ? y : 0;
+    this.reset();
+  }
+
+  Particle.prototype.reset = function() {
+    this.level = 1 + floor(random(4));
+    this.scale = random(SCALE.MIN, SCALE.MAX);
+    this.alpha = random(ALPHA.MIN, ALPHA.MAX);
+    this.speed = random(SPEED.MIN, SPEED.MAX);
+    this.color = random(window.COLORS); //remove "window." !!!!!!!!!!!!!!!!!!!
+    this.size = random(SIZE.MIN, SIZE.MAX);
+    this.spin = random(SPIN.MAX, SPIN.MAX);
+    this.band = floor(random(NUM_BANDS));
+    if (random() < 0.5) {
+      this.spin = -this.spin;
+    }
+    this.smoothedScale = 0.0;
+    this.smoothedAlpha = 0.0;
+    this.decayScale = 0.0;
+    this.decayAlpha = 0.0;
+    this.rotation = random(TWO_PI);
+    return this.energy = 0.0;
+  };
+
+  Particle.prototype.move = function() {
+    this.rotation += this.spin;
+    return this.y -= this.speed * this.level;
+  };
+
+  Particle.prototype.draw = function(ctx) {
+    var alpha, power, scale;
+    power = exp(this.energy);
+    scale = this.scale * power;
+    alpha = this.alpha * this.energy * 1.5;
+    this.decayScale = max(this.decayScale, scale);
+    this.decayAlpha = max(this.decayAlpha, alpha);
+    this.smoothedScale += (this.decayScale - this.smoothedScale) * 0.3;
+    this.smoothedAlpha += (this.decayAlpha - this.smoothedAlpha) * 0.3;
+    this.decayScale *= 0.985;
+    this.decayAlpha *= 0.975;
+    ctx.save();
+    ctx.beginPath();
+    ctx.translate(this.x + cos(this.rotation * this.speed) * 250, this.y);
+    ctx.rotate(this.rotation);
+    ctx.scale(this.smoothedScale * this.level, this.smoothedScale * this.level);
+    ctx.moveTo(this.size * 0.5, 0);
+    ctx.lineTo(this.size * -0.5, 0);
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+    ctx.globalAlpha = this.smoothedAlpha / this.level;
+    ctx.strokeStyle = this.color;
+    ctx.stroke();
+    return ctx.restore();
+  };
+
+  return Particle;
+
+})();
+
+var Visualizations = Sketch.create({
+  width: parseInt($("#playback-container")[0].style.width, 10),
+  height: parseInt($("#playback-container")[0].style.height, 10),
+  autopause: false,
+  fullscreen: false,
+  analyser: 0,
+  particles: [],
+  container: VisualizationsHelper.location,
+  play: function(){
+    return this.analyser.audio.play();
+  },
+  pause: function(){
+    return this.analyser.audio.pause();
+  },
+  paused: function(){
+    return this.analyser.audio.paused;
+  },
+  setVolume: function(value){
+	return this.analyser.audio.volume = value;
+  },
+  setSource: function(audio) {
+    var temp = audio != null ? audio : "";
+    if (typeof temp === 'string') {
+      this.analyser.audio.src = temp;
+    }
+  },
+  setup: function() {
+    var error, i, intro, particle, warning, x, y, _i, _ref;
+    for (i = _i = 0, _ref = NUM_PARTICLES - 1; _i <= _ref; i = _i += 1) {
+      x = random(this.width);
+      y = random(this.height * 2);
+      particle = new Particle(x, y);
+      particle.energy = random(particle.band / 256);
+      this.particles.push(particle);
+    }
+    if (AudioAnalyser.enabled) {
+      try {
+        this.analyser = new AudioAnalyser(MP3_PATH, NUM_BANDS, SMOOTHING);
+        this.analyser.onUpdate = (function(_this) {
+          return function(bands) {
+            var _j, _len, _ref1, _results;
+            _ref1 = _this.particles;
+            _results = [];
+            for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
+              particle = _ref1[_j];
+              _results.push(particle.energy = bands[particle.band] / 256);
+            }
+            return _results;
+          };
+        })(this);
+        this.analyser.start();
+        intro = document.getElementById('intro');
+        intro.style.display = 'none';
+        if (/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)) {
+          warning = document.getElementById('warning2');
+          return warning.style.display = 'block';
+        }
+      } catch (_error) {
+        error = _error;
+      }
+    } else {
+      warning = document.getElementById('warning1');
+      return warning.style.display = 'block';
+    }
+  },
+  draw: function() {
+    var particle, _i, _len, _ref, _results;
+    this.globalCompositeOperation = 'lighter';
+    _ref = this.particles;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      particle = _ref[_i];
+      if (particle.y < -particle.size * particle.level * particle.scale * 2) {
+        particle.reset();
+        particle.x = random(this.width);
+        particle.y = this.height + particle.size * particle.scale * particle.level;
+      }
+      particle.move();
+      _results.push(particle.draw(this));
+    }
+    return _results;
+  }
+});
+	
+	//////////////
+	Visualizations.canvas.id = "iplug-playback";
+	Visualizations.canvas.style.zIndex = "6";
+	
+	VisualizationsHelper.chatErrorID = 0;
+    VisualizationsHelper.chatError = function (message) {
 		var r = API.getMedia().id;
-		if(Visualizations.chatErrorID != r){
-			Visualizations.chatErrorID = API.getMedia().id;
+		if(VisualizationsHelper.chatErrorID != r){
+			VisualizationsHelper.chatErrorID = API.getMedia().id;
 			$("#chat-messages").append('<div class="system" style="border-left-color: transparent;padding-left: 27px;">\
     <i class="icon icon-support-white" style="background: url(https://w.soundcloud.com/icon/assets/images/orange_transparent_32-94fc761.png);"></i>\
     <span class="text" style="color: #d1d1d1;">' + message + '</span>\
     </div>');
 		}
     }
-
-    Visualizations.ObsrvOne = new MutationObserver(function (mutations) {
+    Visualizations.width = parseInt($("#playback-container")[0].style.width, 10); /*initial call*/
+    Visualizations.height = parseInt($("#playback-container")[0].style.height, 10); /*initial call*/
+    VisualizationsHelper.ObsrvOne = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             if (mutation.attributeName == "style") {
                 var te = mutation.target.style.cssText;
                 te += "z-index: 6;position: absolute;top: 0;";
+				if (VisualizationsHelper.visible) {
+					te += "display: block;";
+				} else {
+					te += "display: none;";
+				}
+				te += "opcaity: " + VisualizationsHelper.opacity + ";";
                 $("#iplug-playback")[0].style.cssText = te;
-                CANVAS_WIDTH = parseInt(mutation.target.style.width, 10);
-                CANVAS_HEIGHT = (parseInt(mutation.target.style.height, 10) - 30 - (100 - API.getVolume()));
+				Visualizations.width = parseInt(mutation.target.style.width, 10);
+				Visualizations.height = parseInt(mutation.target.style.height, 10);
             }
         });
     });
-    Visualizations.ObsrvOne.observe($("#playback-container")[0], {
+    VisualizationsHelper.ObsrvOne.observe($("#playback-container")[0], {
         attributes: true,
         childList: false,
         characterData: false
     });
-    Visualizations.ObsrvTwo = new MutationObserver(function (mutations) {
+    VisualizationsHelper.ObsrvTwo = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
 			var temp = (API.getVolume() / 100);
 			if (isFinite(temp))
-				Visualizations.audio.volume = temp;
-            CANVAS_HEIGHT = (parseInt($("#playback-container")[0].style.height, 10) - 30 - (100 - API.getVolume()));
+				Visualizations.setVolume(temp);
         });
     });
-    Visualizations.ObsrvTwo.observe($("#volume > span")[0], {
+    VisualizationsHelper.ObsrvTwo.observe($("#volume > span")[0], {
         attributes: false,
         childList: true,
         characterData: false
     });
     $("#iplug-playback")[0].style.cssText = $("#playback-container")[0].style.cssText + "z-index: 6;position: absolute;top: 0;"; /*initial call*/
-    CANVAS_WIDTH = parseInt($("#iplug-playback")[0].style.width, 10); /*initial call*/
-    CANVAS_HEIGHT = (parseInt($("#playback-container")[0].style.height, 10) - 30 - (100 - API.getVolume())); /*initial call*/
 
     // Check for non Web Audio API browsers.
     //if (!window.webkitAudioContext) {
     //    alert("iPlug - error! \n\nWeb Audio isn't available in your browser!\nWeb Audio is supported by: \nChrome 14+, Firefox 23+, Opera 15+, Safari 6+!\n\nBut...you can still hear the sounds :) /nPS. Update your browser! :>");
     //}
 
-    Visualizations.streamURL = Visualizations.permURL = undefined;
-    Visualizations.clientID = "9258af128ee9d4c781d46b31917531e7";
+    VisualizationsHelper.clientID = "9258af128ee9d4c781d46b31917531e7";
     /* GET YOUR OWN CLIENT ID ON HTTP://DEVELOPERS.SOUNDCLOUD.COM 
      * DON'T USE MINE :)
      */
-    Visualizations.killFlash = function () {
+    VisualizationsHelper.killFlash = function () {
         try {
             if ($("#playback-controls")[0] == $(".snoozed")[0]) {
-                Visualizations.audio.src = ""
+                Visualizations.setSource("");
             }
             if (localStorage['iplug|scvisualsenabled'] != "block") {
                 soundManager.unmuteAll();
@@ -270,125 +504,55 @@
             if (soundManager.muted) soundManager.stopAll();
         } catch (f) {}
     }
-    setInterval(Visualizations.killFlash, 2000);
-    Visualizations.stopRafCallback = function(){
-        return window.cancelAnimationFrame(Visualizations.frameID);
-    }
-    Visualizations.onEvent = function (event) {
-        if (!Visualizations.audio.paused) Visualizations.audio.pause();
+    setInterval(VisualizationsHelper.killFlash, 2000);
+    VisualizationsHelper.onEvent = function (event) {
+        if (!Visualizations.paused()) Visualizations.pause();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
-		if (localStorage['iplug|scvisualsenabled'] != "block") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
-        if (typeof event != "object") {
-            var superTemp = API.getMedia();
-            if (superTemp === undefined) return setTimeout(function(){Visualizations.stopRafCallback()},5123);
-            if (superTemp.format != "2") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
-            cid = superTemp.cid;
-            yesNo = true;
-        } else {
-            if (typeof (event.media) != "object") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
-            if (event.media.format != "2") return setTimeout(function(){Visualizations.stopRafCallback()},5123);
-            cid = event.media.cid;
-            yesNo = false;
-        }
-        if (localStorage['iplug|scvisualsenabled'] != "block") return;
+		if ("block" != localStorage["iplug|scvisualsenabled"])
+			return VisualizationsHelper.hide();
+		if ("object" != typeof event) {
+			var a = API.getMedia();
+			if (void 0 === a || "2" != a.format)
+				return VisualizationsHelper.hide();
+			cid = a.cid;
+			yesNo = !0;
+		} else {
+			if ("object" != typeof event.media || "2" != event.media.format)
+				return VisualizationsHelper.hide();
+			cid = event.media.cid;
+			yesNo = !1;
+		}
+		VisualizationsHelper.show();
         $("#playback-container > *").remove();
-        $.get('https://api.soundcloud.com/tracks/' + cid + '.json?client_id=' + Visualizations.clientID).always(function (data, data2) {
+        $.get('https://api.soundcloud.com/tracks/' + cid + '.json?client_id=' + VisualizationsHelper.clientID).always(function (data, data2) {
             if (data2 == "success") {
                 if (data.streamable === true) { //start working now
-                    window.requestAnimationFrame(Visualizations.rafCallback);
-                    Visualizations.streamURL = data.stream_url + '?client_id=' + Visualizations.clientID;
-                    Visualizations.permURL = data.permalink_url;
-                    Visualizations.playIt(yesNo);
+                    var streamURL = data.stream_url + '?client_id=' + VisualizationsHelper.clientID;
+                    VisualizationsHelper.playIt(yesNo, streamURL);
                 } else {
-                    Visualizations.streamURL = undefined;
-                    Visualizations.permURL = undefined;
-                    Visualizations.chatError("Track not streamable!");
+                    VisualizationsHelper.chatError("Track not streamable!");
                 }
             } else {
-                Visualizations.streamURL = undefined;
-                Visualizations.permURL = undefined;
-                Visualizations.chatError(JSON.parse(data.responseText).errors[0].error_message);
+                VisualizationsHelper.chatError(JSON.parse(data.responseText).errors[0].error_message);
             }
         });
     };
 
-    Visualizations.callEvent = function (something) {
-        Visualizations.onEvent(something);
+    VisualizationsHelper.callEvent = function (something) {
+        VisualizationsHelper.onEvent(something);
     };
 
-    Visualizations.playIt = function (yesNo) {
+    VisualizationsHelper.playIt = function (yesNo, streamURL) {
         if (yesNo) {
-            Visualizations.audio.src = Visualizations.streamURL + "#t=" + API.getTimeElapsed();
+            Visualizations.setSource(streamURL + "#t=" + API.getTimeElapsed());
         } else {
-            Visualizations.audio.src = Visualizations.streamURL;
+            Visualizations.setSource(streamURL);
         }
-        Visualizations.audio.play();
+        Visualizations.play();
     };
 
-    Visualizations.canvas = $("#iplug-playback")[0];
-    Visualizations.ctx = Visualizations.canvas.getContext('2d');
-    // Math.floor((((300 - (parseInt(localStorage["iplug|scvisualsbarsmin"], 10))) / 12) + 0.5) * 2) / 2;
-    var SPACER_WIDTH = Math.floor(51 - parseInt(localStorage["iplug|scvisualsbarsmin"]) / 6) / 2;
-    Visualizations.getRainbowGradient = function (ctx, width) {
-      var grd = ctx.createLinearGradient(0,0,width,0);
-      for (i=0; i < colorscheme.length; i++) {
-        grd.addColorStop(colorscheme[i][0], "rgb(" + colorscheme[i][1].join(",") + ")");
-      }
-      return grd;
-    }
-
-    Visualizations.compressArray = function (a, b) {
-        var n = a.length / b;
-        var temp = 0;
-        var c = [];
-        var m = n - 1;
-        for (i = 0; i < a.length; i++) {
-            if (i >= m) {
-                temp += a[i] / n * (1 - i + m);
-                c.push(temp);
-                temp = a[i] / n * (i - m);
-                m += n;
-            } else {
-                temp += a[i] / n;
-            }
-        }
-        return c;
-    }
-    Visualizations.frameID = 0;
-    var SMTH = 0;
-	Visualizations.rafCallbackT = 0;
-	Visualizations.rafCallback = function () {
-		if (Visualizations.rafCallbackT % 100) {
-			var superTemp = API.getMedia();
-			if ((localStorage['iplug|scvisualsenabled'] != "block")||($("#playback-controls")[0] == $(".snoozed")[0])||(superTemp === undefined)||(superTemp.format != "2")) 
-				Visualizations.stopRafCallback();
-		}
-        var freqByteData = new Uint8Array(Visualizations.analyser.frequencyBinCount);
-        if (typeof (window.flap) == "undefined") window.flap = freqByteData;
-        Visualizations.analyser.getByteFrequencyData(freqByteData);
-        var BAR_WIDTH;
-        if (SPACER_WIDTH > 1) {
-            BAR_WIDTH = (SPACER_WIDTH / 2);
-        } else {
-            BAR_WIDTH = (SPACER_WIDTH);
-        }
-Visualizations.rafCallbackT++;
-        var OFFSET = 100;
-        var CUTOFF = 23;
-        var numBars = Math.round(CANVAS_WIDTH / SPACER_WIDTH);
-        var freqByteData2 = Visualizations.compressArray(freqByteData, numBars);
-        Visualizations.ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        Visualizations.ctx.lineCap = 'round';
-
-        Visualizations.ctx.fillStyle = Visualizations.getRainbowGradient(Visualizations.ctx, CANVAS_WIDTH+ OFFSET/* / 2 + CUTOFF + OFFSET /*???*/);
-        for (var i = 0; i < numBars; ++i) {
-            var magnitude = freqByteData2[i /*+ OFFSET*/ ];
-            Visualizations.ctx.fillRect(i * SPACER_WIDTH, CANVAS_HEIGHT, BAR_WIDTH, -magnitude);
-        }
-        Visualizations.frameID = window.requestAnimationFrame(Visualizations.rafCallback);
-    };
-    API.on(API.ADVANCE, Visualizations.callEvent);
+    API.on(API.ADVANCE, VisualizationsHelper.callEvent);
     //Visualizations.rafCallback(); // CALL ONLY ONCE!
 
     $("#playback-controls > div.button.refresh").click(function () {
@@ -399,14 +563,12 @@ Visualizations.rafCallbackT++;
         API.trigger(API.ADVANCE);
     });
 
-    Visualizations.initCall = function () {
-        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
-            Visualizations.callEvent();
-        } else {
-            setTimeout(Visualizations.initCall, 1000);
-        }
+    VisualizationsHelper.initCall = function () {
+        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled))
+            return VisualizationsHelper.callEvent();
+        setTimeout(VisualizationsHelper.initCall, 1000);
     };
-    Visualizations.initCall();
+    VisualizationsHelper.initCall();
     
     
     
@@ -576,15 +738,15 @@ Visualizations.rafCallbackT++;
 
 
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
-    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div id="iplug-menu-container"> <div class="iplug-menu-autowoot iplug-container"> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + {block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>'}[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Fast</span> <span class="count">Fancy</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete" style="display: none"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Center All Color Flags</span> </div> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="bigtxtenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|bigtxtenabled'] + '"></i> <span>Alternative Level Indicator</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div></div> </div> </div> </div>');
-    $("#chat-button, #users-button, #waitlist-button").bind("click", function () {
+    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div id="iplug-menu-container"> <div class="iplug-menu-autowoot iplug-container"> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + {block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>'}[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Useless</span> <span class="count">Useless</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete" style="display: none"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Center All Color Flags</span> </div> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="bigtxtenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|bigtxtenabled'] + '"></i> <span>Alternative Level Indicator</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div></div> </div> </div> </div>');
+    $("#chat-button, #users-button, #waitlist-button, #friends-button").bind("click", function () {
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
         $(".iplug-container > .subcontainer").css("height", "30px").children(".iplug-collapse").attr("class", "iplug-collapse icon icon-arrow-up");
     });
     $("#iplug-button").bind("mouseenter", function () {
         $("#tooltip").remove();
-        $("body").append('<div id="tooltip" style="top: 0px; left: ' + (window.innerWidth - 120) + 'px;" class="right"><span>iPlug Menu</span><div class="corner"></div></div>');
+        $("body").append('<div id="tooltip" style="top: 0px; left: ' + (window.innerWidth - 100) + 'px;" class="right"><span>iPlug Menu</span><div class="corner"></div></div>');
     }).bind("mouseleave", function () {
         $("#tooltip").remove();
     }).bind("click", function () {
@@ -599,7 +761,7 @@ Visualizations.rafCallbackT++;
         });
     });
 
-
+	
     $(".iplug-container .item-iplug").bind("click", function () {
         var enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
         if (enabled) {
@@ -614,8 +776,7 @@ Visualizations.rafCallbackT++;
 
 
     $(".iplug-container .slider > .barcontainer > .circle").bind("mousedown", startdrag);
-
-
+	
     $(".iplug-container .slider > .barcontainer > .hit").bind("mousedown", function () {
         var mousepos = Math.max(0, Math.min(300, mouseX - $(this).offset().left));
         if (dragging) {
@@ -772,7 +933,36 @@ Visualizations.rafCallbackT++;
         }
         drag(victim, $(this).parent().children(".bar.selected"), $(this).parent().children(".circle"), $(this).parent().parent().children(".titlecontainer").children(".value"), mouseX, parseInt($(this).attr("style").split(" ")[1]), $(this).parent().parent().attr("id"), parseInt($(this).parent().children(".bar.background").css("width")) + 1, callbacks(victim.parent().parent().attr("id")));
     }
-
+	
+	//* MICHAL *//
+	var holdingCircle = false;
+	var overCircle = false;
+	function updateTooltip(_this){
+		$("#tooltip").css("top",($(_this.target).offset().top - 28) + 'px');
+		$("#tooltip").css("right", (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px');
+		$("#tooltip>span").html(parseInt(_this.target.style.left,10));
+	};
+	$(".iplug-container .colorpicker .slider .barcontainer .circle").bind("mouseenter", function (_this) {
+		overCircle = true;
+        $("#tooltip").remove();
+		$("body").append('<div id="tooltip" style="top: ' + ($(_this.target).offset().top - 28) + 'px; left: initial; right: ' + (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px;" class="right"><span>'+ parseInt(_this.target.style.left,10) +'</span><div class="corner"></div></div>');
+    }).bind("mousedown", function (_this) {
+		holdingCircle = true;
+        $("#tooltip").remove();
+		$("body").append('<div id="tooltip" style="top: ' + ($(_this.target).offset().top - 28) + 'px; left: initial; right: ' + (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px;" class="right"><span>'+ parseInt(_this.target.style.left,10) +'</span><div class="corner"></div></div>');
+    }).bind("mouseleave", function () {
+	    overCircle = false;
+		if (!holdingCircle){
+			$("#tooltip").remove();
+		}
+    });
+	$(window).bind("mouseup", function () {
+		holdingCircle = false;
+		if (!overCircle){
+			$("#tooltip").remove();
+		}
+    });
+	//* END MICHAL *//
 
     $(window).bind("mouseup blur", function () {
         dragging = false;
@@ -794,6 +984,9 @@ Visualizations.rafCallbackT++;
         localStorage["iplug|" + name + "min"] = values[0];
         localStorage["iplug|" + name + "max"] = values.last();
         selection.attr("style", "left: " + (7 + values[0]) + "px; width: " + (values.last() - values[0]) + "px");
+		if ($(".colorpicker").find(victim)[0] == victim[0])	{
+			updateTooltip({target: victim[0]});
+		}
         if (dragging) {
             setTimeout(function () {
                 drag(victim, selection, circles, minmax, startx, original, name, max, callback);
@@ -892,7 +1085,7 @@ Visualizations.rafCallbackT++;
             case "scvisualsbars":
                 return function () {
                     //SPACER_WIDTH = Math.floor((((300 - (parseInt(localStorage["iplug|scvisualsbarsmin"], 10))) / 12) + 0.5) * 2) / 2;
-                    SPACER_WIDTH = Math.floor(51 - parseInt(localStorage["iplug|scvisualsbarsmin"]) / 6) / 2
+                    //SPACER_WIDTH = Math.floor(51 - parseInt(localStorage["iplug|scvisualsbarsmin"]) / 6) / 2
                 };
             case "sccolorred":
             case "sccolorgreen":

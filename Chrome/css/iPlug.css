@@ -27,6 +27,9 @@
 	filter: gray;
 	filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0' /></filter></svg>#greyscale");
 }
+#iplug-playback{
+	background: -webkit-radial-gradient(50% 50%, ellipse cover, rgba(0, 0, 0, 0) 20%, rgb(0, 0, 0) 95%),url(chrome-extension://__MSG_@@extension_id__/images/noise-1.png), #13242f;
+}
 #tooltip span {
     display:block;
 }
@@ -42,7 +45,7 @@
     margin-left: 345px !important;
 }
 #user-rollover {
-    z-index: 1000000 !important;
+    /*z-index: 1000000 !important; Commented due to bug*/
     /*super serious*/
 }
 #iplug-overlay {
@@ -74,6 +77,14 @@
     width: 85px !important;
     left: initial !important;
 }
+.app-right > div.friends > div.header > div.divider.left{
+	width: 260px !important;
+}
+.app-right > div.friends > div.header > div.divider.right{
+	left: initial !important;
+	right: 0px !important;
+	width: 45px !important;
+}
 #chat-button {
     left: 0 !important;
     width: 80px !important;
@@ -89,9 +100,22 @@
     left: 170px !important;
     width: 90px !important;
 }
+#friends-button{
+	left: initial !important;
+	width: 40px !important;
+	right: 44px !important;
+}
+#friends-button.selected {
+	right: 45px !important;
+}
 #iplug-button {
-    left: 260px !important;
-    width: 90px !important;
+    left: initial !important;
+    width: 45px !important;
+	right: -1px !important;
+	/*cuz border*/
+}
+#iplug-button.selected {
+	right: 0px !important;
 }
 #iplug-button i {
     position: relative;
@@ -125,7 +149,7 @@
 #iplug-menu .header .divider {
     position:absolute;
     top:0;
-    width:260px;
+    width:300px;
     height:1px;
     background:#1c1f25
 }
