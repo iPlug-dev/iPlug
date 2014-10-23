@@ -40,9 +40,7 @@
 }
 #dialog-container {
     right: 345px !important;
-}
-#dialog-preview {
-    margin-left: 345px !important;
+    padding-left: 345px !important;
 }
 #user-rollover {
     /*z-index: 1000000 !important; Commented due to bug*/
