@@ -1296,6 +1296,7 @@ var Visualizations = Sketch.create({
 
 
 (function() {
+    if (localStorage["usercustomcode"] === "") localStorage["usercustomcodesafe"] = "TRUE";
     if ("FALSE" !== localStorage["usercustomcodesafe"]) {
         localStorage["usercustomcodesafe"] = "FALSE";
         console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|You opened the console! you know some code, do you?                                            |\n|did you know that iPlug can automaticly run your code for you if you wish to do so?            |\n|all you have to do is type the command localStorage["usercustomcode"] = "<yourcode>" once,     |\n|we\'ll take care of the rest! (you can change the code at any time by overwriting that variable)|\n|changes you make to this variable will take effect as soon as you refresh.                     |\n|example usage:                                                                                 |\n|localStorage["usercustomcode"] = \'API.sendChat("hi!")\' //will send hi in chat on logging in    |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');
