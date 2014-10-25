@@ -154,7 +154,80 @@
     setTimeout(WT, 3000);// AUTO WOOT ON JOIN
 	setTimeout(JN, 3000);// AUTO JOIN ON JOIN, and butter on butter is butter
 
+/////////
 
+var Sheet = function() {
+  function Sheet(id) {
+    this.id = typeof id == "string" ? id : 0;
+    if (this.id == 0) {
+      throw new Error("Incorrect id!");
+    }
+    var f = document.getElementById(this.id);
+    this.target = f !== null ? f.tagName.toUpperCase() == "STYLE" ? f : document.createElement("style") : document.createElement("style");
+    this.target.id = this.id;
+    this.target.appendChild(document.createTextNode(""));
+    document.head.appendChild(this.target);
+    this.getRules = function(){
+        return this.target.sheet.rules
+    };
+    this.removeRuleByIndex = function(index) {
+      var i = index < this.target.sheet.rules.length ? index : -1;
+      if (i == -1) {
+        throw new Error("Incorrect index!");
+      }
+      if ("removeRule" in this.target.sheet) {
+        this.target.sheet.removeRule(i);
+      } else {
+        if ("deleteRule" in this.target.sheet) {
+          this.target.sheet.deleteRule(i);
+        }
+      }
+    };
+	this.replaceRule = function(selector, rule, index) {
+      var i = "number" == typeof index ? index : 0;
+	  this.removeRuleByName(selector, rule.substring(0,rule.indexOf(":")));
+	  this.addRule(selector, rule, index);
+	}
+    this.removeRulesBySelector = function(selector) {
+      var k = "string" == typeof selector ? selector : -1;
+      if (-1 == k) {
+        throw new Error("Incorrect selector!");
+      }
+      for (var i = 0;i < this.target.sheet.rules;i++) {
+        this.target.sheet.rules[i].selectorText == selector && this.removeRuleByIndex(i);
+      }
+    };
+    this.removeRuleByName = function(selector, ruleName) {
+      var k = "string" == typeof selector ? selector : -1, l = "string" == typeof ruleName ? ruleName : -1;
+      if (-1 == k) {
+        throw new Error("Incorrect selector!");
+      }
+      if (-1 == l) {
+        throw new Error("Incorrect rule name!");
+      }
+      for (var i = 0;i < this.target.sheet.rules.length;i++) {
+        if(this.target.sheet.rules[i].selectorText == k)
+		if(this.target.sheet.rules[i].style.cssText.substring(0,this.target.sheet.rules[i].style.cssText.indexOf(":")).trim() == l.trim())
+          this.removeRuleByIndex(i);
+      }
+    };
+    this.addRule = function(selector, rule, index) {
+      var i = "number" == typeof index ? index : 0;
+      "insertRule" in this.target.sheet ? this.target.sheet.insertRule(selector + "{" + rule + "}", i) : "addRule" in this.target.sheet && this.target.sheet.addRule(selector, rule, i);
+    };
+  }
+  return Sheet;
+}();
+
+
+	var CustomStyles = new Sheet("iplug-custom-styles");
+	CustomStyles.changeBackground = function(URL){this.sheet.replaceRule("#room > i.room-background", "background: url(" + URL + ") !important")};
+	CustomStyles.defaultBackground = function(){this.sheet.removeRuleByName("#room > i.room-background", "background")};
+
+
+
+
+/////////////////
     var VisualizationsHelper = {};
 	
     VisualizationsHelper.currentRoom = window.location.href;
