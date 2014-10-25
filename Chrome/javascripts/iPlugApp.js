@@ -718,9 +718,11 @@ var Visualizations = Sketch.create({
 
 
     var mouseX;
+    var mouseY;
     var mouseChange;
     $(window).bind("mousemove", function (event) {
         mouseX = event.pageX;
+        mouseY = event.pageY;
         mouseChange = true;
     });
 
