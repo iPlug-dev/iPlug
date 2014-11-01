@@ -55,6 +55,12 @@
     if (undefined === localStorage["iplug|listgrabmehenabled"]) {
         localStorage["iplug|listgrabmehenabled"] = "block";
     }
+    if (undefined === localStorage["iplug|html5youtube"]) { // should be in menu :/
+        localStorage["iplug|html5youtube"] = "block";
+    }
+    if (undefined === localStorage["iplug|audiovideo"]) { // IT SHOULD NOT BE IN MENU! (triggered by plug stuff)
+        localStorage["iplug|audiovideo"] = "block";
+    }
 
     if (localStorage["iplug|youtubevideodisabled"] == "none") {
         $("#playback").css("display", "block");
@@ -151,15 +157,15 @@
 		}
 	}
 
-    setTimeout(WT, 3000);// AUTO WOOT ON JOIN
-	setTimeout(JN, 3000);// AUTO JOIN ON JOIN, and butter on butter is butter
+    setTimeout(WT, 5000);// AUTO WOOT ON JOIN
+	setTimeout(JN, 5000);// AUTO JOIN ON JOIN, and butter on butter is butter
 
 /////////
 
 var Sheet = function() {
   function Sheet(id) {
     this.id = typeof id == "string" ? id : 0;
-    if (this.id == 0) {
+    if (this.id === 0) {
       throw new Error("Incorrect id!");
     }
     var f = document.getElementById(this.id);
@@ -168,7 +174,7 @@ var Sheet = function() {
     this.target.appendChild(document.createTextNode(""));
     document.head.appendChild(this.target);
     this.getRules = function(){
-        return this.target.sheet.rules
+        return this.target.sheet.rules;
     };
     this.removeRuleByIndex = function(index) {
       var i = index < this.target.sheet.rules.length ? index : -1;
@@ -187,14 +193,14 @@ var Sheet = function() {
       var i = "number" == typeof index ? index : 0;
 	  this.removeRuleByName(selector, rule.substring(0,rule.indexOf(":")));
 	  this.addRule(selector, rule, index);
-	}
+	};
     this.removeRulesBySelector = function(selector) {
       var k = "string" == typeof selector ? selector : -1;
       if (-1 == k) {
         throw new Error("Incorrect selector!");
       }
-      for (var i = 0;i < this.target.sheet.rules;i++) {
-        this.target.sheet.rules[i].selectorText == selector && this.removeRuleByIndex(i);
+      for (var i = 0;i < this.target.sheet.rules.length;i++) {
+        this.target.sheet.rules[i].selectorText.trim() == selector.trim() && this.removeRuleByIndex(i);
       }
     };
     this.removeRuleByName = function(selector, ruleName) {
@@ -220,9 +226,17 @@ var Sheet = function() {
 }();
 
 
-	var CustomStyles = new Sheet("iplug-custom-styles");
-	CustomStyles.changeBackground = function(URL){this.sheet.replaceRule("#room > i.room-background", "background: url(" + URL + ") !important")};
-	CustomStyles.defaultBackground = function(){this.sheet.removeRuleByName("#room > i.room-background", "background")};
+	window.CustomStyles = new Sheet("iplug-custom-styles");
+	CustomStyles.changeBackground = function(URL){this.replaceRule("#room > i.room-background", "background: url(" + URL + ") !important");};
+	CustomStyles.defaultBackground = function(){this.removeRuleByName("#room > i.room-background", "background");};
+	CustomStyles.fullscreenPlayback = function() {
+	this.replaceRule("#playback-container", "position: fixed !important");
+	this.replaceRule("#playback-container", "top: " + $("#room-meta").css("height") + " !important");
+	this.replaceRule("#playback-container", "left: 0 !important");
+	this.replaceRule("#playback-container", "width: " + $("#room-meta").css("width") + " !important");
+	this.replaceRule("#playback-container", "height : " + $("#room > div.app-right").css("height") + " !important");	
+	};
+	CustomStyles.normalPlayback = function(){this.removeRulesBySelector("#playback-container");};
 
 
 
@@ -230,29 +244,31 @@ var Sheet = function() {
 /////////////////
     var VisualizationsHelper = {};
 	
+	var YoutubeHelper = {};
+
+
+    YoutubeHelper.callEvent = function (something) {
+        YoutubeHelper.onEvent(something);
+    };
     VisualizationsHelper.currentRoom = window.location.href;
+    YoutubeHelper.ready = false;
     VisualizationsHelper.initVolume = function () {
         var volume;
         try {
             volume = API.getVolume();
         } catch (f) {}
         if (!isFinite(volume / 100)) {
-            setTimeout(VisualizationsHelper.initVolume, 600); //Faster
+            return setTimeout(VisualizationsHelper.initVolume, 500); 
         } else {
+            if (!YoutubeHelper.ready) return setTimeout(VisualizationsHelper.initVolume, 500); 
             Visualizations.setVolume(volume / 100);
+            Youtube.setVolume(volume);
         }
-    }
+    };
+	VisualizationsHelper.visible = false;
     VisualizationsHelper.initVolume();
-    VisualizationsHelper.roomChecker = setInterval(function () {
-        var u = window.location.href;
-        if (u != VisualizationsHelper.currentRoom) {
-		    onRoomChanged();
-            VisualizationsHelper.currentRoom = u;
-            if (!Visualizations.paused()) Visualizations.pause();
-        }
-    }, 1000); 
 	VisualizationsHelper.hide = function() {
-		$("#iplug-playback").animate({opacity:"0"}, {duration:2E3, queue:!1,  step: function(now) {
+		$("#iplug-playback").stop(true).animate({opacity:"0"}, {easing: "easeOutQuint", duration:2E3, queue:!1,  step: function(now) {
 		VisualizationsHelper.opacity=now;
 		},complete:function() {
 			this.style.display = "none";
@@ -261,7 +277,7 @@ var Sheet = function() {
 		}});
 	};
 	VisualizationsHelper.show = function() {
-		$("#iplug-playback").animate({opacity:"1"}, {duration:2E3, queue:!1, step: function(now) {
+		$("#iplug-playback").stop(true).animate({opacity:"1"}, {easing: "easeOutQuint", duration:2E3, queue:!1, step: function(now) {
 		VisualizationsHelper.opacity=now;
 		},start:function() {
 			this.style.display = "block";
@@ -269,16 +285,98 @@ var Sheet = function() {
 			VisualizationsHelper.visible = !0;
 	}});
 	};
-	VisualizationsHelper.visible = false;
 	VisualizationsHelper.opacity = 1;
     VisualizationsHelper.location = $("#playback-container").parent()[0];
 	
+	
+	$(VisualizationsHelper.location).append("<div id='iplug-yt-frame' frameborder='0' src=''></div>");
+
+    YoutubeHelper.ignoreOnce = false;
+	YoutubeHelper.visible = false;
+	YoutubeHelper.hide = function() {
+		$("#iplug-yt-frame").stop(true).animate({opacity:"0"}, {easing: "easeOutQuint", duration:2E3, queue:!1,  step: function(now) {
+		YoutubeHelper.opacity=now;
+		},complete:function() {
+			this.style.display = "none";
+			Youtube.stopVideo();
+			YoutubeHelper.visible = false;
+		}});
+	};
+	YoutubeHelper.show = function() {
+		$("#iplug-yt-frame").stop(true).animate({opacity:"1"}, {easing: "easeOutQuint", duration:2E3, queue:!1, step: function(now) {
+		YoutubeHelper.opacity=now;
+		},start:function() {
+			Youtube.playVideo();
+			YoutubeHelper.visible = true;
+            this.style.display = "block"; // cuz why not
+	}});
+	};
+    var Youtube;
+	function initYoutube() {
+	if (typeof window.YT != "object"|| typeof window.YT.Player != "function" || !window.YT.loaded) {console.log("!");return setTimeout(initYoutube,100);}
+    Youtube = new YT.Player($("#iplug-yt-frame")[0],{
+		playerVars: {
+		autoplay: 1,
+		cc_load_policy: 0, //subtitles
+		color: "red",
+		controls: 0,
+		disablekb: 1, //keyboard
+		fs: 0, // full screen btn
+		iv_load_policy: 3,
+		loop: 0,
+		modestbranding: 1,
+		rel: 0,
+		showinfo: 0,
+		theme: "dark",
+		},
+	    events: {'onReady': onPlayerReady, 'onError': onErr}
+    });
+    }
+    function onErr(e){
+        console.log(e);
+    }
+	YoutubeHelper.onEvent = function(event){
+        if (!YoutubeHelper.ready) return setTimeout(YoutubeHelper.onEvent,100,event);
+        if (Youtube.getPlayerState() != YT.PlayerState.PAUSED) Youtube.pauseVideo();
+        var cid = "";
+        var yesNo; // YES, IT IS YESNO
+        if (localStorage["iplug|audiovideo"] != "block")
+            return YoutubeHelper.hide();
+		if ("block" != localStorage["iplug|html5youtube"] || ( $("#playback-controls").hasClass("snoozed") ))
+			return YoutubeHelper.hide();
+		if ("object" != typeof event) {
+			var a = API.getMedia();
+			if (void 0 === a || "1" != a.format)
+				return YoutubeHelper.hide();
+			cid = a.cid;
+			yesNo = !0;
+		} else {
+			if ("object" != typeof event.media || "1" != event.media.format)
+				return YoutubeHelper.hide();
+			cid = event.media.cid;
+			yesNo = !1;
+		}
+		YoutubeHelper.show();
+	    if (Youtube.getVideoData().video_id != cid) {
+            Youtube.loadVideoById(cid);
+        }
+        Youtube.playVideo();
+        if (yesNo)
+        Youtube.seekTo(API.getTimeElapsed());
+    };
+
+	initYoutube();
+	function onPlayerReady(event){
+        YoutubeHelper.ready = true;
+	   console.log(event);
+	}
+
 	/*           INIT HERE              */
 	
 	var ALPHA, AudioAnalyser, COLORS, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN;
 
-NUM_PARTICLES = 50; // cuz small area eh
-NUM_BANDS = 256;
+	NUM_PARTICLES = 100; // cuz small area eh
+NUM_BANDS = 256; 
 SMOOTHING = 0.6; // was 0.5
 MP3_PATH = ""; // init
 SCALE = {
@@ -307,13 +405,13 @@ COLORS = ['#69D2E7', '#1B676B', '#BEF202', '#EBE54D', '#00CDAC', '#1693A5', '#F9
 AudioAnalyser = (function() {
   AudioAnalyser.AudioContext = self.AudioContext || self.webkitAudioContext;
 
-  AudioAnalyser.enabled = AudioAnalyser.AudioContext != null;
+  AudioAnalyser.enabled = AudioAnalyser.AudioContext !== null;
 
   function AudioAnalyser(audio, numBands, smoothing) {
     var src;
-    this.audio = audio != null ? audio : new Audio();
-    this.numBands = numBands != null ? numBands : 256;
-    this.smoothing = smoothing != null ? smoothing : 0.3;
+    this.audio = audio !== null ? audio : new Audio();
+    this.numBands = numBands !== null ? numBands : 256;
+    this.smoothing = smoothing !== null ? smoothing : 0.3;
     if (typeof this.audio === 'string') {
       src = this.audio;
       this.audio = new Audio();
@@ -362,8 +460,8 @@ AudioAnalyser = (function() {
 
 Particle = (function() {
   function Particle(x, y) {
-    this.x = x != null ? x : 0;
-    this.y = y != null ? y : 0;
+    this.x = x !== null ? x : 0;
+    this.y = y !== null ? y : 0;
     this.reset();
   }
 
@@ -443,13 +541,13 @@ var Visualizations = Sketch.create({
 	return this.analyser.audio.volume = value;
   },
   setSource: function(audio) {
-    var temp = audio != null ? audio : "";
+    var temp = audio !== null ? audio : "";
     if (typeof temp === 'string') {
       this.analyser.audio.src = temp;
     }
   },
   setup: function() {
-    var error, i, intro, particle, warning, x, y, _i, _ref;
+    var error, i, particle, warning, x, y, _i, _ref;
     for (i = _i = 0, _ref = NUM_PARTICLES - 1; _i <= _ref; i = _i += 1) {
       x = random(this.width);
       y = random(this.height * 2);
@@ -473,18 +571,11 @@ var Visualizations = Sketch.create({
           };
         })(this);
         this.analyser.start();
-        intro = document.getElementById('intro');
-        intro.style.display = 'none';
-        if (/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)) {
-          warning = document.getElementById('warning2');
-          return warning.style.display = 'block';
-        }
       } catch (_error) {
         error = _error;
       }
     } else {
-      warning = document.getElementById('warning1');
-      return warning.style.display = 'block';
+      return console.error("There's no Audio Analyser API");
     }
   },
   draw: function() {
@@ -520,21 +611,31 @@ var Visualizations = Sketch.create({
     <span class="text" style="color: #d1d1d1;">' + message + '</span>\
     </div>');
 		}
-    }
+    };
     Visualizations.width = parseInt($("#playback-container")[0].style.width, 10); /*initial call*/
     Visualizations.height = parseInt($("#playback-container")[0].style.height, 10); /*initial call*/
     VisualizationsHelper.ObsrvOne = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             if (mutation.attributeName == "style") {
-                var te = mutation.target.style.cssText;
-                te += "z-index: 6;position: absolute;top: 0;";
+                var te = mutation.target.style.cssText + "z-index: 6;position: absolute;top: 0;";
+				var tf = mutation.target.style.cssText + "z-index: 6;position: absolute;top: 0;";
+				if (YoutubeHelper.visible) {
+				    tf += "display: block;";
+				} else {
+					tf += "display: none;";
+				}
 				if (VisualizationsHelper.visible) {
 					te += "display: block;";
 				} else {
 					te += "display: none;";
 				}
 				te += "opcaity: " + VisualizationsHelper.opacity + ";";
+				tf += "opcaity: " + YoutubeHelper.opacity + ";";
                 $("#iplug-playback")[0].style.cssText = te;
+				$("#iplug-yt-frame")
+				.attr("width", parseInt(mutation.target.style.width, 10) + "px")
+				.attr("height", parseInt(mutation.target.style.height, 10) + "px")[0]
+				.style.cssText = tf;
 				Visualizations.width = parseInt(mutation.target.style.width, 10);
 				Visualizations.height = parseInt(mutation.target.style.height, 10);
             }
@@ -548,8 +649,10 @@ var Visualizations = Sketch.create({
     VisualizationsHelper.ObsrvTwo = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
 			var temp = (API.getVolume() / 100);
-			if (isFinite(temp))
+			if (isFinite(temp)) {
 				Visualizations.setVolume(temp);
+                Youtube.setVolume(temp*100);
+            }
         });
     });
     VisualizationsHelper.ObsrvTwo.observe($("#volume > span")[0], {
@@ -557,6 +660,21 @@ var Visualizations = Sketch.create({
         childList: true,
         characterData: false
     });
+    YoutubeHelper.ObsrvOne = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            for (var i = mutation.addedNodes.length - 1; i >= 0; i--){
+                if (localStorage["iplug|html5youtube"] == "block"){
+                        mutation.addedNodes[i].remove();
+                }
+            }
+        });
+    });
+    YoutubeHelper.ObsrvOne.observe($("#playback-container")[0], {
+        attributes: false,
+        childList: true,
+        characterData: false
+    });
+
     $("#iplug-playback")[0].style.cssText = $("#playback-container")[0].style.cssText + "z-index: 6;position: absolute;top: 0;"; /*initial call*/
 
     // Check for non Web Audio API browsers.
@@ -581,12 +699,14 @@ var Visualizations = Sketch.create({
             if (!soundManager.muted) soundManager.muteAll();
             if (soundManager.muted) soundManager.stopAll();
         } catch (f) {}
-    }
+    };
     setInterval(VisualizationsHelper.killFlash, 2000);
     VisualizationsHelper.onEvent = function (event) {
         if (!Visualizations.paused()) Visualizations.pause();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
+        if (localStorage["iplug|audiovideo"] != "block")
+            return VisualizationsHelper.hide();
 		if ("block" != localStorage["iplug|scvisualsenabled"])
 			return VisualizationsHelper.hide();
 		if ("object" != typeof event) {
@@ -630,20 +750,38 @@ var Visualizations = Sketch.create({
         Visualizations.play();
     };
 
-    API.on(API.ADVANCE, VisualizationsHelper.callEvent);
-    //Visualizations.rafCallback(); // CALL ONLY ONCE!
 
+    //Visualizations.rafCallback(); // CALL ONLY ONCE!
+    $("#playback-controls > div.button.hd").bind("click",function(a) {
+        var q;
+        if ($("#playback-controls > div.button.hd > div.box > span.label").text() == "ON"){
+            var f = Youtube.getPlaybackQuality();
+            var g = Youtube.getAvailableQualityLevels();
+            if (g.length == 0) return;
+            q = g.indexOf("highres") > -1 ? "highres" : g.indexOf("hd1080") > -1 ? "hd1080" : g.indexOf("hd720") > -1 ? "hd720" : g.indexOf("large") > -1 ? "large" : g.indexOf("medium") > -1 ? "medium" : "default";
+        } else { // off 
+            q = "default";
+        }
+        Youtube.setPlaybackQuality(q);
+    });
+    $(document).on("click", "#user-settings > div.application.section > div > div:nth-child(5) > div", function(){ 
+         localStorage["iplug|audiovideo"] = localStorage["iplug|audiovideo"] == "block" ? "none" : "block";
+         onAPIadvance();
+    });
     $("#playback-controls > div.button.refresh").click(function () {
-        API.trigger(API.ADVANCE);
+        onAPIadvance();
     });
 
     $("#playback-controls > div.button.snooze").click(function () {
-        API.trigger(API.ADVANCE);
+         onAPIadvance();
     });
 
     VisualizationsHelper.initCall = function () {
-        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled))
-            return VisualizationsHelper.callEvent();
+        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
+            VisualizationsHelper.callEvent();
+            YoutubeHelper.callEvent();
+            return false;
+        }
         setTimeout(VisualizationsHelper.initCall, 1000);
     };
     VisualizationsHelper.initCall();
@@ -654,22 +792,22 @@ var Visualizations = Sketch.create({
     
     var pos = -3, prevpos = -3;
 	function smartAutoJoin(){
-		if (API.getDJ() != undefined && API.getDJ().id == API.getUser().id) {
+		if (API.getDJ() !== undefined && API.getDJ().id == API.getUser().id) {
 			pos = -2;
 		} else {
 			if (API.getWaitListPosition() > -1)
 				pos = 0;
 			else pos = -1;
 		}
-		if (prevpos == 0) {
-			if (pos ==  0) {prevpos = pos; return;}
+		if (prevpos === 0) {
+			if (pos ===  0) {prevpos = pos; return;}
 			if (pos == -2) {prevpos = pos; return;}
 			if (pos == -1) {prevpos = pos; tempAutoJoin(true);} // TEMP DISABLE AUTO JOIN
 		} else if (prevpos == -2) {
 			if (pos == -1) {prevpos = pos; return;} // DJ CYCLE OFF
-			if (pos ==  0) {prevpos = pos; return;} // DJ CYCLE ON
+			if (pos ===  0) {prevpos = pos; return;} // DJ CYCLE ON
 		} else if (prevpos == -1) {
-			if (pos ==  0) {prevpos = pos; tempAutoJoin(false);} // MAKE IT WORK NORMALLY
+			if (pos ===  0) {prevpos = pos; tempAutoJoin(false);} // MAKE IT WORK NORMALLY
 			if (pos == -2) {prevpos = pos; tempAutoJoin(false);}
 		}
 	}
@@ -677,7 +815,7 @@ var Visualizations = Sketch.create({
 	function smartAutoJoinInit(){
 		if ((pos != -3)||(prevpos != -3)) return; // event was faster hehe
 		if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
-			if (API.getDJ() != undefined && API.getDJ().id == API.getUser().id) {
+			if (API.getDJ() !== undefined && API.getDJ().id == API.getUser().id) {
 				prevpos = -2;
 				pos = -2;
 			} else {
@@ -688,7 +826,7 @@ var Visualizations = Sketch.create({
 				} 
 			}
 		} else {
-			setTimeout(smartAutoJoinInit, 500); // must be uber fast or errors :c
+			setTimeout(smartAutoJoinInit, 500);
 		}
 	}
 	/**********/
@@ -705,11 +843,34 @@ var Visualizations = Sketch.create({
 		    $("#autojoinenabled > i").removeClass("blackandwhite");
 		}
     }
-    
-	function onRoomChanged(){
-		JN();
-		WT();
-	}
+    function onAPIadvance(a){
+        VisualizationsHelper.callEvent(a);
+        YoutubeHelper.onEvent(a);
+    }
+    API.on(API.ADVNACE, VisualizationsHelper.callEvent); // FOR SOME REASONS NOT EXECUTED
+    API.on(API.ADVNACE, YoutubeHelper.callEvent); // PROBABLY CALLED 2 EARLY D:
+
+    YoutubeHelper.ObsrvTwo = new MutationObserver(function (mutations) {
+        var u = window.location.href;
+        if (u == VisualizationsHelper.currentRoom) return;
+        VisualizationsHelper.currentRoom = u;
+        WT();
+        JN();
+        onAPIadvance();
+    });
+    YoutubeHelper.ObsrvTwo.observe($("#now-playing-media")[0], {
+        attributes: false,
+        childList: true,
+        characterData: false,
+        subtree: true
+    });
+
+
+//========== INIT
+    $("#playback-container").css("width", $("#playback-container").css("width"));
+
+/////
+
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
@@ -1028,7 +1189,7 @@ var Visualizations = Sketch.create({
 		$("#tooltip").css("top",($(_this.target).offset().top - 28) + 'px');
 		$("#tooltip").css("right", (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px');
 		$("#tooltip>span").html(parseInt(_this.target.style.left,10));
-	};
+	}
 	$(".iplug-container .colorpicker .slider .barcontainer .circle").bind("mouseenter", function (_this) {
 		overCircle = true;
         $("#tooltip").remove();
@@ -1148,7 +1309,7 @@ var Visualizations = Sketch.create({
 						if (typeof(API.getMedia().format) == "number" && API.getMedia().format == 2) {
 							$("#playback-controls > div.button.refresh").click();
 						} else {
-							API.trigger(API.ADVANCE);
+							onAPIadvance();
 						}
 					}
                 };
@@ -1386,7 +1547,7 @@ var Visualizations = Sketch.create({
         eval(localStorage["usercustomcode"]);
         window.onbeforeunload = function(){
             localStorage["usercustomcodesafe"] = "TRUE";
-        }
+        };
     } else {
         console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|we\'re sorry to announce that your browser has crashed last session.                            |\n|in order to avoid potentionally automaticly loading wrong code that crashes your browser,      |\n|we have automaticly disabled your code. to reenable it, simply type:                           |\n|localStorage["usercustomcodesafe"] = "TRUE";                                                   |\n|remember that, if this is the doings of the code you implemented, you have to change your code:|\n|localStorage["usercustomcode"] = \'\'                                                            |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');
     }
