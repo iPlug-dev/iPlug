@@ -847,8 +847,8 @@ var Visualizations = Sketch.create({
         VisualizationsHelper.callEvent(a);
         YoutubeHelper.onEvent(a);
     }
-    API.on(API.ADVNACE, VisualizationsHelper.callEvent); // FOR SOME REASONS NOT EXECUTED
-    API.on(API.ADVNACE, YoutubeHelper.callEvent); // PROBABLY CALLED 2 EARLY D:
+    API.on(API.ADVANCE, VisualizationsHelper.callEvent); // FOR SOME REASONS NOT EXECUTED
+    API.on(API.ADVANCE, YoutubeHelper.callEvent); // PROBABLY CALLED 2 EARLY D:
 
     YoutubeHelper.ObsrvTwo = new MutationObserver(function (mutations) {
         var u = window.location.href;
