@@ -308,8 +308,10 @@ var Sheet = function() {
 	}});
 	};
     var Youtube;
+    var initTimeoutID = 0;
 	function initYoutube() {
-	if (typeof window.YT != "object"|| typeof window.YT.Player != "function" || !window.YT.loaded) {console.log("!");return setTimeout(initYoutube,100);}
+    clearTimeout(initTimeoutID);
+	if (typeof window.YT != "object"|| typeof window.YT.Player != "function" || !window.YT.loaded) {console.warn("!");return initTimeoutID = setTimeout(initYoutube,100);}
     Youtube = new YT.Player($("#iplug-yt-frame")[0],{
 		playerVars: {
 		autoplay: 1,
@@ -765,13 +767,11 @@ var Visualizations = Sketch.create({
         if ($("#playback-controls > div.button.hd > div.box > span.label").text() == "ON"){
             var f = Youtube.getPlaybackQuality();
             var g = Youtube.getAvailableQualityLevels();
-            console.log(g);
             if (g.length == 0) return;
             q = g.indexOf("highres") > -1 ? "highres" : g.indexOf("hd1080") > -1 ? "hd1080" : g.indexOf("hd720") > -1 ? "hd720" : g.indexOf("large") > -1 ? "large" : g.indexOf("medium") > -1 ? "medium" : "default";
         } else { // off 
             q = "default";
         }
-        console.log(q);
         Youtube.setPlaybackQuality(q);
     });
     $(document).on("click", "#user-settings > div.application.section > div > div:nth-child(5) > div", function(){ 
