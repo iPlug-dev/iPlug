@@ -199,7 +199,7 @@ var Sheet = function() {
       if (-1 == k) {
         throw new Error("Incorrect selector!");
       }
-      for (var i = 0;i < this.target.sheet.rules.length;i++) {
+      for (var i = this.target.sheet.rules.length;i >= 0;i--) {
         this.target.sheet.rules[i].selectorText.trim() == selector.trim() && this.removeRuleByIndex(i);
       }
     };
@@ -211,7 +211,7 @@ var Sheet = function() {
       if (-1 == l) {
         throw new Error("Incorrect rule name!");
       }
-      for (var i = 0;i < this.target.sheet.rules.length;i++) {
+      for (var i = this.target.sheet.rules.length;i >= 0;i--) {
         if(this.target.sheet.rules[i].selectorText == k)
 		if(this.target.sheet.rules[i].style.cssText.substring(0,this.target.sheet.rules[i].style.cssText.indexOf(":")).trim() == l.trim())
           this.removeRuleByIndex(i);
@@ -230,13 +230,13 @@ var Sheet = function() {
 	CustomStyles.changeBackground = function(URL){this.replaceRule("#room > i.room-background", "background: url(" + URL + ") !important");};
 	CustomStyles.defaultBackground = function(){this.removeRuleByName("#room > i.room-background", "background");};
 	CustomStyles.fullscreenPlayback = function() {
-	this.replaceRule("#playback-container", "position: fixed !important");
-	this.replaceRule("#playback-container", "top: " + $("#room-meta").css("height") + " !important");
-	this.replaceRule("#playback-container", "left: 0 !important");
-	this.replaceRule("#playback-container", "width: " + $("#room-meta").css("width") + " !important");
-	this.replaceRule("#playback-container", "height : " + $("#room > div.app-right").css("height") + " !important");	
+	this.replaceRule(".custom1", "position: fixed !important");
+	this.replaceRule(".custom1", "top: " + $("#room-meta").css("height") + " !important");
+	this.replaceRule(".custom1", "left: 0 !important");
+	this.replaceRule(".custom1", "width: " + $("#room-meta").css("width") + " !important");
+	this.replaceRule(".custom1", "height : " + $("#room > div.app-right").css("height") + " !important");	
 	};
-	CustomStyles.normalPlayback = function(){this.removeRulesBySelector("#playback-container");};
+	CustomStyles.normalPlayback = function(){this.removeRulesBySelector(".custom1");};
 
 
 
@@ -246,10 +246,6 @@ var Sheet = function() {
 	
 	var YoutubeHelper = {};
 
-
-    YoutubeHelper.callEvent = function (something) {
-        YoutubeHelper.onEvent(something);
-    };
     VisualizationsHelper.currentRoom = window.location.href;
     YoutubeHelper.ready = false;
     VisualizationsHelper.initVolume = function () {
@@ -332,8 +328,24 @@ var Sheet = function() {
 	    events: {'onReady': onPlayerReady, 'onError': onErr}
     });
     }
+    YoutubeHelper.chatErrorID = 0;
+    YoutubeHelper.chatError = function (message) {
+		var r = API.getMedia().id;
+		if(YoutubeHelper.chatErrorID != r){
+			YoutubeHelper.chatErrorID = API.getMedia().id;
+			$("#chat-messages").append('<div class="system" style="border-left-color: transparent;padding-left: 27px;">\
+    <i class="icon icon-support-white" style="background: url(http://i.imgur.com/pTaGgcB.png);"></i>\
+    <span class="text" style="color: #d1d1d1;">' + message + '</span>\
+    </div>');
+		}
+    };
     function onErr(e){
-        console.log(e);
+        if (e.data == 100) {
+            YoutubeHelper.chatError("100 - Video not found!");
+        } else if (e.data === 101 || e.data === 150 || e.data === 5) {
+            YoutubeHelper.ignoreOnce = true;
+            $("#playback-controls > div.button.refresh").click();
+        }
     }
 	YoutubeHelper.onEvent = function(event){
         if (!YoutubeHelper.ready) return setTimeout(YoutubeHelper.onEvent,100,event);
@@ -368,14 +380,13 @@ var Sheet = function() {
 	initYoutube();
 	function onPlayerReady(event){
         YoutubeHelper.ready = true;
-	   console.log(event);
 	}
 
 	/*           INIT HERE              */
 	
 	var ALPHA, AudioAnalyser, COLORS, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN;
 
-	NUM_PARTICLES = 100; // cuz small area eh
+	NUM_PARTICLES = 75; // cuz small area eh
 NUM_BANDS = 256; 
 SMOOTHING = 0.6; // was 0.5
 MP3_PATH = ""; // init
@@ -547,7 +558,7 @@ var Visualizations = Sketch.create({
     }
   },
   setup: function() {
-    var error, i, particle, warning, x, y, _i, _ref;
+    var i, particle, warning, x, y, _i, _ref;
     for (i = _i = 0, _ref = NUM_PARTICLES - 1; _i <= _ref; i = _i += 1) {
       x = random(this.width);
       y = random(this.height * 2);
@@ -572,7 +583,7 @@ var Visualizations = Sketch.create({
         })(this);
         this.analyser.start();
       } catch (_error) {
-        error = _error;
+        console.error(_error);
       }
     } else {
       return console.error("There's no Audio Analyser API");
@@ -612,6 +623,8 @@ var Visualizations = Sketch.create({
     </div>');
 		}
     };
+
+
     Visualizations.width = parseInt($("#playback-container")[0].style.width, 10); /*initial call*/
     Visualizations.height = parseInt($("#playback-container")[0].style.height, 10); /*initial call*/
     VisualizationsHelper.ObsrvOne = new MutationObserver(function (mutations) {
@@ -663,11 +676,15 @@ var Visualizations = Sketch.create({
     YoutubeHelper.ObsrvOne = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             for (var i = mutation.addedNodes.length - 1; i >= 0; i--){
-                if (localStorage["iplug|html5youtube"] == "block"){
+                if (localStorage["iplug|html5youtube"] == "block" && !YoutubeHelper.ignoreOnce){
                         mutation.addedNodes[i].remove();
                 }
             }
         });
+        if (YoutubeHelper.ignoreOnce) {
+            YoutubeHelper.ignoreOnce = false;
+            YoutubeHelper.hide();
+        }
     });
     YoutubeHelper.ObsrvOne.observe($("#playback-container")[0], {
         attributes: false,
@@ -677,10 +694,7 @@ var Visualizations = Sketch.create({
 
     $("#iplug-playback")[0].style.cssText = $("#playback-container")[0].style.cssText + "z-index: 6;position: absolute;top: 0;"; /*initial call*/
 
-    // Check for non Web Audio API browsers.
-    //if (!window.webkitAudioContext) {
-    //    alert("iPlug - error! \n\nWeb Audio isn't available in your browser!\nWeb Audio is supported by: \nChrome 14+, Firefox 23+, Opera 15+, Safari 6+!\n\nBut...you can still hear the sounds :) /nPS. Update your browser! :>");
-    //}
+    
 
     VisualizationsHelper.clientID = "9258af128ee9d4c781d46b31917531e7";
     /* GET YOUR OWN CLIENT ID ON HTTP://DEVELOPERS.SOUNDCLOUD.COM 
@@ -737,10 +751,6 @@ var Visualizations = Sketch.create({
         });
     };
 
-    VisualizationsHelper.callEvent = function (something) {
-        VisualizationsHelper.onEvent(something);
-    };
-
     VisualizationsHelper.playIt = function (yesNo, streamURL) {
         if (yesNo) {
             Visualizations.setSource(streamURL + "#t=" + API.getTimeElapsed());
@@ -750,18 +760,18 @@ var Visualizations = Sketch.create({
         Visualizations.play();
     };
 
-
-    //Visualizations.rafCallback(); // CALL ONLY ONCE!
     $("#playback-controls > div.button.hd").bind("click",function(a) {
         var q;
         if ($("#playback-controls > div.button.hd > div.box > span.label").text() == "ON"){
             var f = Youtube.getPlaybackQuality();
             var g = Youtube.getAvailableQualityLevels();
+            console.log(g);
             if (g.length == 0) return;
             q = g.indexOf("highres") > -1 ? "highres" : g.indexOf("hd1080") > -1 ? "hd1080" : g.indexOf("hd720") > -1 ? "hd720" : g.indexOf("large") > -1 ? "large" : g.indexOf("medium") > -1 ? "medium" : "default";
         } else { // off 
             q = "default";
         }
+        console.log(q);
         Youtube.setPlaybackQuality(q);
     });
     $(document).on("click", "#user-settings > div.application.section > div > div:nth-child(5) > div", function(){ 
@@ -777,19 +787,45 @@ var Visualizations = Sketch.create({
     });
 
     VisualizationsHelper.initCall = function () {
-        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
-            VisualizationsHelper.callEvent();
-            YoutubeHelper.callEvent();
+        if (!($('#room-loader').length > 0) && (API.enabled)) {
+            VisualizationsHelper.onEvent();
+            YoutubeHelper.onEvent();
             return false;
         }
         setTimeout(VisualizationsHelper.initCall, 1000);
     };
     VisualizationsHelper.initCall();
     
-    
-    
-    
-    
+    function onAPIadvance(a){
+        VisualizationsHelper.onEvent(a);
+        YoutubeHelper.onEvent(a);
+        Youtube.hideVideoInfo();
+    }
+
+    API.on(API.ADVANCE, onAPIadvance);
+
+    YoutubeHelper.ObsrvTwo = new MutationObserver(function (mutations) {
+        var u = window.location.href;
+        if (u == VisualizationsHelper.currentRoom) return;
+        VisualizationsHelper.currentRoom = u;
+        WT();
+        JN();
+        onAPIadvance();
+    });
+    YoutubeHelper.ObsrvTwo.observe($("#now-playing-media")[0], {
+        attributes: false,
+        childList: true,
+        characterData: false,
+        subtree: true
+    });
+
+
+//========== INIT
+    $("#playback-container").css("width", $("#playback-container").css("width"));
+    if ("block" == localStorage["iplug|html5youtube"]) $("#yt-frame").remove();
+/////
+
+
     var pos = -3, prevpos = -3;
 	function smartAutoJoin(){
 		if (API.getDJ() !== undefined && API.getDJ().id == API.getUser().id) {
@@ -829,10 +865,12 @@ var Visualizations = Sketch.create({
 			setTimeout(smartAutoJoinInit, 500);
 		}
 	}
+    smartAutoJoinInit();
 	/**********/
     var tempAutoJoinDisabled = false;
     function tempAutoJoin(enabled){
 	    if (!(pos != -1 && localStorage["iplug|autojoinenabled"] != "block")) {
+
 			tempAutoJoinDisabled = enabled;
 			if (enabled)
 				$("#autojoinenabled > i").addClass("blackandwhite");
@@ -843,33 +881,21 @@ var Visualizations = Sketch.create({
 		    $("#autojoinenabled > i").removeClass("blackandwhite");
 		}
     }
-    function onAPIadvance(a){
-        VisualizationsHelper.callEvent(a);
-        YoutubeHelper.onEvent(a);
-    }
-    API.on(API.ADVANCE, VisualizationsHelper.callEvent); // FOR SOME REASONS NOT EXECUTED
-    API.on(API.ADVANCE, YoutubeHelper.callEvent); // PROBABLY CALLED 2 EARLY D:
-
-    YoutubeHelper.ObsrvTwo = new MutationObserver(function (mutations) {
-        var u = window.location.href;
-        if (u == VisualizationsHelper.currentRoom) return;
-        VisualizationsHelper.currentRoom = u;
-        WT();
-        JN();
-        onAPIadvance();
-    });
-    YoutubeHelper.ObsrvTwo.observe($("#now-playing-media")[0], {
-        attributes: false,
-        childList: true,
-        characterData: false,
-        subtree: true
-    });
 
 
-//========== INIT
-    $("#playback-container").css("width", $("#playback-container").css("width"));
 
-/////
+
+
+
+$("#playback-container").addClass("custom1");
+$("#iplug-yt-frame").addClass("custom1");
+$("#iplug-playback").addClass("custom1");
+
+
+
+
+
+
 
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
