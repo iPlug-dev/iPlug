@@ -33,6 +33,8 @@
                 "javascripts/iPlugApp.js",
 				"javascripts/iPlugBG.js",
 				"javascripts/sketch.min.js",
+                "javascripts/socket.io-1.2.0.js",
+                "javascripts/iframe_api.min.js",
                 "images/chosen/chosen-sprite.png",
                 "images/chosen/chosen-sprite@2x.png",
                 "images/Plug/dev.png",
@@ -53,7 +55,6 @@
                                 "*://plug.dj/privacy"
                         ],
                         "js": [
-						        "javascripts/jquery-2.0.3.js",
                                 "javascripts/iPlug.js"
                         ],
                         "css": [
