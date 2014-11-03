@@ -1565,13 +1565,40 @@ $("#iplug-playback").addClass("custom1");
 
 
 
-(function() {
+usercode; //make global so user can access
+function usercodesave() {
+    localStorage['usercustomcode'] = usercode.toString();
+    localStorage['usercustomcodesafe'] = 'TRUE';
+    console.log("code updated! refresh to make it work! ;)");
+}
+(function () {
     if (localStorage["usercustomcode"] === "") localStorage["usercustomcodesafe"] = "TRUE";
     if ("FALSE" !== localStorage["usercustomcodesafe"]) {
         localStorage["usercustomcodesafe"] = "FALSE";
-        console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|You opened the console! you know some code, do you?                                            |\n|did you know that iPlug can automaticly run your code for you if you wish to do so?            |\n|all you have to do is type the command localStorage[\'usercustomcode\'] = \'<yourcode>\' once,     |\n|we\'ll take care of the rest! (you can change the code at any time by overwriting that variable)|\n|changes you make to this variable will take effect as soon as you refresh.                     |\n|example usage:                                                                                 |\n|localStorage[\'usercustomcode\'] = \'API.sendChat(\\\'hi!\\\')\' //will send hi in chat on logging in    |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');
-        $("head").append("<script type='text/javascript' id='userscript'>try {" + localStorage["usercustomcode"] + ";window.onbeforeunload = function() {localStorage['usercustomcodesafe'] = 'TRUE';};} catch (error) {console.error('an error occurred while trying to run the custom user code:', error);localStorage['usercustomcodesafe'] = 'FALSE';}</script>");
+        window.onbeforeunload = function () {
+            localStorage['usercustomcodesafe'] = 'TRUE';
+        };
+        try {
+            eval(localStorage['usercustomcode']);
+            try {
+                console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|You opened the console! you know some code, do you? allow me to demonstrate with an example:   |\n|                                                                                               |\n|function usercode() {                                                                          |\n|  console.log(\'hi!\') //will log \'hi\' in console whenever plug loads                            |\n|}                                                                                              |\n|                                                                                               |\n|usercodesave() //will save changes made to usercode                                            |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');
+                usercode();
+            } catch (error) {
+                console.log("\n\na non fatal error has been encountered while executing the custom user code, please change the function usercode(), run usercodesave(), and then refresh the page.");
+                console.error(error + "\n\n");
+            }
+        } catch (error) {
+            console.log("\n\na non fatal error has been encountered while parsing the custom user code, please change the function usercode(), run usercodesave(), and then refresh the page.");
+            console.error(error + "\n\n");
+        }
     } else {
-        console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|we\'re sorry to announce that your browser has crashed last session.                            |\n|in order to avoid potentionally automaticly loading wrong code that crashes your browser,      |\n|we have automaticly disabled your code. to reenable it, simply type the following and refresh: |\n|localStorage[\'usercustomcodesafe\'] = \'TRUE\';                                                   |\n|remember that, if this is the doings of the code you implemented, you have to change your code:|\n|localStorage[\'usercustomcode\'] = \'\'                                                            |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');
+        console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|we\'re sorry to announce that your browser has crashed last session.                            |\n|in order to avoid potentionally automaticly loading wrong code that crashes your browser,      |\n|we have automaticly disabled your code. if you want to change your code, simply modify the     |\n|function usercode(), and use usercodesave() to save the function, and then refresh.            |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');
+        try {
+            eval(localStorage['usercustomcode']);
+        } catch (error) {
+            console.error("\n\nunrecoverable error while parsing custom user code :(");
+            console.error(error + "\n\n");
+            console.log(localStorage['usercustomcode']);
+        }
     }
 }());
