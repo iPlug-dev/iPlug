@@ -1565,7 +1565,7 @@ $("#iplug-playback").addClass("custom1");
 
 
 
-usercode; //make global so user can access
+var usercode; //make global so user can access
 function usercodesave() {
     if (typeof usercode !== "function") throw new Error("usercode is not a function!");
     localStorage['usercustomcode'] = usercode.toString();
@@ -1573,7 +1573,6 @@ function usercodesave() {
     console.log("code updated! refresh to make it work! ;)");
 }
 (function () {
-    if (localStorage["usercustomcode"] === "") localStorage["usercustomcodesafe"] = "TRUE";
     if ("FALSE" !== localStorage["usercustomcodesafe"]) {
         localStorage["usercustomcodesafe"] = "FALSE";
         window.onbeforeunload = function () {
@@ -1581,6 +1580,11 @@ function usercodesave() {
         };
         try {
             eval(localStorage['usercustomcode']);
+            if (typeof usercode !== "function") {
+                usercode = function usercode() {};
+                localStorage['usercustomcode'] = usercode.toString();
+                localStorage['usercustomcodesafe'] = 'TRUE';
+            }
             try {
                 console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|You opened the console! you know some code, do you? allow me to demonstrate with an example:   |\n|                                                                                               |\n|function usercode() {                                                                          |\n|  console.log(\'hi!\') //will log \'hi\' in console whenever plug loads                            |\n|}                                                                                              |\n|                                                                                               |\n|usercodesave() //will save changes made to usercode                                            |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');
                 usercode();
