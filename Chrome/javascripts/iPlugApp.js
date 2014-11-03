@@ -1567,6 +1567,7 @@ $("#iplug-playback").addClass("custom1");
 
 usercode; //make global so user can access
 function usercodesave() {
+    if (typeof usercode !== "function") throw new Error("usercode is not a function!");
     localStorage['usercustomcode'] = usercode.toString();
     localStorage['usercustomcodesafe'] = 'TRUE';
     console.log("code updated! refresh to make it work! ;)");
