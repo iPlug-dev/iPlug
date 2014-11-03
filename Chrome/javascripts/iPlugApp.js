@@ -1576,4 +1576,5 @@ $("#iplug-playback").addClass("custom1");
         };
     } else {
         console.log('\n\n\n\n\n/-----------------------------------------------------------------------------------------------\\\n|we\'re sorry to announce that your browser has crashed last session.                            |\n|in order to avoid potentionally automaticly loading wrong code that crashes your browser,      |\n|we have automaticly disabled your code. to reenable it, simply type:                           |\n|localStorage[\'usercustomcodesafe\'] = \'TRUE\';                                                   |\n|remember that, if this is the doings of the code you implemented, you have to change your code:|\n|localStorage[\'usercustomcode\'] = \'\'                                                            |\n\\-----------------------------------------------------------------------------------------------/\n\n\n\n\n');    }
+    }
 }());
