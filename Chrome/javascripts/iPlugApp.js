@@ -804,9 +804,14 @@ var Visualizations = Sketch.create({
 
     API.on(API.ADVANCE, onAPIadvance);
 
+    YoutubeHelper.ObsrvTwoIgnoreOnce = false;
     YoutubeHelper.ObsrvTwo = new MutationObserver(function (mutations) {
         var u = window.location.href;
-        if (u == VisualizationsHelper.currentRoom) return;
+        if (!YoutubeHelper.ObsrvTwoIgnoreOnce){
+            if (u == VisualizationsHelper.currentRoom) return;
+            YoutubeHelper.ObsrvTwoIgnoreOnce = true;   
+        } else YoutubeHelper.ObsrvTwoIgnoreOnce = false;
+        tempAutoJoin(false);
         VisualizationsHelper.currentRoom = u;
         WT();
         JN();
