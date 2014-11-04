@@ -330,11 +330,11 @@ var Sheet = function() {
 	    events: {'onReady': onPlayerReady, 'onError': onErr}
     });
     }
-    YoutubeHelper.chatErrorID = 0;
+    YoutubeHelper.chatErrorID = "0";
     YoutubeHelper.chatError = function (message) {
 		var r = API.getMedia().id;
 		if(YoutubeHelper.chatErrorID != r){
-			YoutubeHelper.chatErrorID = API.getMedia().id;
+			YoutubeHelper.chatErrorID = API.getMedia().cid;
 			$("#chat-messages").append('<div class="system" style="border-left-color: transparent;padding-left: 27px;">\
     <i class="icon icon-support-white" style="background: url(http://i.imgur.com/pTaGgcB.png);"></i>\
     <span class="text" style="color: #d1d1d1;">' + message + '</span>\
@@ -346,6 +346,7 @@ var Sheet = function() {
             YoutubeHelper.chatError("100 - Video not found!");
         } else if (e.data === 101 || e.data === 150 || e.data === 5) {
             YoutubeHelper.ignoreOnce = true;
+            YoutubeHelper.chatErrorID = API.getMedia().cid;
             $("#playback-controls > div.button.refresh").click();
         }
     }
@@ -678,13 +679,20 @@ var Visualizations = Sketch.create({
     YoutubeHelper.ObsrvOne = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             for (var i = mutation.addedNodes.length - 1; i >= 0; i--){
-                if (localStorage["iplug|html5youtube"] == "block" && !YoutubeHelper.ignoreOnce){
-                        mutation.addedNodes[i].remove();
+                if (localStorage["iplug|html5youtube"] == "block") {
+                    if (YoutubeHelper.chatErrorID != API.getMedia().cid) {
+                        if (!YoutubeHelper.ignoreOnce) {
+                            mutation.addedNodes[i].remove();
+                        }
+                    }
                 }
             }
         });
         if (YoutubeHelper.ignoreOnce) {
             YoutubeHelper.ignoreOnce = false;
+            YoutubeHelper.hide();
+        }
+        if (YoutubeHelper.chatErrorID == API.getMedia().cid) {
             YoutubeHelper.hide();
         }
     });
