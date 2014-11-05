@@ -415,7 +415,6 @@
     margin-bottom: -5px;
     margin-left: 3px;
     margin-right: 3px;
-    padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 14px;
     padding-right: 5px;
@@ -436,6 +435,7 @@
     background-color: #282c35;
     cursor: pointer;
     margin-left: 5px;
+    margin-top: 5px;
 }
 .iplug-container .nodecontainer .nodeparent .node.cross .horizontal {
     height: 8px;
