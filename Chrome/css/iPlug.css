@@ -106,6 +106,9 @@
 #friends-button.selected {
 	right: 45px !important;
 }
+#visualssstyle {
+    cursor: pointer;
+}
 #iplug-button {
     left: initial !important;
     width: 45px !important;
@@ -298,12 +301,15 @@
     margin-top: 0;
     background-color: transparent;
 }
-.iplug-container .gradientpicker .settings {
+.iplug-container .settings {
     margin-top: 40px;
     margin-bottom: 10px;
     border: solid 3px;
     color: #282c35;
     border-radius: 10px;
+    height: 75px;
+}
+.iplug-container .gradientpicker .settings {
     height: 105px;
 }
 .iplug-container .gradientpicker .settings .delete {
