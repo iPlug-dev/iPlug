@@ -440,16 +440,19 @@ AudioAnalyser = (function() {
     this.analyser.smoothingTimeConstant = this.smoothing;
     this.analyser.fftSize = this.numBands * 2;
     this.bands = new Uint8Array(this.analyser.frequencyBinCount);
+    this.gain = this.gainNode = this.context.createGain();
 	this.canPlayCalled = false;
     this.audio.addEventListener('canplay', (function(_this) {
       return function() {
         if(this.canPlayCalled) return;
         this.canPlayCalled = true;
         _this.source = _this.context.createMediaElementSource(_this.audio);
-        _this.source.connect(_this.analyser);
-        _this.analyser.connect(_this.jsNode);
-        _this.jsNode.connect(_this.context.destination);
-        _this.source.connect(_this.context.destination);
+        _this.source.connect(_this.analyser);              // passing source to analyser
+        _this.analyser.connect(_this.jsNode);              // analyser
+        _this.jsNode.connect(_this.context.destination);   // analyser
+        _this.source.connect(_this.gainNode);              // passing source to gain node (volume)
+        _this.gainNode.connect(_this.context.destination); // it is now playing audio (output)
+        //_this.source.connect(_this.context.destination); || it was playing audio
         return _this.jsNode.onaudioprocess = function() {
           _this.analyser.getByteFrequencyData(_this.bands);
           if (!_this.audio.paused) {
@@ -552,7 +555,7 @@ var Visualizations = Sketch.create({
     return this.analyser.audio.paused;
   },
   setVolume: function(value){
-	return this.analyser.audio.volume = value;
+	return this.analyser.gainNode.gain.value = value;
   },
   setSource: function(audio) {
     var temp = audio !== null ? audio : "";
@@ -666,8 +669,8 @@ var Visualizations = Sketch.create({
         mutations.forEach(function (mutation) {
 			var temp = (API.getVolume() / 100);
 			if (isFinite(temp)) {
-				Visualizations.setVolume(temp);
-                Youtube.setVolume(temp*100);
+				try {Visualizations.setVolume(temp); } catch(f){}
+                try {Youtube.setVolume(temp*100);    } catch(f){}
             }
         });
     });
