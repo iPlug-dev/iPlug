@@ -419,13 +419,10 @@
     padding-right: 5px;
     border-radius: 8px;
     background-color: #282c35;
-}
-.iplug-container .nodecontainer .nodeparent {
-    float:right;
     overflow: hidden;
 }
-.iplug-container .nodecontainer .nodeparent .node {
-    top:0;
+.iplug-container .nodecontainer .node {
+    position: absolute;
     width:10px;
     height:10px;
     border: 2px solid;
@@ -433,10 +430,13 @@
     border-radius: 4px;
     background-color: #282c35;
     cursor: pointer;
-    margin-left: 5px;
-    margin-top: 5px;
+    top: 5px;
+    right: 5px;
 }
-.iplug-container .nodecontainer .nodeparent .node.cross .horizontal {
+.iplug-container .nodecontainer .node.cross {
+    z-index: 1;
+}
+.iplug-container .nodecontainer .node.cross .horizontal {
     height: 8px;
     width: 2px;
     background-color: #fff;
@@ -444,7 +444,7 @@
     margin-top: 1px;
     margin-left: 4px;
 }
-.iplug-container .nodecontainer .nodeparent .node.cross .vertical {
+.iplug-container .nodecontainer .node.cross .vertical {
     height: 2px;
     width: 8px;
     background-color: #fff;
