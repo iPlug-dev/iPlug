@@ -306,11 +306,9 @@
     border: solid 3px;
     color: #282c35;
     border-radius: 10px;
-    height: 75px;
 }
 .iplug-container .gradientpicker .settings {
     margin-top: 40px;
-    height: 105px;
 }
 .iplug-container .gradientpicker .settings .delete {
     cursor: pointer;
