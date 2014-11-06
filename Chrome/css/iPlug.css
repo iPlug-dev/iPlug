@@ -309,6 +309,7 @@
 }
 .iplug-container .gradientpicker .settings {
     margin-top: 40px;
+    height: 100px;
 }
 .iplug-container .gradientpicker .settings .delete {
     cursor: pointer;
