@@ -308,11 +308,11 @@
     border-radius: 10px;
     height: 100px;
 }
+.iplug-container .settings .delete {
+    cursor: pointer;
+}
 .iplug-container .gradientpicker .settings {
     margin-top: 40px;
-}
-.iplug-container .gradientpicker .settings .delete {
-    cursor: pointer;
 }
 .iplug-container .gradientpicker .centerall {
     cursor: pointer;
