@@ -24,6 +24,7 @@
     }
     if (undefined === localStorage["iplug|decolorstring"]) {
         localStorage["iplug|decolorstring"] = "rgb(105,210,231)|rgb(27,103,107)|rgb(190,242,2)|rgb(235,229,77)|rgb(0,205,172)|rgb(22,147,165)|rgb(249,212,35)|rgb(255,78,80)|rgb(231,32,78)|rgb(12,202,186)|rgb(255,0,111)";
+    }
     if (undefined === localStorage["iplug|autowootdelayrandom"]) {
         localStorage["iplug|autowootdelayrandom"] = "none";
     }
@@ -390,7 +391,7 @@ var Sheet = function() {
 
 	/*           INIT HERE              */
 	
-	var ALPHA, AudioAnalyser, COLORS, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN;
+	var ALPHA, AudioAnalyser, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN;
 
 	NUM_PARTICLES = 75; // cuz small area eh
 NUM_BANDS = 256; 
@@ -417,7 +418,6 @@ SIZE = {
   MAX: 0.85
 };
 //remove "window." !!!!!!!!!!!!!!!!!!!
-COLORS = ['#69D2E7', '#1B676B', '#BEF202', '#EBE54D', '#00CDAC', '#1693A5', '#F9D423', '#FF4E50', '#E7204E', '#0CCABA', '#FF006F'];
 
 AudioAnalyser = (function() {
   AudioAnalyser.AudioContext = self.AudioContext || self.webkitAudioContext;
