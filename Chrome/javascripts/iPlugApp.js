@@ -991,6 +991,12 @@ $("#iplug-playback").addClass("custom1");
     Array.prototype.last = function () {
         return this[this.length - 1];
     };
+    
+    
+    $('body').keyup(function(e){
+        if(e.keyCode !== 32 || $("#chat-input").hasClass("focused") || $("#dialog-container").css("display") === "block") return;
+        $("#volume > .button").click();
+    });
 
 
     
