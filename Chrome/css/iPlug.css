@@ -472,4 +472,6 @@
     color: rgb(128, 134, 145);
     font-size: 15px;
 }
-
+#tooltip > span {
+    white-space: pre-wrap !important;
+}
