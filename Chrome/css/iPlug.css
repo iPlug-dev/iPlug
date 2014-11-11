@@ -451,3 +451,25 @@
     margin-top: -5px;
     margin-left: 1px;
 }
+#user-lists .list.room .user .icon-meh {
+    top: -1px !important;
+    right: 8px !important;
+    left: auto !important;
+}
+#user-lists .list.room .user .icon-grab {
+    right: 35px !important;
+}
+#user-lists .list.room .user .name {
+    left: 64px !important;
+}
+#user-lists .list.room .user .plug-level {
+    position: absolute;
+    top: 5px;
+    margin: auto;
+    left: 25px;
+    width: 43px;
+    text-align: center;
+    color: rgb(128, 134, 145);
+    font-size: 15px;
+}
+
