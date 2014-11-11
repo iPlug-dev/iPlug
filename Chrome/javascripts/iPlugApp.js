@@ -61,9 +61,6 @@
     if (undefined === localStorage["iplug|html5youtube"]) { // should be in menu :/
         localStorage["iplug|html5youtube"] = "block";
     }
-    if (undefined === localStorage["iplug|audiovideo"]) { // IT SHOULD NOT BE IN MENU! (triggered by plug stuff)
-        localStorage["iplug|audiovideo"] = "block";
-    }
 
     if (localStorage["iplug|youtubevideodisabled"] == "none") {
         $("#playback").css("display", "block");
@@ -469,7 +466,7 @@
         if (Youtube.getPlayerState() != YT.PlayerState.PAUSED) Youtube.pauseVideo();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
-        if (localStorage["iplug|audiovideo"] != "block")
+        if (require("b20d6/bc956/d3bcf").settings.streamDisabled)
             return YoutubeHelper.hide();
         if ("block" != localStorage["iplug|html5youtube"] || ($("#playback-controls").hasClass("snoozed")))
             return YoutubeHelper.hide();
@@ -851,7 +848,7 @@
         if (!Visualizations.paused()) Visualizations.pause();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
-        if (localStorage["iplug|audiovideo"] != "block")
+        if (require("b20d6/bc956/d3bcf").settings.streamDisabled)
             return VisualizationsHelper.hide();
         if ("block" != localStorage["iplug|scvisualsenabled"])
             return VisualizationsHelper.hide();
@@ -904,8 +901,7 @@
         }
         Youtube.setPlaybackQuality(q);
     });
-    $(document).on("click", "#user-settings > div.application.section > div > div:nth-child(5) > div", function() {
-        localStorage["iplug|audiovideo"] = $("#user-settings > div.application.section > div > div:nth-child(5) > div > i").css("display");
+    require("b20d6/a8e70/cac1a").on("change:streamDisabled",function(x){
         onAPIadvance();
     });
     $("#playback-controls > div.button.refresh").click(function() {
