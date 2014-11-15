@@ -30,6 +30,9 @@
 #iplug-playback{
 	background: -webkit-radial-gradient(50% 50%, ellipse cover, rgba(0, 0, 0, 0) 20%, rgb(0, 0, 0) 95%),url(chrome-extension://__MSG_@@extension_id__/images/noise-1.png), #13242f;
 }
+#tooltip {
+    z-index: 9999999;
+}
 #tooltip span {
     display:block;
 }
