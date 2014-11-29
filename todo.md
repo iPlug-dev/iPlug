@@ -1,9 +1,17 @@
-*full screen youtube video
+* custom mentions
 
-*backgrounds
+* emoji cheat sheet in chat input
 
-*private chat
+* twitch emojis (working on it)
 
-*custom themes (@p3=, @ip=)
+* custom emojis suggestions (also working on it)
 
-*chat customization
+* full screen youtube video
+
+* backgrounds
+
+* private chat
+
+* custom themes (@p3=, @ip=)
+
+* chat customization
