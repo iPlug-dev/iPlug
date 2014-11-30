@@ -1,17 +1,22 @@
-* custom mentions
+To do
+===================
 
-* emoji cheat sheet in chat input
+ - custom mentions
 
-* twitch emojis (working on it)
+ - emoji cheat sheet in chat input
 
-* custom emojis suggestions (also working on it)
+ - add emoji font
 
-* full screen youtube video
+ - **twitch emojis (working on it)**
 
-* backgrounds
+ - **custom emojis suggestions (also working on it)**
 
-* private chat
+ - full screen youtube video
 
-* custom themes (@p3=, @ip=)
+ - backgrounds
 
-* chat customization
+ - private chat
+
+ - custom themes (@p3=, @ip=)
+
+ - chat customization
