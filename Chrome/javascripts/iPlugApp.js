@@ -1079,8 +1079,8 @@
     };
 
 
-    $('body').keyup(function(e){
-        if(e.keyCode !== 32 || $("#chat-input").hasClass("focused") || $("#dialog-container").css("display") === "block") return;
+    $('body').keyup(function (e) {
+        if (e.keyCode !== 32 || $("#chat-input").hasClass("focused") || $("#dialog-container").css("display") === "block") return;
         $("#volume > .button").click();
     });
 
@@ -1102,13 +1102,13 @@
     });
 
     API.on(API.WAIT_LIST_UPDATE, function () {
-		smartAutoJoin(); // init settings
-		JN();
+        smartAutoJoin(); // init settings
+        JN();
     });
 
 
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
-     $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div><div class="iplug-menu-autowoot iplug-container" style="width: 325px;overflow: hidden;margin: 0px 0px 0px 10px;padding-top: 10px;position: relative;"> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + {block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>'}[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="visualsstyle" class="noitem centerall" style="width: 300px;"><span style="font-weight: normal; color: #fff">Style ' + (parseInt(localStorage['iplug|scvisualsstyle']) + 1) + '</span><span> - change Style</span> </div> <div id="visuals1" style="' + ((localStorage['iplug|scvisualsstyle'] === '1') ? '' : 'height: 0px; opacity: 0') + '"> <div class="settings"> <div class="noitem delete" style="display: none"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="decolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="decolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="decolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="decolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div class="nodecontainer"> <div class="node cross"> <div class="horizontal"></div><div class="vertical"></div></div></div></div> <div id="visuals0" style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '"> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Useless</span> <span class="count">Useless</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete" style="display: none"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Recenter all markers</span> </div> </div> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div> </div> </div> </div>');
+    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div class="iplug-menu-autowoot iplug-container" style="width: 325px;overflow: hidden;margin: 0px 0px 0px 10px;padding-top: 10px;position: relative;"> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + {block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>'}[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="visualsstyle" class="noitem centerall" style="width: 300px;"><span style="font-weight: normal; color: #fff">Style ' + (parseInt(localStorage['iplug|scvisualsstyle']) + 1) + '</span><span> - change Style</span> </div> <div id="visuals1" style="' + ((localStorage['iplug|scvisualsstyle'] === '1') ? '' : 'height: 0px; opacity: 0') + '"> <div class="settings"> <div class="noitem delete" style="display: none"><span style="display: ' + ((COLORS.length > 1) ? "block; cursor: pointer" : "none; cursor: default") + '">Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="decolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="decolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="decolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="decolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div class="nodecontainer" style="height: ' + (-19 * Math.floor(-COLORS.length / 16)) + 'px"> <div class="node cross"> <div class="horizontal"></div> <div class="vertical"></div> </div> <div class="node" style="background-color: ' + COLORS.join('"></div><div class="node" style="background-color: ') + '"></div> </div> </div> <div id="visuals0" style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '"> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Fast</span> <span class="count">Fancy</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Recenter all markers</span> </div> </div> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div> </div> </div></div>');
     $("#chat-button, #users-button, #waitlist-button, #friends-button").bind("click", function () {
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
@@ -1128,14 +1128,20 @@
     }).one("click", function () {
         $(".iplug-container .item, .iplug-container .noitem").each(function (i, item) {
             var width = $(item).hasClass("item") ? 30 : 0;
-            $(item).children("span").each(function(i, e) {
+            $(item).children("span").each(function (i, e) {
                 width += parseInt($(e).css("width"));
             });
             $(item).css("width", width + "px");
         });
     });
+    $(".nodecontainer .node").each(function (i, e) {
+        $(e).css({
+            right: 5 + 19 * (i % 16) + "px",
+            top: 5 + 19 * Math.floor(i / 16) + "px"
+        });
+    }).not(".cross").bind("click", bindnode);
 
-	
+
     $(".iplug-container .item-iplug").bind("click", function () {
         var enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
         if (enabled) {
@@ -1150,7 +1156,7 @@
 
 
     $(".iplug-container .slider > .barcontainer > .circle").bind("mousedown", startdrag);
-	
+
     $(".iplug-container .slider > .barcontainer > .hit").bind("mousedown", function () {
         var mousepos = Math.max(0, Math.min(300, mouseX - $(this).offset().left));
         if (dragging) {
@@ -1291,10 +1297,10 @@
     });
 
 
-    $("#visualsstyle").bind("click", function() {
+    $("#visualsstyle").bind("click", function () {
         if ($("#scvisuals").is(':animated')) return;
         $("#scvisuals > .iplug-collapse.icon-arrow-down").trigger('mousedown');
-        setTimeout(function() {
+        setTimeout(function () {
             $("#visuals" + localStorage['iplug|scvisualsstyle']).css("height", "0px").css("opacity", "0");
             localStorage['iplug|scvisualsstyle'] = (1 + parseInt(localStorage['iplug|scvisualsstyle'])) % 2;
             $("#visuals" + localStorage['iplug|scvisualsstyle']).css("height", "").css("opacity", "");
@@ -1304,28 +1310,69 @@
     });
 
 
-    $(".nodecontainer .node.cross").bind("click", function() {
+    $(".nodecontainer .node.cross").bind("click", function () {
         var cross = $(this);
         cross.after('<div class="node"></div>');
-        cross.parent().animate({height: -19 * Math.floor(-$(".node").length / 16) + "px"}, {duration: 250, queue: false});
-        cross.parent().children(".node").each(function(i, e) {
-            $(e).animate({right: 5 + 19 * (i % 16) + "px", top: 5 +  19 * Math.floor(i / 16) + "px"}, {duration: 250, queue: false});
+        cross.parent().animate({
+            height: -19 * Math.floor(-$(".node").length / 16) + "px"
+        }, {
+            duration: 250,
+            queue: false
+        });
+        cross.parent().children(".node").each(function (i, e) {
+            $(e).animate({
+                right: 5 + 19 * (i % 16) + "px",
+                top: 5 + 19 * Math.floor(i / 16) + "px"
+            }, {
+                duration: 250,
+                queue: false
+            });
         });
         cross.siblings(".node").first().bind("click", bindnode).css("background-color", cross.parent().siblings(".settings").find(".colorblock").css("background-color")).click();
-        cross.parent().siblings(".settings").find(".delete").css("display", "block");
+        cross.parent().siblings(".settings").find(".delete span").css({
+            display: "block",
+            cursor: "pointer"
+        });
+        COLORS = [];
+        $(".node").not(".cross").each(function (i, e) {
+            COLORS.push($(e).css("background-color"));
+        });
+        localStorage["iplug|decolorstring"] = COLORS.join("|");
     });
 
-    $("#visuals1 .delete").bind("click", function() {
+    $("#visuals1 .delete").bind("click", function () {
         var del = $(this).parent().siblings(".nodecontainer").children(".node.selected");
         var pos = del.parents().children(".node").index(del);
         var nodes = del.siblings(".node");
+        if (nodes.length <= 1) return;
         if (pos === nodes.length) pos--;
+        del.parent().animate({
+            height: -19 * Math.floor(-$(".node").length / 16) + "px"
+        }, {
+            duration: 250,
+            queue: false
+        });
         del.remove();
-        nodes.each(function(i, e) {
-            $(e).animate({right: 5 + 19 * (i % 16) + "px", top: 5 +  19 * Math.floor(i / 16) + "px"}, {duration: 250, queue: false});
+        nodes.each(function (i, e) {
+            $(e).animate({
+                right: 5 + 19 * (i % 16) + "px",
+                top: 5 + 19 * Math.floor(i / 16) + "px"
+            }, {
+                duration: 250,
+                queue: false
+            });
         });
         nodes.eq(pos).click();
-        if (nodes.length === 2) $(this).css("display", "none");
+        console.log(nodes.length, $(this).children());
+        if (nodes.length <= 2) $(this).children().css({
+            display: "none",
+            cursor: "default"
+        });
+        COLORS = [];
+        $(".node").not(".cross").each(function (i, e) {
+            COLORS.push($(e).css("background-color"));
+        });
+        localStorage["iplug|decolorstring"] = COLORS.join("|");
     });
 
 
@@ -1334,9 +1381,25 @@
     function bindnode() {
         var node = $(this);
         if (node.is(".selected")) return;
-        node.addClass("selected").animate({height: "14px", width: "14px", marginRight: "-2px", marginTop: "-2px"}, {duration: 250, queue: false}).siblings(".selected").removeClass("selected").animate({height: "10px", width: "10px", marginRight: "0px", marginTop: "0px"}, {duration: 250, queue: true});
+        node.addClass("selected").animate({
+            height: "14px",
+            width: "14px",
+            marginRight: "-2px",
+            marginTop: "-2px"
+        }, {
+            duration: 250,
+            queue: false
+        }).siblings(".selected").removeClass("selected").animate({
+            height: "10px",
+            width: "10px",
+            marginRight: "0px",
+            marginTop: "0px"
+        }, {
+            duration: 250,
+            queue: true
+        });
         node.parent().siblings(".settings").children().css("display", "block").find(".colorblock").css("background-color", node.css("background-color"));
-        node.css("background-color").substring(4, 17).split(", ").forEach(function(e, i, a) {
+        node.css("background-color").substring(4, 17).split(", ").forEach(function (e, i, a) {
             node.parent().siblings(".settings").find(".circle").eq(i).css("left", parseInt(e) + "px");
         });
     }
@@ -1355,36 +1418,37 @@
         }
         drag(victim, $(this).parent().children(".bar.selected"), $(this).parent().children(".circle"), $(this).parent().parent().children(".titlecontainer").children(".value"), mouseX, parseInt($(this).attr("style").split(" ")[1]), $(this).parent().parent().attr("id"), parseInt($(this).parent().children(".bar.background").css("width")) + 1, callbacks(victim.parent().parent().attr("id")));
     }
-	
-	//* MICHAL *//
-	var holdingCircle = false;
-	var overCircle = false;
-	function updateTooltip(_this){
-		$("#tooltip").css("top",($(_this.target).offset().top - 28) + 'px');
-		$("#tooltip").css("right", (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px');
-		$("#tooltip>span").html(parseInt(_this.target.style.left,10));
-	}
-	$(".iplug-container .colorpicker .slider .barcontainer .circle").bind("mouseenter", function (_this) {
-		overCircle = true;
+
+    //* MICHAL *//
+    var holdingCircle = false;
+    var overCircle = false;
+
+    function updateTooltip(_this) {
+        $("#tooltip").css("top", ($(_this.target).offset().top - 28) + 'px');
+        $("#tooltip").css("right", (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px');
+        $("#tooltip>span").html(parseInt(_this.target.style.left, 10));
+    }
+    $(".iplug-container .colorpicker .slider .barcontainer .circle").bind("mouseenter", function (_this) {
+        overCircle = true;
         $("#tooltip").remove();
-		$("body").append('<div id="tooltip" style="top: ' + ($(_this.target).offset().top - 28) + 'px; left: initial; right: ' + (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px;" class="right"><span>'+ parseInt(_this.target.style.left,10) +'</span><div class="corner"></div></div>');
+        $("body").append('<div id="tooltip" style="top: ' + ($(_this.target).offset().top - 28) + 'px; left: initial; right: ' + (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px;" class="right"><span>' + parseInt(_this.target.style.left, 10) + '</span><div class="corner"></div></div>');
     }).bind("mousedown", function (_this) {
-		holdingCircle = true;
+        holdingCircle = true;
         $("#tooltip").remove();
-		$("body").append('<div id="tooltip" style="top: ' + ($(_this.target).offset().top - 28) + 'px; left: initial; right: ' + (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px;" class="right"><span>'+ parseInt(_this.target.style.left,10) +'</span><div class="corner"></div></div>');
+        $("body").append('<div id="tooltip" style="top: ' + ($(_this.target).offset().top - 28) + 'px; left: initial; right: ' + (window.innerWidth - $(_this.target).offset().left - $(_this.target).width() + 2) + 'px;" class="right"><span>' + parseInt(_this.target.style.left, 10) + '</span><div class="corner"></div></div>');
     }).bind("mouseleave", function () {
-	    overCircle = false;
-		if (!holdingCircle){
-			$("#tooltip").remove();
-		}
+        overCircle = false;
+        if (!holdingCircle) {
+            $("#tooltip").remove();
+        }
     });
-	$(window).bind("mouseup", function () {
-		holdingCircle = false;
-		if (!overCircle){
-			$("#tooltip").remove();
-		}
+    $(window).bind("mouseup", function () {
+        holdingCircle = false;
+        if (!overCircle) {
+            $("#tooltip").remove();
+        }
     });
-	//* END MICHAL *//
+    //* END MICHAL *//
 
     $(window).bind("mouseup blur", function () {
         dragging = false;
@@ -1406,9 +1470,11 @@
         localStorage["iplug|" + name + "min"] = values[0];
         localStorage["iplug|" + name + "max"] = values.last();
         selection.attr("style", "left: " + (7 + values[0]) + "px; width: " + (values.last() - values[0]) + "px");
-		if ($(".colorpicker").find(victim)[0] == victim[0])	{
-			updateTooltip({target: victim[0]});
-		}
+        if ($(".colorpicker").find(victim)[0] == victim[0]) {
+            updateTooltip({
+                target: victim[0]
+            });
+        }
         if (dragging) {
             setTimeout(function () {
                 drag(victim, selection, circles, minmax, startx, original, name, max, callback);
@@ -1423,20 +1489,20 @@
 
     function callbacks(id, enabled) {
         switch (id) {
-			case "autojoinenabled":
-				return function(){
-					if (pos == -1 && localStorage["iplug|autojoinenabled"] == "block") {
-						$("#autojoinenabled > i").removeClass("blackandwhite");
-						tempAutoJoinDisabled = false;
-					}
-					if (tempAutoJoinDisabled && localStorage["iplug|autojoinenabled"] != "block") {
-						$("#autojoinenabled").click();
-						tempAutoJoin(false);
-						JN();
-					} else if (localStorage["iplug|autojoinenabled"] == "block") {
-						JN();
-					}
-				};
+            case "autojoinenabled":
+                return function () {
+                    if (pos == -1 && localStorage["iplug|autojoinenabled"] == "block") {
+                        $("#autojoinenabled > i").removeClass("blackandwhite");
+                        tempAutoJoinDisabled = false;
+                    }
+                    if (tempAutoJoinDisabled && localStorage["iplug|autojoinenabled"] != "block") {
+                        $("#autojoinenabled").click();
+                        tempAutoJoin(false);
+                        JN();
+                    } else if (localStorage["iplug|autojoinenabled"] == "block") {
+                        JN();
+                    }
+                };
             case "youtubevideodisabled":
                 return function () {
                     if (enabled) {
@@ -1479,13 +1545,13 @@
                 };
             case "scvisualsenabled":
                 return function () {
-                    if (typeof(API.getMedia()) == "object") {
-						if (typeof(API.getMedia().format) == "number" && API.getMedia().format == 2) {
-							$("#playback-controls > div.button.refresh").click();
-						} else {
-							onAPIadvance();
-						}
-					}
+                    if (typeof (API.getMedia()) == "object") {
+                        if (typeof (API.getMedia().format) == "number" && API.getMedia().format == 2) {
+                            $("#playback-controls > div.button.refresh").click();
+                        } else {
+                            onAPIadvance();
+                        }
+                    }
                 };
             case "autowootdelayrandom":
                 return function () {
@@ -1553,7 +1619,7 @@
             case "degradientslider":
                 return function () {
                     COLORS = [];
-                    $(".node").not(".cross").each(function(i, e) {
+                    $(".node").not(".cross").each(function (i, e) {
                         COLORS.push($(e).css("background-color"));
                     });
                     localStorage["iplug|decolorstring"] = COLORS.join("|");
@@ -1680,13 +1746,12 @@
     function showMeh() {
         if (localStorage["iplug|listgrabmehenabled"] !== "block") return;
         var usernames = [];
-        API.getUsers().filter(function(x) {
+        API.getUsers().filter(function (x) {
             if (x.vote === -1) return true;
-        }).forEach(function(e) {
+        }).forEach(function (e) {
             usernames.push(e.username);
         });
-        if (usernames.length > 0)
-            plug.tooltip.show(usernames.join("\n"), $("#meh"), false);
+        if (usernames.length > 0) plug.tooltip.show(usernames.join("\n"), $("#meh"), false);
     }
 
     function hideTooltip() {
@@ -1696,13 +1761,12 @@
     function showGrab() {
         if (localStorage["iplug|listgrabmehenabled"] !== "block") return;
         var usernames = [];
-        API.getUsers().filter(function(x) {
+        API.getUsers().filter(function (x) {
             if (x.grab) return true;
-        }).forEach(function(e) {
+        }).forEach(function (e) {
             usernames.push(e.username);
         });
-        if (usernames.length > 0)
-            plug.tooltip.show(usernames.join("\n"), $("#grab"), false);
+        if (usernames.length > 0) plug.tooltip.show(usernames.join("\n"), $("#grab"), false);
     }
     $("#grab").on("mouseenter", showGrab).on("mouseleave", hideTooltip);
     $("#meh").on("mouseenter", showMeh).on("mouseleave", hideTooltip);
