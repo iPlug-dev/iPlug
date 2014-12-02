@@ -1363,7 +1363,6 @@
             });
         });
         nodes.eq(pos).click();
-        console.log(nodes.length, $(this).children());
         if (nodes.length <= 2) $(this).children().css({
             display: "none",
             cursor: "default"
