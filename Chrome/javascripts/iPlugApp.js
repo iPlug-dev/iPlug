@@ -88,14 +88,54 @@
         $("#dj-booth").css("display", "none");
     }
     var colorscheme = localStorage["iplug|sccolorstring"].split("&");
-    colorscheme.forEach(function(a, i, e) {
+    colorscheme.forEach(function (a, i, e) {
         e[i] = [a.split("|")[0], a.split("|")[1].split(",")];
     });
     var COLORS = localStorage["iplug|decolorstring"].split("|");
 
+    var requireIDs = {
+        a: null,
+        r: null,
+        s: null,
+        v: null,
+        c: null,
+        i: null,
+        e: null,
+        m: null,
+        g: null
+    };
 
-    require('b20d6/bef6e/d30e9/edd07/ed958').prototype.RowClass = require('b20d6/bef6e/d30e9/edd07/d3853').extend({
-        vote: function() {
+    function requireTry(id, callback) {
+        if (typeof id !== "string" || !requirejs.defined(id)) return;
+        try {
+            var x = require(id);
+            if (typeof callback === "function") callback(x);
+        } catch (f) {}
+    }
+    var x;
+    for (var i in x = requirejs.s.contexts._.defined) {
+        if (!x.hasOwnProperty(i) || !x[i]) continue;
+        if (x[i] && x[i]._events && x[i]._events.notify)
+            requireIDs.a = i;
+        if (x[i].prototype && x[i].prototype.RowClass && x[i].prototype.className === "list room")
+            requireIDs.r = i;
+        if (x[i].attributes && typeof x[i].attributes.streamDisabled === "boolean")
+            requireIDs.s = i;
+        if (x[i].prototype && x[i].prototype.vote)
+            requireIDs.v = i;
+        if (x[i].prototype && x[i].prototype.hasOwnProperty("id") && x[i].prototype.id == "chat-suggestion")
+            requireIDs.c = i;
+        if (x[i].prototype && x[i].prototype.submitSuggestion && x[i].prototype.hasOwnProperty("id"))
+            requireIDs.i = i;
+        if (x[i] && x[i].add && x[i].init && x[i].remove && x[i].lookup && x[i].exists)
+            requireIDs.e = i;
+        if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
+            requireIDs.m = i;
+        if (x[i] && x[i].getAudience && x[i].population && x[i].findWhere)
+            requireIDs.g = i;
+    }
+    require(requireIDs.r).prototype.RowClass = require(requireIDs.v).extend({
+        vote: function () {
             if (this.model.get('level')) {
                 if (!this.$level) {
                     this.$level = $("<span>");
@@ -133,18 +173,114 @@
             }
         }
     });
-
-    var plug = {
-        tooltip: {
-            show: function(text, obj, right) {
-                require("b20d6/f1e58/e027b").trigger("tooltip:show", text, obj, right);
-            },
-            hide: function() {
-                require("b20d6/f1e58/e027b").trigger("tooltip:hide");
+    var a = require(requireIDs.c).extend({
+        check: function (e, t) {
+            var i = require(requireIDs.m);
+            var s = require(requireIDs.e);
+            var k = {
+                lookup: function (e) {
+                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
+                },
+                map: {
+                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
+                }
+            };
+            var n = e.lastIndexOf(" @"),
+                r = e.lastIndexOf(" :");
+            n === -1 && (n = e.indexOf("@") === 0 ? 0 : -1);
+            if (n > -1 && n > r) {
+                this.type = "@", n === 0 ? this.suggestions = s.lookup(e.substr(n + 1, t)) : n > 0 && t > n + 2 && (this.suggestions = s.lookup(e.substr(n + 2, t)));
+            } else {
+                this.type = ":";
+                var o = 2;
+                r === -1 ? r = e.indexOf(":") === 0 ? 0 : -1 : o = 3, r > -1 && t - r > o && (r === 0 ? this.suggestions = i.lookup(e.substr(r + 1, t)).concat(k.lookup(e.substr(r + 1, t))) : r > 0 && t > r + o && (this.suggestions = i.lookup(e.substr(r + 2, t)).concat(k.lookup(e.substr(r + 2, t)))));
             }
         },
-        notify: function(icon, text, idk) {
-            require("b20d6/f1e58/e027b").trigger("notify", icon, text, idk);
+        iplug: false,
+        updateSuggestions: function () {
+            var i = require(requireIDs.m); /* emotes */
+            var r = require(requireIDs.g); /* idk */
+            var k = {
+                lookup: function (e) {
+                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
+                },
+                map: {
+                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
+                }
+            };
+            var e = jQuery;
+            var n = this.suggestions.length;
+            var u = require("hbs!templates/room/chat/ChatSuggestionItem");
+            var t = require("underscore");
+            this.$itemContainer.html("");
+            this.iplug = false;
+            if (n === 0) {
+                this.$el.hide(), this.index = -1;
+            } else {
+                var s, o, a, f = n;
+                if (this.type === "@") {
+                    for (s = 0; s < n; ++s) {
+                        var l = r.findWhere({
+                            username: this.suggestions[s]
+                        });
+                        if (l) {
+                            var c = l.get("avatarID");
+                            a = '<div class="thumb small"><i class="avi avi-' + l.get("avatarID") + '"></i></div>', o = e(u({
+                                value: this.suggestions[s],
+                                index: s,
+                                image: a
+                            })).mousedown(this.pressBind).mouseenter(this.overBind);
+                            var h = l.get("status");
+                            h === 0 ? o.addClass("available") : h === 1 ? o.addClass("away") : h === 2 ? o.addClass("working") : h === 3 ? o.addClass("gaming") : h === 4 ? o.addClass("idle") : h === 5 && o.addClass("idle"), this.$itemContainer.append(o);
+                        } else {
+                            --f;
+                        }
+                    }
+                } else {
+                    for (s = 0; s < n; ++s) {
+                        var x = i.map[this.suggestions[s]] ? i.map[this.suggestions[s]] : (this.iplug = true, k.map[this.suggestions[s]]);
+                        a = this.iplug ? '<span class="emoji-glow"><span style="background: url(' + x + ') 0 0 no-repeat;background-size: contain;position: absolute; width: 16px; height: 16px; z-index: 1;"></span></span>' : '<span class="emoji-glow"><span class="emoji emoji-' + x + '"></span></span>';
+                        o = e(u({
+                            value: (!this.iplug ? ":" : "") + this.suggestions[s] + (!this.iplug ? ":" : ""),
+                            index: s,
+                            image: a
+                        })).mousedown(this.pressBind).mouseenter(this.overBind), o.addClass("emo"), this.$itemContainer.append(o);
+                    }
+                }
+                if (this.index === -1 || this.index >= n) {
+                    this.index = 0;
+                }
+                this.updateSelectedSuggestion(), this.$el.height(f * 38), t.delay(this.showBind, 10), t.delay(this.showBind, 15), this.$document.on("mousedown", this.documentClickBind);
+            }
+        },
+        getSelected: function () {
+            return [this.suggestions[this.index] + (this.type === ":" ? this.iplug ? "" : ":" : ""), this.iplug];
+        }
+    });
+    require(requireIDs.c).prototype.check = a.prototype.check;
+    require(requireIDs.c).prototype.updateSuggestions = a.prototype.updateSuggestions;
+    require(requireIDs.c).prototype.getSelected = a.prototype.getSelected;
+    require(requireIDs.i).prototype.submitSuggestion = function () {
+        var e = this.suggestionView.type === "@" ? this.getMentionRange() : this.getEmojiRange(),
+            t = this.chatInput.value.substr(0, e[0]),
+            n = this.chatInput.value.substr(e[1]),
+            r = this.suggestionView.getSelected();
+        this.chatInput.value = Array.isArray(r) ? (r[1] ? t.substring(0, t.lastIndexOf(":")) : t) + r[0] + " " + n : t + r + " " + n;
+        this.chatInput.setSelectionRange(e[0] + r[0].length + 1, e[0] + r[0].length + 1)
+        this.suggestionView.reset();
+        this.suggestionView.updateSuggestions();
+    }
+    var plug = {
+        tooltip: {
+            show: function (text, obj, right) {
+                require(requireIDs.a).trigger("tooltip:show", text, obj, right);
+            },
+            hide: function () {
+                require(requireIDs.a).trigger("tooltip:hide");
+            }
+        },
+        notify: function (icon, text, idk) {
+            require(requireIDs.a).trigger("notify", icon, text, idk);
         }
     };
 
@@ -179,12 +315,12 @@
         return b;
     }
 
-    if (typeof(localStorage['iplug|version']) != "string") localStorage['iplug|version'] = "0";
+    if (typeof (localStorage['iplug|version']) != "string") localStorage['iplug|version'] = "0";
 
-    version() != localStorage["iplug|version"] && (localStorage["iplug|version"] = version(), setTimeout(function() {
+    version() != localStorage["iplug|version"] && (localStorage["iplug|version"] = version(), setTimeout(function () {
         var a = "Say hello to new visualizations!\nDon't forget to enable them in settings!\nversion: " + localStorage["iplug|version"];
         $("#iplug-overlay").append("<div class='iplug-overlay-bg'></div><div class='iplug-alert'><div class='iplug-alert-frame'><span class='iplug-alert-frame-title'>iPlug has been updated!</span></div><div class='iplug-alert-body'><span class='iplug-alert-body-message'>" + a + "</span></div><div class='iplug-alert-frame'><div class='iplug-alert-button-submit'> <span>OK</span></div></div></div>").css("display", "block");
-        $(".iplug-alert-button-submit").click(function() {
+        $(".iplug-alert-button-submit").click(function () {
             $("#iplug-overlay").css("display", "none");
         });
     }, 5E3)); //5 * 10^3
@@ -226,7 +362,7 @@
 
     /////////
 
-    var Sheet = function() {
+    var Sheet = function () {
         function Sheet(id) {
             this.id = typeof id == "string" ? id : 0;
             if (this.id === 0) {
@@ -237,10 +373,10 @@
             this.target.id = this.id;
             this.target.appendChild(document.createTextNode(""));
             document.head.appendChild(this.target);
-            this.getRules = function() {
+            this.getRules = function () {
                 return this.target.sheet.rules;
             };
-            this.removeRuleByIndex = function(index) {
+            this.removeRuleByIndex = function (index) {
                 var i = index < this.target.sheet.rules.length ? index : -1;
                 if (i == -1) {
                     throw new Error("Incorrect index!");
@@ -253,12 +389,12 @@
                     }
                 }
             };
-            this.replaceRule = function(selector, rule, index) {
+            this.replaceRule = function (selector, rule, index) {
                 var i = "number" == typeof index ? index : 0;
                 this.removeRuleByName(selector, rule.substring(0, rule.indexOf(":")));
                 this.addRule(selector, rule, index);
             };
-            this.removeRulesBySelector = function(selector) {
+            this.removeRulesBySelector = function (selector) {
                 var k = "string" == typeof selector ? selector : -1;
                 if (-1 == k) {
                     throw new Error("Incorrect selector!");
@@ -267,7 +403,7 @@
                     this.target.sheet.rules[i].selectorText.trim() == selector.trim() && this.removeRuleByIndex(i);
                 }
             };
-            this.removeRuleByName = function(selector, ruleName) {
+            this.removeRuleByName = function (selector, ruleName) {
                 var k = "string" == typeof selector ? selector : -1,
                     l = "string" == typeof ruleName ? ruleName : -1;
                 if (-1 == k) {
@@ -277,12 +413,14 @@
                     throw new Error("Incorrect rule name!");
                 }
                 for (var i = this.target.sheet.rules.length; i >= 0; i--) {
-                    if (this.target.sheet.rules[i].selectorText == k)
-                        if (this.target.sheet.rules[i].style.cssText.substring(0, this.target.sheet.rules[i].style.cssText.indexOf(":")).trim() == l.trim())
-                            this.removeRuleByIndex(i);
+                    try {
+                        if (this.target.sheet.rules[i].selectorText == k)
+                            if (this.target.sheet.rules[i].style.cssText.substring(0, this.target.sheet.rules[i].style.cssText.indexOf(":")).trim() == l.trim())
+                                this.removeRuleByIndex(i);
+                    } catch (f) {}
                 }
             };
-            this.addRule = function(selector, rule, index) {
+            this.addRule = function (selector, rule, index) {
                 var i = "number" == typeof index ? index : 0;
                 "insertRule" in this.target.sheet ? this.target.sheet.insertRule(selector + "{" + rule + "}", i) : "addRule" in this.target.sheet && this.target.sheet.addRule(selector, rule, i);
             };
@@ -292,20 +430,20 @@
 
 
     window.CustomStyles = new Sheet("iplug-custom-styles");
-    CustomStyles.changeBackground = function(URL) {
+    CustomStyles.changeBackground = function (URL) {
         this.replaceRule("#room > i.room-background", "background: url(" + URL + ") !important");
     };
-    CustomStyles.defaultBackground = function() {
+    CustomStyles.defaultBackground = function () {
         this.removeRuleByName("#room > i.room-background", "background");
     };
-    CustomStyles.fullscreenPlayback = function() {
+    CustomStyles.fullscreenPlayback = function () {
         this.replaceRule(".custom1", "position: fixed !important");
         this.replaceRule(".custom1", "top: " + $("#room-meta").css("height") + " !important");
         this.replaceRule(".custom1", "left: 0 !important");
         this.replaceRule(".custom1", "width: " + $("#room-meta").css("width") + " !important");
         this.replaceRule(".custom1", "height : " + $("#room > div.app-right").css("height") + " !important");
     };
-    CustomStyles.normalPlayback = function() {
+    CustomStyles.normalPlayback = function () {
         this.removeRulesBySelector(".custom1");
     };
 
@@ -319,7 +457,7 @@
 
     VisualizationsHelper.currentRoom = window.location.href;
     YoutubeHelper.ready = false;
-    VisualizationsHelper.initVolume = function() {
+    VisualizationsHelper.initVolume = function () {
         var volume;
         try {
             volume = API.getVolume();
@@ -334,34 +472,34 @@
     };
     VisualizationsHelper.visible = false;
     VisualizationsHelper.initVolume();
-    VisualizationsHelper.hide = function() {
+    VisualizationsHelper.hide = function () {
         $("#iplug-playback").stop(true).animate({
             opacity: "0"
         }, {
             easing: "easeOutQuint",
             duration: 2E3,
             queue: !1,
-            step: function(now) {
+            step: function (now) {
                 VisualizationsHelper.opacity = now;
             },
-            complete: function() {
+            complete: function () {
                 this.style.display = "none";
                 Visualizations.stop();
                 VisualizationsHelper.visible = !1;
             }
         });
     };
-    VisualizationsHelper.show = function() {
+    VisualizationsHelper.show = function () {
         $("#iplug-playback").stop(true).animate({
             opacity: "1"
         }, {
             easing: "easeOutQuint",
             duration: 2E3,
             queue: !1,
-            step: function(now) {
+            step: function (now) {
                 VisualizationsHelper.opacity = now;
             },
-            start: function() {
+            start: function () {
                 this.style.display = "block";
                 Visualizations.start();
                 VisualizationsHelper.visible = !0;
@@ -376,34 +514,34 @@
 
     YoutubeHelper.ignoreOnce = false;
     YoutubeHelper.visible = false;
-    YoutubeHelper.hide = function() {
+    YoutubeHelper.hide = function () {
         $("#iplug-yt-frame").stop(true).animate({
             opacity: "0"
         }, {
             easing: "easeOutQuint",
             duration: 2E3,
             queue: !1,
-            step: function(now) {
+            step: function (now) {
                 YoutubeHelper.opacity = now;
             },
-            complete: function() {
+            complete: function () {
                 this.style.display = "none";
                 Youtube.stopVideo();
                 YoutubeHelper.visible = false;
             }
         });
     };
-    YoutubeHelper.show = function() {
+    YoutubeHelper.show = function () {
         $("#iplug-yt-frame").stop(true).animate({
             opacity: "1"
         }, {
             easing: "easeOutQuint",
             duration: 2E3,
             queue: !1,
-            step: function(now) {
+            step: function (now) {
                 YoutubeHelper.opacity = now;
             },
-            start: function() {
+            start: function () {
                 Youtube.playVideo();
                 YoutubeHelper.visible = true;
                 this.style.display = "block"; // cuz why not
@@ -441,7 +579,7 @@
         });
     }
     YoutubeHelper.chatErrorID = "0";
-    YoutubeHelper.chatError = function(message) {
+    YoutubeHelper.chatError = function (message) {
         var r = API.getMedia().id;
         if (YoutubeHelper.chatErrorID != r) {
             YoutubeHelper.chatErrorID = API.getMedia().cid;
@@ -461,12 +599,12 @@
             $("#playback-controls > div.button.refresh").click();
         }
     }
-    YoutubeHelper.onEvent = function(event) {
+    YoutubeHelper.onEvent = function (event) {
         if (!YoutubeHelper.ready) return setTimeout(YoutubeHelper.onEvent, 100, event);
         if (Youtube.getPlayerState() != YT.PlayerState.PAUSED) Youtube.pauseVideo();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
-        if (require("b20d6/bc956/d3bcf").settings.streamDisabled)
+        if (require(requireIDs.s).attributes.streamDisabled)
             return YoutubeHelper.hide();
         if ("block" != localStorage["iplug|html5youtube"] || ($("#playback-controls").hasClass("snoozed")))
             return YoutubeHelper.hide();
@@ -528,7 +666,7 @@
     //remove "window." !!!!!!!!!!!!!!!!!!!
     COLORS = ['#69D2E7', '#1B676B', '#BEF202', '#EBE54D', '#00CDAC', '#1693A5', '#F9D423', '#FF4E50', '#E7204E', '#0CCABA', '#FF006F'];
 
-    AudioAnalyser = (function() {
+    AudioAnalyser = (function () {
         AudioAnalyser.AudioContext = self.AudioContext || self.webkitAudioContext;
 
         AudioAnalyser.enabled = AudioAnalyser.AudioContext !== null;
@@ -554,8 +692,8 @@
             this.bands = new Uint8Array(this.analyser.frequencyBinCount);
             this.gain = this.gainNode = this.context.createGain();
             this.canPlayCalled = false;
-            this.audio.addEventListener('canplay', (function(_this) {
-                return function() {
+            this.audio.addEventListener('canplay', (function (_this) {
+                return function () {
                     if (this.canPlayCalled) return;
                     this.canPlayCalled = true;
                     _this.source = _this.context.createMediaElementSource(_this.audio);
@@ -565,7 +703,7 @@
                     _this.source.connect(_this.gainNode); // passing source to gain node (volume)
                     _this.gainNode.connect(_this.context.destination); // it is now playing audio (output)
                     //_this.source.connect(_this.context.destination); || it was playing audio
-                    return _this.jsNode.onaudioprocess = function() {
+                    return _this.jsNode.onaudioprocess = function () {
                         _this.analyser.getByteFrequencyData(_this.bands);
                         if (!_this.audio.paused) {
                             return typeof _this.onUpdate === "function" ? _this.onUpdate(_this.bands) : void 0;
@@ -575,11 +713,11 @@
             })(this));
         }
 
-        AudioAnalyser.prototype.start = function() {
+        AudioAnalyser.prototype.start = function () {
             return this.audio.play();
         };
 
-        AudioAnalyser.prototype.stop = function() {
+        AudioAnalyser.prototype.stop = function () {
             return this.audio.pause();
         };
 
@@ -587,14 +725,14 @@
 
     })();
 
-    Particle = (function() {
+    Particle = (function () {
         function Particle(x, y) {
             this.x = x !== null ? x : 0;
             this.y = y !== null ? y : 0;
             this.reset();
         }
 
-        Particle.prototype.reset = function() {
+        Particle.prototype.reset = function () {
             this.level = 1 + floor(random(4));
             this.scale = random(SCALE.MIN, SCALE.MAX);
             this.alpha = random(ALPHA.MIN, ALPHA.MAX);
@@ -614,12 +752,12 @@
             return this.energy = 0.0;
         };
 
-        Particle.prototype.move = function() {
+        Particle.prototype.move = function () {
             this.rotation += this.spin;
             return this.y -= this.speed * this.level;
         };
 
-        Particle.prototype.draw = function(ctx) {
+        Particle.prototype.draw = function (ctx) {
             var alpha, power, scale;
             power = exp(this.energy);
             scale = this.scale * power;
@@ -657,25 +795,25 @@
         analyser: 0,
         particles: [],
         container: VisualizationsHelper.location,
-        play: function() {
+        play: function () {
             return this.analyser.audio.play();
         },
-        pause: function() {
+        pause: function () {
             return this.analyser.audio.pause();
         },
-        paused: function() {
+        paused: function () {
             return this.analyser.audio.paused;
         },
-        setVolume: function(value) {
+        setVolume: function (value) {
             return this.analyser.gainNode.gain.value = value;
         },
-        setSource: function(audio) {
+        setSource: function (audio) {
             var temp = audio !== null ? audio : "";
             if (typeof temp === 'string') {
                 this.analyser.audio.src = temp;
             }
         },
-        setup: function() {
+        setup: function () {
             var i, particle, warning, x, y, _i, _ref;
             for (i = _i = 0, _ref = NUM_PARTICLES - 1; _i <= _ref; i = _i += 1) {
                 x = random(this.width);
@@ -687,8 +825,8 @@
             if (AudioAnalyser.enabled) {
                 try {
                     this.analyser = new AudioAnalyser(MP3_PATH, NUM_BANDS, SMOOTHING);
-                    this.analyser.onUpdate = (function(_this) {
-                        return function(bands) {
+                    this.analyser.onUpdate = (function (_this) {
+                        return function (bands) {
                             var _j, _len, _ref1, _results;
                             _ref1 = _this.particles;
                             _results = [];
@@ -707,7 +845,7 @@
                 return console.error("There's no Audio Analyser API");
             }
         },
-        draw: function() {
+        draw: function () {
             var particle, _i, _len, _ref, _results;
             this.globalCompositeOperation = 'lighter';
             _ref = this.particles;
@@ -731,7 +869,7 @@
     Visualizations.canvas.style.zIndex = "6";
 
     VisualizationsHelper.chatErrorID = 0;
-    VisualizationsHelper.chatError = function(message) {
+    VisualizationsHelper.chatError = function (message) {
         var r = API.getMedia().id;
         if (VisualizationsHelper.chatErrorID != r) {
             VisualizationsHelper.chatErrorID = API.getMedia().id;
@@ -745,8 +883,8 @@
 
     Visualizations.width = parseInt($("#playback-container")[0].style.width, 10); /*initial call*/
     Visualizations.height = parseInt($("#playback-container")[0].style.height, 10); /*initial call*/
-    VisualizationsHelper.ObsrvOne = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
+    VisualizationsHelper.ObsrvOne = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
             if (mutation.attributeName == "style") {
                 var te = mutation.target.style.cssText + "z-index: 6;position: absolute;top: 0;";
                 var tf = mutation.target.style.cssText + "z-index: 6;position: absolute;top: 0;";
@@ -777,8 +915,8 @@
         childList: false,
         characterData: false
     });
-    VisualizationsHelper.ObsrvTwo = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
+    VisualizationsHelper.ObsrvTwo = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
             var temp = (API.getVolume() / 100);
             if (isFinite(temp)) {
                 try {
@@ -795,8 +933,8 @@
         childList: true,
         characterData: false
     });
-    YoutubeHelper.ObsrvOne = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
+    YoutubeHelper.ObsrvOne = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
             for (var i = mutation.addedNodes.length - 1; i >= 0; i--) {
                 if (localStorage["iplug|html5youtube"] == "block") {
                     if (YoutubeHelper.chatErrorID != API.getMedia().cid) {
@@ -829,7 +967,7 @@
     /* GET YOUR OWN CLIENT ID ON HTTP://DEVELOPERS.SOUNDCLOUD.COM 
      * DON'T USE MINE :)
      */
-    VisualizationsHelper.killFlash = function() {
+    VisualizationsHelper.killFlash = function () {
         try {
             if ($("#playback-controls")[0] == $(".snoozed")[0]) {
                 Visualizations.setSource("");
@@ -844,11 +982,11 @@
         } catch (f) {}
     };
     setInterval(VisualizationsHelper.killFlash, 2000);
-    VisualizationsHelper.onEvent = function(event) {
+    VisualizationsHelper.onEvent = function (event) {
         if (!Visualizations.paused()) Visualizations.pause();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
-        if (require("b20d6/bc956/d3bcf").settings.streamDisabled)
+        if (require(requireIDs.s).attributes.streamDisabled)
             return VisualizationsHelper.hide();
         if ("block" != localStorage["iplug|scvisualsenabled"])
             return VisualizationsHelper.hide();
@@ -866,7 +1004,7 @@
         }
         VisualizationsHelper.show();
         $("#playback-container > *").remove();
-        $.get('https://api.soundcloud.com/tracks/' + cid + '.json?client_id=' + VisualizationsHelper.clientID).always(function(data, data2) {
+        $.get('https://api.soundcloud.com/tracks/' + cid + '.json?client_id=' + VisualizationsHelper.clientID).always(function (data, data2) {
             if (data2 == "success") {
                 if (data.streamable === true) { //start working now
                     var streamURL = data.stream_url + '?client_id=' + VisualizationsHelper.clientID;
@@ -880,7 +1018,7 @@
         });
     };
 
-    VisualizationsHelper.playIt = function(yesNo, streamURL) {
+    VisualizationsHelper.playIt = function (yesNo, streamURL) {
         if (yesNo) {
             Visualizations.setSource(streamURL + "#t=" + API.getTimeElapsed());
         } else {
@@ -889,7 +1027,7 @@
         Visualizations.play();
     };
 
-    $("#playback-controls > div.button.hd").bind("click", function(a) {
+    $("#playback-controls > div.button.hd").bind("click", function (a) {
         var q;
         if ($("#playback-controls > div.button.hd > div.box > span.label").text() == "ON") {
             var f = Youtube.getPlaybackQuality();
@@ -901,18 +1039,18 @@
         }
         Youtube.setPlaybackQuality(q);
     });
-    require("b20d6/a8e70/cac1a").on("change:streamDisabled",function(x){
+    require(requireIDs.s).on("change:streamDisabled", function (x) {
         onAPIadvance();
     });
-    $("#playback-controls > div.button.refresh").click(function() {
-        onAPIadvance();
-    });
-
-    $("#playback-controls > div.button.snooze").click(function() {
+    $("#playback-controls > div.button.refresh").click(function () {
         onAPIadvance();
     });
 
-    VisualizationsHelper.initCall = function() {
+    $("#playback-controls > div.button.snooze").click(function () {
+        onAPIadvance();
+    });
+
+    VisualizationsHelper.initCall = function () {
         if (!($('#room-loader').length > 0) && (API.enabled)) {
             VisualizationsHelper.onEvent();
             YoutubeHelper.onEvent();
@@ -931,7 +1069,7 @@
     API.on(API.ADVANCE, onAPIadvance);
 
     YoutubeHelper.ObsrvTwoIgnoreOnce = false;
-    YoutubeHelper.ObsrvTwo = new MutationObserver(function(mutations) {
+    YoutubeHelper.ObsrvTwo = new MutationObserver(function (mutations) {
         var u = window.location.href;
         if (!YoutubeHelper.ObsrvTwoIgnoreOnce) {
             if (u == VisualizationsHelper.currentRoom) return;
@@ -1004,7 +1142,7 @@
         /*INIT CALL*/
     function smartAutoJoinInit() {
         if ((pos != -3) || (prevpos != -3)) return; // event was faster hehe
-        if ((typeof(API) == "object") && (typeof(API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
+        if ((typeof (API) == "object") && (typeof (API.enabled) == "boolean") && !($('#room-loader').length > 0) && (API.enabled)) {
             if (API.getDJ() !== undefined && API.getDJ().id == API.getUser().id) {
                 prevpos = -2;
                 pos = -2;
@@ -1045,9 +1183,6 @@
     $("#playback-container").addClass("custom1");
     $("#iplug-yt-frame").addClass("custom1");
     $("#iplug-playback").addClass("custom1");
-
-
-
 
 
 
