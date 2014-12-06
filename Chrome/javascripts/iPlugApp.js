@@ -198,8 +198,8 @@
         },
         iplug: false,
         updateSuggestions: function () {
-            var i = require(requireIDs.m); /* emotes */
-            var r = require(requireIDs.g); /* idk */
+            var i = require(requireIDs.m);
+            var r = require(requireIDs.g);
             var k = {
                 lookup: function (e) {
                     return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
@@ -229,7 +229,7 @@
                                 value: this.suggestions[s],
                                 index: s,
                                 image: a
-                            })).mousedown(this.pressBind).mouseenter(this.overBind);
+                            })).mousedown(t.bind(this.iplugclickevent, this)).mouseenter(this.overBind);
                             var h = l.get("status");
                             h === 0 ? o.addClass("available") : h === 1 ? o.addClass("away") : h === 2 ? o.addClass("working") : h === 3 ? o.addClass("gaming") : h === 4 ? o.addClass("idle") : h === 5 && o.addClass("idle"), this.$itemContainer.append(o);
                         } else {
@@ -244,7 +244,7 @@
                             value: (!this.iplug ? ":" : "") + this.suggestions[s] + (!this.iplug ? ":" : ""),
                             index: s,
                             image: a
-                        })).mousedown(this.pressBind).mouseenter(this.overBind), o.addClass("emo"), this.$itemContainer.append(o);
+                        })).mousedown(t.bind(this.iplugclickevent, this)).mouseenter(this.overBind), o.addClass("emo"), this.$itemContainer.append(o);
                     }
                 }
                 if (this.index === -1 || this.index >= n) {
@@ -253,11 +253,36 @@
                 this.updateSelectedSuggestion(), this.$el.height(f * 38), t.delay(this.showBind, 10), t.delay(this.showBind, 15), this.$document.on("mousedown", this.documentClickBind);
             }
         },
+        iplugclickevent: function (c) {
+            var f = require("underscore"),
+                d = $("#chat-input-field")[0];
+            this.index = c.currentTarget.dataset.index;
+            c = this.type;
+            var a;
+            d.createTextRange ? (a = document.selection.createRange().duplicate(), a = (a.moveEnd("character", d.value.length), "" === a.text ? d.value.length : d.value.lastIndexOf(a.text))) : a = d.selectionStart;
+            if (0 < a) {
+                var e = d.value.substr(0, a),
+                    b = e.lastIndexOf("@" === c ? " @" : " :"); - 1 === b ? b = e.indexOf("@" === c ? "@" : ":") : ++b;
+                c = [b + 1, a];
+            } else {
+                c = void 0;
+            }
+            a = d.value.substr(0, c[0]);
+            e = d.value.substr(c[1]);
+            b = this.getSelected();
+            d.value = Array.isArray(b) ? (b[1] ? a.substring(0, a.lastIndexOf(":")) : a) + b[0] + " " + e : a + b + " " + e;
+            d.setSelectionRange(c[0] + b[0].length + !b[1], c[0] + b[0].length + !b[1]);
+            this.reset();
+            this.updateSuggestions();
+            f.delay(this.refocusBind, 100);
+        },
         getSelected: function () {
             return [this.suggestions[this.index] + (this.type === ":" ? this.iplug ? "" : ":" : ""), this.iplug];
         }
     });
     require(requireIDs.c).prototype.check = a.prototype.check;
+    require(requireIDs.c).prototype.iplugclickevent = a.prototype.iplugclickevent;
+    require(requireIDs.c).prototype.iplug = a.prototype.iplug;
     require(requireIDs.c).prototype.updateSuggestions = a.prototype.updateSuggestions;
     require(requireIDs.c).prototype.getSelected = a.prototype.getSelected;
     require(requireIDs.i).prototype.submitSuggestion = function () {
@@ -266,10 +291,10 @@
             n = this.chatInput.value.substr(e[1]),
             r = this.suggestionView.getSelected();
         this.chatInput.value = Array.isArray(r) ? (r[1] ? t.substring(0, t.lastIndexOf(":")) : t) + r[0] + " " + n : t + r + " " + n;
-        this.chatInput.setSelectionRange(e[0] + r[0].length + 1, e[0] + r[0].length + 1)
+        this.chatInput.setSelectionRange(e[0] + r[0].length + !r[1], e[0] + r[0].length + !r[1]);
         this.suggestionView.reset();
         this.suggestionView.updateSuggestions();
-    }
+    };
     var plug = {
         tooltip: {
             show: function (text, obj, right) {
