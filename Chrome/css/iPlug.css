@@ -177,7 +177,7 @@
     color: #555d70;
     text-transform: uppercase
 }
-.iplug-container .subcontainer .noitem {
+.iplug-container .subcontainer .noitem, .backgroundcard .noitem {
     color: #808691;
     margin-left: 27px;
     margin-top: 6px;
