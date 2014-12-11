@@ -177,7 +177,7 @@
     color: #555d70;
     text-transform: uppercase
 }
-.iplug-container .subcontainer .noitem {
+.iplug-container .subcontainer .noitem, .backgroundcard .noitem {
     color: #808691;
     margin-left: 27px;
     margin-top: 6px;
@@ -477,4 +477,66 @@
 }
 #tooltip > span {
     white-space: pre-wrap !important;
+}
+.backgroundcard {
+    height: 124px;
+    width: 315px;
+    background-color: #282c35;
+    border-radius: 10px;
+}
+.backgroundthumbnail {
+    height: 90px;
+    width: 160px;
+    margin-left: 5px;
+    border-radius: 5px;
+}
+.backgroundtitle {
+    margin-left: 10px !important;
+    margin-bottom: 5px !important;
+    padding-top: 5px;
+    width: 160px;
+}
+.backgrounddescription {
+    margin-left: 170px !important;
+    height: 0 !important;
+    margin-top: -23px !important;
+    margin-bottom: -92px !important;
+    padding-bottom: 115px;
+    font-size: 12px;
+    overflow: hidden;
+    width: 140px !important;
+    text-align: justify;
+}
+#backgroundcarddeckcontainer {
+    position: absolute;
+    top: 0px;
+    right: 345px;
+    width: 370px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+#backgroundcarddeck {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: solid;
+    border-left-width: 10px;
+    border-right-width: 0px;
+    border-top-width: 10px;
+    border-bottom-width: 10px;
+    border-color: #fff;
+    margin-top: 208px;
+    margin-bottom: 468px;
+    padding: 30px;
+    height: auto;
+    width: 300px;
+}
+#backgroundcarddeckcontainer::-webkit-scrollbar {
+    display: none;
+}
+#backgroundcarddeckcontainer .backgroundcard {
+    margin-bottom: 25px;
 }
