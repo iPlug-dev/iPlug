@@ -131,8 +131,12 @@
             requireIDs.e = i;
         if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
             requireIDs.m = i;
-        if (x[i] && x[i].getAudience && x[i].population && x[i].findWhere)
+        if (x[i] && x[i].getAudience && x[i]._events && x[i]._events["change:username"] && x[i].findWhere)
             requireIDs.g = i;
+    }
+    for (var i in requireIDs) {
+        if (!requireIDs.hasOwnProperty) continue;
+        if (!requireIDs[i]) console.log(i, requireIDs[i]);
     }
     require(requireIDs.r).prototype.RowClass = require(requireIDs.v).extend({
         vote: function () {
@@ -425,7 +429,7 @@
                     throw new Error("Incorrect selector!");
                 }
                 for (var i = this.target.sheet.rules.length; i >= 0; i--) {
-                    this.target.sheet.rules[i].selectorText.trim() == selector.trim() && this.removeRuleByIndex(i);
+                    this.target.sheet.rules[i.toString()].selectorText.trim() == selector.trim() && this.removeRuleByIndex(i);
                 }
             };
             this.removeRuleByName = function (selector, ruleName) {
@@ -439,8 +443,8 @@
                 }
                 for (var i = this.target.sheet.rules.length; i >= 0; i--) {
                     try {
-                        if (this.target.sheet.rules[i].selectorText == k)
-                            if (this.target.sheet.rules[i].style.cssText.substring(0, this.target.sheet.rules[i].style.cssText.indexOf(":")).trim() == l.trim())
+                        if (this.target.sheet.rules[i.toString()].selectorText == k)
+                            if (this.target.sheet.rules[i.toString()].style.cssText.substring(0, this.target.sheet.rules[i.toString()].style.cssText.indexOf(":")).trim() == l.trim())
                                 this.removeRuleByIndex(i);
                     } catch (f) {}
                 }
@@ -662,8 +666,9 @@
 
     /*           INIT HERE              */
 
-    var ALPHA, AudioAnalyser, COLORS, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN;
-
+    var ALPHA, AudioAnalyser, COLORS, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN, NUM_BARS, NUM_STARS;
+    NUM_STARS = 100;
+    NUM_BARS = 64; // INIT only
     NUM_PARTICLES = 75; // cuz small area eh
     NUM_BANDS = 256;
     SMOOTHING = 0.6; // was 0.5
@@ -688,9 +693,7 @@
         MIN: 0.2,
         MAX: 0.85
     };
-    //remove "window." !!!!!!!!!!!!!!!!!!!
     COLORS = ['#69D2E7', '#1B676B', '#BEF202', '#EBE54D', '#00CDAC', '#1693A5', '#F9D423', '#FF4E50', '#E7204E', '#0CCABA', '#FF006F'];
-
     AudioAnalyser = (function () {
         AudioAnalyser.AudioContext = self.AudioContext || self.webkitAudioContext;
 
@@ -713,21 +716,23 @@
             this.jsNode = this.context.createScriptProcessor(2048, 1, 1);
             this.analyser = this.context.createAnalyser();
             this.analyser.smoothingTimeConstant = this.smoothing;
-            this.analyser.fftSize = this.numBands * 2;
+            this.analyser.fftSize = this.numBands * 2; //to change analyser.fftSize = <smth> * 2; bands = new Uint8Array(analyser.frequencyBinCount);
             this.bands = new Uint8Array(this.analyser.frequencyBinCount);
-            this.gain = this.gainNode = this.context.createGain();
+            this.gainNode = this.context.createGain();
+            this.gainNode2 = this.context.createGain();
             this.canPlayCalled = false;
             this.audio.addEventListener('canplay', (function (_this) {
                 return function () {
                     if (this.canPlayCalled) return;
                     this.canPlayCalled = true;
                     _this.source = _this.context.createMediaElementSource(_this.audio);
-                    _this.source.connect(_this.analyser); // passing source to analyser
+                    _this.source.connect(_this.gainNode2); // passing source to analyser
+                    _this.gainNode2.connect(_this.analyser);
+                    _this.gainNode2.gain.value = 0.75;
                     _this.analyser.connect(_this.jsNode); // analyser
                     _this.jsNode.connect(_this.context.destination); // analyser
                     _this.source.connect(_this.gainNode); // passing source to gain node (volume)
                     _this.gainNode.connect(_this.context.destination); // it is now playing audio (output)
-                    //_this.source.connect(_this.context.destination); || it was playing audio
                     return _this.jsNode.onaudioprocess = function () {
                         _this.analyser.getByteFrequencyData(_this.bands);
                         if (!_this.audio.paused) {
@@ -737,7 +742,6 @@
                 };
             })(this));
         }
-
         AudioAnalyser.prototype.start = function () {
             return this.audio.play();
         };
@@ -745,9 +749,141 @@
         AudioAnalyser.prototype.stop = function () {
             return this.audio.pause();
         };
-
         return AudioAnalyser;
 
+    })();
+
+    CanvasRenderingContext2D.prototype.corners = {
+        top_left: 1,
+        top_right: 2,
+        bottom_left: 4,
+        bottom_right: 8
+    };
+    CanvasRenderingContext2D.prototype.roundedImage = function(img, x, y, width, height, radius) {
+    this.save();
+    this.beginPath();
+    this.moveTo(x + radius, y);
+    this.lineTo(x + width - radius, y);
+    this.quadraticCurveTo(x + width, y, x + width, y + radius);
+    this.lineTo(x + width, y + height - radius);
+    this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    this.lineTo(x + radius, y + height);
+    this.quadraticCurveTo(x, y + height, x, y + height - radius);
+    this.lineTo(x, y + radius);
+    this.quadraticCurveTo(x, y, x + radius, y);
+    this.closePath();
+    this.clip();
+    this.drawImage(img, x, y, width, height);
+    this.restore();
+    };
+    CanvasRenderingContext2D.prototype.roundRect = function (x, y, width, height, radius, fill, stroke, corners) {
+        if (typeof stroke == "undefined") {
+            stroke = true;
+        }
+        if (typeof radius === "undefined") {
+            radius = 5;
+        }
+        this.beginPath();
+        if (corners & this.corners.top_left) {
+            this.moveTo(x + radius, y);
+        } else {
+            this.moveTo(x, y);
+        }
+        if (corners & this.corners.top_right) {
+            this.lineTo(x + width - radius, y);
+            this.quadraticCurveTo(x + width, y, x + width, y + radius);
+        } else {
+            this.lineTo(x + width, y);
+        }
+        if (corners & this.corners.bottom_right) {
+            this.lineTo(x + width, y + height - radius);
+            this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        } else {
+            this.lineTo(x + width, y + height);
+        }
+        if (corners & this.corners.bottom_left) {
+            this.lineTo(x + radius, y + height);
+            this.quadraticCurveTo(x, y + height, x, y + height - radius);
+        } else {
+            this.lineTo(x, y + height);
+        }
+        if (corners & this.corners.top_left) {
+            this.lineTo(x, y + radius);
+            this.quadraticCurveTo(x, y, x + radius, y);
+        } else {
+            this.lineTo(x, y);
+        }
+        this.closePath();
+        if (stroke) {
+            this.stroke();
+        }
+        if (fill) {
+            this.fill();
+        }
+    };
+
+
+    var Bar;
+    Bar = (function () {
+        function Bar() {
+            this.x = 0;
+            this.y = 0;
+            this.width = 0;
+            this.height = 0;
+            this.bar_width = 0.75;
+        }
+
+        // Bar.update(ctx.canvas.width / data.length, ctx.canvas.height, data[i]/255, i, margin_top, margin_left);
+
+        Bar.prototype.update = function (a, b, c, d, e, f) {
+            this.x = a * d + (1 - this.bar_width) * a / 2 + f;
+            this.y = (1 - c) * (b - e) + e;
+            this.width = a * this.bar_width;
+            this.height = b - this.y;
+            return this;
+        };
+
+        Bar.prototype.toZero = function (b) {
+            if (this.height < 0 || this.y > b) {
+                this.y = b;
+                this.height = b - this.y;
+            } else if (this.y < b) {
+                this.y += 0.031 * b;
+                this.height = b - this.y;
+            }
+        };
+
+        Bar.prototype.draw = function (ctx) {
+            return ctx.roundRect(this.x,
+                this.y,
+                this.width,
+                this.height,
+                this.width / 2,
+                true,
+                false,
+                ctx.corners.top_left | ctx.corners.top_right);
+        };
+        return Bar;
+    })();
+
+
+    var Star = (function () {
+        function Star(width, height) {
+            this.reset(width, height);
+        }
+        Star.prototype.reset = function (width, height) {
+            this.x = width * (12 * Math.random() - 6);
+            this.y = height * (12 * Math.random() - 6);
+            this.px = 0;
+            this.py = 0;
+            this.z = 12;
+        };
+        Star.prototype.move = function (px, py, z) {
+            this.px = px;
+            this.py = py;
+            this.z = z;
+        };
+        return Star
     })();
 
     Particle = (function () {
@@ -762,7 +898,7 @@
             this.scale = random(SCALE.MIN, SCALE.MAX);
             this.alpha = random(ALPHA.MIN, ALPHA.MAX);
             this.speed = random(SPEED.MIN, SPEED.MAX);
-            this.color = random(COLORS); //remove "window." !!!!!!!!!!!!!!!!!!!
+            this.color = random(COLORS);
             this.size = random(SIZE.MIN, SIZE.MAX);
             this.spin = random(SPIN.MAX, SPIN.MAX);
             this.band = floor(random(NUM_BANDS));
@@ -812,6 +948,8 @@
 
     })();
 
+
+
     var Visualizations = Sketch.create({
         width: parseInt($("#playback-container")[0].style.width, 10),
         height: parseInt($("#playback-container")[0].style.height, 10),
@@ -819,6 +957,10 @@
         fullscreen: false,
         analyser: 0,
         particles: [],
+        bars: [],
+        stars: [],
+        colorCycle: 0,
+        img: new Image(),
         container: VisualizationsHelper.location,
         play: function () {
             return this.analyser.audio.play();
@@ -838,8 +980,28 @@
                 this.analyser.audio.src = temp;
             }
         },
+        addBar: function () {
+            var bar = new Bar();
+            this.bars.push(bar);
+        },
+        removeBar: function () {
+            this.bars.shift();
+        },
+        setBars: function (n) {
+            if (n === this.bars.length) return;
+            while (n < this.bars.length)
+                this.removeBar();
+            while (n > this.bars.length)
+                this.addBar();
+        },
+        margin_top: 0.1,
+        margin_left: 0.075,
         setup: function () {
             var i, particle, warning, x, y, _i, _ref;
+            for (i = 0; i < NUM_STARS; i++) {
+                this.stars.push(new Star(this.width, this.height));
+            }
+            this.setBars(NUM_BARS);
             for (i = _i = 0, _ref = NUM_PARTICLES - 1; _i <= _ref; i = _i += 1) {
                 x = random(this.width);
                 y = random(this.height * 2);
@@ -852,14 +1014,31 @@
                     this.analyser = new AudioAnalyser(MP3_PATH, NUM_BANDS, SMOOTHING);
                     this.analyser.onUpdate = (function (_this) {
                         return function (bands) {
-                            var _j, _len, _ref1, _results;
-                            _ref1 = _this.particles;
-                            _results = [];
-                            for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
-                                particle = _ref1[_j];
-                                _results.push(particle.energy = bands[particle.band] / 256);
+                            if (localStorage["iplug|scvisualsstyle"] === "1") {
+                                if (_this.analyser.analyser.fftSize !== Math.pow(2, 9)) {
+                                    _this.analyser.analyser.fftSize = Math.pow(2, 9);
+                                    _this.analyser.bands = new Uint8Array(_this.analyser.analyser.frequencyBinCount);
+                                }
+                                var _j, _len, _ref1, _results;
+                                _ref1 = _this.particles;
+                                _results = [];
+                                for (_j = 0, _len = _ref1.length; _j < _len; _j++) {
+                                    particle = _ref1[_j];
+                                    _results.push(particle.energy = bands[particle.band] / 256);
+                                }
+                                return _results;
+                            } else if (localStorage["iplug|scvisualsstyle"] === "0") {
+                                if (_this.analyser.analyser.fftSize !== Math.pow(2, 7)) {
+                                    _this.analyser.analyser.fftSize = Math.pow(2, 7);
+                                    _this.analyser.bands = new Uint8Array(0.85 * _this.analyser.analyser.frequencyBinCount);
+                                }
+                                var bar;
+                                _this.setBars(bands.length);
+                                for (var _j = 0; _j < _this.bars.length; _j++) {
+                                    bar = _this.bars[_j];
+                                    bar.update((1 - _this.margin_left * 2) * _this.width / bands.length, _this.height * 2 / 3, bands[_j] / 255, _j, _this.margin_top * _this.height / 3, _this.margin_left * _this.width);
+                                }
                             }
-                            return _results;
                         };
                     })(this);
                     this.analyser.start();
@@ -871,21 +1050,72 @@
             }
         },
         draw: function () {
-            var particle, _i, _len, _ref, _results;
-            this.globalCompositeOperation = 'lighter';
-            _ref = this.particles;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                particle = _ref[_i];
-                if (particle.y < -particle.size * particle.level * particle.scale * 2) {
-                    particle.reset();
-                    particle.x = random(this.width);
-                    particle.y = this.height + particle.size * particle.scale * particle.level;
+            if (localStorage["iplug|scvisualsstyle"] === "1") {
+                var particle, _i, _len, _ref, _results;
+                this.globalCompositeOperation = 'lighter';
+                _ref = this.particles;
+                _results = [];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    particle = _ref[_i];
+                    if (particle.y < -particle.size * particle.level * particle.scale * 2) {
+                        particle.reset();
+                        particle.x = random(this.width);
+                        particle.y = this.height + particle.size * particle.scale * particle.level;
+                    }
+                    particle.move();
+                    _results.push(particle.draw(this));
                 }
-                particle.move();
-                _results.push(particle.draw(this));
+                return _results;
+            } else if (localStorage["iplug|scvisualsstyle"] === "0") {
+                for (var _i = 0; _i < this.stars.length; _i++) {
+                    var n = this.stars[_i];
+                    var xx = n.x / n.z;
+                    var yy = n.y / n.z;
+                    var e = 2 + 2 / n.z;
+                    if (n.px !== 0) {
+                        //Saturation = Math.Floor(0.105 * 500), 0.105 = Speed
+                        this.strokeStyle = "hsla(" + ((this.colorCycle * i) % 360) + ", 52%, 80%, 0.5)";
+                        this.lineWidth = e;
+                        this.beginPath();
+                        this.moveTo(xx + this.width / 2, yy + this.height / 2);
+                        this.lineTo(n.px + this.width / 2, n.py + this.height / 2);
+                        this.stroke();
+                    }
+                    n.move(xx, yy, n.z - 0.105);
+                    if (n.z < 0.105 || n.px > this.width || n.py > this.height) {
+                        n.reset(this.width, this.height);
+                    }
+                    this.colorCycle += 0.01;
+                }
+
+                var bar;
+                for (var _i = 0; _i < this.bars.length; _i++) {
+                    bar = this.bars[_i];
+                    bar.draw(this);
+                }
+                if (this.analyser.audio.paused) {
+                    for (var _i = 0; _i < this.bars.length; _i++) {
+                        bar = this.bars[_i];
+                        bar.toZero(this.height * 2 / 3);
+                    }
+                }
+                if (this.img.complete) {
+                    this.globalAlpha = 0.85;
+                    this.roundedImage(this.img, this.margin_left * this.width, this.height * 2 / 3 + 2, (1 - this.margin_top) * this.height / 3 - 2, (1 - this.margin_top) * this.height / 3 - 2, 5);
+                    this.globalAlpha = 1;
+                }
+                var media = API.getMedia();
+                if (media) {
+                    if (media.author) {
+                        this.font = "small-caps 600 " + ((1 - this.margin_top) * this.height / 3 - 2) * 0.4 + "px Fjalla One";
+                        this.fillText(API.getMedia().author, this.margin_left * this.width + (1 - this.margin_top) * this.height / 3 - 2, this.height * 2 / 3 + 2 + ((1 - this.margin_top) * this.height / 3 - 2) * 0.4);
+                    }
+                    if (media.title) {
+                        this.font = "small-caps 600 " + (((1 - this.margin_top) * this.height / 3 - 2) * 0.4) * 2 / 3 + "px Fjalla One";
+                        this.fillText(API.getMedia().title, this.margin_left * this.width + (1 - this.margin_top) * this.height / 3 - 2, this.height * 5 / 6 + 2 + (((1 - this.margin_top) * this.height / 3 - 2) * 0.4) * 2 / 3);
+                    }
+                }
             }
-            return _results;
         }
     });
 
@@ -1033,7 +1263,9 @@
             if (data2 == "success") {
                 if (data.streamable === true) { //start working now
                     var streamURL = data.stream_url + '?client_id=' + VisualizationsHelper.clientID;
-                    VisualizationsHelper.playIt(yesNo, streamURL);
+                    var imgURL = data.artwork_url ? data.artwork_url : data.user.avatar_url ? data.user.avatar_url : "";
+                    imgURL.replace("large.jpg", "t500x500.jpg");
+                    VisualizationsHelper.playIt(yesNo, streamURL, imgURL);
                 } else {
                     VisualizationsHelper.chatError("Track not streamable!");
                 }
@@ -1043,12 +1275,13 @@
         });
     };
 
-    VisualizationsHelper.playIt = function (yesNo, streamURL) {
+    VisualizationsHelper.playIt = function (yesNo, streamURL, imgURL) {
         if (yesNo) {
             Visualizations.setSource(streamURL + "#t=" + API.getTimeElapsed());
         } else {
             Visualizations.setSource(streamURL);
         }
+        Visualizations.img.src = imgURL;
         Visualizations.play();
     };
 
@@ -1086,6 +1319,7 @@
     VisualizationsHelper.initCall();
 
     function onAPIadvance(a) {
+        Visualizations.img.src = "";
         VisualizationsHelper.onEvent(a);
         YoutubeHelper.onEvent(a);
         Youtube.hideVideoInfo();
@@ -1875,11 +2109,6 @@
         });
         return "background: " + moz + "); background: " + webkit + "); background: " + webkiit + "); background: " + o + "); background: " + ms + "); background: " + bg + ");";
     }
-
-
-
-
-
 
     function getGradientColor(i) {
         if (i === 1) return "rgb(" + colorscheme.last()[1].join(",") + ")";
