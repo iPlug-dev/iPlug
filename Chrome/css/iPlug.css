@@ -512,15 +512,15 @@
 #backgroundcarddeckcontainer {
     position: absolute;
     top: 0px;
-    right: 345px;
+    right: 330px;
     width: 370px;
     height: 100%;
     overflow-x: hidden;
 }
 #backgroundcarddeck {
     background-color: rgba(255, 255, 255, 0.25);
-    border-top-left-radius: 50px;
-    border-bottom-left-radius: 50px;
+    border-top-left-radius: 35px;
+    border-bottom-left-radius: 35px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     border: solid;
@@ -529,11 +529,11 @@
     border-top-width: 10px;
     border-bottom-width: 10px;
     border-color: #5E6168;
-    margin-top: 208px;
-    margin-bottom: 468px;
-    padding: 30px;
+    margin-top: 223px;
+    margin-bottom: 483px;
+    padding: 15px;
     height: auto;
-    width: 300px;
+    width: 315px;
 }
 #backgroundcarddeckcontainer::-webkit-scrollbar {
     display: none;
