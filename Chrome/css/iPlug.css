@@ -544,4 +544,5 @@
 #backgroundcardselected {
     height: 124px;
     margin-top: 6px;
+    cursor: pointer;
 }
