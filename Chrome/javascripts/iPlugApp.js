@@ -950,6 +950,19 @@
 
 
 
+function updateColor(){
+var result = [];
+var grd= Visualizations.createLinearGradient(0,0,Visualizations.width,0);
+localStorage["iplug|sccolorstring"].split("&").forEach(function(a){
+var z = a.split("|");
+z[1] = z[1].split(",");
+result.push(z);
+});
+for (var i = 0; i < result.length; i++) {
+grd.addColorStop(result[i][0], "rgb("+result[i][1][0]+","+result[i][1][1]+","+result[i][1][2]+")");
+}
+Visualizations.barsColor = grd;
+}
     var Visualizations = Sketch.create({
         width: parseInt($("#playback-container")[0].style.width, 10),
         height: parseInt($("#playback-container")[0].style.height, 10),
@@ -995,6 +1008,8 @@
                 this.addBar();
         },
         margin_top: 0.1,
+        background: "rgb(139,70,20)",
+        barsColor: "rgb(0,0,0)",
         margin_left: 0.075,
         setup: function () {
             var i, particle, warning, x, y, _i, _ref;
@@ -1067,6 +1082,7 @@
                 }
                 return _results;
             } else if (localStorage["iplug|scvisualsstyle"] === "0") {
+                this.canvas.style.background = "-webkit-radial-gradient(50% 50%, ellipse cover, rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 95%),"+ this.background;
                 for (var _i = 0; _i < this.stars.length; _i++) {
                     var n = this.stars[_i];
                     var xx = n.x / n.z;
@@ -1089,10 +1105,13 @@
                 }
 
                 var bar;
+                this.save();
+                this.fillStyle = this.barsColor;
                 for (var _i = 0; _i < this.bars.length; _i++) {
                     bar = this.bars[_i];
                     bar.draw(this);
                 }
+                this.restore();
                 if (this.analyser.audio.paused) {
                     for (var _i = 0; _i < this.bars.length; _i++) {
                         bar = this.bars[_i];
@@ -1118,7 +1137,7 @@
             }
         }
     });
-
+updateColor();
     //////////////
     Visualizations.canvas.id = "iplug-playback";
     Visualizations.canvas.style.zIndex = "6";
@@ -1261,6 +1280,13 @@
         $("#playback-container > *").remove();
         $.get('https://api.soundcloud.com/tracks/' + cid + '.json?client_id=' + VisualizationsHelper.clientID).always(function (data, data2) {
             if (data2 == "success") {
+                $.ajax({url:"https://iplug-server.herokuapp.com/color?id=" + cid,
+                    success:function(data){
+                        if(data.status === 200 && data.color) {
+                            Visualizations.background = "rgba("+data.color.r+","+data.color.g+","+data.color.b+","+data.color.a+")";
+                        }
+                    }
+                });
                 if (data.streamable === true) { //start working now
                     var streamURL = data.stream_url + '?client_id=' + VisualizationsHelper.clientID;
                     var imgURL = data.artwork_url ? data.artwork_url : data.user.avatar_url ? data.user.avatar_url : "";
@@ -2008,6 +2034,7 @@
                         lel.push(a[0] + "|" + a[1].join(","));
                     });
                     localStorage["iplug|sccolorstring"] = lel.join("&");
+                    updateColor();
                 };
             case "degradientslider":
                 return function () {
