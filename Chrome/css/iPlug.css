@@ -516,7 +516,6 @@
     width: 370px;
     height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
 }
 #backgroundcarddeck {
     background-color: rgba(255, 255, 255, 0.25);
@@ -529,7 +528,7 @@
     border-right-width: 0px;
     border-top-width: 10px;
     border-bottom-width: 10px;
-    border-color: #fff;
+    border-color: #5E6168;
     margin-top: 208px;
     margin-bottom: 468px;
     padding: 30px;
@@ -541,4 +540,9 @@
 }
 #backgroundcarddeckcontainer .backgroundcard {
     margin-bottom: 25px;
+}
+#backgroundcardselected {
+    height: 124px;
+    margin-top: 6px;
+    cursor: pointer;
 }
