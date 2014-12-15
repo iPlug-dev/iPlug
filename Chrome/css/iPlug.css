@@ -552,4 +552,7 @@
     left: 0px !important;
     right: 172.5px !important;
     bottom: 27px !important;
-    }
+}
+#playback-controls {
+    width: 100% !important;
+}
