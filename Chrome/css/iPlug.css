@@ -546,3 +546,10 @@
     margin-top: 6px;
     cursor: pointer;
 }
+.largevideo {
+    width: auto !important;
+    height: auto !important;
+    left: 0px !important;
+    right: 172.5px !important;
+    bottom: 27px !important;
+    }
