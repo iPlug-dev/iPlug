@@ -41,7 +41,8 @@
                 "images/Plug/icon256.png",
                 "images/Plug/plug.png",
                 "images/loading.png",
-				"images/noise-1.png"
+				"images/noise-1.png",
+                "images/fullscreenplayer.png"
         ],
         "content_scripts": [
                 {
