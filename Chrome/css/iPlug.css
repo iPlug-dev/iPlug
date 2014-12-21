@@ -541,7 +541,7 @@
 #backgroundcarddeckcontainer .backgroundcard {
     margin-bottom: 25px;
 }
-#backgroundcarddeckcontainer .backgroundcard {
+#backgroundcarddeckcontainer .backgroundcard:last-child {
 	margin-bottom: 0px;
 }
 #backgroundcardselected {
