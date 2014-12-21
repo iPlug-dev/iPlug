@@ -14,7 +14,7 @@
             description: "The default plug background."
         },
         old: {
-            text: "Old Default",
+            text: "Old Default",lel.join("&");
             url: "https://i.imgur.com/3fooiUK.jpg",
             description: "Bringing back some nostalgia for you guys :) (does anyone even remember this still at this point?)"
         },
@@ -2455,6 +2455,7 @@ updateColor();
                         lel.push(a[0] + "|" + a[1].join(","));
                     });
                     localStorage["iplug|sccolorstring"] = lel.join("&");
+                    updateColor();
                 };
             case "degradientslider":
                 return function () {
