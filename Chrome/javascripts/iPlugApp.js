@@ -14,7 +14,7 @@
             description: "The default plug background."
         },
         old: {
-            text: "Old Default",lel.join("&");
+            text: "Old Default",
             url: "https://i.imgur.com/3fooiUK.jpg",
             description: "Bringing back some nostalgia for you guys :) (does anyone even remember this still at this point?)"
         },
