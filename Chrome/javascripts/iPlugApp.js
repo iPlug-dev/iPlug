@@ -1786,7 +1786,7 @@ updateColor();
         smartAutoJoin(); // init settings
         JN();
     });
-    backgroundcarddeck = "";
+    var backgroundcarddeck = "";
     Object.keys(backgrounds).forEach(function (e) {
         backgroundcarddeck += cardBuilder(e);
     });
