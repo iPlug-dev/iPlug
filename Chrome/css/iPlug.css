@@ -529,8 +529,8 @@
     border-top-width: 10px;
     border-bottom-width: 10px;
     border-color: #5E6168;
-    margin-top: 223px;
-    margin-bottom: 483px;
+    margin-top: 254px;
+    margin-bottom: 474px;
     padding: 15px;
     height: auto;
     width: 315px;
@@ -540,6 +540,9 @@
 }
 #backgroundcarddeckcontainer .backgroundcard {
     margin-bottom: 25px;
+}
+#backgroundcarddeckcontainer .backgroundcard {
+	margin-bottom: 0px;
 }
 #backgroundcardselected {
     height: 124px;
