@@ -2167,7 +2167,9 @@ updateColor();
                     if (card === newcard) return;
                     localStorage["iplug|currentBackground"] = newcard.attr("card");
                     if (newcard.attr("card") === "youtube") {
-                        $("#playback, #playback-container").addClass("largevideo");
+                        $("#playback, #playback-container, #iplug-yt-frame").addClass("largevideo");
+                        Visualizations.width = Visualizations.canvas.width;
+                        Visualizations.height = Visualizations.canvas.height;
                         $(".room-background").remove();
                     } else {
                         var oldbg = $(".room-background");
@@ -2180,7 +2182,9 @@ updateColor();
                             easing: "linear",
                             complete: function () {
                                 if (card.attr("card") === "youtube") {
-                                    $("#playback, #playback-container").removeClass("largevideo");
+                                    $("#playback, #playback-container, #iplug-yt-frame").removeClass("largevideo");
+                                    Visualizations.width = Visualizations.canvas.width;
+                                    Visualizations.height = Visualizations.canvas.height;
                                     $(window).trigger("resize");
                                 } else {
                                     oldbg.remove();
