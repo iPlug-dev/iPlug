@@ -560,3 +560,75 @@
     width: auto !important;
     right: 172.5px !important;
 }
+#iconscontainer {
+    width: auto;
+    height: 54px;
+    right: 0px;
+    position: relative;
+    float: right;
+}
+#iconscontainer > div {
+    position: relative;
+    right: 0;
+    display: inline-block !important;
+}
+#now-playing-bar {
+    position: relative !important;
+    left: initial !important;
+    width: auto !important;
+    overflow: hidden;
+}
+#topbarcontainer {
+    left: 446px;
+    position: absolute;
+    height: 54px;
+    width: auto;
+    right: 0;
+}
+#nowplayingbarcontainer {
+    height: 54px;
+    width: auto;
+}
+#now-playing-time, #volume {
+    right: 10px !important;
+}
+#topbarcontainer #vote {
+    left: initial !important;
+    top: initial !important;
+    width: auto !important;
+    height: 54px !important;
+}
+#topbarcontainer #vote > div {
+    border-radius: 0 !important;
+    height: 53px !important;
+    width: 54px;
+    overflow: hidden;
+}
+#topbarcontainer #vote .top span {
+    width: 0;
+    overflow: hidden;
+}
+#topbarcontainer #vote i {
+    left: 12px !important;
+}
+#topbarcontainer #vote .top {
+    width: 54px !important;
+    height: 34px !important;
+}
+#topbarcontainer #vote .bottom {
+    top: 33px !important;
+    height: 20px !important;
+    border-radius: 0;
+}
+#topbarcontainer #vote .bottom span {
+    top: 1px !important;
+}
+.votetopbar .pop-menu.grab {
+    top: 100px !important;
+}
+body.topvotebar .pop-menu.grab {
+    top: 54px !important;
+}
+#room #vote > div {
+    display: block !important;
+}
