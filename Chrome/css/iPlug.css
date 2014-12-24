@@ -629,6 +629,6 @@
 body.topvotebar .pop-menu.grab {
     top: 54px !important;
 }
-#room #vote > div {
+#room > #vote > div {
     display: block !important;
 }
