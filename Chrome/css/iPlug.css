@@ -645,3 +645,16 @@ body.topvotebar .pop-menu.grab {
     left: 13px;
     top: 13px;
 }
+#user-rollover.topbarskip {
+    left: initial !important;
+    top: 62px !important;
+    right: 345px !important;
+}
+#user-rollover.topbarskip .arrow-down {
+    border-top: 0 !important;
+	
+    border-bottom: 8px solid #282c35;
+    bottom: initial !important;
+    top: -8px;
+    left: 211px !important;
+}
