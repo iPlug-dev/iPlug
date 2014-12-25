@@ -632,3 +632,16 @@ body.topvotebar .pop-menu.grab {
 #room > #vote > div {
     display: block !important;
 }
+#topdjbutton {
+    width: 54px;
+    height: 54px;
+    background: rgb(40, 44, 53);
+    -webkit-box-shadow: rgb(10, 10, 10) 0px -2px 0px -1px inset;
+    box-shadow: rgb(10, 10, 10) 0px -2px 0px -1px inset;
+    cursor: pointer;
+    margin-right: 1px;
+}
+#topdjbutton i {
+    left: 13px;
+    top: 13px;
+}
