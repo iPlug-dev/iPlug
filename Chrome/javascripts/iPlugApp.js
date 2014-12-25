@@ -261,8 +261,17 @@
     if (undefined === localStorage["iplug|playbackborder"]) {
         localStorage["iplug|playbackborder"] = "none";
     }
-    if (undefined === localStorage["iplug|curatedisabled"]) {
-        localStorage["iplug|curatedisabled"] = "none";
+    if (undefined === localStorage["iplug|curateenabled"]) {
+        localStorage["iplug|curateenabled"] = "block";
+    }
+    if (undefined === localStorage["iplug|topwootenabled"]) {
+        localStorage["iplug|topwootenabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|topgrabenabled"]) {
+        localStorage["iplug|topgrabenabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|topmehenabled"]) {
+        localStorage["iplug|topmehenabled"] = "none";
     }
     if (undefined === localStorage["iplug|waitlistdisabled"]) {
         localStorage["iplug|waitlistdisabled"] = "none";
@@ -283,35 +292,36 @@
         localStorage["iplug|html5youtube"] = "block";
     }
 
-    if (localStorage["iplug|playbackborder"] === "none") {
-        $("#playback > .background").css({display: "block"})        
-    } else {
-        $("#playback > .background").css({display: "none"})
-    }
-    if (localStorage["iplug|youtubevideodisabled"] === "none") {
-        $("#playback").css({display: "block"});
-    } else {
-        $("#playback").css({display: "none"});
-    }
-    if (localStorage["iplug|curatedisabled"] === "none") {
-        $("#vote").css({display: "block"});
-    } else {
-        $("#vote").css({display: "none"});
-    }
-    if (localStorage["iplug|waitlistdisabled"] === "none") {
-        $("#dj-button").css({display: "block"});
-    } else {
-        $("#dj-button").css({display: "none"});
-    }
-    if (localStorage["iplug|audiencedisabled"] === "none") {
-        $("#audience").css({display: "block"});
-    } else {
-        $("#audience").css({display: "none"});
-    }
-    if (localStorage["iplug|djdisabled"] === "none") {
-        $("#dj-booth").css({display: "block"});
-    } else {
-        $("#dj-booth").css({display: "none"});
+    $("#playback > .background").css({
+        display: (localStorage["iplug|playbackborder"] === "none") ? "block" : "none"
+    });
+    $("#playback").css({
+        display: (localStorage["iplug|youtubevideodisabled"] === "none") ? "block" : "none"
+    });
+    $("#vote").css({
+        display: localStorage["iplug|curateenabled"]
+    });
+    $("#woot").css({
+        display: localStorage["iplug|topwootenabled"]
+    });
+    $("#grab").css({
+        display: localStorage["iplug|topgrabenabled"]
+    });
+    $("#meh").css({
+        display: localStorage["iplug|topmehenabled"]
+    });
+    $("#dj-button").css({
+        display: (localStorage["iplug|waitlistdisabled"] === "none") ? "block" : "none"
+    });
+    $("#audience").css({
+        display: (localStorage["iplug|audiencedisabled"] === "none") ? "block" : "none"
+    });
+    $("#dj-booth").css({
+        display: (localStorage["iplug|djdisabled"] === "none") ? "block" : "none"
+    });
+    if (localStorage["iplug|topwootenabled"] === "block" || localStorage["iplug|topgrabenabled"] === "block" || localStorage["iplug|topmehenabled"] === "block") {
+        $("#vote").prependTo("#iconscontainer");
+        $("body").addClass("topvotebar");
     }
     var colorscheme = localStorage["iplug|sccolorstring"].split("&");
     colorscheme.forEach(function (a, i, e) {
@@ -1776,8 +1786,10 @@ updateColor();
 
     var dragging = false;
 
+    $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#history-button").prependTo("#topbarcontainer").wrap('<div id="iconscontainer"></div>');
+
     $(".backgroundcard[card='youtube'] img").attr("src", "https://img.youtube.com/vi/" + API.getMedia().cid + "/mqdefault.jpg");
-    API.on(API.ADVANCE, function(data) {
+    API.on(API.ADVANCE, function (data) {
         $(".backgroundcard[card='youtube'] img").attr("src", "https://img.youtube.com/vi/" + data.media.cid + "/mqdefault.jpg");
         setTimeout(WT, Math.round(100 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random() * (100 * parseInt((localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0));
     });
@@ -1791,10 +1803,10 @@ updateColor();
         backgroundcarddeck += cardBuilder(e);
     });
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
-    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div class="iplug-menu-autowoot iplug-container" style="width: 325px;overflow: hidden;margin: 0px 0px 0px 10px;padding-top: 10px;position: relative;"> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div><div id="playbackborder" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playbackborder'] + '"></i><span>Hide Playback Border</span> </div> <div id="curatedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curatedisabled'] + '"></i><span>Hide Vote Buttons</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div><div id="backgroundcardselected" style="cursor: pointer;">' + cardBuilder(localStorage['iplug|currentBackground']) + '</div></div> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + {
+    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div class="iplug-menu-autowoot iplug-container" style="width: 325px;overflow: hidden;margin: 0px 0px 0px 10px;padding-top: 10px;position: relative;"> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="playbackborder" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playbackborder'] + '"></i><span>Hide Playback Border</span> </div> <div id="curateenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curateenabled'] + '"></i><span>Show Vote Buttons On Default Position</span> </div> <div id="topwootenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topwootenabled'] + '"></i><span>Show Woot Button In Top Bar</span> </div> <div id="topgrabenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topgrabenabled'] + '"></i><span>Show Grab Button In Top Bar</span> </div> <div id="topmehenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topmehenabled'] + '"></i><span>Show Meh Button In Top Bar</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> <div id="backgroundcardselected" style="cursor: pointer;">' + cardBuilder(localStorage['iplug|currentBackground']) + '</div> </div> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + {
         block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>',
         none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>'
-    }[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="visualsstyle" class="noitem centerall" style="width: 300px;"><span style="font-weight: normal; color: #fff">Style ' + (parseInt(localStorage['iplug|scvisualsstyle']) + 1) + '</span><span> - change Style</span> </div> <div id="visuals1" style="' + ((localStorage['iplug|scvisualsstyle'] === '1') ? '' : 'height: 0px; opacity: 0') + '"> <div class="settings"> <div class="noitem delete" style="display: none"><span style="display: ' + ((COLORS.length > 1) ? " block; cursor: pointer " : "none; cursor: default ") + '">Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="decolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="decolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="decolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="decolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div class="nodecontainer" style="height: ' + (-19 * Math.floor(-COLORS.length / 16)) + 'px"> <div class="node cross"> <div class="horizontal"></div> <div class="vertical"></div> </div> <div class="node" style="background-color: ' + COLORS.join('"></div> <div class="node" style="background-color: ') + '"></div> </div> </div> <div id="visuals0" style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '"> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Fast</span> <span class="count">Fancy</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Recenter all markers</span> </div> </div> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div> </div> </div> <div id="backgroundcarddeckcontainer" style="display: none;"><div id="backgroundcarddeck"> ' + backgroundcarddeck + '</div></div></div>');
+    }[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="visualsstyle" class="noitem centerall" style="width: 300px;"><span style="font-weight: normal; color: #fff">Style ' + (parseInt(localStorage['iplug|scvisualsstyle']) + 1) + '</span><span> - change Style</span> </div> <div id="visuals1" style="' + ((localStorage['iplug|scvisualsstyle'] === '1') ? '' : 'height: 0px; opacity: 0') + '"> <div class="settings"> <div class="noitem delete" style="display: none"><span style="display: ' + ((COLORS.length > 1) ? " block; cursor: pointer " : "none; cursor: default ") + '">Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="decolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="decolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="decolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="decolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div class="nodecontainer" style="height: ' + (-19 * Math.floor(-COLORS.length / 16)) + 'px"> <div class="node cross"> <div class="horizontal"></div> <div class="vertical"></div> </div> <div class="node" style="background-color: ' + COLORS.join('"></div> <div class="node" style="background-color: ') + '"></div> </div> </div> <div id="visuals0" style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '"> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Fast</span> <span class="count">Fancy</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Recenter all markers</span> </div> </div> </div> </div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div> </div> </div> <div id="backgroundcarddeckcontainer" style="display: none;"> <div id="backgroundcarddeck">' + backgroundcarddeck + '</div> </div></div>');
     $("#chat-button, #users-button, #waitlist-button, #friends-button").bind("click", function () {
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
@@ -2143,7 +2155,7 @@ updateColor();
                         setTimeout(function () {
                             deck.children().css({
                                 marginTop: 254 + parseInt(deck.css("height")) + "px"
-                            })
+                            });
                             deck.scrollTop(deck.scrollTop() + parseInt(deck.css("height"))).animate({
                                 scrollTop: 0
                             }, {
@@ -2203,9 +2215,9 @@ updateColor();
         deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
     });
 
-    API.on(API.ADVANCE, function() {
+    API.on(API.ADVANCE, function () {
         if (API.getMedia().format !== 2) {
-        
+
         } else {
             $(".backgroundcard[card='youtube'] img").attr("src", "https://img.youtube.com/vi/" + API.getMedia().cid + "/mqdefault.jpg");
         }
@@ -2342,50 +2354,84 @@ updateColor();
             case "youtubevideodisabled":
                 return function () {
                     if (enabled) {
-                        $("#playback").css({display: "none"});
+                        $("#playback").css({
+                            display: "none"
+                        });
                     } else {
-                        $("#playback").css({display: "block"});
+                        $("#playback").css({
+                            display: "block"
+                        });
                     }
                 };
             case "playbackborder":
                 return function () {
-                    if (enabled) {
-                        $("#playback > .background").css({display: "none"});
-                    } else {
-                        $("#playback > .background").css({display: "block"});
+                    $("#playback > .background").css({
+                        display: (enabled) ? "none" : "block"
+                    });
+                };
+            case "curateenabled":
+                return function () {
+                    $("#vote").css({
+                        display: (enabled) ? "block" : "none"
+                    });
+                    if (enabled && $("body").hasClass("topvotebar")) {
+                        $("#vote").appendTo("#room");
+                        $("body").removeClass("topvotebar");
+                        if (localStorage['iplug|topwootenabled'] === "block") $("#topwootenabled").click();
+                        if (localStorage['iplug|topgrabenabled'] === "block") $("#topgrabenabled").click();
+                        if (localStorage['iplug|topmehenabled'] === "block") $("#topmehenabled").click();
                     }
                 };
-            case "curatedisabled":
+            case "topwootenabled":
                 return function () {
-                    if (enabled) {
-                        $("#vote").css({display: "none"});
-                    } else {
-                        $("#vote").css({display: "block"});
+                    if (enabled && !$("body").hasClass("topvotebar")) {
+                        $("#vote").prependTo("#iconscontainer");
+                        $("body").addClass("topvotebar");
+                        if (localStorage['iplug|curateenabled'] === "block") $("#curateenabled").click();
                     }
+                    $("#woot").css({
+                        display: (enabled) ? "block" : "none"
+                    });
+                };
+            case "topgrabenabled":
+                return function () {
+                    if (enabled && !$("body").hasClass("topvotebar")) {
+                        $("#vote").prependTo("#iconscontainer");
+                        $("body").addClass("topvotebar");
+                        if (localStorage['iplug|curateenabled'] === "block") $("#curateenabled").click();
+                    }
+                    $("#grab").css({
+                        display: (enabled) ? "block" : "none"
+                    });
+                };
+            case "topmehenabled":
+                return function () {
+                    if (enabled && !$("body").hasClass("topvotebar")) {
+                        $("#vote").prependTo("#iconscontainer");
+                        $("body").addClass("topvotebar");
+                        if (localStorage['iplug|curateenabled'] === "block") $("#curateenabled").click();
+                    }
+                    $("#meh").css({
+                        display: (enabled) ? "block" : "none"
+                    });
                 };
             case "waitlistdisabled":
                 return function () {
-                    if (enabled) {
-                        $("#dj-button").css({display: "none"});
-                    } else {
-                        $("#dj-button").css({display: "block"});
-                    }
+                    $("#dj-button").css({
+                        display: (enabled) ? "none" : "block"
+                    });
                 };
             case "audiencedisabled":
                 return function () {
-                    if (enabled) {
-                        $("#audience").css({display: "none"});
-                    } else {
-                        $("#audience").css({display: "block"});
-                    }
+                    $("#audience").css({
+                        display: (enabled) ? "none" : "block"
+                    });
                 };
             case "djdisabled":
                 return function () {
-                    if (enabled) {
-                        $("#dj-booth").css({display: "none"});
-                    } else {
-                        $("#dj-booth").css({display: "block"});
-                    }
+                    $("#dj-booth").css({
+                        display: (enabled) ? "none" : "block"
+                    });
                 };
             case "scvisualsenabled":
                 return function () {
