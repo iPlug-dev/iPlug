@@ -1841,8 +1841,8 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         $("body").addClass("topvotebar");
     }
     $("#topdjbutton").bind("click", function() {
-        x = require("d19bd/a45f9/a8d50/f2afe");
-        y  = require("d19bd/a45f9/e5e1b/c0484");
+        var x = require("d19bd/a45f9/a8d50/f2afe");
+        var y  = require("d19bd/a45f9/e5e1b/c0484");
         y.showSimple(x.image.user, {x:0,y:0});
         y.showInfo();
         $("#user-rollover").addClass("topbarskip");
