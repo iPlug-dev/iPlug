@@ -658,3 +658,17 @@ body.topvotebar .pop-menu.grab {
     top: -8px;
     left: 211px !important;
 }
+.largevideo > #no-dj {
+    width: auto !important;  
+    height: auto !important;  
+    left: 0px !important;  right: 172.5px;  bottom: 27px;
+}
+.largevideo > #no-dj .avatar {
+    left: 50% !important;
+    margin-left: -54px;
+    top: 55% !important;
+    margin-top: -125px;
+}
+.largevideo > #no-dj .message {
+    top: 55% !important;
+}
