@@ -2227,17 +2227,16 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         if (deck.attr("opened") !== "true" || deck.is(":hover")) return;
         deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
     });
-
-    API.on(API.ADVANCE, function () {
-        if (API.getMedia().format !== 2) {
-
-        } else {
-            $(".backgroundcard[card='youtube'] img").attr("src", "https://img.youtube.com/vi/" + API.getMedia().cid + "/mqdefault.jpg");
-        }
-    });
-
+    
+    
+    
+    
 
     bindGradientCircleEvents($(".iplug-container .gradientpicker > .slider .barcontainer.gradient > .circle"));
+
+
+
+
 
     function bindnode() {
         var node = $(this);
