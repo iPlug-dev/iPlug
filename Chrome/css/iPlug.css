@@ -556,7 +556,7 @@
     right: 172.5px !important;
     bottom: 27px !important;
 }
-#playback-controls {
+.largevideo > #playback-controls {
     width: auto !important;
     right: 172.5px !important;
 }
