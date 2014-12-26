@@ -2208,7 +2208,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                             $("#playback, #playback-container, #iplug-yt-frame, #iplug-playback").removeClass("largevideo");
                             $(window).trigger("resize");
                         }
-                        var oldbg = $(".room-background");
+                        var oldbg = $(".room-background:not(.default)");
                         $("#room").append('<i class="room-background" style="left: ' + $(".room-background.default").css("left") + '; top: ' + $(".room-background.default").css("top") + '; background: url(' + backgrounds[newcard.attr("card")].url + ') no-repeat; opacity: 0;"></i>');
                         $(".room-background").animate({
                             opacity: 1
@@ -2217,7 +2217,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                             queue: false,
                             easing: "linear",
                             complete: function () {
-                                $(".room-background:not(.default)").remove();
+                                oldbg.remove();
                             }
                         });
                     }
