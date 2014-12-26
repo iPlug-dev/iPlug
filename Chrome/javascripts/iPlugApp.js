@@ -1407,38 +1407,6 @@ updateColor();
 
     Visualizations.width = parseInt($("#playback-container")[0].style.width, 10); /*initial call*/
     Visualizations.height = parseInt($("#playback-container")[0].style.height, 10); /*initial call*/
-    VisualizationsHelper.ObsrvOne = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            if (mutation.attributeName == "style") {
-                var te = mutation.target.style.cssText + "z-index: 6;position: absolute;top: 0;";
-                var tf = mutation.target.style.cssText + "z-index: 6;position: absolute;top: 0;";
-                if (YoutubeHelper.visible) {
-                    tf += "display: block;";
-                } else {
-                    tf += "display: none;";
-                }
-                if (VisualizationsHelper.visible) {
-                    te += "display: block;";
-                } else {
-                    te += "display: none;";
-                }
-                te += "opcaity: " + VisualizationsHelper.opacity + ";";
-                tf += "opcaity: " + YoutubeHelper.opacity + ";";
-                $("#iplug-playback")[0].style.cssText = te;
-                $("#iplug-yt-frame")
-                    .attr("width", parseInt(mutation.target.style.width, 10) + "px")
-                    .attr("height", parseInt(mutation.target.style.height, 10) + "px")[0]
-                    .style.cssText = tf;
-                Visualizations.width = parseInt(mutation.target.style.width, 10);
-                Visualizations.height = parseInt(mutation.target.style.height, 10);
-            }
-        });
-    });
-    VisualizationsHelper.ObsrvOne.observe($("#playback-container")[0], {
-        attributes: true,
-        childList: false,
-        characterData: false
-    });
     VisualizationsHelper.ObsrvTwo = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             var temp = (API.getVolume() / 100);
