@@ -1758,17 +1758,14 @@ updateColor();
         $("#playback, #playback-container").addClass("largevideo");
         $(".room-background").remove();
     } else {
-        var oldbg = $(".room-background");
-        $("#room").append('<i class="room-background" style="left: -13.5px; top: 54px; background: url(' + backgrounds[localStorage["iplug|currentBackground"]].url + ') no-repeat; opacity: 0;"></i>');
+        $(".room-background").addClass("default");
+        $("#room").append('<i class="room-background" style="left: ' + $(".room-background.default").css("left") + '; top: ' + $(".room-background.default").css("top") + '; background: url(' + backgrounds[localStorage["iplug|currentBackground"]].url + ') no-repeat; opacity: 0;"></i>');
         $(".room-background").animate({
             opacity: 1
         }, {
             duration: 2500,
             queue: false,
-            easing: "linear",
-            complete: function () {
-                oldbg.remove();
-            }
+            easing: "linear"
         });
     }
 
@@ -1798,6 +1795,17 @@ updateColor();
     var backgroundcarddeck = "";
     Object.keys(backgrounds).forEach(function (e) {
         backgroundcarddeck += cardBuilder(e);
+    });    $(window).bind("resize", function() {
+        var heightwidth = {
+            width: window.innerWidth - 345 + "px",
+            height: window.innerHeight - 108 + "px"
+        };
+        $("#iplug-playback.largevideo").css(heightwidth).attr(heightwidth);
+        Visualizations.width = Visualizations.canvas.width;
+        Visualizations.height = Visualizations.canvas.height;
+        $(".room-background:not(.default)").css{
+            width: $(".room-background.default").css("width");
+            height: $(".room-background.default").css("height");
     });
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
     $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div class="iplug-menu-autowoot iplug-container" style="width: 325px;overflow: hidden;margin: 0px 0px 0px 10px;padding-top: 10px;position: relative;"> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="playbackborder" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playbackborder'] + '"></i><span>Hide Playback Border</span> </div> <div id="curateenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curateenabled'] + '"></i><span>Show Vote Buttons On Default Position</span> </div> <div id="topwootenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topwootenabled'] + '"></i><span>Show Woot Button In Top Bar</span> </div> <div id="topgrabenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topgrabenabled'] + '"></i><span>Show Grab Button In Top Bar</span> </div> <div id="topmehenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topmehenabled'] + '"></i><span>Show Meh Button In Top Bar</span> </div><div id="topskipenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topskipenabled'] + '"></i><span>Show Current Dj Button In Top Bar (to skip)</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> <div id="backgroundcardselected" style="cursor: pointer;">' + cardBuilder(localStorage['iplug|currentBackground']) + '</div> </div> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + {
@@ -2192,13 +2200,15 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                     if (card === newcard) return;
                     localStorage["iplug|currentBackground"] = newcard.attr("card");
                     if (newcard.attr("card") === "youtube") {
-                        $("#playback, #playback-container, #iplug-yt-frame").addClass("largevideo");
-                        Visualizations.width = Visualizations.canvas.width;
-                        Visualizations.height = Visualizations.canvas.height;
-                        $(".room-background").remove();
+                        $("#playback, #playback-container, #iplug-yt-frame, #iplug-playback").addClass("largevideo");
+                        $(".room-background:not(.default)").remove();
                     } else {
+                        if (card.attr("card") === "youtube") {
+                            $("#playback, #playback-container, #iplug-yt-frame, #iplug-playback").removeClass("largevideo");
+                            $(window).trigger("resize");
+                        }
                         var oldbg = $(".room-background");
-                        $("#room").append('<i class="room-background" style="left: -13.5px; top: 54px; background: url(' + backgrounds[newcard.attr("card")].url + ') no-repeat; opacity: 0;"></i>');
+                        $("#room").append('<i class="room-background" style="left: ' + $(".room-background.default").css("left") + '; top: ' + $(".room-background.default").css("top") + '; background: url(' + backgrounds[newcard.attr("card")].url + ') no-repeat; opacity: 0;"></i>');
                         $(".room-background").animate({
                             opacity: 1
                         }, {
@@ -2206,14 +2216,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                             queue: false,
                             easing: "linear",
                             complete: function () {
-                                if (card.attr("card") === "youtube") {
-                                    $("#playback, #playback-container, #iplug-yt-frame").removeClass("largevideo");
-                                    Visualizations.width = Visualizations.canvas.width;
-                                    Visualizations.height = Visualizations.canvas.height;
-                                    $(window).trigger("resize");
-                                } else {
-                                    oldbg.remove();
-                                }
+                                $(".room-background:not(.default)").remove();
                             }
                         });
                     }
@@ -2227,16 +2230,8 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         if (deck.attr("opened") !== "true" || deck.is(":hover")) return;
         deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
     });
-    
-    
-    
-    
 
     bindGradientCircleEvents($(".iplug-container .gradientpicker > .slider .barcontainer.gradient > .circle"));
-
-
-
-
 
     function bindnode() {
         var node = $(this);
