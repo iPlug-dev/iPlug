@@ -1804,8 +1804,8 @@ updateColor();
         Visualizations.width = Visualizations.canvas.width;
         Visualizations.height = Visualizations.canvas.height;
         $(".room-background:not(.default)").css({
-            width: $(".room-background.default").css("width");
-            height: $(".room-background.default").css("height");
+            width: $(".room-background.default").css("width"),
+            height: $(".room-background.default").css("height")
         });
     });
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
