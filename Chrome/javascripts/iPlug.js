@@ -1,5 +1,5 @@
 /* Loader */
-function loader(hax) {
+function loader() {
     if (typeof requirejs !== 'undefined' && typeof API !== "undefined" && API.enabled && document.getElementById("dj-button") !== null && document.getElementById("audience") !== null) {
         console.log("[iPlug] VER is now loading...");
         $.getScript('IPLUG').done(function() {
