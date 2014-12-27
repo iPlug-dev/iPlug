@@ -425,7 +425,7 @@ define("youtube-api", ["class", "jquery", "underscore", requireIDs.a], function 
 define("youtube-controller", ["youtube-api", requireIDs.a, "class"], function(api, EventEmmiter, Class) {
     var n = Class.extend({
         init: function($el, cid, seekTo, successCallback, failureCallback) {
-            if (!api.loading || !api.loaded) return;
+            if (!api.loading || !api.loaded) return failureCallback();
             this.controls = new api.YT.Player($el[0], {
                 videoId: cid,
                 playerVars: {
@@ -527,8 +527,8 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
 
 
                     }
-                    else if (n.get("format") === 2)
-                        if (d.r)
+                    /*else if (n.get("format") === 2) {
+                        if (d.r) {
                             if (d.sc) {
                                 this.$container.empty().append(e('<iframe id="yt-frame" frameborder="0" src="' + this.visualizers[this.random.integer(0, 1)] + '"></iframe>'));
                                 var c = this;
@@ -546,8 +546,13 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
                                     }
                                 });
                             }
-                            else this.$container.append(e('<img src="https://soundcloud-support.s3.amazonaws.com/images/downtime.png" height="271"/>').css("position", "absolute").css("left", 46));
-                    else r.on("sc:ready", this.onSCReady, this);
+                            else {
+                                this.$container.append(e('<img src="https://soundcloud-support.s3.amazonaws.com/images/downtime.png" height="271"/>').css("position", "absolute").css("left", 46));
+                            }
+                        else {
+                            r.on("sc:ready", this.onSCReady, this);
+                        }
+                    }*/
                 }
             }
             else this.$noDJ.show(), this.$controls.hide();
