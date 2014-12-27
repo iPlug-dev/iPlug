@@ -325,13 +325,13 @@ define("version", ["alert", "class"], function(alert, Class) {
                     reqID: code
                 }
             });
+            var that = this;
             var handler = function (data) {
                 if (data.detail.reqID !== code) return;
                 document.removeEventListener("VersionResponse", handler);
-                console.log("DIS", this);
-                if (data.detail.version !== this.getVersion()) {
-                    this.setVersion(data.detail.version);
-                    this.callback(data.detail.version);
+                if (data.detail.version !== that.getVersion()) {
+                    that.setVersion(data.detail.version);
+                    that.callback(data.detail.version);
                 }
             };
             document.addEventListener("VersionResponse", handler);
@@ -565,10 +565,11 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
     var z = new player();
     z.$el.appendTo("#room");
     z.render();
-    z.onMediaChange();
+    t.bind(z.onMediaChange,z)();
 });
     /////////
-require(["autowoot", "version", "utils/tooltip", "utils/notify", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function(Autowoot, Version, Tooltip,Notify) {
+require(["jquery","underscore","autowoot", "version", "utils/tooltip", "utils/notify", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version, Tooltip,Notify) {
+    _.delay(_.bind(Version.check,Version),15000);
     "use strict";
 
 
