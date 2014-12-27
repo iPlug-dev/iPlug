@@ -1,4 +1,574 @@
-(function () {
+/* Copyright (C) 2013 Justin Windle, http://soulwire.co.uk */
+var Sketch=function(){"use strict";function e(e){return"[object Array]"==Object.prototype.toString.call(e)}function t(e){return"function"==typeof e}function n(e){return"number"==typeof e}function o(e){return"string"==typeof e}function r(e){return E[e]||String.fromCharCode(e)}function i(e,t,n){for(var o in t)(n||!e.hasOwnProperty(o))&&(e[o]=t[o]);return e}function u(e,t){return function(){e.apply(t,arguments)}}function a(e){var n={};for(var o in e)n[o]=t(e[o])?u(e[o],e):e[o];return n}function c(e){function n(n){t(n)&&n.apply(e,[].splice.call(arguments,1))}function u(e){for(_=0;_<J.length;_++)G=J[_],o(G)?O[(e?"add":"remove")+"EventListener"].call(O,G,k,!1):t(G)?k=G:O=G}function c(){L(T),T=I(c),U||(n(e.setup),U=t(e.setup),n(e.resize)),e.running&&!j&&(e.dt=(B=+new Date)-e.now,e.millis+=e.dt,e.now=B,n(e.update),e.autoclear&&K&&e.clear(),n(e.draw)),j=++j%e.interval}function l(){O=Y?e.style:e.canvas,D=Y?"px":"",e.fullscreen&&(e.height=w.innerHeight,e.width=w.innerWidth),O.height=e.height+D,O.width=e.width+D,e.retina&&K&&X&&(O.height=e.height*X,O.width=e.width*X,O.style.height=e.height+"px",O.style.width=e.width+"px",e.scale(X,X)),U&&n(e.resize)}function s(e,t){return N=t.getBoundingClientRect(),e.x=e.pageX-N.left-w.scrollX,e.y=e.pageY-N.top-w.scrollY,e}function f(t,n){return s(t,e.element),n=n||{},n.ox=n.x||t.x,n.oy=n.y||t.y,n.x=t.x,n.y=t.y,n.dx=n.x-n.ox,n.dy=n.y-n.oy,n}function g(e){if(e.preventDefault(),W=a(e),W.originalEvent=e,W.touches)for(M.length=W.touches.length,_=0;_<W.touches.length;_++)M[_]=f(W.touches[_],M[_]);else M.length=0,M[0]=f(W,V);return i(V,M[0],!0),W}function h(t){for(t=g(t),q=(Q=J.indexOf(z=t.type))-1,e.dragging=/down|start/.test(z)?!0:/up|end/.test(z)?!1:e.dragging;q;)o(J[q])?n(e[J[q--]],t):o(J[Q])?n(e[J[Q++]],t):q=0}function p(t){F=t.keyCode,H="keyup"==t.type,Z[F]=Z[r(F)]=!H,n(e[t.type],t)}function v(t){e.autopause&&("blur"==t.type?b:C)(),n(e[t.type],t)}function C(){e.now=+new Date,e.running=!0}function b(){e.running=!1}function P(){(e.running?b:C)()}function A(){K&&e.clearRect(0,0,e.width,e.height)}function S(){R=e.element.parentNode,_=x.indexOf(e),R&&R.removeChild(e.element),~_&&x.splice(_,1),u(!1),b()}var T,k,O,R,N,_,D,B,G,W,z,F,H,q,Q,j=0,M=[],U=!1,X=w.devicePixelRatio,Y=e.type==m,K=e.type==d,V={x:0,y:0,ox:0,oy:0,dx:0,dy:0},J=[e.element,h,"mousedown","touchstart",h,"mousemove","touchmove",h,"mouseup","touchend",h,"click",y,p,"keydown","keyup",w,v,"focus","blur",l,"resize"],Z={};for(F in E)Z[E[F]]=!1;return i(e,{touches:M,mouse:V,keys:Z,dragging:!1,running:!1,millis:0,now:0/0,dt:0/0,destroy:S,toggle:P,clear:A,start:C,stop:b}),x.push(e),e.autostart&&C(),u(!0),l(),c(),e}for(var l,s,f="E LN10 LN2 LOG2E LOG10E PI SQRT1_2 SQRT2 abs acos asin atan ceil cos exp floor log round sin sqrt tan atan2 pow max min".split(" "),g="__hasSketch",h=Math,d="canvas",p="webgl",m="dom",y=document,w=window,x=[],v={fullscreen:!0,autostart:!0,autoclear:!0,autopause:!0,container:y.body,interval:1,globals:!0,retina:!1,type:d},E={8:"BACKSPACE",9:"TAB",13:"ENTER",16:"SHIFT",27:"ESCAPE",32:"SPACE",37:"LEFT",38:"UP",39:"RIGHT",40:"DOWN"},C={CANVAS:d,WEB_GL:p,WEBGL:p,DOM:m,instances:x,install:function(t){if(!t[g]){for(var o=0;o<f.length;o++)t[f[o]]=h[f[o]];i(t,{TWO_PI:2*h.PI,HALF_PI:h.PI/2,QUATER_PI:h.PI/4,random:function(t,o){return e(t)?t[~~(h.random()*t.length)]:(n(o)||(o=t||1,t=0),t+h.random()*(o-t))},lerp:function(e,t,n){return e+n*(t-e)},map:function(e,t,n,o,r){return(e-t)/(n-t)*(r-o)+o}}),t[g]=!0}},create:function(e){return e=i(e||{},v),e.globals&&C.install(self),l=e.element=e.element||y.createElement(e.type===m?"div":"canvas"),s=e.context=e.context||function(){switch(e.type){case d:return l.getContext("2d",e);case p:return l.getContext("webgl",e)||l.getContext("experimental-webgl",e);case m:return l.canvas=l}}(),e.container.appendChild(l),C.augment(s,e)},augment:function(e,t){return t=i(t||{},v),t.element=e.canvas||e,t.element.className+=" sketch",i(e,t,!0),c(e)}},b=["ms","moz","webkit","o"],P=self,A=0,S="AnimationFrame",T="request"+S,k="cancel"+S,I=P[T],L=P[k],O=0;O<b.length&&!I;O++)I=P[b[O]+"Request"+S],L=P[b[O]+"Cancel"+T];return P[T]=I=I||function(e){var t=+new Date,n=h.max(0,16-(t-A)),o=setTimeout(function(){e(t+n)},n);return A=t+n,o},P[k]=L=L||function(e){clearTimeout(e)},C}();
+
+
+var requireIDs = {
+    a: null,
+    r: null,
+    s: null,
+    v: null,
+    c: null,
+    i: null,
+    e: null,
+    m: null,
+    g: null,
+    p: null,
+    z: null
+};
+var x;
+for (var i in x = requirejs.s.contexts._.defined) {
+    if (!x.hasOwnProperty(i) || !x[i]) continue;
+    if (x[i] && x[i]._events && x[i]._events.notify)
+        requireIDs.a = i;
+    if (x[i].prototype && x[i].prototype.RowClass && x[i].prototype.className === "list room")
+        requireIDs.r = i;
+    if (x[i].attributes && typeof x[i].attributes.streamDisabled === "boolean")
+        requireIDs.s = i;
+    if (x[i].prototype && x[i].prototype.vote)
+        requireIDs.v = i;
+    if (x[i].prototype && x[i].prototype.hasOwnProperty("id") && x[i].prototype.id == "chat-suggestion")
+        requireIDs.c = i;
+    if (x[i].prototype && x[i].prototype.submitSuggestion && x[i].prototype.hasOwnProperty("id"))
+        requireIDs.i = i;
+    if (x[i] && x[i].add && x[i].init && x[i].remove && x[i].lookup && x[i].exists)
+        requireIDs.e = i;
+    if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
+        requireIDs.m = i;
+    if (x[i] && x[i].getAudience && x[i]._events && x[i]._events["change:username"] && x[i].findWhere)
+        requireIDs.g = i;
+    if (x[i] && x[i].prototype && x[i].prototype.hasOwnProperty("id") && x[i].prototype.id === "playback")
+        requireIDs.p = i;
+    if (x[i] && x[i].hasOwnProperty("settings"))
+        requireIDs.z = i;
+}
+for (var i in requireIDs) {
+    if (!requireIDs.hasOwnProperty) continue;
+    if (!requireIDs[i]) console.log(i, requireIDs[i]);
+}
+
+define('class', [], function () {
+    var e, t, n;
+    e = false;
+    t = /xyz/.test(function () {
+        xyz
+    }) ? /\b_super\b/ : /.*/;
+    n = function () {};
+    n.extend = function (n) {
+        var r = this.prototype;
+
+        e = true;
+        var i = new this;
+        e = false;
+
+        for (var s in n) {
+            if (!n.hasOwnProperty(s)) continue;
+            if (typeof n[s] == "function" && typeof r[s] == "function" && t.test(n[s])) {
+                i[s] = function (e, t) {
+                    return function () {
+                        var n = this._super;
+                        this._super = r[e];
+                        var i = t.apply(this, arguments);
+                        this._super = n;
+                        return i;
+                    }
+                }(s, n[s]);
+            } else {
+                i[s] = n[s];
+            }
+        }
+
+        function Class() {
+            !e && this.init && this.init.apply(this, arguments)
+        }
+
+        Class.prototype = i;
+        Class.prototype.constructor = Class;
+        Class.extend = arguments.callee;
+        return Class;
+    };
+    return n;
+});
+
+define("modifications/userlists",[requireIDs.r,requireIDs.v],function(r,v){
+    r.prototype.RowClass = v.extend({
+        vote: function () {
+            if (this.model.get('level')) {
+                if (!this.$level) {
+                    this.$level = $("<span>");
+                }
+                this.$level.removeClass().addClass("plug-level");
+                this.$level.text(this.model.get('level'));
+                this.$el.append(this.$level);
+            } else {
+                this.$level.remove();
+                this.$level = undefined;
+            }
+            if (this.model.get('grab')) {
+                if (!this.$grabIcon) {
+                    this.$grabIcon = $('<i>');
+                }
+                this.$grabIcon.addClass('icon icon-grab');
+                this.$el.append(this.$grabIcon);
+            } else if (this.$grabIcon) {
+                this.$grabIcon.remove();
+                this.$grabIcon = undefined;
+            }
+            if (this.model.get('vote') !== 0) {
+                if (!this.$icon) {
+                    this.$icon = $('<i>');
+                }
+                this.$el.append(this.$icon);
+                if (this.model.get('vote') === 1) {
+                    this.$icon.removeClass().addClass('icon icon-woot');
+                } else {
+                    this.$icon.removeClass().addClass('icon icon-meh');
+                }
+            } else if (this.$icon) {
+                this.$icon.remove();
+                this.$icon = undefined;
+            }
+        }
+    });
+    return true;
+});
+define("modifications/chat-suggestions", ["jquery", "underscore", requireIDs.i, requireIDs.c, requireIDs.m, requireIDs.g, requireIDs.e, "hbs!templates/room/chat/ChatSuggestionItem"], function(e,t,o,z,i,r,s,u){
+    var a = z.extend({
+        check: function (e, t) {
+            var k = {
+                lookup: function (e) {
+                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
+                },
+                map: {
+                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
+                }
+            };
+            var n = e.lastIndexOf(" @"),
+                r = e.lastIndexOf(" :");
+            n === -1 && (n = e.indexOf("@") === 0 ? 0 : -1);
+            if (n > -1 && n > r) {
+                this.type = "@", n === 0 ? this.suggestions = s.lookup(e.substr(n + 1, t)) : n > 0 && t > n + 2 && (this.suggestions = s.lookup(e.substr(n + 2, t)));
+            } else {
+                this.type = ":";
+                var o = 2;
+                r === -1 ? r = e.indexOf(":") === 0 ? 0 : -1 : o = 3, r > -1 && t - r > o && (r === 0 ? this.suggestions = i.lookup(e.substr(r + 1, t)).concat(k.lookup(e.substr(r + 1, t))) : r > 0 && t > r + o && (this.suggestions = i.lookup(e.substr(r + 2, t)).concat(k.lookup(e.substr(r + 2, t)))));
+            }
+        },
+        iplug: false,
+        updateSuggestions: function () {
+            var k = {
+                lookup: function (e) {
+                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
+                },
+                map: {
+                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
+                }
+            };
+            var n = this.suggestions.length;
+            this.$itemContainer.html("");
+            this.iplug = false;
+            if (n === 0) {
+                this.$el.hide(), this.index = -1;
+            } else {
+                var s, o, a, f = n;
+                if (this.type === "@") {
+                    for (s = 0; s < n; ++s) {
+                        var l = r.findWhere({
+                            username: this.suggestions[s]
+                        });
+                        if (l) {
+                            var c = l.get("avatarID");
+                            a = '<div class="thumb small"><i class="avi avi-' + l.get("avatarID") + '"></i></div>', o = e(u({
+                                value: this.suggestions[s],
+                                index: s,
+                                image: a
+                            })).mousedown(t.bind(this.iplugclickevent, this)).mouseenter(this.overBind);
+                            var h = l.get("status");
+                            h === 0 ? o.addClass("available") : h === 1 ? o.addClass("away") : h === 2 ? o.addClass("working") : h === 3 ? o.addClass("gaming") : h === 4 ? o.addClass("idle") : h === 5 && o.addClass("idle"), this.$itemContainer.append(o);
+                        } else {
+                            --f;
+                        }
+                    }
+                } else {
+                    for (s = 0; s < n; ++s) {
+                        var x = i.map[this.suggestions[s]] ? i.map[this.suggestions[s]] : (this.iplug = true, k.map[this.suggestions[s]]);
+                        a = this.iplug ? '<span class="emoji-glow"><span style="background: url(' + x + ') 0 0 no-repeat;background-size: contain;position: absolute; width: 16px; height: 16px; z-index: 1;"></span></span>' : '<span class="emoji-glow"><span class="emoji emoji-' + x + '"></span></span>';
+                        o = e(u({
+                            value: (!this.iplug ? ":" : "") + this.suggestions[s] + (!this.iplug ? ":" : ""),
+                            index: s,
+                            image: a
+                        })).mousedown(t.bind(this.iplugclickevent, this)).mouseenter(this.overBind), o.addClass("emo"), this.$itemContainer.append(o);
+                    }
+                }
+                if (this.index === -1 || this.index >= n) {
+                    this.index = 0;
+                }
+                this.updateSelectedSuggestion(), this.$el.height(f * 38), t.delay(this.showBind, 10), t.delay(this.showBind, 15), this.$document.on("mousedown", this.documentClickBind);
+            }
+        },
+        iplugclickevent: function (c) {
+            var d = $("#chat-input-field")[0];
+            this.index = c.currentTarget.dataset.index;
+            c = this.type;
+            var a;
+            d.createTextRange ? (a = document.selection.createRange().duplicate(), a = (a.moveEnd("character", d.value.length), "" === a.text ? d.value.length : d.value.lastIndexOf(a.text))) : a = d.selectionStart;
+            if (0 < a) {
+                var e = d.value.substr(0, a),
+                    b = e.lastIndexOf("@" === c ? " @" : " :"); - 1 === b ? b = e.indexOf("@" === c ? "@" : ":") : ++b;
+                c = [b + 1, a];
+            } else {
+                c = void 0;
+            }
+            a = d.value.substr(0, c[0]);
+            e = d.value.substr(c[1]);
+            b = this.getSelected();
+            d.value = Array.isArray(b) ? (b[1] ? a.substring(0, a.lastIndexOf(":")) : a) + b[0] + " " + e : a + b + " " + e;
+            d.setSelectionRange(c[0] + b[0].length + !b[1], c[0] + b[0].length + !b[1]);
+            this.reset();
+            this.updateSuggestions();
+            t.delay(this.refocusBind, 100);
+        },
+        getSelected: function () {
+            return [this.suggestions[this.index] + (this.type === ":" ? this.iplug ? "" : ":" : ""), this.iplug];
+        }
+    });
+    z.prototype.check = a.prototype.check;
+    z.prototype.iplugclickevent = a.prototype.iplugclickevent;
+    z.prototype.iplug = a.prototype.iplug;
+    z.prototype.updateSuggestions = a.prototype.updateSuggestions;
+    z.prototype.getSelected = a.prototype.getSelected;
+    o.prototype.submitSuggestion = function () {
+        var e = this.suggestionView.type === "@" ? this.getMentionRange() : this.getEmojiRange(),
+            t = this.chatInput.value.substr(0, e[0]),
+            n = this.chatInput.value.substr(e[1]),
+            r = this.suggestionView.getSelected();
+        this.chatInput.value = Array.isArray(r) ? (r[1] ? t.substring(0, t.lastIndexOf(":")) : t) + r[0] + " " + n : t + r + " " + n;
+        this.chatInput.setSelectionRange(e[0] + r[0].length + !r[1], e[0] + r[0].length + !r[1]);
+        this.suggestionView.reset();
+        this.suggestionView.updateSuggestions();
+    };
+});
+
+define("utils/tooltip", [requireIDs.a,"class"], function(a,Class) {
+    var n = Class.extend({
+        show: function (text, $obj, right) {
+                a.trigger("tooltip:show", text, $obj, right);
+        },
+        hide: function () {
+                a.trigger("tooltip:hide");
+        }
+    });
+    return new n();
+});
+
+define("utils/notify",[requireIDs.a,"class"],function(a,Class){
+    var n = Class.extend({
+        show: function (icon, text) {
+            a.trigger("notify", icon, text);
+        }
+    });
+    return new n();
+});
+
+
+
+define("alert", ["class", "jquery"], function (Class, $) {
+    var n = Class.extend({
+        init: function () {
+            this.$el = $("<div>").attr({id: "iplug-overlay"}).css({display: "none"});
+            this.$bg = $("<div>").addClass('iplug-overlay-bg');
+            this.$container = $("<div>").addClass('iplug-alert');
+            this.$alertFrame = $("<div>").addClass('iplug-alert-frame');
+            this.$title = $("<span>").addClass('iplug-alert-frame-title');
+            this.$alertBody = $("<div>").addClass('iplug-alert-body');
+            this.$message = $("<span>").addClass('iplug-alert-body-message');
+            this.$buttonFrame = $("<div>").addClass('iplug-alert-frame');
+            this.$button = $("<div>").addClass('iplug-alert-button-submit');
+            this.$buttonText = $("<span>");
+            this.$button.append(this.$buttonText);
+            this.$buttonFrame.append(this.$button);
+            this.$alertBody.append(this.$message);
+            this.$alertFrame.append(this.$title);
+            this.$container.append(this.$alertFrame);
+            this.$container.append(this.$alertBody);
+            this.$container.append(this.$buttonFrame);
+            this.$el.append(this.$bg);
+            this.$el.append(this.$container);
+            $("body").append(this.$el);
+            var that = this;
+            this.$button.click(function(){
+                that.hide();
+            });
+        },
+        show: function () {
+            this.$el.css("display", "block");
+        },
+        hide: function () {
+            this.$el.css("display", "none");
+        },
+        setMessage: function (title, message, buttonText) {
+            this.$title.text(typeof title === "string" ? title : "");
+            this.$message.text(typeof message === "string" ? message : "");
+            this.$buttonText.text(typeof buttonText === "string" ? buttonText : "");
+        }
+    });
+    return new n();
+});
+    
+define("version", ["alert", "class"], function(alert, Class) {
+    var n = Class.extend({
+        init: function() {
+        },
+        check: function(){
+            var code = Math.random.toString();
+            var event = new CustomEvent("VersionCheck", {
+                detail: {
+                    reqID: code
+                }
+            });
+            var handler = function (data) {
+                if (data.detail.reqID !== code) return;
+                document.removeEventListener("VersionResponse", handler);
+                console.log("DIS", this);
+                if (data.detail.version !== this.getVersion()) {
+                    this.setVersion(data.detail.version);
+                    this.callback(data.detail.version);
+                }
+            };
+            document.addEventListener("VersionResponse", handler);
+            document.dispatchEvent(event);
+        },
+        setVersion: function(version) {
+            localStorage["iplug|version"] = version;
+        },
+        getVersion: function() {
+            if (typeof localStorage['iplug|version'] !== "string") {
+                return localStorage['iplug|version'] = "0";
+            } else {
+                return localStorage['iplug|version'];
+            }
+        },
+        callback: function(version){
+            alert.setMessage("iPlug updated!", "Enjoy new version! (" + version + ")", "OK");
+            alert.show();
+        }
+    });
+    return new n();
+});
+
+define("vote", ["class"], function(Class){
+    var n = Class.extend({
+        init: function() {
+            this.wootEl = document.getElementById("woot");
+            this.mehEl  = document.getElementById("meh");
+        },
+        woot: function(force) { 
+            if ((!force && API.getUser().vote !== 0) || !API.getMedia()) return;
+            this.wootEl.click();
+        },
+        meh: function(force) { 
+            if ((!force && API.getUser().vote !== 0) || !API.getMedia()) return;
+            this.mehEl.click();
+        }
+    });
+    return new n();
+});
+
+define("autowoot", ["class", "vote", "underscore"], function(Class, vote, _) {
+    var n = Class.extend({
+        init: function(){
+            API.on(API.ADVANCE, _.bind(this.handler,this));
+        },
+        handler: function(){
+            if (!this.isEnabled) return;
+            _.delay(_.bind(vote.woot,vote), this.getDelay());
+        },
+        isEnabled: function() {
+            return localStorage["iplug|autowootenabled"] === "block";
+        },
+        getDelay: function() {
+            return Math.round(100 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random() * (100 * parseInt((localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0);
+        },
+        setDelay: function(min, max) {
+            if (min != undefined) {
+                localStorage["iplug|autowootdelaymin"] = min;
+            }
+            if (max != undefined) {
+                localStorage["iplug|autowootdelaymax"] = max;
+            }
+        }
+    });
+    return new n();
+});
+
+
+define("youtube-api", ["class", "jquery", "underscore", requireIDs.a], function (Class, e, t, r) {
+    var n = Class.extend({
+        init: function () {
+            this.loading = true;
+            this.loaded = false;
+            $("body").append($("<script/>").attr("src", "https://youtube.com/iframe_api"));
+            t.delay(t.bind(this.check, this), 1e3);
+        },
+        check: function () {
+            if (typeof window.YT !== "object" || typeof window.YT.Player !== "function" || !window.YT.loaded) {
+                t.delay(t.bind(this.check, this), 250);
+            } else {
+                this.YT = window.YT;
+                this.loaded = true;
+                r.trigger("yt:ready");
+            }
+        }
+    });
+    return new n();
+});
+
+define("youtube-controller", ["youtube-api", requireIDs.a, "class"], function(api, EventEmmiter, Class) {
+    var n = Class.extend({
+        init: function($el, cid, seekTo, successCallback, failureCallback) {
+            if (!api.loading || !api.loaded) return;
+            this.controls = new api.YT.Player($el[0], {
+                videoId: cid,
+                playerVars: {
+                    start: seekTo,
+                    autoplay: 0,//1,
+                    cc_load_policy: 0, //subtitles
+                    color: "red",
+                    controls: 0,
+                    disablekb: 1, //keyboard
+                    fs: 0, // full screen btn
+                    iv_load_policy: 3,
+                    loop: 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    showinfo: 0,
+                    theme: "dark"
+                },
+                events: {
+                    'onError': failureCallback,
+                    'onReady': successCallback
+                }
+           });
+        }
+    });
+    return n;
+});
+
+define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireIDs.z, requireIDs.p, "youtube-controller"], function(e, t, u, f, p, HTML5CONTROLLER){
+    var player = p.extend({
+        onVolumeChange: function() {
+            var e = u.get("volume");
+            try {
+                this.HTML5player.controls.setVolume(e);
+            }
+            catch (n) {}
+            try {
+                var t = u.get("media");
+                t && t.get("format") === 2 && this.player ? this.player.setVolume(e) : this.tx("setVolume=" + e);
+            }
+            catch (n) {}
+        },
+        loadFlash: function() {
+            var n = u.get("media");
+            if (n) {
+                this.$noDJ.hide();
+                if (!u.get("streamDisabled")) {
+                    this.ignoreComplete = !0, t.delay(t.bind(this.resetIgnoreComplete, this), 1e3);
+                    var i = u.get("volume"),
+                        s = u.get("elapsed"),
+                        o = s < 4 ? 0 : s;
+                    if (n.get("format") === 1) {
+                        this.buffering = !1;
+                        this.yto = {
+                            id: n.get("cid"),
+                            volume: i,
+                            seek: o,
+                            quality: f.settings.hdVideo ? "hd720" : ""
+                        };
+                        var a = "yt";
+                        window.location.origin.indexOf("//plug.dj") > -1 ? a += "" : window.location.origin.indexOf("//localhost") > -1 ? a += "local" : a += "staging";
+                        var l = e('<iframe id="yt-frame" frameborder="0" src="' + window.location.protocol + "//plgyte.appspot.com/" + a + '.html"></iframe>');
+                        l.load(this.ytFrameLoadedBind), this.$container.append(l);
+                    }
+                }
+            }
+        },
+        onMediaChange: function() {
+            this.reset(), this.$controls.removeClass("snoozed");
+            var n = u.get("media");
+            if (n) {
+                this.$noDJ.hide();
+                if (!u.get("streamDisabled")) {
+                    if (n.get("format") === 1) {
+
+                        this.$frame = e("<div>").attr({
+                            id: "yt-frame",
+                            frameborder: "0"
+                        });
+
+                        this.$container.append(this.$frame);
+
+                        var fallback = t.bind(function() {
+                            this.$container.empty();
+                            this.loadFlash();
+                        }, this);
+
+                        var callback = function() {
+                            if (!this.HTML5player.controls) {
+                                fallback();
+                            }
+                            else {
+                                this.HTML5player.controls.playVideo();
+                                this.HTML5player.controls.setVolume(u.get("volume"));
+                                this.HTML5player.controls.setPlaybackQuality(f.settings.hdVideo ? "hd720" : "medium");
+                            }
+                        };
+
+                        this.HTML5player = new HTML5CONTROLLER(this.$frame, n.get("cid"), Math.max(0,u.get("elapsed")), t.bind(callback, this), t.bind(fallback,this));
+
+
+                    }
+                    else if (n.get("format") === 2)
+                        if (d.r)
+                            if (d.sc) {
+                                this.$container.empty().append(e('<iframe id="yt-frame" frameborder="0" src="' + this.visualizers[this.random.integer(0, 1)] + '"></iframe>'));
+                                var c = this;
+                                d.sc.whenStreamingReady(function() {
+                                    if (n) {
+                                        var e = d.sc.stream(n.get("cid"), {
+                                            autoPlay: !0,
+                                            volume: i,
+                                            position: o * 1e3,
+                                            whileloading: c.scLoadingBind,
+                                            onfinish: c.playbackCompleteBind,
+                                            ontimeout: c.scTimeoutBind
+                                        });
+                                        c.player = e;
+                                    }
+                                });
+                            }
+                            else this.$container.append(e('<img src="https://soundcloud-support.s3.amazonaws.com/images/downtime.png" height="271"/>').css("position", "absolute").css("left", 46));
+                    else r.on("sc:ready", this.onSCReady, this);
+                }
+            }
+            else this.$noDJ.show(), this.$controls.hide();
+        },
+        setHD: function(e) {
+            var t = u.get("media");
+            try {
+                this.HTML5player.controls.setPlaybackQuality(e ? "hd720" : "medium");
+            }
+            catch (e) {}
+            e ? (f.settings.hdVideo = !0, t && t.get("format") === 1 && this.tx("setPlaybackQuality=hd720"), f.save(), this.$hdLabel.text("ON")) : (f.settings.hdVideo = !1, t && t.get("format") === 1 && this.tx("setPlaybackQuality=medium"), f.save(), this.$hdLabel.text("OFF"));
+        }
+    });
+    $("#playback").remove();
+    var z = new player();
+    z.$el.appendTo("#room");
+    z.render();
+    z.onMediaChange();
+});
+    /////////
+require(["autowoot", "version", "utils/tooltip", "utils/notify", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function(Autowoot, Version, Tooltip,Notify) {
     "use strict";
 
 
@@ -291,9 +861,6 @@
     if (undefined === localStorage["iplug|listgrabmehenabled"]) {
         localStorage["iplug|listgrabmehenabled"] = "block";
     }
-    if (undefined === localStorage["iplug|html5youtube"]) { // should be in menu :/
-        localStorage["iplug|html5youtube"] = "block";
-    }
 
     $("#playback > .background").css({
         display: (localStorage["iplug|playbackborder"] === "none") ? "block" : "none"
@@ -340,284 +907,6 @@
 
 
 
-
-
-
-    var requireIDs = {
-        a: null,
-        r: null,
-        s: null,
-        v: null,
-        c: null,
-        i: null,
-        e: null,
-        m: null,
-        g: null
-    };
-
-    function requireTry(id, callback) {
-        if (typeof id !== "string" || !requirejs.defined(id)) return;
-        try {
-            var x = require(id);
-            if (typeof callback === "function") callback(x);
-        } catch (f) {}
-    }
-    var x;
-    for (var i in x = requirejs.s.contexts._.defined) {
-        if (!x.hasOwnProperty(i) || !x[i]) continue;
-        if (x[i] && x[i]._events && x[i]._events.notify)
-            requireIDs.a = i;
-        if (x[i].prototype && x[i].prototype.RowClass && x[i].prototype.className === "list room")
-            requireIDs.r = i;
-        if (x[i].attributes && typeof x[i].attributes.streamDisabled === "boolean")
-            requireIDs.s = i;
-        if (x[i].prototype && x[i].prototype.vote)
-            requireIDs.v = i;
-        if (x[i].prototype && x[i].prototype.hasOwnProperty("id") && x[i].prototype.id == "chat-suggestion")
-            requireIDs.c = i;
-        if (x[i].prototype && x[i].prototype.submitSuggestion && x[i].prototype.hasOwnProperty("id"))
-            requireIDs.i = i;
-        if (x[i] && x[i].add && x[i].init && x[i].remove && x[i].lookup && x[i].exists)
-            requireIDs.e = i;
-        if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
-            requireIDs.m = i;
-        if (x[i] && x[i].getAudience && x[i]._events && x[i]._events["change:username"] && x[i].findWhere)
-            requireIDs.g = i;
-    }
-    for (var i in requireIDs) {
-        if (!requireIDs.hasOwnProperty) continue;
-        if (!requireIDs[i]) console.log(i, requireIDs[i]);
-    }
-    require(requireIDs.r).prototype.RowClass = require(requireIDs.v).extend({
-        vote: function () {
-            if (this.model.get('level')) {
-                if (!this.$level) {
-                    this.$level = $("<span>");
-                }
-                this.$level.removeClass().addClass("plug-level");
-                this.$level.text(this.model.get('level'));
-                this.$el.append(this.$level);
-            } else {
-                this.$level.remove();
-                this.$level = undefined;
-            }
-            if (this.model.get('grab')) {
-                if (!this.$grabIcon) {
-                    this.$grabIcon = $('<i>');
-                }
-                this.$grabIcon.addClass('icon icon-grab');
-                this.$el.append(this.$grabIcon);
-            } else if (this.$grabIcon) {
-                this.$grabIcon.remove();
-                this.$grabIcon = undefined;
-            }
-            if (this.model.get('vote') !== 0) {
-                if (!this.$icon) {
-                    this.$icon = $('<i>');
-                }
-                this.$el.append(this.$icon);
-                if (this.model.get('vote') === 1) {
-                    this.$icon.removeClass().addClass('icon icon-woot');
-                } else {
-                    this.$icon.removeClass().addClass('icon icon-meh');
-                }
-            } else if (this.$icon) {
-                this.$icon.remove();
-                this.$icon = undefined;
-            }
-        }
-    });
-    var a = require(requireIDs.c).extend({
-        check: function (e, t) {
-            var i = require(requireIDs.m);
-            var s = require(requireIDs.e);
-            var k = {
-                lookup: function (e) {
-                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
-                },
-                map: {
-                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
-                }
-            };
-            var n = e.lastIndexOf(" @"),
-                r = e.lastIndexOf(" :");
-            n === -1 && (n = e.indexOf("@") === 0 ? 0 : -1);
-            if (n > -1 && n > r) {
-                this.type = "@", n === 0 ? this.suggestions = s.lookup(e.substr(n + 1, t)) : n > 0 && t > n + 2 && (this.suggestions = s.lookup(e.substr(n + 2, t)));
-            } else {
-                this.type = ":";
-                var o = 2;
-                r === -1 ? r = e.indexOf(":") === 0 ? 0 : -1 : o = 3, r > -1 && t - r > o && (r === 0 ? this.suggestions = i.lookup(e.substr(r + 1, t)).concat(k.lookup(e.substr(r + 1, t))) : r > 0 && t > r + o && (this.suggestions = i.lookup(e.substr(r + 2, t)).concat(k.lookup(e.substr(r + 2, t)))));
-            }
-        },
-        iplug: false,
-        updateSuggestions: function () {
-            var i = require(requireIDs.m);
-            var r = require(requireIDs.g);
-            var k = {
-                lookup: function (e) {
-                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
-                },
-                map: {
-                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
-                }
-            };
-            var e = jQuery;
-            var n = this.suggestions.length;
-            var u = require("hbs!templates/room/chat/ChatSuggestionItem");
-            var t = require("underscore");
-            this.$itemContainer.html("");
-            this.iplug = false;
-            if (n === 0) {
-                this.$el.hide(), this.index = -1;
-            } else {
-                var s, o, a, f = n;
-                if (this.type === "@") {
-                    for (s = 0; s < n; ++s) {
-                        var l = r.findWhere({
-                            username: this.suggestions[s]
-                        });
-                        if (l) {
-                            var c = l.get("avatarID");
-                            a = '<div class="thumb small"><i class="avi avi-' + l.get("avatarID") + '"></i></div>', o = e(u({
-                                value: this.suggestions[s],
-                                index: s,
-                                image: a
-                            })).mousedown(t.bind(this.iplugclickevent, this)).mouseenter(this.overBind);
-                            var h = l.get("status");
-                            h === 0 ? o.addClass("available") : h === 1 ? o.addClass("away") : h === 2 ? o.addClass("working") : h === 3 ? o.addClass("gaming") : h === 4 ? o.addClass("idle") : h === 5 && o.addClass("idle"), this.$itemContainer.append(o);
-                        } else {
-                            --f;
-                        }
-                    }
-                } else {
-                    for (s = 0; s < n; ++s) {
-                        var x = i.map[this.suggestions[s]] ? i.map[this.suggestions[s]] : (this.iplug = true, k.map[this.suggestions[s]]);
-                        a = this.iplug ? '<span class="emoji-glow"><span style="background: url(' + x + ') 0 0 no-repeat;background-size: contain;position: absolute; width: 16px; height: 16px; z-index: 1;"></span></span>' : '<span class="emoji-glow"><span class="emoji emoji-' + x + '"></span></span>';
-                        o = e(u({
-                            value: (!this.iplug ? ":" : "") + this.suggestions[s] + (!this.iplug ? ":" : ""),
-                            index: s,
-                            image: a
-                        })).mousedown(t.bind(this.iplugclickevent, this)).mouseenter(this.overBind), o.addClass("emo"), this.$itemContainer.append(o);
-                    }
-                }
-                if (this.index === -1 || this.index >= n) {
-                    this.index = 0;
-                }
-                this.updateSelectedSuggestion(), this.$el.height(f * 38), t.delay(this.showBind, 10), t.delay(this.showBind, 15), this.$document.on("mousedown", this.documentClickBind);
-            }
-        },
-        iplugclickevent: function (c) {
-            var f = require("underscore"),
-                d = $("#chat-input-field")[0];
-            this.index = c.currentTarget.dataset.index;
-            c = this.type;
-            var a;
-            d.createTextRange ? (a = document.selection.createRange().duplicate(), a = (a.moveEnd("character", d.value.length), "" === a.text ? d.value.length : d.value.lastIndexOf(a.text))) : a = d.selectionStart;
-            if (0 < a) {
-                var e = d.value.substr(0, a),
-                    b = e.lastIndexOf("@" === c ? " @" : " :"); - 1 === b ? b = e.indexOf("@" === c ? "@" : ":") : ++b;
-                c = [b + 1, a];
-            } else {
-                c = void 0;
-            }
-            a = d.value.substr(0, c[0]);
-            e = d.value.substr(c[1]);
-            b = this.getSelected();
-            d.value = Array.isArray(b) ? (b[1] ? a.substring(0, a.lastIndexOf(":")) : a) + b[0] + " " + e : a + b + " " + e;
-            d.setSelectionRange(c[0] + b[0].length + !b[1], c[0] + b[0].length + !b[1]);
-            this.reset();
-            this.updateSuggestions();
-            f.delay(this.refocusBind, 100);
-        },
-        getSelected: function () {
-            return [this.suggestions[this.index] + (this.type === ":" ? this.iplug ? "" : ":" : ""), this.iplug];
-        }
-    });
-    require(requireIDs.c).prototype.check = a.prototype.check;
-    require(requireIDs.c).prototype.iplugclickevent = a.prototype.iplugclickevent;
-    require(requireIDs.c).prototype.iplug = a.prototype.iplug;
-    require(requireIDs.c).prototype.updateSuggestions = a.prototype.updateSuggestions;
-    require(requireIDs.c).prototype.getSelected = a.prototype.getSelected;
-    require(requireIDs.i).prototype.submitSuggestion = function () {
-        var e = this.suggestionView.type === "@" ? this.getMentionRange() : this.getEmojiRange(),
-            t = this.chatInput.value.substr(0, e[0]),
-            n = this.chatInput.value.substr(e[1]),
-            r = this.suggestionView.getSelected();
-        this.chatInput.value = Array.isArray(r) ? (r[1] ? t.substring(0, t.lastIndexOf(":")) : t) + r[0] + " " + n : t + r + " " + n;
-        this.chatInput.setSelectionRange(e[0] + r[0].length + !r[1], e[0] + r[0].length + !r[1]);
-        this.suggestionView.reset();
-        this.suggestionView.updateSuggestions();
-    };
-    var plug = {
-        tooltip: {
-            show: function (text, obj, right) {
-                require(requireIDs.a).trigger("tooltip:show", text, obj, right);
-            },
-            hide: function () {
-                require(requireIDs.a).trigger("tooltip:hide");
-            }
-        },
-        notify: function (icon, text, idk) {
-            require(requireIDs.a).trigger("notify", icon, text, idk);
-        }
-    };
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    $("body").append("<div id='iplug-overlay' style='display:none;'></div>");
-
-    $("#waitlist > .header > .divider").remove();
-    $("#waitlist > .header").append("<div class='divider left'></div>");
-    $("#waitlist > .header").append("<div class='divider right'></div>");
-    $(".app-right > div.friends > div.header > div.divider").remove();
-    $(".app-right > div.friends > div.header").append("<div class='divider left'></div>");
-    $(".app-right > div.friends > div.header").append("<div class='divider right'></div>");
-
-    function version() {
-        var b, a = Math.random().toString(),
-            d = new CustomEvent("KrisDontTouchMyCode", {
-                detail: {
-                    reqID: a
-                }
-            });
-        document.addEventListener("KrisDontTouchMyCodeOK-" + a, function e(c) {
-            c.detail.reqID == a && (document.removeEventListener("KrisDontTouchMyCodeOK-" + a, e), b = c.detail.v);
-        });
-        document.dispatchEvent(d);
-        return b;
-    }
-
-    if (typeof (localStorage['iplug|version']) != "string") localStorage['iplug|version'] = "0";
-
-    version() != localStorage["iplug|version"] && (localStorage["iplug|version"] = version(), setTimeout(function () {
-        var a = "Say hello to new visualizations!\nDon't forget to enable them in settings!\nversion: " + localStorage["iplug|version"];
-        $("#iplug-overlay").append("<div class='iplug-overlay-bg'></div><div class='iplug-alert'><div class='iplug-alert-frame'><span class='iplug-alert-frame-title'>iPlug has been updated!</span></div><div class='iplug-alert-body'><span class='iplug-alert-body-message'>" + a + "</span></div><div class='iplug-alert-frame'><div class='iplug-alert-button-submit'> <span>OK</span></div></div></div>").css("display", "block");
-        $(".iplug-alert-button-submit").click(function () {
-            $("#iplug-overlay").css("display", "none");
-        });
-    }, 5E3)); //5 * 10^3
-
-    function WT() {
-        if (localStorage["iplug|autowootenabled"] != "block") return;
-        if ($('#woot').length > 0) {
-            var v1 = $("#meh")[0] == $("#vote > .selected")[0];
-            var v2 = $("#woot")[0] == $("#vote > .selected")[0];
-            if (!(v1 || v2)) { //didn't work
-                $("#woot").click();
-                setTimeout(WT, 500); //try again
-            }
-        } else {
-            setTimeout(WT, 1000); // object not created yet || slow pc 
-        }
-    }
-
     function JN() {
         if (localStorage["iplug|autojoinenabled"] != "block") return;
         if (tempAutoJoinDisabled) return;
@@ -636,7 +925,6 @@
         }
     }
 
-    setTimeout(WT, 5000); // AUTO WOOT ON JOIN
     setTimeout(JN, 5000); // AUTO JOIN ON JOIN, and butter on butter is butter
 
     /////////
@@ -732,10 +1020,7 @@
     /////////////////
     var VisualizationsHelper = {};
 
-    var YoutubeHelper = {};
-
     VisualizationsHelper.currentRoom = window.location.href;
-    YoutubeHelper.ready = false;
     VisualizationsHelper.initVolume = function () {
         var volume;
         try {
@@ -744,9 +1029,9 @@
         if (!isFinite(volume / 100)) {
             return setTimeout(VisualizationsHelper.initVolume, 500);
         } else {
-            if (!YoutubeHelper.ready) return setTimeout(VisualizationsHelper.initVolume, 500);
-            Visualizations.setVolume(volume / 100);
-            Youtube.setVolume(volume);
+            try{
+                Visualizations.setVolume(volume / 100);
+            } catch (err) {}
         }
     };
     VisualizationsHelper.visible = false;
@@ -789,130 +1074,6 @@
     VisualizationsHelper.location = $("#playback-container").parent()[0];
 
 
-    $(VisualizationsHelper.location).append("<div id='iplug-yt-frame' frameborder='0' src=''></div>");
-
-    YoutubeHelper.ignoreOnce = false;
-    YoutubeHelper.visible = false;
-    YoutubeHelper.hide = function () {
-        $("#iplug-yt-frame").stop(true).animate({
-            opacity: "0"
-        }, {
-            easing: "easeOutQuint",
-            duration: 2E3,
-            queue: !1,
-            step: function (now) {
-                YoutubeHelper.opacity = now;
-            },
-            complete: function () {
-                this.style.display = "none";
-                Youtube.stopVideo();
-                YoutubeHelper.visible = false;
-            }
-        });
-    };
-    YoutubeHelper.show = function () {
-        $("#iplug-yt-frame").stop(true).animate({
-            opacity: "1"
-        }, {
-            easing: "easeOutQuint",
-            duration: 2E3,
-            queue: !1,
-            step: function (now) {
-                YoutubeHelper.opacity = now;
-            },
-            start: function () {
-                Youtube.playVideo();
-                YoutubeHelper.visible = true;
-                this.style.display = "block"; // cuz why not
-            }
-        });
-    };
-    var Youtube;
-    var initTimeoutID = 0;
-
-    function initYoutube() {
-        clearTimeout(initTimeoutID);
-        if (typeof window.YT != "object" || typeof window.YT.Player != "function" || !window.YT.loaded) {
-            console.warn("!");
-            return initTimeoutID = setTimeout(initYoutube, 100);
-        }
-        Youtube = new YT.Player($("#iplug-yt-frame")[0], {
-            playerVars: {
-                autoplay: 1,
-                cc_load_policy: 0, //subtitles
-                color: "red",
-                controls: 0,
-                disablekb: 1, //keyboard
-                fs: 0, // full screen btn
-                iv_load_policy: 3,
-                loop: 0,
-                modestbranding: 1,
-                rel: 0,
-                showinfo: 0,
-                theme: "dark",
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onError': onErr
-            }
-        });
-    }
-    YoutubeHelper.chatErrorID = "0";
-    YoutubeHelper.chatError = function (message) {
-        var r = API.getMedia().id;
-        if (YoutubeHelper.chatErrorID != r) {
-            YoutubeHelper.chatErrorID = API.getMedia().cid;
-            $("#chat-messages").append('<div class="system" style="border-left-color: transparent;padding-left: 27px;">\
-    <i class="icon icon-support-white" style="background: url(http://i.imgur.com/pTaGgcB.png);"></i>\
-    <span class="text" style="color: #d1d1d1;">' + message + '</span>\
-    </div>');
-        }
-    };
-
-    function onErr(e) {
-        if (e.data == 100) {
-            YoutubeHelper.chatError("100 - Video not found!");
-        } else if (e.data === 101 || e.data === 150 || e.data === 5) {
-            YoutubeHelper.ignoreOnce = true;
-            YoutubeHelper.chatErrorID = API.getMedia().cid;
-            $("#playback-controls > div.button.refresh").click();
-        }
-    }
-    YoutubeHelper.onEvent = function (event) {
-        if (!YoutubeHelper.ready) return setTimeout(YoutubeHelper.onEvent, 100, event);
-        if (Youtube.getPlayerState() != YT.PlayerState.PAUSED) Youtube.pauseVideo();
-        var cid = "";
-        var yesNo; // YES, IT IS YESNO
-        if (require(requireIDs.s).attributes.streamDisabled)
-            return YoutubeHelper.hide();
-        if ("block" != localStorage["iplug|html5youtube"] || ($("#playback-controls").hasClass("snoozed")))
-            return YoutubeHelper.hide();
-        if ("object" != typeof event) {
-            var a = API.getMedia();
-            if (void 0 === a || "1" != a.format)
-                return YoutubeHelper.hide();
-            cid = a.cid;
-            yesNo = !0;
-        } else {
-            if ("object" != typeof event.media || "1" != event.media.format)
-                return YoutubeHelper.hide();
-            cid = event.media.cid;
-            yesNo = !1;
-        }
-        YoutubeHelper.show();
-        if (Youtube.getVideoData().video_id != cid) {
-            Youtube.loadVideoById(cid);
-        }
-        Youtube.playVideo();
-        if (yesNo)
-            Youtube.seekTo(API.getTimeElapsed());
-    };
-
-    initYoutube();
-
-    function onPlayerReady(event) {
-        YoutubeHelper.ready = true;
-    }
 
     /*           INIT HERE              */
 
@@ -1414,38 +1575,10 @@ updateColor();
                 try {
                     Visualizations.setVolume(temp);
                 } catch (f) {}
-                try {
-                    Youtube.setVolume(temp * 100);
-                } catch (f) {}
             }
         });
     });
     VisualizationsHelper.ObsrvTwo.observe($("#volume > span")[0], {
-        attributes: false,
-        childList: true,
-        characterData: false
-    });
-    YoutubeHelper.ObsrvOne = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            for (var i = mutation.addedNodes.length - 1; i >= 0; i--) {
-                if (localStorage["iplug|html5youtube"] == "block") {
-                    if (YoutubeHelper.chatErrorID != API.getMedia().cid) {
-                        if (!YoutubeHelper.ignoreOnce) {
-                            mutation.addedNodes[i].remove();
-                        }
-                    }
-                }
-            }
-        });
-        if (YoutubeHelper.ignoreOnce) {
-            YoutubeHelper.ignoreOnce = false;
-            YoutubeHelper.hide();
-        }
-        if (YoutubeHelper.chatErrorID == API.getMedia().cid) {
-            YoutubeHelper.hide();
-        }
-    });
-    YoutubeHelper.ObsrvOne.observe($("#playback-container")[0], {
         attributes: false,
         childList: true,
         characterData: false
@@ -1529,18 +1662,6 @@ updateColor();
         Visualizations.play();
     };
 
-    $("#playback-controls > div.button.hd").bind("click", function (a) {
-        var q;
-        if ($("#playback-controls > div.button.hd > div.box > span.label").text() == "ON") {
-            var f = Youtube.getPlaybackQuality();
-            var g = Youtube.getAvailableQualityLevels();
-            if (g.length == 0) return;
-            q = g.indexOf("highres") > -1 ? "highres" : g.indexOf("hd1080") > -1 ? "hd1080" : g.indexOf("hd720") > -1 ? "hd720" : g.indexOf("large") > -1 ? "large" : g.indexOf("medium") > -1 ? "medium" : "default";
-        } else { // off 
-            q = "default";
-        }
-        Youtube.setPlaybackQuality(q);
-    });
     require(requireIDs.s).on("change:streamDisabled", function (x) {
         onAPIadvance();
     });
@@ -1555,7 +1676,6 @@ updateColor();
     VisualizationsHelper.initCall = function () {
         if (!($('#room-loader').length > 0) && (API.enabled)) {
             VisualizationsHelper.onEvent();
-            YoutubeHelper.onEvent();
             return false;
         }
         setTimeout(VisualizationsHelper.initCall, 1000);
@@ -1565,36 +1685,14 @@ updateColor();
     function onAPIadvance(a) {
         Visualizations.img.src = "";
         VisualizationsHelper.onEvent(a);
-        YoutubeHelper.onEvent(a);
-        Youtube.hideVideoInfo();
     }
 
     API.on(API.ADVANCE, onAPIadvance);
 
-    YoutubeHelper.ObsrvTwoIgnoreOnce = false;
-    YoutubeHelper.ObsrvTwo = new MutationObserver(function (mutations) {
-        var u = window.location.href;
-        if (!YoutubeHelper.ObsrvTwoIgnoreOnce) {
-            if (u == VisualizationsHelper.currentRoom) return;
-            YoutubeHelper.ObsrvTwoIgnoreOnce = true;
-        } else YoutubeHelper.ObsrvTwoIgnoreOnce = false;
-        tempAutoJoin(false);
-        VisualizationsHelper.currentRoom = u;
-        WT();
-        JN();
-        onAPIadvance();
-    });
-    YoutubeHelper.ObsrvTwo.observe($("#now-playing-media")[0], {
-        attributes: false,
-        childList: true,
-        characterData: false,
-        subtree: true
-    });
-
-
+    
     //========== INIT
     $("#playback-container").css("width", $("#playback-container").css("width"));
-    if ("block" == localStorage["iplug|html5youtube"]) $("#yt-frame").remove();
+    
     /////
 
 
@@ -1684,7 +1782,7 @@ updateColor();
 
 
     $("#playback-container").addClass("custom1");
-    $("#iplug-yt-frame").addClass("custom1");
+    
     $("#iplug-playback").addClass("custom1");
 
 
@@ -1753,7 +1851,6 @@ updateColor();
     if (API.getMedia()) $(".backgroundcard[card='youtube'] img").attr("src", (API.getMedia().format === 1) ? ("https://img.youtube.com/vi/" + API.getMedia().cid + "/mqdefault.jpg") : API.getMedia().image);
     API.on(API.ADVANCE, function (data) {
         $(".backgroundcard[card='youtube'] img").attr("src", (data.media.format === 1) ? ("https://img.youtube.com/vi/" + data.media.cid + "/mqdefault.jpg") : data.media.image);
-        setTimeout(WT, Math.round(100 * parseInt(localStorage["iplug|autowootdelaymin"]) + Math.random() * (100 * parseInt((localStorage["iplug|autowootdelaymax"]) - parseInt(localStorage["iplug|autowootdelaymin"]))), 0));
     });
 
     API.on(API.WAIT_LIST_UPDATE, function () {
@@ -2169,11 +2266,11 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                     if (card === newcard) return;
                     localStorage["iplug|currentBackground"] = newcard.attr("card");
                     if (newcard.attr("card") === "youtube") {
-                        $("#playback, #playback-container, #iplug-yt-frame, #iplug-playback").addClass("largevideo");
+                        $("#playback, #playback-container, #iplug-playback").addClass("largevideo");
                         $(".room-background:not(.default)").remove();
                     } else {
                         if (card.attr("card") === "youtube") {
-                            $("#playback, #playback-container, #iplug-yt-frame, #iplug-playback").removeClass("largevideo");
+                            $("#playback, #playback-container, #iplug-playback").removeClass("largevideo");
                             $(window).trigger("resize");
                         }
                         var oldbg = $(".room-background:not(.default)");
@@ -2624,11 +2721,11 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         }).forEach(function (e) {
             usernames.push(e.username);
         });
-        if (usernames.length > 0) plug.tooltip.show(usernames.join("\n"), $("#meh"), false);
+        if (usernames.length > 0) Tooltip.show(usernames.join("\n"), $("#meh"), false);
     }
 
     function hideTooltip() {
-        plug.tooltip.hide();
+        Tooltip.hide();
     }
 
     function showGrab() {
@@ -2639,7 +2736,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         }).forEach(function (e) {
             usernames.push(e.username);
         });
-        if (usernames.length > 0) plug.tooltip.show(usernames.join("\n"), $("#grab"), false);
+        if (usernames.length > 0) Tooltip.show(usernames.join("\n"), $("#grab"), false);
     }
     $("#grab").on("mouseenter", showGrab).on("mouseleave", hideTooltip);
     $("#meh").on("mouseenter", showMeh).on("mouseleave", hideTooltip);
@@ -2647,7 +2744,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
     function cardBuilder(key) {
         return '<div class="backgroundcard"  card="' + key + '"><div class="backgroundtitle noitem"><span>' + backgrounds[key].text + '</span></div><div class="backgrounddescription noitem"><p>' + backgrounds[key].description + '</p></div><img src="' + backgrounds[key].url + '" class="backgroundthumbnail"></img></div>';
     }
-}());
+});
 
 
 

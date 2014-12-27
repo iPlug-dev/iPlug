@@ -16,10 +16,10 @@ document.head.appendChild(s);
 
 /* Version */
 
-document.addEventListener("KrisDontTouchMyCode", function(event) {
-    var fetchResponse = new CustomEvent("KrisDontTouchMyCodeOK-" + event.detail.reqID, {
-        "detail": {
-            "v": getVersion(),
+document.addEventListener("VersionCheck", function(event) {
+    var fetchResponse = new CustomEvent("VersionResponse", {
+        detail: {
+            "version": getVersion(),
             "reqID": event.detail.reqID
         }
     });
