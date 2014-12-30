@@ -1,7 +1,3 @@
-/* Copyright (C) 2013 Justin Windle, http://soulwire.co.uk */
-var Sketch=function(){"use strict";function e(e){return"[object Array]"==Object.prototype.toString.call(e)}function t(e){return"function"==typeof e}function n(e){return"number"==typeof e}function o(e){return"string"==typeof e}function r(e){return E[e]||String.fromCharCode(e)}function i(e,t,n){for(var o in t)(n||!e.hasOwnProperty(o))&&(e[o]=t[o]);return e}function u(e,t){return function(){e.apply(t,arguments)}}function a(e){var n={};for(var o in e)n[o]=t(e[o])?u(e[o],e):e[o];return n}function c(e){function n(n){t(n)&&n.apply(e,[].splice.call(arguments,1))}function u(e){for(_=0;_<J.length;_++)G=J[_],o(G)?O[(e?"add":"remove")+"EventListener"].call(O,G,k,!1):t(G)?k=G:O=G}function c(){L(T),T=I(c),U||(n(e.setup),U=t(e.setup),n(e.resize)),e.running&&!j&&(e.dt=(B=+new Date)-e.now,e.millis+=e.dt,e.now=B,n(e.update),e.autoclear&&K&&e.clear(),n(e.draw)),j=++j%e.interval}function l(){O=Y?e.style:e.canvas,D=Y?"px":"",e.fullscreen&&(e.height=w.innerHeight,e.width=w.innerWidth),O.height=e.height+D,O.width=e.width+D,e.retina&&K&&X&&(O.height=e.height*X,O.width=e.width*X,O.style.height=e.height+"px",O.style.width=e.width+"px",e.scale(X,X)),U&&n(e.resize)}function s(e,t){return N=t.getBoundingClientRect(),e.x=e.pageX-N.left-w.scrollX,e.y=e.pageY-N.top-w.scrollY,e}function f(t,n){return s(t,e.element),n=n||{},n.ox=n.x||t.x,n.oy=n.y||t.y,n.x=t.x,n.y=t.y,n.dx=n.x-n.ox,n.dy=n.y-n.oy,n}function g(e){if(e.preventDefault(),W=a(e),W.originalEvent=e,W.touches)for(M.length=W.touches.length,_=0;_<W.touches.length;_++)M[_]=f(W.touches[_],M[_]);else M.length=0,M[0]=f(W,V);return i(V,M[0],!0),W}function h(t){for(t=g(t),q=(Q=J.indexOf(z=t.type))-1,e.dragging=/down|start/.test(z)?!0:/up|end/.test(z)?!1:e.dragging;q;)o(J[q])?n(e[J[q--]],t):o(J[Q])?n(e[J[Q++]],t):q=0}function p(t){F=t.keyCode,H="keyup"==t.type,Z[F]=Z[r(F)]=!H,n(e[t.type],t)}function v(t){e.autopause&&("blur"==t.type?b:C)(),n(e[t.type],t)}function C(){e.now=+new Date,e.running=!0}function b(){e.running=!1}function P(){(e.running?b:C)()}function A(){K&&e.clearRect(0,0,e.width,e.height)}function S(){R=e.element.parentNode,_=x.indexOf(e),R&&R.removeChild(e.element),~_&&x.splice(_,1),u(!1),b()}var T,k,O,R,N,_,D,B,G,W,z,F,H,q,Q,j=0,M=[],U=!1,X=w.devicePixelRatio,Y=e.type==m,K=e.type==d,V={x:0,y:0,ox:0,oy:0,dx:0,dy:0},J=[e.element,h,"mousedown","touchstart",h,"mousemove","touchmove",h,"mouseup","touchend",h,"click",y,p,"keydown","keyup",w,v,"focus","blur",l,"resize"],Z={};for(F in E)Z[E[F]]=!1;return i(e,{touches:M,mouse:V,keys:Z,dragging:!1,running:!1,millis:0,now:0/0,dt:0/0,destroy:S,toggle:P,clear:A,start:C,stop:b}),x.push(e),e.autostart&&C(),u(!0),l(),c(),e}for(var l,s,f="E LN10 LN2 LOG2E LOG10E PI SQRT1_2 SQRT2 abs acos asin atan ceil cos exp floor log round sin sqrt tan atan2 pow max min".split(" "),g="__hasSketch",h=Math,d="canvas",p="webgl",m="dom",y=document,w=window,x=[],v={fullscreen:!0,autostart:!0,autoclear:!0,autopause:!0,container:y.body,interval:1,globals:!0,retina:!1,type:d},E={8:"BACKSPACE",9:"TAB",13:"ENTER",16:"SHIFT",27:"ESCAPE",32:"SPACE",37:"LEFT",38:"UP",39:"RIGHT",40:"DOWN"},C={CANVAS:d,WEB_GL:p,WEBGL:p,DOM:m,instances:x,install:function(t){if(!t[g]){for(var o=0;o<f.length;o++)t[f[o]]=h[f[o]];i(t,{TWO_PI:2*h.PI,HALF_PI:h.PI/2,QUATER_PI:h.PI/4,random:function(t,o){return e(t)?t[~~(h.random()*t.length)]:(n(o)||(o=t||1,t=0),t+h.random()*(o-t))},lerp:function(e,t,n){return e+n*(t-e)},map:function(e,t,n,o,r){return(e-t)/(n-t)*(r-o)+o}}),t[g]=!0}},create:function(e){return e=i(e||{},v),e.globals&&C.install(self),l=e.element=e.element||y.createElement(e.type===m?"div":"canvas"),s=e.context=e.context||function(){switch(e.type){case d:return l.getContext("2d",e);case p:return l.getContext("webgl",e)||l.getContext("experimental-webgl",e);case m:return l.canvas=l}}(),e.container.appendChild(l),C.augment(s,e)},augment:function(e,t){return t=i(t||{},v),t.element=e.canvas||e,t.element.className+=" sketch",i(e,t,!0),c(e)}},b=["ms","moz","webkit","o"],P=self,A=0,S="AnimationFrame",T="request"+S,k="cancel"+S,I=P[T],L=P[k],O=0;O<b.length&&!I;O++)I=P[b[O]+"Request"+S],L=P[b[O]+"Cancel"+T];return P[T]=I=I||function(e){var t=+new Date,n=h.max(0,16-(t-A)),o=setTimeout(function(){e(t+n)},n);return A=t+n,o},P[k]=L=L||function(e){clearTimeout(e)},C}();
-
-
 var requireIDs = {
     a: null,
     r: null,
@@ -43,8 +39,24 @@ for (var i in x = requirejs.s.contexts._.defined) {
 }
 for (var i in requireIDs) {
     if (!requireIDs.hasOwnProperty) continue;
-    if (!requireIDs[i]) console.log(i, requireIDs[i]);
+    if (!requireIDs[i]) console.warn(i, requireIDs[i]);
 }
+
+/** 
+   Copyright (C) 2013 Justin Windle, http://soulwire.co.uk 
+
+   Modified by iPlug developers 
+*/
+
+define("sketch", [], function(){"use strict";var e = window, t = e.document;function n(e){return"[object Array]"==Object.prototype.toString.call(e)}function o(e){return"function"==typeof e}function r(e){return"number"==typeof e}function i(e){return"string"==typeof e}function u(e){return C[e]||String.fromCharCode(e)}function a(e,t,n){for(var o in t)!n&&o in e||(e[o]=t[o]);return e}function c(e,t){return function(){e.apply(t,arguments)}}function s(e){var t={};for(var n in e)t[n]=o(e[n])?c(e[n],e):e[n];return t}function l(e){function t(t){o(t)&&t.apply(e,[].splice.call(arguments,1))}function n(e){for(_=0;_<et.length;_++)B=et[_],i(B)?O[(e?"add":"remove")+"EventListener"].call(O,B,k,!1):o(B)?k=B:O=B}function r(){R(T),T=L(r),K||(t(e.setup),K=o(e.setup)),U||(t(e.resize),U=o(e.resize)),e.running&&!Y&&(e.dt=(z=+new Date)-e.now,e.millis+=e.dt,e.now=z,t(e.update),Z&&(e.retina&&(e.save(),e.scale(V,V)),e.autoclear&&e.clear()),t(e.draw),Z&&e.retina&&e.restore()),Y=++Y%e.interval}function c(){O=J?e.style:e.canvas,D=J?"px":"",Q=e.width,X=e.height,e.fullscreen&&(X=e.height=w.innerHeight,Q=e.width=w.innerWidth),e.retina&&Z&&V&&(O.style.height=X+"px",O.style.width=Q+"px",Q*=V,X*=V),O.height!==X&&(O.height=X+D),O.width!==Q&&(O.width=Q+D),K&&t(e.resize)}function l(e,t){return N=t.getBoundingClientRect(),e.x=e.pageX-N.left-(w.scrollX||w.pageXOffset),e.y=e.pageY-N.top-(w.scrollY||w.pageYOffset),e}function f(t,n){return l(t,e.element),n=n||{},n.ox=n.x||t.x,n.oy=n.y||t.y,n.x=t.x,n.y=t.y,n.dx=n.x-n.ox,n.dy=n.y-n.oy,n}function d(e){if(e.preventDefault(),G=s(e),G.originalEvent=e,G.touches)for(M.length=G.touches.length,_=0;_<G.touches.length;_++)M[_]=f(G.touches[_],M[_]);else M.length=0,M[0]=f(G,$);return a($,M[0],!0),G}function g(n){for(n=d(n),j=(q=et.indexOf(W=n.type))-1,e.dragging=/down|start/.test(W)?!0:/up|end/.test(W)?!1:e.dragging;j;)i(et[j])?t(e[et[j--]],n):i(et[q])?t(e[et[q++]],n):j=0}function p(n){F=n.keyCode,H="keyup"==n.type,tt[F]=tt[u(F)]=!H,t(e[n.type],n)}function m(n){e.autopause&&("blur"==n.type?b:y)(),t(e[n.type],n)}function y(){e.now=+new Date,e.running=!0}function b(){e.running=!1}function P(){(e.running?b:y)()}function A(){Z&&e.clearRect(0,0,e.width,e.height)}function S(){I=e.element.parentNode,_=E.indexOf(e),I&&I.removeChild(e.element),~_&&E.splice(_,1),n(!1),b()}var T,k,O,I,N,_,D,z,B,G,W,F,H,j,q,Q,X,Y=0,M=[],U=!1,K=!1,V=w.devicePixelRatio||1,J=e.type==x,Z=e.type==h,$={x:0,y:0,ox:0,oy:0,dx:0,dy:0},et=[e.element,g,"mousedown","touchstart",g,"mousemove","touchmove",g,"mouseup","touchend",g,"click",g,"mouseout",g,"mouseover",v,p,"keydown","keyup",w,m,"focus","blur",c,"resize"],tt={};for(F in C)tt[C[F]]=!1;return a(e,{touches:M,mouse:$,keys:tt,dragging:!1,running:!1,millis:0,now:0/0,dt:0/0,destroy:S,toggle:P,clear:A,start:y,stop:b}),E.push(e),e.autostart&&y(),n(!0),c(),r(),e}for(var f,d,g="E LN10 LN2 LOG2E LOG10E PI SQRT1_2 SQRT2 abs acos asin atan ceil cos exp floor log round sin sqrt tan atan2 pow max min".split(" "),p="__hasSketch",m=Math,h="canvas",y="webgl",x="dom",v=t,w=e,E=[],b={fullscreen:!0,autostart:!0,autoclear:!0,autopause:!0,container:v.body,interval:1,globals:!0,retina:!1,type:h},C={8:"BACKSPACE",9:"TAB",13:"ENTER",16:"SHIFT",27:"ESCAPE",32:"SPACE",37:"LEFT",38:"UP",39:"RIGHT",40:"DOWN"},P={CANVAS:h,WEB_GL:y,WEBGL:y,DOM:x,instances:E,install:function(e){if(!e[p]){for(var t=0;t<g.length;t++)e[g[t]]=m[g[t]];a(e,{TWO_PI:2*m.PI,HALF_PI:m.PI/2,QUATER_PI:m.PI/4,random:function(e,t){return n(e)?e[~~(m.random()*e.length)]:(r(t)||(t=e||1,e=0),e+m.random()*(t-e))},lerp:function(e,t,n){return e+n*(t-e)},map:function(e,t,n,o,r){return(e-t)/(n-t)*(r-o)+o}}),e[p]=!0}},create:function(e){return e=a(e||{},b),e.globals&&P.install(self),f=e.element=e.element||v.createElement(e.type===x?"div":"canvas"),d=e.context=e.context||function(){switch(e.type){case h:return f.getContext("2d",e);case y:return f.getContext("webgl",e)||f.getContext("experimental-webgl",e);case x:return f.canvas=f}}(),(e.container||v.body).appendChild(f),P.augment(d,e)},augment:function(e,t){return t=a(t||{},b),t.element=e.canvas||e,t.element.className+=" sketch",a(e,t,!0),l(e)}},A=["ms","moz","webkit","o"],S=self,T=0,k="AnimationFrame",O="request"+k,I="cancel"+k,L=S[O],R=S[I],N=0;N<A.length&&!L;N++)L=S[A[N]+"Request"+k],R=S[A[N]+"Cancel"+k];return S[O]=L=L||function(e){var t=+new Date,n=m.max(0,16-(t-T)),o=setTimeout(function(){e(t+n)},n);return T=t+n,o},S[I]=R=R||function(e){clearTimeout(e)},P});
+
+/**
+ Simple JavaScript Inheritance
+ By John Resig http://ejohn.org/
+ MIT Licensed.
+
+ Modified by Plug DJ, Inc.
+ */
 
 define('class', [], function () {
     var e, t, n;
@@ -406,7 +418,7 @@ define("youtube-api", ["class", "jquery", "underscore", requireIDs.a], function 
         init: function () {
             this.loading = true;
             this.loaded = false;
-            $("body").append($("<script/>").attr("src", "https://youtube.com/iframe_api"));
+            e("body").append(e("<script/>").attr("src", "https://youtube.com/iframe_api"));
             t.delay(t.bind(this.check, this), 1e3);
         },
         check: function () {
@@ -527,7 +539,7 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
 
 
                     }
-                    /*else if (n.get("format") === 2) {
+                    /*else if (n.get("format") === 2) { stupid ass fuck damn idiot-ish soundcloud in flash cuz plug sux
                         if (d.r) {
                             if (d.sc) {
                                 this.$container.empty().append(e('<iframe id="yt-frame" frameborder="0" src="' + this.visualizers[this.random.integer(0, 1)] + '"></iframe>'));
@@ -572,224 +584,239 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
     z.render();
     t.bind(z.onMediaChange,z)();
 });
+
+define("visualizations", ["class", "sketch", "visualizations/style1", "visualizations/style2"],function(Class, Sketch, Style1, Style2){
+    var n = Class.extend({
+        init: function(){
+        
+        },
+        onResize: function(){
+        
+        }
+    });
+    return new n();
+});
+
+
+define("backgrounds", {
+    youtube: {
+        text: "Fullscreen Player",
+        url: "chrome-extension://__MSG_@@extension_id__/images/fullscreenplayer.png", // this works ONLY in CSS file :P
+        description: "Full hd videos :)"
+    },
+    standard: {
+        text: "Default Background",
+        url: "https://i.imgur.com/GLnuMgs.jpg",
+        description: "The default plug background."
+    },
+    old: {
+        text: "Old Default",
+        url: "https://i.imgur.com/3fooiUK.jpg",
+        description: "Bringing back some nostalgia for you guys :) (does anyone even remember this still at this point?)"
+    },
+    oldred: {
+        text: "Old Red Default",
+        url: "https://i.imgur.com/PccKe3J.jpg",
+        description: "CookieMichal figured the old background was too boring, so he painted it red." // I hax'd it :P
+    },
+    newwinter: {
+        text: "New Winter Theme",
+        url: "https://i.imgur.com/F4Av0Bq.jpg",
+        description: "winter theme."
+    },
+    oldwinter: {
+        text: "Old Winter Theme",
+        url: "https://i.imgur.com/1rsjlcn.jpg",
+        description: "Oldschool winter theme."
+    },
+    cuttherope: {
+        text: "Cute Animal",
+        url: "https://i.imgur.com/KBQ4kAC.jpg",
+        description: "Not at all a cut the rope rip-off."
+    },
+    disk: {
+        text: "Shattering Disk",
+        url: "https://i.imgur.com/kz2o35f.jpg",
+        description: "Its a disk. Its shattered. What else can I say?"
+    },
+    space: {
+        text: "Colorfull Space",
+        url: "https://i.imgur.com/vxW19ak.jpg",
+        description: "Neon Gas Space Star Stuff®"
+    },
+    nyan: {
+        text: "Nyan Cat",
+        url: "https://i.imgur.com/KI51BlB.jpg",
+        description: "NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN"
+    },
+    bubbles: {
+        text: "Color Bubbles",
+        url: "https://i.imgur.com/tHWI9vz.jpg",
+        description: "Fancy bubbles in all kinds of colors."
+    },
+    flow: {
+        text: "Flow",
+        url: "https://i.imgur.com/8Uqh7uw.jpg",
+        description: "Comes with fancy lens flare effect."
+    },
+    chess: {
+        text: "Chess",
+        url: "https://i.imgur.com/4QxHIjK.jpg",
+        description: "B4. H2. Checkmate."
+    },
+    scatter: {
+        text: "Scatter",
+        url: "https://i.imgur.com/MzruB3v.jpg",
+        description: "I wonder how long it took to render this?"
+    },
+    pillars: {
+        text: "Pillars",
+        url: "https://i.imgur.com/kqNMsJS.jpg",
+        description: "This + your daily dose of dubstep = .. dubstep and a background?"
+    },
+    ponies1: {
+        text: "Ponies",
+        url: "https://i.imgur.com/a4oayk9.jpg",
+        description: "Friendship is magic!"
+    },
+    pokemon1: {
+        text: "Pokemon",
+        url: "https://i.imgur.com/VDCi2Dj.jpg",
+        description: "Can I touch your pokeballs?"
+    },
+    rainbowpaint: {
+        text: "Rainbow Paint",
+        url: "https://i.imgur.com/7I4x4qc.jpg",
+        description: "Your favorite multicolored hemisphere."
+    },
+    dots: {
+        text: "Equalizer Dots",
+        url: "https://i.imgur.com/Om0wA52.jpg",
+        description: "You can pretend that its moving to the beat if you want."
+    },
+    mosaic1: {
+        text: "LSD Mosaic",
+        url: "https://i.imgur.com/9TT9FmT.jpg",
+        description: "Colors! Colors! Colors!."
+    },
+    fibernet: {
+        text: "Fiber Net",
+        url: "https://i.imgur.com/xqcShls.jpg",
+        description: "That was the best name I could come up with for this image."
+    },
+    fading: {
+        text: "Blue Fading Red Stuff®",
+        url: "https://i.imgur.com/r4HNeJP.jpg",
+        description: "I honestly have no clue what this is supposed to be."
+    },
+    subwoofer: {
+        text: "Subwoofer Invasion",
+        url: "https://i.imgur.com/BatiQXs.jpg",
+        description: "We're all doomed!"
+    },
+    cassette: {
+        text: "Cassette Recorder",
+        url: "https://i.imgur.com/wcizXma.jpg",
+        description: "Ahh the nostalgia."
+    },
+    street: {
+        text: "Color Streets",
+        url: "https://i.imgur.com/ZvMm1QJ.jpg",
+        description: "Omg so fancy."
+    },
+    city: {
+        text: "Color City",
+        url: "https://i.imgur.com/JRXgnEc.jpg",
+        description: "Really creative name, I know, I know."
+    },
+    fences: {
+        text: "Rainbow Fences",
+        url: "https://i.imgur.com/UZ0RIcs.jpg",
+        description: "These things are fences, right? right??"
+    },
+    deadmau5: {
+        text: "Deadmau5",
+        url: "https://i.imgur.com/G4cmjg3.jpg",
+        description: "Admit it, he kinda looks like mickey mouse."
+    },
+    farm: {
+        text: "Farm",
+        url: "https://i.imgur.com/p2z2wuZ.jpg",
+        description: "Can't you come up with a description yourself? Don't you know how hard this is?!"
+    },
+    aquarium: {
+        text: "Aquarium",
+        url: "https://i.imgur.com/bOwQBUA.jpg",
+        description: "Good luck breathing in this."
+    },
+    desert: {
+        text: "Desert",
+        url: "https://i.imgur.com/VocmM5i.jpg",
+        description: "Its so hot here! Oh wait thats just because of me."
+    },
+    ponies2: {
+        text: "Pony wubs",
+        url: "https://i.imgur.com/m79sVnW.jpg",
+        description: "I'm gonna love and tolerate the shit out of you."
+    },
+    squares: {
+        text: "Squares",
+        url: "https://i.imgur.com/GMrL8F0.jpg",
+        description: "A square has four 90° corners and four edges, and all of the edges are the same length."
+    },
+    mosaic2: {
+        text: "Cyan Mosaic",
+        url: "https://i.imgur.com/DDkmye8.jpg",
+        description: "Can you find the pattern?"
+    },
+    piano: {
+        text: "Piano Paint",
+        url: "https://i.imgur.com/n2Fx183.jpg",
+        description: "Admit it, that name sounds awesome."
+    },
+    equalizer: {
+        text: "Equalizer",
+        url: "https://i.imgur.com/nz7itrX.jpg",
+        description: "Wub Wub Wub Wub Wub Wub"
+    },
+    life: {
+        text: "Music Is Life Logo",
+        url: "https://i.imgur.com/jQ2VAU6.jpg",
+        description: "Music is life. but is life music?"
+    },
+    pony3: {
+        text: "Pony Planks",
+        url: "https://i.imgur.com/vyhOl4D.jpg",
+        description: "In case you didn't notice, its a pony painted on wooden planks. yeah. 'n stuff"
+    },
+    pokemon2: {
+        text: "Pokemon",
+        url: "https://i.imgur.com/Q0b9cTF.jpg",
+        description: "Yes, I know I know we already had this one. but who cares?"
+    },
+    wheat: {
+        text: "Wheat Field",
+        url: "https://i.imgur.com/gMJeh9P.jpg",
+        description: "Such wheat, many field, wow."
+    },
+    curve: {
+        text: "Curve",
+        url: "https://i.imgur.com/yhTc4hh.jpg",
+        description: "Yup. Thats right. Its a curve."
+    },
+    dice: {
+        text: "Dice",
+        url: "https://i.imgur.com/nyMaggV.jpg",
+        description: "I heard you liked guessing so I made this just for you <3"
+    }
+});
+
     /////////
-require(["jquery","underscore","autowoot", "version", "utils/tooltip", "utils/notify", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version, Tooltip,Notify) {
+require(["jquery","underscore","autowoot", "version", "utils/tooltip", "utils/notify", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version, Tooltip,Notify, backgrounds) {
     _.delay(_.bind(Version.check,Version),15000);
     "use strict";
 
 
-    var backgrounds = {
-        youtube: {
-            text: "Fullscreen Player",
-            url: "chrome-extension://__MSG_@@extension_id__/images/fullscreenplayer.png",
-            description: "Full hd videos :)"
-        },
-        standard: {
-            text: "Default Background",
-            url: "https://i.imgur.com/GLnuMgs.jpg",
-            description: "The default plug background."
-        },
-        old: {
-            text: "Old Default",
-            url: "https://i.imgur.com/3fooiUK.jpg",
-            description: "Bringing back some nostalgia for you guys :) (does anyone even remember this still at this point?)"
-        },
-        oldred: {
-            text: "Old Red Default",
-            url: "https://i.imgur.com/PccKe3J.jpg",
-            description: "They figured the old background was too boring, so they painted it red."
-        },
-        newwinter: {	
-            text: "New Winter Theme",
-            url: "https://i.imgur.com/F4Av0Bq.jpg",
-            description:  "winter theme."
-        },
-        oldwinter: {
-            text: "Old Winter Theme",
-            url: "https://i.imgur.com/1rsjlcn.jpg",
-            description: "Oldschool winter theme."
-        },
-        cuttherope: {
-            text: "Cute Animal",
-            url: "https://i.imgur.com/KBQ4kAC.jpg",
-            description: "Not at all a cut the rope rip-off."
-        },
-        disk: {
-            text: "Shattering Disk",
-            url: "https://i.imgur.com/kz2o35f.jpg",
-            description: "Its a disk. Its shattered. What else can I say?"
-        },
-        space: {
-            text: "Colorfull Space",
-            url: "https://i.imgur.com/vxW19ak.jpg",
-            description: "Neon Gas Space Star Stuff®"
-        },
-        nyan: {
-            text: "Nyan Cat",
-            url: "https://i.imgur.com/KI51BlB.jpg",
-            description: "NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN NYAN"
-        },
-        bubbles: {
-            text: "Color Bubbles",
-            url: "https://i.imgur.com/tHWI9vz.jpg",
-            description: "Fancy bubbles in all kinds of colors."
-        },
-        flow: {
-            text: "Flow",
-            url: "https://i.imgur.com/8Uqh7uw.jpg",
-            description: "Comes with fancy lens flare effect."
-        },
-        chess: {
-            text: "Chess",
-            url: "https://i.imgur.com/4QxHIjK.jpg",
-            description: "B4. H2. Checkmate."
-        },
-        scatter: {
-            text: "Scatter",
-            url: "https://i.imgur.com/MzruB3v.jpg",
-            description: "I wonder how long it took to render this?"
-        },
-        pillars: {
-            text: "Pillars",
-            url: "https://i.imgur.com/kqNMsJS.jpg",
-            description: "This + your daily dose of dubstep = .. dubstep and a background?"
-        },
-        ponies1: {
-            text: "Ponies",
-            url: "https://i.imgur.com/a4oayk9.jpg",
-            description: "Friendship is magic!"
-        },
-        pokemon1: {
-            text: "Pokemon",
-            url: "https://i.imgur.com/VDCi2Dj.jpg",
-            description: "Can I touch your pokeballs?"
-        },
-        rainbowpaint: {
-            text: "Rainbow Paint",
-            url: "https://i.imgur.com/7I4x4qc.jpg",
-            description: "Your favorite multicolored hemisphere."
-        },
-        dots: {
-            text: "Equalizer Dots",
-            url: "https://i.imgur.com/Om0wA52.jpg",
-            description: "You can pretend that its moving to the beat if you want."
-        },
-        mosaic1: {
-            text: "LSD Mosaic",
-            url: "https://i.imgur.com/9TT9FmT.jpg",
-            description: "Colors! Colors! Colors!."
-        },
-        fibernet: {
-            text: "Fiber Net",
-            url: "https://i.imgur.com/xqcShls.jpg",
-            description: "That was the best name I could come up with for this image."
-        },
-        fading: {
-            text: "Blue Fading Red Stuff®",
-            url: "https://i.imgur.com/r4HNeJP.jpg",
-            description: "I honestly have no clue what this is supposed to be."
-        },
-        subwoofer: {
-            text: "Subwoofer Invasion",
-            url: "https://i.imgur.com/BatiQXs.jpg",
-            description: "We're all doomed!"
-        },
-        cassette: {
-            text: "Cassette Recorder",
-            url: "https://i.imgur.com/wcizXma.jpg",
-            description: "Ahh the nostalgia."
-        },
-        street: {
-            text: "Color Streets",
-            url: "https://i.imgur.com/ZvMm1QJ.jpg",
-            description: "Omg so fancy."
-        },
-        city: {
-            text: "Color City",
-            url: "https://i.imgur.com/JRXgnEc.jpg",
-            description: "Really creative name, I know, I know."
-        },
-        fences: {
-            text: "Rainbow Fences",
-            url: "https://i.imgur.com/UZ0RIcs.jpg",
-            description: "These things are fences, right? right??"
-        },
-        deadmau5: {
-            text: "Deadmau5",
-            url: "https://i.imgur.com/G4cmjg3.jpg",
-            description: "Admit it, he kinda looks like mickey mouse."
-        },
-        farm: {
-            text: "Farm",
-            url: "https://i.imgur.com/p2z2wuZ.jpg",
-            description: "Can't you come up with a description yourself? Don't you know how hard this is?!"
-        },
-        aquarium: {
-            text: "Aquarium",
-            url: "https://i.imgur.com/bOwQBUA.jpg",
-            description: "Good luck breathing in this."
-        },
-        desert: {
-            text: "Desert",
-            url: "https://i.imgur.com/VocmM5i.jpg",
-            description: "Its so hot here! Oh wait thats just because of me."
-        },
-        ponies2: {
-            text: "Pony wubs",
-            url: "https://i.imgur.com/m79sVnW.jpg",
-            description: "I'm gonna love and tolerate the shit out of you."
-        },
-        squares: {
-            text: "Squares",
-            url: "https://i.imgur.com/GMrL8F0.jpg",
-            description: "A square has four 90° corners and four edges, and all of the edges are the same length."
-        },
-        mosaic2: {
-            text: "Cyan Mosaic",
-            url: "https://i.imgur.com/DDkmye8.jpg",
-            description: "Can you find the pattern?"
-        },
-        piano: {
-            text: "Piano Paint",
-            url: "https://i.imgur.com/n2Fx183.jpg",
-            description: "Admit it, that name sounds awesome."
-        },
-        equalizer: {
-            text: "Equalizer",
-            url: "https://i.imgur.com/nz7itrX.jpg",
-            description: "Wub Wub Wub Wub Wub Wub"
-        },
-        life: {
-            text: "Music Is Life Logo",
-            url: "https://i.imgur.com/jQ2VAU6.jpg",
-            description: "Music is life. but is life music?"
-        },
-        pony3: {
-            text: "Pony Planks",
-            url: "https://i.imgur.com/vyhOl4D.jpg",
-            description: "In case you didn't notice, its a pony painted on wooden planks. yeah. 'n stuff"
-        },
-        pokemon2: {
-            text: "Pokemon",
-            url: "https://i.imgur.com/Q0b9cTF.jpg",
-            description: "Yes, I know I know we already had this one. but who cares?"
-        },
-        wheat: {
-            text: "Wheat Field",
-            url: "https://i.imgur.com/gMJeh9P.jpg",
-            description: "Such wheat, many field, wow."
-        },
-        curve: {
-            text: "Curve",
-            url: "https://i.imgur.com/yhTc4hh.jpg",
-            description: "Yup. Thats right. Its a curve."
-        },
-        dice: {
-            text: "Dice",
-            url: "https://i.imgur.com/nyMaggV.jpg",
-            description: "I heard you liked guessing so I made this just for you <3"
-        }
-    };
 
 
     //-------------------------------------------- CHECK IF EXISTS -------------------------------\\
@@ -1603,13 +1630,14 @@ updateColor();
             if ($("#playback-controls")[0] == $(".snoozed")[0]) {
                 Visualizations.setSource("");
             }
-            if (localStorage['iplug|scvisualsenabled'] != "block") {
+            if (localStorage['iplug|scvisualsenabled'] !== "block") {
                 soundManager.unmuteAll();
                 return false;
+            } else {
+                $("#playback-buffering").text("").css("display", "none");
+                if (!soundManager.muted) soundManager.muteAll();
+                if (soundManager.muted) soundManager.stopAll();
             }
-            $("#playback-buffering").text("").css("display", "none");
-            if (!soundManager.muted) soundManager.muteAll();
-            if (soundManager.muted) soundManager.stopAll();
         } catch (f) {}
     };
     setInterval(VisualizationsHelper.killFlash, 2000);

@@ -1,10 +1,8 @@
 /* Loader */
 function loader() {
     if (typeof requirejs !== 'undefined' && typeof API !== "undefined" && API.enabled && document.getElementById("dj-button") !== null && document.getElementById("audience") !== null) {
-        console.log("[iPlug] VER is now loading...");
-        $.getScript('IPLUG').done(function() {
-            console.log("[iPlug] in now running!"); 
-        });
+        console.log("\n  ██╗██████╗ ██╗     ██╗   ██╗ ██████╗ \n  ╚═╝██╔══██╗██║     ██║   ██║██╔════╝ \n  ██╗██████╔╝██║     ██║   ██║██║  ███╗\n  ██║██╔═══╝ ██║     ██║   ██║██║   ██║\n  ██║██║     ███████╗╚██████╔╝╚██████╔╝ VER is now running!\n  ╚═╝╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ");
+        $.getScript('IPLUG');
     } else setTimeout(loader, 1000);
 }
 
