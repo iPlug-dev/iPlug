@@ -4,8 +4,10 @@ var requireIDs = {
     s: null,
     v: null,
     c: null,
-    i: null,
+    d: null,
     e: null,
+    f: null,
+    i: null,
     m: null,
     g: null,
     p: null,
@@ -36,6 +38,10 @@ for (var i in x = requirejs.s.contexts._.defined) {
         requireIDs.p = i;
     if (x[i] && x[i].hasOwnProperty("settings"))
         requireIDs.z = i;
+    if (x[i] && x[i].__proto__ && x[i].__proto__.id === "dj-booth")
+        requireIDs.d = i;
+    if (x[i] && x[i].__proto__ && x[i].__proto__.id === "user-rollover")
+        requireIDs.f = i;
 }
 for (var i in requireIDs) {
     if (!requireIDs.hasOwnProperty) continue;
@@ -272,7 +278,7 @@ define("utils/tooltip", [requireIDs.a,"class"], function(a,Class) {
     return new n();
 });
 
-define("utils/notify",[requireIDs.a,"class"],function(a,Class){
+define("utils/notify", [requireIDs.a, "class"], function(a, Class){
     var n = Class.extend({
         show: function (icon, text) {
             a.trigger("notify", icon, text);
@@ -281,7 +287,16 @@ define("utils/notify",[requireIDs.a,"class"],function(a,Class){
     return new n();
 });
 
-
+define("utils/dj", ["jquery", "class", requireIDs.d, requireIDs.f], function($, Class, x, y){
+    var n = Class.extend({
+        click: function(){
+            y.showSimple(x.image.user, {x:0,y:0});
+            y.showInfo();
+            $("#user-rollover").addClass("topbarskip");
+        }
+    });
+    return new n();
+});
 
 define("alert", ["class", "jquery"], function (Class, $) {
     var n = Class.extend({
@@ -812,7 +827,7 @@ define("backgrounds", {
 });
 
     /////////
-require(["jquery","underscore","autowoot", "version", "utils/tooltip", "utils/notify", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version, Tooltip,Notify, backgrounds) {
+require(["jquery","underscore","autowoot", "version", "utils/tooltip", "utils/notify", "utils/dj", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version, Tooltip, Notify, Dj, backgrounds) {
     _.delay(_.bind(Version.check,Version),15000);
     "use strict";
 
@@ -1949,11 +1964,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         $("body").addClass("topvotebar");
     }
     $("#topdjbutton").bind("click", function() {
-        var x = require("d19bd/a45f9/a8d50/f2afe");
-        var y  = require("d19bd/a45f9/e5e1b/c0484");
-        y.showSimple(x.image.user, {x:0,y:0});
-        y.showInfo();
-        $("#user-rollover").addClass("topbarskip");
+        Dj.click();
     }).bind("mouseover", function() {
         $("body").append('<div id="tooltip" class style="top: 0px; left: ' + (window.innerWidth - 428) + 'px;"><span>Open menu for current dj</span><div class="corner"></div></div>').one("mouseout", function() {
         $("#tooltip").remove();
