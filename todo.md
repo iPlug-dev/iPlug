@@ -7,9 +7,11 @@ To do
 
  - add emoji font
 
- - **twitch emojis (working on it)**
+ - **visualizations (working on it)**
 
- - **custom emojis suggestions (also working on it)**
+ - twitch emojis (needs to be finished)
+
+ - __custom emojis suggestions__
 
  - full screen youtube video
 
