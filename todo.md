@@ -1,4 +1,4 @@
-To do
+Todo
 ===================
 
  - custom mentions
@@ -11,8 +11,6 @@ To do
 
  - **twitch emojis (needs to be finished)**
 
- - _custom emojis suggestions_
-
  - full screen youtube video
 
  - backgrounds
@@ -22,3 +20,10 @@ To do
  - custom themes (@p3=, @ip=)
 
  - chat customization
+ 
+ - import, export playlists
+ 
+Done
+===================
+
+ - custom emoji suggestions
