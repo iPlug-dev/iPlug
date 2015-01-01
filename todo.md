@@ -9,9 +9,9 @@ To do
 
  - **visualizations (working on it)**
 
- - twitch emojis (needs to be finished)
+ - **twitch emojis (needs to be finished)**
 
- - __custom emojis suggestions__
+ - _custom emojis suggestions_
 
  - full screen youtube video
 
