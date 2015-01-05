@@ -556,7 +556,7 @@
     right: 345px !important;
     bottom: 54px !important;
 }
-.largevideo > #playback-container {
+.largevideo > #playback-container, .largevideo > #iplug-playback {
     width: auto !important;
     height: auto !important;
     left: 0px !important;
