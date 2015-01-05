@@ -1870,7 +1870,7 @@ updateColor();
     });
 
     if (localStorage["iplug|currentBackground"] === "youtube") {
-        $("#playback, #playback-container").addClass("largevideo");
+        $("#playback).addClass("largevideo");
         $(".room-background").remove();
     } else {
         $(".room-background").addClass("default");
@@ -1914,7 +1914,7 @@ updateColor();
             width: window.innerWidth - 345 + "px",
             height: window.innerHeight - 108 + "px"
         };
-        $("#iplug-playback.largevideo").css(heightwidth).attr(heightwidth);
+        $(".largevideo > #iplug-playback").css(heightwidth).attr(heightwidth);
         Visualizations.width = Visualizations.canvas.width;
         Visualizations.height = Visualizations.canvas.height;
         $(".room-background:not(.default)").css({
@@ -2311,11 +2311,11 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                     if (card === newcard) return;
                     localStorage["iplug|currentBackground"] = newcard.attr("card");
                     if (newcard.attr("card") === "youtube") {
-                        $("#playback, #playback-container, #iplug-playback").addClass("largevideo");
+                        $("#playback).addClass("largevideo");
                         $(".room-background:not(.default)").remove();
                     } else {
                         if (card.attr("card") === "youtube") {
-                            $("#playback, #playback-container, #iplug-playback").removeClass("largevideo");
+                            $("#playback).removeClass("largevideo");
                             $(window).trigger("resize");
                         }
                         var oldbg = $(".room-background:not(.default)");
