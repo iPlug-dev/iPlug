@@ -1870,7 +1870,7 @@ updateColor();
     });
 
     if (localStorage["iplug|currentBackground"] === "youtube") {
-        $("#playback).addClass("largevideo");
+        $("#playback").addClass("largevideo");
         $(".room-background").remove();
     } else {
         $(".room-background").addClass("default");
