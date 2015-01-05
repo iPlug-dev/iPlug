@@ -2311,7 +2311,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                     if (card === newcard) return;
                     localStorage["iplug|currentBackground"] = newcard.attr("card");
                     if (newcard.attr("card") === "youtube") {
-                        $("#playback).addClass("largevideo");
+                        $("#playback").addClass("largevideo");
                         $(".room-background:not(.default)").remove();
                     } else {
                         if (card.attr("card") === "youtube") {
