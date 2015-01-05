@@ -2315,7 +2315,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                         $(".room-background:not(.default)").remove();
                     } else {
                         if (card.attr("card") === "youtube") {
-                            $("#playback).removeClass("largevideo");
+                            $("#playback").removeClass("largevideo");
                             $(window).trigger("resize");
                         }
                         var oldbg = $(".room-background:not(.default)");
