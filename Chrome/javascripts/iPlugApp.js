@@ -32,7 +32,7 @@ for (var i in x = requirejs.s.contexts._.defined) {
         requireIDs.e = i;
     if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
         requireIDs.m = i;
-    if (x[i] && x[i].getAudience && x[i]._events && x[i]._events["change:username"] && x[i].findWhere)
+    if (x[i] && x[i].getAudience && x[i]._events && x[i].findWhere)
         requireIDs.g = i;
     if (x[i] && x[i].prototype && x[i].prototype.hasOwnProperty("id") && x[i].prototype.id === "playback")
         requireIDs.p = i;
@@ -600,13 +600,316 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
     t.bind(z.onMediaChange,z)();
 });
 
-define("visualizations", ["class", "sketch", "visualizations/style1", "visualizations/style2"],function(Class, Sketch, Style1, Style2){
+define("processor", ["class"], function (Class) {
     var n = Class.extend({
-        init: function(){
-        
+        init: function () {
+            var AudioContext = self.AudioContext || self.webkitAudioContext;
+            this.ctx = new AudioContext();
+            this.audio = new Audio();
+            this.audio.controls = false;
+            this.audio.loop = false;
+            this.audio.preload = "auto";
+            this.audioSrc = this.ctx.createMediaElementSource(this.audio);
+            this.analyser = this.ctx.createAnalyser();
+            this.volumeNode = this.ctx.createGain();
+            this.audioSrc.connect(this.analyser);
+            this.audioSrc.connect(this.volumeNode);
+            this.volumeNode.connect(this.ctx.destination);
+            //this.analyser.connect(this.ctx.destination);
+
+            this.setFFTsize(128);
         },
-        onResize: function(){
-        
+        setSource: function (src) {
+            this.audio.src = typeof src === "string" ? src : "";
+        },
+        getData: function () {
+            this.analyser.getByteFrequencyData(this.frequencyData);
+            return this.frequencyData;
+        },
+        changeVolume: function (value) {
+            return this.volumeNode.gain.value = value;
+        },
+        setFFTsize: function (value) {
+            this.analyser.fftSize = value;
+            this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
+        }
+    });
+    return new n();
+});
+
+define("visualizations/style1/bar", ["class"], function (Class) {
+    var n = Class.extend({
+        init: function () {
+            this.x = 0;
+            this.y = 0;
+            this.width = 0;
+            this.height = 0;
+        },
+        update: function (x, y, w, h) {
+            this.x = x;
+            this.y = y;
+            this.width = w;
+            this.height = h;
+        },
+        draw: function (ctx) {
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    });
+    return n;
+});
+
+
+define("star", ["class"], function(Class) {
+    var n = Class.extend({
+        init: function(x, y, maxSpeed) {
+            this.x = x;
+            this.y = y;
+            this.slope = y / x;
+            this.opacity = 0;
+            this.speed = Math.max(Math.random() * maxSpeed, 1);
+        },
+        distanceTo: function(originX, originY) {
+            return Math.sqrt(Math.pow(originX - this.x, 2) + Math.pow(originY - this.y, 2));
+        },
+        reset: function(x, y, maxSpeed) {
+            this.init.apply(this, arguments);
+            return this;
+        }
+    });
+    return n;
+});
+
+define("visualizations/style1", ["class", "visualizations/style1/bar", "processor"], function (Class, Bar, Processor) {
+    var n = Class.extend({
+        init: function () {
+            this.bars = [];
+            this.barsLimit = 64;
+            this.margins = [0.09, 0.15, 0.09, 0.50]; // left, top, right, bottom
+            this.margins2 = [0,0,0,0];
+        },
+        enable: function () {
+            Processor.setFFTsize(128);
+            localStorage["iplug|scvisualsstyle"] = 1;
+        },
+        setup: function (ctx) {
+            for (var i = 0; i < this.barsLimit; i++) {
+                this.bars.push(new Bar());
+            }
+            this.onResize(ctx);
+        },
+        onResize: function (ctx) {
+            for (var i = 0; i < 4; i++) {
+                this.margins2[i] = ((i % 2 == 0) ? ctx.width : ctx.height) * this.margins[i];
+            }
+            this.oneBarWidth = (ctx.width - this.margins2[0] - this.margins2[2]) / this.bars.length;
+            this.preHeight = (ctx.height - this.margins2[1] - this.margins2[3]);
+        },
+        update: function (ctx) {
+            var data = Processor.getData();
+            for (var i = 0; i < this.bars.length; i++) {
+                var value = (1 - data[i] / 255) * this.preHeight;
+                this.bars[i].update(
+                    this.oneBarWidth * i + this.margins2[0],
+                    this.margins2[1] + value,
+                    this.oneBarWidth,
+                    this.preHeight - value
+                );
+            }
+        },
+        draw: function (ctx) {
+            for (var i = 0; i < this.bars.length; i++) {
+                this.bars[i].draw(ctx);
+            }
+        }
+    });
+    return new n();
+});
+
+define("visualizations/style2/particle/settings", {
+    SCALE: {
+        MIN: 5.0,
+        MAX: 25.0
+    },
+    ALPHA: {
+        MIN: 0.8,
+        MAX: 0.9
+    },
+    SPEED: {
+        MIN: 0.2,
+        MAX: 1.0
+    },
+    SIZE: {
+        MIN: 0.2,
+        MAX: 0.58
+    },
+    SPIN: {
+        MIN: 0.001,
+        MAX: 0.005
+    },
+    LIMIT: 75,
+    FFTSize: 256 
+});
+
+define("visualizations/style2/particle", ["class", "visualizations/style2/particle/settings"], function(Class, Settings) {
+
+    var n = Class.extend({
+        init: function(ctx){ 
+            this.x = Math.random() * ctx.width;
+            this.y = Math.random() * ctx.height * 2;
+            this.reset();
+        },
+        reset: function() {
+            this.level = 1 + Math.floor(Math.random() * 4);
+            this.scale = Settings.SCALE.MIN + (Settings.SCALE.MAX - Settings.SCALE.MIN) * Math.random();
+            this.alpha = Settings.ALPHA.MIN + (Settings.ALPHA.MAX - Settings.ALPHA.MIN) * Math.random();
+            this.speed = Settings.SPEED.MIN + (Settings.SPEED.MAX - Settings.SPEED.MIN) * Math.random();
+            this.size  = Settings.SIZE.MIN  + (Settings.SIZE.MAX  - Settings.SIZE.MIN) * Math.random();
+            this.spin  = Settings.SPIN.MIN  + (Settings.SPIN.MAX  - Settings.SPIN.MIN)  * Math.random();
+            this.band  = Math.round(Math.random() * Settings.FFTSize);
+            this.color = {r: 0, g: 0, b: 0}; /* TODO */
+            if (Math.floor(Math.random())) {
+                this.spin = -this.spin;
+            }
+            this.smoothedScale = 0.0;
+            this.smoothedAlpha = 0.0;
+            this.decayScale    = 0.0;
+            this.decayAlpha    = 0.0;
+            this.energy        = 0.0;
+            this.rotation      = Math.random() * Math.PI * 2;
+        },
+        draw: function(ctx){
+            var alpha = this.alpha * this.energy * 1.5;
+            var power = Math.exp(this.energy);
+            var scale = this.scale * power;
+            this.decayScale = Math.max(this.decayScale, scale);
+            this.decayAlpha = Math.max(this.decayAlpha, alpha);
+            this.smoothedScale += 0.3 * (this.decayScale - this.smoothedScale);
+            this.smoothedAlpha += 0.3 * (this.decayAlpha - this.smoothedAlpha);
+            this.decayScale *= 0.985;
+            this.decayAlpha *= 0.975;
+            ctx.save();
+            ctx.beginPath();
+            ctx.translate(this.x + Math.cos(this.rotation * this.speed) * 250, this.y);
+            ctx.rotate(this.rotation);
+            ctx.scale(this.smoothedScale * this.level, this.smoothedScale * this.level);
+            ctx.moveTo(this.size * 0.5, 0);
+            ctx.lineTo(this.size * -0.5, 0);
+            ctx.lineWidth = 1;
+            ctx.lineCap = 'round';
+            ctx.globalAlpha = this.smoothedAlpha / this.level;
+            ctx.strokeStyle = this.color;
+            ctx.stroke();
+            ctx.restore();
+        },
+        update: function(){
+            this.rotation += this.spin;
+            this.y -= this.speed * this.level;
+        }
+    });
+    return n;
+});
+
+define("visualizations/style2", ["class", "visualizations/style2/particle", "visualizations/style2/particle/settings", "processor"], function (Class, Particle, PSettings, Processor) {
+    var n = Class.extend({
+        init: function () {
+            this.particles = [];
+        },
+        enable: function () {
+            Processor.setFFTsize(PSettings.FFTSize);
+            localStorage["iplug|scvisualsstyle"] = 2;
+        },
+        setup: function (ctx) {
+            for (var i = 0; i < PSettings.LIMIT; i++) {
+                this.particles.push(new Particle(ctx));
+            }
+        },
+        update: function (ctx) {
+            var data = Processor.getData();
+            for (var i = 0; i < this.particles.length; i++) {
+                this.particles[i].energy = (data[this.particles[i].band] / 255);
+                this.particles[i].update();
+            }
+        },
+        draw: function (ctx) {
+            for (var i = 0; i < this.particles.length; i++) {
+                var particle = this.particles[i];
+                if (particle.y < -particle.size * particle.level * particle.scale * 2) {
+                    this.particles[i] = new Particle(ctx);
+                }
+                particle.draw(ctx);
+            }
+        }
+    });
+    return new n();
+});
+
+define("visualizations/core", ["class", "sketch", "jquery", "underscore", "visualizations/style2"], function (Class, Sketch, $, _, Style1) {
+    var n = Class.extend({
+        init: function () {
+            this.visualizations = Sketch.create({
+                autopause: false,
+                fullscreen: false,
+                container: document.getElementById("playback"),
+                setup: function () {
+                    _.bind(Style1.setup, Style1)(this);
+                },
+                draw: function () {
+                    _.bind(Style1.draw, Style1)(this);
+                },
+                update: function () {
+                    _.bind(Style1.update, Style1)(this);
+                }
+            });
+            Object.defineProperty(this.visualizations, "width", {
+                get: function () {
+                    return this.canvas.width;
+                }
+            });
+            Object.defineProperty(this.visualizations, "height", {
+                get: function () {
+                    return this.canvas.height;
+                }
+            });
+            $(window).on("resize", _.bind(this.onResize, this));
+        },
+        enable: function() {
+
+        },
+        disable: function() {
+
+        },
+        onResize: function () {
+            console.log("!!!!");
+            console.log(this);
+            _.bind(Style1.onResize, Style1)(this.visualizations);
+        },
+        hide: function () { // _.bind(n.hide,n);
+            var that = this;
+            $(this.visualizations.canvas).stop(true).animate({
+                opacity: "0"
+            }, {
+                easing: "easeOutQuint",
+                duration: 2E3,
+                queue: !1,
+                complete: function () {
+                    this.style.display = "none";
+                    that.visualizations.stop();
+                }
+            })
+        },
+        show: function () { // _.bind(n.show,n);
+            var that = this;
+            $(this.visualizations.canvas).stop(true).animate({
+                opacity: "1"
+            }, {
+                easing: "easeOutQuint",
+                duration: 2E3,
+                queue: !1,
+                start: function () {
+                    this.style.display = "block";
+                    that.visualizations.start();
+                }
+            });
         }
     });
     return new n();
@@ -827,7 +1130,7 @@ define("backgrounds", {
 });
 
     /////////
-require(["jquery","underscore","autowoot", "version", "utils/tooltip", "utils/notify", "utils/dj", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version, Tooltip, Notify, Dj, backgrounds) {
+require(["jquery","underscore","autowoot", "version",/* "sketch", */"utils/tooltip", "utils/notify", "utils/dj", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version,/* Sketch, */Tooltip, Notify, Dj, backgrounds) {
     _.delay(_.bind(Version.check,Version),15000);
     "use strict";
 
@@ -1531,12 +1834,13 @@ Visualizations.barsColor = grd;
                 _results = [];
                 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                     particle = _ref[_i];
+particle.move();
                     if (particle.y < -particle.size * particle.level * particle.scale * 2) {
                         particle.reset();
                         particle.x = random(this.width);
                         particle.y = this.height + particle.size * particle.scale * particle.level;
                     }
-                    particle.move();
+                    
                     _results.push(particle.draw(this));
                 }
                 return _results;

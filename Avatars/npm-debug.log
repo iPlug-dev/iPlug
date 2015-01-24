@@ -1,0 +1,156 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'imgur',
+1 verbose cli   '-g',
+1 verbose cli   '--save' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose cache add [ 'imgur', null ]
+5 verbose cache add name=undefined spec="imgur" args=["imgur",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'imgur',
+6 verbose parsed url   path: 'imgur',
+6 verbose parsed url   href: 'imgur' }
+7 silly lockFile cb47acaa-imgur imgur
+8 verbose lock imgur /home/michal/.npm/cb47acaa-imgur.lock
+9 silly lockFile cb47acaa-imgur imgur
+10 silly lockFile cb47acaa-imgur imgur
+11 verbose addNamed [ 'imgur', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile e14fe858-imgur imgur@
+14 verbose lock imgur@ /home/michal/.npm/e14fe858-imgur.lock
+15 silly addNameRange { name: 'imgur', range: '*', hasData: false }
+16 verbose request where is /imgur
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 19ca5f1723683cd4
+19 verbose url raw /imgur
+20 verbose url resolving [ 'https://registry.npmjs.org/', './imgur' ]
+21 verbose url resolved https://registry.npmjs.org/imgur
+22 verbose request where is https://registry.npmjs.org/imgur
+23 info trying registry request attempt 1 at 20:05:02
+24 http GET https://registry.npmjs.org/imgur
+25 http 200 https://registry.npmjs.org/imgur
+26 silly registry.get cb [ 200,
+26 silly registry.get   { date: 'Mon, 24 Nov 2014 19:05:02 GMT',
+26 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+26 silly registry.get     etag: '"ENE9V3OVAUKNUHVYPFSEI8HOO"',
+26 silly registry.get     'content-type': 'application/json',
+26 silly registry.get     'cache-control': 'max-age=60',
+26 silly registry.get     'content-length': '12637',
+26 silly registry.get     'accept-ranges': 'bytes',
+26 silly registry.get     via: '1.1 varnish',
+26 silly registry.get     age: '0',
+26 silly registry.get     'x-served-by': 'cache-lcy1127-LCY',
+26 silly registry.get     'x-cache': 'MISS',
+26 silly registry.get     'x-cache-hits': '0',
+26 silly registry.get     'x-timer': 'S1416855902.760659,VS0,VE165',
+26 silly registry.get     vary: 'Accept',
+26 silly registry.get     'keep-alive': 'timeout=10, max=50',
+26 silly registry.get     connection: 'Keep-Alive' } ]
+27 silly addNameRange number 2 { name: 'imgur', range: '*', hasData: true }
+28 silly addNameRange versions [ 'imgur',
+28 silly addNameRange   [ '0.0.1', '0.0.2', '0.0.3', '0.1.0', '0.1.1', '0.1.2', '0.1.3' ] ]
+29 verbose addNamed [ 'imgur', '0.1.3' ]
+30 verbose addNamed [ '0.1.3', '0.1.3' ]
+31 silly lockFile 96928f39-imgur-0-1-3 imgur@0.1.3
+32 verbose lock imgur@0.1.3 /home/michal/.npm/96928f39-imgur-0-1-3.lock
+33 silly lockFile 06f71565--npmjs-org-imgur-imgur-0-1-3-tgz https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz
+34 verbose lock https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz /home/michal/.npm/06f71565--npmjs-org-imgur-imgur-0-1-3-tgz.lock
+35 verbose addRemoteTarball [ 'https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz',
+35 verbose addRemoteTarball   'beb7f9ee5ec1e366b1f8c273692a607608e6da74' ]
+36 info retry fetch attempt 1 at 20:05:02
+37 verbose fetch to= /tmp/npm-11069-6GSwhmfz/registry.npmjs.org/imgur/-/imgur-0.1.3.tgz
+38 http GET https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz
+39 http 200 https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz
+40 silly lockFile 06f71565--npmjs-org-imgur-imgur-0-1-3-tgz https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz
+41 silly lockFile 06f71565--npmjs-org-imgur-imgur-0-1-3-tgz https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz
+42 silly lockFile 96928f39-imgur-0-1-3 imgur@0.1.3
+43 silly lockFile 96928f39-imgur-0-1-3 imgur@0.1.3
+44 silly lockFile e14fe858-imgur imgur@
+45 silly lockFile e14fe858-imgur imgur@
+46 silly resolved [ { author:
+46 silly resolved      { name: 'Kai Mallea',
+46 silly resolved        email: 'kmallea@gmail.com',
+46 silly resolved        url: 'www.kaimallea.com' },
+46 silly resolved     name: 'imgur',
+46 silly resolved     description: 'Upload images to imgur.com',
+46 silly resolved     version: '0.1.3',
+46 silly resolved     homepage: 'https://github.com/kaimallea/node-imgur',
+46 silly resolved     keywords: [ 'imgur', 'upload', 'images' ],
+46 silly resolved     repository:
+46 silly resolved      { type: 'git',
+46 silly resolved        url: 'git://github.com/kaimallea/node-imgur.git' },
+46 silly resolved     engines: { node: '>= v0.10.30' },
+46 silly resolved     dependencies:
+46 silly resolved      { commander: '^2.3.0',
+46 silly resolved        glob: '^4.0.5',
+46 silly resolved        q: '^1.0.1',
+46 silly resolved        request: '^2.40.0' },
+46 silly resolved     main: 'lib/imgur.js',
+46 silly resolved     bin: { imgur: './cli.js' },
+46 silly resolved     scripts: { test: 'mocha' },
+46 silly resolved     devDependencies:
+46 silly resolved      { chai: '^1.9.1',
+46 silly resolved        'chai-as-promised': '^4.1.1',
+46 silly resolved        mocha: '^1.21.4' },
+46 silly resolved     gitHead: '9a8e0a8f86e892b7bd35852ac1b72576bda44c72',
+46 silly resolved     bugs: { url: 'https://github.com/kaimallea/node-imgur/issues' },
+46 silly resolved     _id: 'imgur@0.1.3',
+46 silly resolved     _shasum: 'beb7f9ee5ec1e366b1f8c273692a607608e6da74',
+46 silly resolved     _from: 'imgur@',
+46 silly resolved     _npmVersion: '1.4.21',
+46 silly resolved     _npmUser: { name: 'kai', email: 'kmallea@gmail.com' },
+46 silly resolved     maintainers: [ [Object] ],
+46 silly resolved     dist:
+46 silly resolved      { shasum: 'beb7f9ee5ec1e366b1f8c273692a607608e6da74',
+46 silly resolved        tarball: 'http://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz' },
+46 silly resolved     directories: {},
+46 silly resolved     _resolved: 'https://registry.npmjs.org/imgur/-/imgur-0.1.3.tgz' } ]
+47 info install imgur@0.1.3 into /usr/local/lib
+48 info installOne imgur@0.1.3
+49 verbose lib/node_modules/imgur unbuild
+50 verbose tar unpack /home/michal/.npm/imgur/0.1.3/package.tgz
+51 silly lockFile 34c00cc3-usr-local-lib-node-modules-imgur tar:///usr/local/lib/node_modules/imgur
+52 verbose lock tar:///usr/local/lib/node_modules/imgur /home/michal/.npm/34c00cc3-usr-local-lib-node-modules-imgur.lock
+53 silly lockFile c708d7c4-chal-npm-imgur-0-1-3-package-tgz tar:///home/michal/.npm/imgur/0.1.3/package.tgz
+54 verbose lock tar:///home/michal/.npm/imgur/0.1.3/package.tgz /home/michal/.npm/c708d7c4-chal-npm-imgur-0-1-3-package-tgz.lock
+55 silly gunzTarPerm modes [ '775', '664' ]
+56 error Error: EACCES, mkdir '/usr/local/lib/node_modules/imgur'
+56 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/imgur']
+56 error   errno: 3,
+56 error   code: 'EACCES',
+56 error   path: '/usr/local/lib/node_modules/imgur',
+56 error   fstream_type: 'Directory',
+56 error   fstream_path: '/usr/local/lib/node_modules/imgur',
+56 error   fstream_class: 'DirWriter',
+56 error   fstream_stack:
+56 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+56 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
+56 error      'Object.oncomplete (fs.js:107:15)' ] }
+57 error Please try running this command again as root/Administrator.
+58 error System Linux 3.13.0-39-generic
+59 error command "/usr/local/bin/node" "/usr/local/bin/npm" "install" "imgur" "-g" "--save"
+60 error cwd /home/michal/Pulpit/iplugg/Avatars
+61 error node -v v0.10.33
+62 error npm -v 1.4.28
+63 error path /usr/local/lib/node_modules/imgur
+64 error fstream_path /usr/local/lib/node_modules/imgur
+65 error fstream_type Directory
+66 error fstream_class DirWriter
+67 error code EACCES
+68 error errno 3
+69 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/imgur'
+70 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+70 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
+70 error fstream_stack Object.oncomplete (fs.js:107:15)
+71 verbose exit [ 3, true ]
