@@ -42,7 +42,8 @@
                 "images/Plug/plug.png",
                 "images/loading.png",
 				"images/noise-1.png",
-                "images/fullscreenplayer.png"
+                "images/fullscreenplayer.png",
+                "images/twitchlogo.png"
         ],
         "content_scripts": [
                 {
