@@ -1,1 +1,19 @@
+# Default behavior
 * text eol=lf
+
+
+# Dear git YOU CAN MODIFY LINE ENDINGS HERE
+*.css text
+*.js text
+
+# Dear git DO NOT MODIFY THEM
+*.git binary
+*.png binary
+*.jpg binary
+
+# Example
+#
+# Always CRLF
+# *.smth text eol=crlf
+# Always LF
+# *.smth text eol=lf
