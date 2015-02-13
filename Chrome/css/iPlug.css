@@ -706,3 +706,52 @@ body.topvotebar .pop-menu.grab {
 .largevideo > #no-dj .message {
     top: 55% !important;
 }
+#download {
+    height: 55px;
+    width: 55px;
+}
+#downloadbox {
+    width: 291px;
+    left: -291px;
+    top: -5px;
+    position: absolute;
+    overflow: hidden;
+    height: 500px;
+}
+#downloadcontainer {
+    background-color: #282c35;
+    position: absolute;
+    -webkit-box-shadow: 0 0 5px #000;
+    -moz-box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 5px #000;
+    width: 286px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+#qrcode {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    margin-right: 15px;
+}
+#downloadcontainer span {
+    display: block;
+    font-size: 13px;
+}
+#downloadcontainer span:first-child {
+    margin-top: 15px;
+    margin-bottom: 4px;
+
+}
+#downloadcontainer span a {
+    font-size: 28px;
+}
+.dialog-frame .title {
+    pointer-events: none;
+}
+#qrcode {
+    -webkit-box-shadow: 0 0 5px #000;
+    -moz-box-shadow: 0 0 5px #000;
+    box-shadow: 0 0 5px #000;
+}
