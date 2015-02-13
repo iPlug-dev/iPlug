@@ -17,35 +17,35 @@ var x;
 for (var i in x = requirejs.s.contexts._.defined) {
     if (!x.hasOwnProperty(i) || !x[i]) continue;
     if (x[i] && x[i]._events && x[i]._events.notify)
-        requireIDs.a = i;
+        requireIDs.a = requireIDs.a === null ? i : console.warn("NOT NULL", "a", i);
     if (x[i].prototype && x[i].prototype.RowClass && x[i].prototype.className === "list room")
-        requireIDs.r = i;
-    if (x[i].attributes && typeof x[i].attributes.streamDisabled === "boolean")
-        requireIDs.s = i;
+        requireIDs.r = requireIDs.r === null ? i : console.warn("NOT NULL", "r", i);
+    if (x[i].__proto__.onElapsedChange)
+        requireIDs.s = requireIDs.s === null ? i : console.warn("NOT NULL", "s", i);
     if (x[i].prototype && x[i].prototype.vote)
-        requireIDs.v = i;
+        requireIDs.v = requireIDs.v === null ? i : console.warn("NOT NULL", "v", i);
     if (x[i].prototype && x[i].prototype.hasOwnProperty("id") && x[i].prototype.id == "chat-suggestion")
-        requireIDs.c = i;
+        requireIDs.c = requireIDs.c === null ? i : console.warn("NOT NULL", "c", i);
     if (x[i].prototype && x[i].prototype.submitSuggestion && x[i].prototype.hasOwnProperty("id"))
-        requireIDs.i = i;
+        requireIDs.i = requireIDs.i === null ? i : console.warn("NOT NULL", "i", i);
     if (x[i] && x[i].add && x[i].init && x[i].remove && x[i].lookup && x[i].exists)
-        requireIDs.e = i;
+        requireIDs.e = requireIDs.e === null ? i : console.warn("NOT NULL", "e", i);
     if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
-        requireIDs.m = i;
+        requireIDs.m = requireIDs.m === null ? i : console.warn("NOT NULL", "m", i);
     if (x[i] && x[i].getAudience && x[i]._events && x[i].findWhere)
-        requireIDs.g = i;
+        requireIDs.g = requireIDs.g === null ? i : console.warn("NOT NULL", "g", i);
     if (x[i] && x[i].prototype && x[i].prototype.hasOwnProperty("id") && x[i].prototype.id === "playback")
-        requireIDs.p = i;
+        requireIDs.p = requireIDs.p === null ? i : console.warn("NOT NULL", "p", i);
     if (x[i] && x[i].hasOwnProperty("settings"))
-        requireIDs.z = i;
+        requireIDs.z = requireIDs.z === null ? i : console.warn("NOT NULL", "z", i);
     if (x[i] && x[i].__proto__ && x[i].__proto__.id === "dj-booth")
-        requireIDs.d = i;
+        requireIDs.d = requireIDs.d === null ? i : console.warn("NOT NULL", "d", i);
     if (x[i] && x[i].__proto__ && x[i].__proto__.id === "user-rollover")
-        requireIDs.f = i;
+        requireIDs.f = requireIDs.f === null ? i : console.warn("NOT NULL", "f", i);
 }
 for (var i in requireIDs) {
     if (!requireIDs.hasOwnProperty) continue;
-    if (!requireIDs[i]) console.warn(i, requireIDs[i]);
+    if (!requireIDs[i]) console.warn("NULL", i, requireIDs[i]);
 }
 
 /** 
@@ -149,17 +149,9 @@ define("modifications/userlists",[requireIDs.r,requireIDs.v],function(r,v){
     });
     return true;
 });
-define("modifications/chat-suggestions", ["jquery", "underscore", requireIDs.i, requireIDs.c, requireIDs.m, requireIDs.g, requireIDs.e, "hbs!templates/room/chat/ChatSuggestionItem"], function(e,t,o,z,i,r,s,u){
+define("modifications/chat-suggestions", ["jquery", "underscore", "utils/twitchemotes", requireIDs.i, requireIDs.c, requireIDs.m, requireIDs.g, requireIDs.e, "hbs!templates/room/chat/ChatSuggestionItem"], function(e,t,k,o,z,i,r,s,u){
     var a = z.extend({
         check: function (e, t) {
-            var k = {
-                lookup: function (e) {
-                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
-                },
-                map: {
-                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
-                }
-            };
             var n = e.lastIndexOf(" @"),
                 r = e.lastIndexOf(" :");
             n === -1 && (n = e.indexOf("@") === 0 ? 0 : -1);
@@ -173,14 +165,6 @@ define("modifications/chat-suggestions", ["jquery", "underscore", requireIDs.i, 
         },
         iplug: false,
         updateSuggestions: function () {
-            var k = {
-                lookup: function (e) {
-                    return e.toLowerCase().indexOf("ka") === 0 ? ["Kappa"] : [];
-                },
-                map: {
-                    "Kappa": "https://static-cdn.jtvnw.net/jtv_user_pictures/chansub-global-emoticon-ddc6e3a8732cb50f-25x28.png"
-                }
-            };
             var n = this.suggestions.length;
             this.$itemContainer.html("");
             this.iplug = false;
@@ -215,6 +199,7 @@ define("modifications/chat-suggestions", ["jquery", "underscore", requireIDs.i, 
                             index: s,
                             image: a
                         })).mousedown(t.bind(this.iplugclickevent, this)).mouseenter(this.overBind), o.addClass("emo"), this.$itemContainer.append(o);
+                        if (this.iplug) e("<span>").addClass("iplug-twitch").appendTo(o);
                     }
                 }
                 if (this.index === -1 || this.index >= n) {
@@ -246,8 +231,8 @@ define("modifications/chat-suggestions", ["jquery", "underscore", requireIDs.i, 
             t.delay(this.refocusBind, 100);
         },
         getSelected: function () {
-            return [this.suggestions[this.index] + (this.type === ":" ? this.iplug ? "" : ":" : ""), this.iplug];
-        }
+ return [this.suggestions[this.index] + (this.type === ":" ? this.iplug && Object.keys(k.map).indexOf(this.suggestions[this.index]) > -1 ? "" : ":" : ""), this.iplug && Object.keys(k.map).indexOf(this.suggestions[this.index]) > -1];
+ }
     });
     z.prototype.check = a.prototype.check;
     z.prototype.iplugclickevent = a.prototype.iplugclickevent;
@@ -264,6 +249,59 @@ define("modifications/chat-suggestions", ["jquery", "underscore", requireIDs.i, 
         this.suggestionView.reset();
         this.suggestionView.updateSuggestions();
     };
+});
+
+define("utils/twitchemotes", function() {
+    var t = {
+        map: {},
+        lookup: function() {return [];},
+        emojify: function(e) {return e;}
+    };
+    $.getJSON("https://twitchemotes.com/api_cache/v2/global.json", function(x) {
+        for (var i in x.emotes) {
+            if (!x.emotes.hasOwnProperty(i)) continue;
+            x.emotes[i] = "https:" + x.template.small.replace("{image_id}", x.emotes[i].image_id);
+        }
+        t.map = x.emotes;
+        var o = {};
+        for (var u in t.map) {
+            var a = u.charAt(0);
+            o[a] || (o[a] = [], o[a].longest = 0), o[a].push(u), u.length > o[a].longest && (o[a].longest = u.length)
+        }
+        t.lookup = function(e) {
+            var t = [],
+                n = e.length;
+            if (n > 0 && n < 24) {
+                var r = e.charAt(0).toLowerCase();
+                if (o[r] && o[r].length > 0 && n < o[r].longest) {
+                    var i = o[r].length;
+                    while (i--) o[r][i].toLowerCase() !== e.toLowerCase() && o[r][i].toLowerCase().indexOf(e.toLowerCase()) === 0 && t.push(o[r][i])
+                }
+                r = r.toUpperCase();
+                if (o[r] && o[r].length > 0 && n < o[r].longest) {
+                    var i = o[r].length;
+                    while (i--) o[r][i].toLowerCase() !== e.toLowerCase() && o[r][i].toLowerCase().indexOf(e.toLowerCase()) === 0 && t.push(o[r][i])
+                }
+            }
+            t.length = Math.min(t.length, 10);
+            t.sort();
+            return t.filter(function(item, pos, self) {
+                return self.indexOf(item) == pos;
+            });
+        };
+        function replaceArray(text) {
+            var replaceString = text;
+            var regex;
+            var keys = Object.keys(t.map);
+            for (var i = 0; i < keys.length; i++) {
+                regex = new RegExp("\\b" + keys[i] + "(?!.*<\\/a>)\\b", "g");
+                replaceString = replaceString.replace(regex, t.map[keys[i]]);
+            }
+            return replaceString;
+        }
+        t.emojify = replaceArray;
+    });
+    return t;
 });
 
 define("utils/tooltip", [requireIDs.a,"class"], function(a,Class) {
@@ -498,7 +536,7 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
             var n = u.get("media");
             if (n) {
                 this.$noDJ.hide();
-                if (!u.get("streamDisabled")) {
+                if (!f.settings.streamDisabled) {
                     this.ignoreComplete = !0, t.delay(t.bind(this.resetIgnoreComplete, this), 1e3);
                     var i = u.get("volume"),
                         s = u.get("elapsed"),
@@ -524,7 +562,7 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
             var n = u.get("media");
             if (n) {
                 this.$noDJ.hide();
-                if (!u.get("streamDisabled")) {
+                if (!f.settings.streamDisabled) {
                     if (n.get("format") === 1) {
 
                         this.$frame = e("<div>").attr({
@@ -1130,7 +1168,7 @@ define("backgrounds", {
 });
 
     /////////
-require(["jquery","underscore","autowoot", "version",/* "sketch", */"utils/tooltip", "utils/notify", "utils/dj", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version,/* Sketch, */Tooltip, Notify, Dj, backgrounds) {
+require(["jquery","underscore","autowoot", "version", "sketch", "utils/tooltip", "utils/notify", "utils/dj", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, Autowoot, Version, Sketch, Tooltip, Notify, Dj, backgrounds) {
     _.delay(_.bind(Version.check,Version),15000);
     "use strict";
 
@@ -1711,7 +1749,7 @@ require(["jquery","underscore","autowoot", "version",/* "sketch", */"utils/toolt
     })();
 
 
-
+/*
 function updateColor(){
 var result = [];
 var grd= Visualizations.createLinearGradient(0,0,Visualizations.width,0);
@@ -1725,6 +1763,7 @@ grd.addColorStop(result[i][0], "rgb("+result[i][1][0]+","+result[i][1][1]+","+re
 }
 Visualizations.barsColor = grd;
 }
+
     var Visualizations = Sketch.create({
         width: parseInt($("#playback-container")[0].style.width, 10),
         height: parseInt($("#playback-container")[0].style.height, 10),
@@ -1918,8 +1957,8 @@ updateColor();
     };
 
 
-    Visualizations.width = parseInt($("#playback-container")[0].style.width, 10); /*initial call*/
-    Visualizations.height = parseInt($("#playback-container")[0].style.height, 10); /*initial call*/
+    Visualizations.width = parseInt($("#playback-container")[0].style.width, 10); //initial call
+    Visualizations.height = parseInt($("#playback-container")[0].style.height, 10); //initial call
     VisualizationsHelper.ObsrvTwo = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             var temp = (API.getVolume() / 100);
@@ -1936,14 +1975,14 @@ updateColor();
         characterData: false
     });
 
-    $("#iplug-playback")[0].style.cssText = $("#playback-container")[0].style.cssText + "z-index: 6;position: absolute;top: 0;"; /*initial call*/
+    $("#iplug-playback")[0].style.cssText = $("#playback-container")[0].style.cssText + "z-index: 6;position: absolute;top: 0;"; 
 
 
 
     VisualizationsHelper.clientID = "9258af128ee9d4c781d46b31917531e7";
-    /* GET YOUR OWN CLIENT ID ON HTTP://DEVELOPERS.SOUNDCLOUD.COM 
-     * DON'T USE MINE :)
-     */
+    //* GET YOUR OWN CLIENT ID ON HTTP://DEVELOPERS.SOUNDCLOUD.COM 
+    // * DON'T USE MINE :)
+    // *
     VisualizationsHelper.killFlash = function () {
         try {
             if ($("#playback-controls")[0] == $(".snoozed")[0]) {
@@ -1964,7 +2003,7 @@ updateColor();
         if (!Visualizations.paused()) Visualizations.pause();
         var cid = "";
         var yesNo; // YES, IT IS YESNO
-        if (require(requireIDs.s).attributes.streamDisabled)
+        if (require(requireIDs.z).settings.streamDisabled)
             return VisualizationsHelper.hide();
         if ("block" != localStorage["iplug|scvisualsenabled"])
             return VisualizationsHelper.hide();
@@ -2014,8 +2053,8 @@ updateColor();
         Visualizations.img.src = imgURL;
         Visualizations.play();
     };
-
-    require(requireIDs.s).on("change:streamDisabled", function (x) {
+*/
+    require(requireIDs.a).on("change:streamDisabled", function (x) {
         onAPIadvance();
     });
     $("#playback-controls > div.button.refresh").click(function () {
@@ -2026,7 +2065,7 @@ updateColor();
         onAPIadvance();
     });
 
-    VisualizationsHelper.initCall = function () {
+  /*  VisualizationsHelper.initCall = function () {
         if (!($('#room-loader').length > 0) && (API.enabled)) {
             VisualizationsHelper.onEvent();
             return false;
@@ -2040,7 +2079,7 @@ updateColor();
         VisualizationsHelper.onEvent(a);
     }
 
-    API.on(API.ADVANCE, onAPIadvance);
+    API.on(API.ADVANCE, onAPIadvance);*/
 
     
     //========== INIT
@@ -2219,8 +2258,8 @@ updateColor();
             height: window.innerHeight - 108 + "px"
         };
         $(".largevideo > #iplug-playback").css(heightwidth).attr(heightwidth);
-        Visualizations.width = Visualizations.canvas.width;
-        Visualizations.height = Visualizations.canvas.height;
+       // Visualizations.width = Visualizations.canvas.width;
+       // Visualizations.height = Visualizations.canvas.height;
         $(".room-background:not(.default)").css({
             left: $(".room-background.default").css("left"),
             top: $(".room-background.default").css("top")
@@ -2867,7 +2906,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                         if (typeof (API.getMedia().format) == "number" && API.getMedia().format == 2) {
                             $("#playback-controls > div.button.refresh").click();
                         } else {
-                            onAPIadvance();
+                            //onAPIadvance();
                         }
                     }
                 };
