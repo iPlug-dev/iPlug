@@ -1,5 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Fjalla+One&subset=latin,latin-ext);
 /* usage font-family: Fjalla One*/
+@import url(https://fonts.googleapis.com/css?family=Exo:400,800&subset=latin,latin-ext);
+/* usage font-family: 'Exo', sans-serif; */
+
 ::selection {
     background:#ccc !important;
     color:#000 !important;
@@ -164,6 +167,30 @@
     margin-left:17px;
     font-size:18px
 }
+
+.iplug-twitch {
+	position: absolute;
+	width: 23.125px;
+	height: 23.125px;
+	background: url(chrome-extension://__MSG_@@extension_id__/images/twitchlogo.png) no-repeat;
+	background-size: contain;
+	top: 0;
+	right: 0;
+}
+
+#chat-suggestion {
+	max-height: 380px;
+	overflow-y: auto;
+}
+
+#chat-suggestion::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+#chat-suggestion::-webkit-scrollbar-thumb {
+    background-color: #C42E3B !important;
+}
+
 .iplug-container {
     margin-left: 10px;
     margin-right: 10px;
