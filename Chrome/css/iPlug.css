@@ -1,9 +1,10 @@
-@import url(https://fonts.googleapis.com/css?family=Fjalla+One&subset=latin,latin-ext);
-/* usage font-family: Fjalla One*/
-@import url(https://fonts.googleapis.com/css?family=Exo:400,800&subset=latin,latin-ext);
-/* usage font-family: 'Exo', sans-serif; */
+@import url(https://fonts.googleapis.com/css?family=Fjalla+One&subset=latin, latin-ext);
 
-::selection {
+/* usage font-family: Fjalla One*/
+ @import url(https://fonts.googleapis.com/css?family=Exo:400, 800&subset=latin, latin-ext);
+
+/* usage font-family: 'Exo', sans-serif; */
+ ::selection {
     background:#ccc !important;
     color:#000 !important;
 }
@@ -26,14 +27,14 @@
 ::-webkit-scrollbar-button {
     display:none !important;
 }
-.blackandwhite{
-	-webkit-filter: grayscale(100%);
-	filter: grayscale(100%);
-	filter: gray;
-	filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0' /></filter></svg>#greyscale");
+.blackandwhite {
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    filter: gray;
+    filter: url("data:image/svg+xml;utf8,<svg version='1.1' xmlns='http://www.w3.org/2000/svg' height='0'><filter id='greyscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0' /></filter></svg>#greyscale");
 }
-#iplug-playback{
-	background: -webkit-radial-gradient(50% 50%, ellipse cover, rgba(0, 0, 0, 0) 20%, rgb(0, 0, 0) 95%),url(chrome-extension://__MSG_@@extension_id__/images/noise-1.png), #13242f;
+#iplug-playback {
+    background: -webkit-radial-gradient(50% 50%, ellipse cover, rgba(0, 0, 0, 0) 20%, rgb(0, 0, 0) 95%), url(chrome-extension://__MSG_@@extension_id__/images/noise-1.png), #13242f;
 }
 #tooltip {
     z-index: 9999999;
@@ -55,22 +56,22 @@
     /*super serious*/
 }
 #iplug-overlay {
-	bottom: 0px;
-	left: 0px;
-	position: fixed;
-	right: 0px;
-	top: 0px;
-	z-index: 1234321;
+    bottom: 0px;
+    left: 0px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    z-index: 1234321;
     /*super super mega serious ;D*/
 }
-.iplug-overlay-bg{
-	background: rgb(10, 10, 10);
-	bottom: 0px;
-	left: 0px;
-	position: fixed;
-	right: 0px;
-	top: 0px;
-	opacity: 0.7;
+.iplug-overlay-bg {
+    background: rgb(10, 10, 10);
+    bottom: 0px;
+    left: 0px;
+    position: fixed;
+    right: 0px;
+    top: 0px;
+    opacity: 0.7;
 }
 #user-lists > div.header > div.divider.right {
     width: 175px !important;
@@ -83,13 +84,13 @@
     width: 85px !important;
     left: initial !important;
 }
-.app-right > div.friends > div.header > div.divider.left{
-	width: 260px !important;
+.app-right > div.friends > div.header > div.divider.left {
+    width: 260px !important;
 }
-.app-right > div.friends > div.header > div.divider.right{
-	left: initial !important;
-	right: 0px !important;
-	width: 45px !important;
+.app-right > div.friends > div.header > div.divider.right {
+    left: initial !important;
+    right: 0px !important;
+    width: 45px !important;
 }
 #chat-button {
     left: 0 !important;
@@ -106,13 +107,13 @@
     left: 170px !important;
     width: 90px !important;
 }
-#friends-button{
-	left: initial !important;
-	width: 40px !important;
-	right: 44px !important;
+#friends-button {
+    left: initial !important;
+    width: 40px !important;
+    right: 44px !important;
 }
 #friends-button.selected {
-	right: 45px !important;
+    right: 45px !important;
 }
 #visualssstyle {
     cursor: pointer;
@@ -120,11 +121,11 @@
 #iplug-button {
     left: initial !important;
     width: 45px !important;
-	right: -1px !important;
-	/*cuz border*/
+    right: -1px !important;
+    /*cuz border*/
 }
 #iplug-button.selected {
-	right: 0px !important;
+    right: 0px !important;
 }
 #iplug-button i {
     position: relative;
@@ -167,34 +168,36 @@
     margin-left:17px;
     font-size:18px
 }
-
 .iplug-twitch {
-	position: absolute;
-	width: 23.125px;
-	height: 23.125px;
-	background: url(chrome-extension://__MSG_@@extension_id__/images/twitchlogo.png) no-repeat;
-	background-size: contain;
-	top: 0;
-	right: 0;
+    position: absolute;
+    width: 23.125px;
+    height: 23.125px;
+    background: url(chrome-extension://__MSG_@@extension_id__/images/twitchlogo.png) no-repeat;
+    background-size: contain;
+    top: 0;
+    right: 0;
 }
-
 #chat-suggestion {
-	max-height: 380px;
-	overflow-y: auto;
+    max-height: 380px;
+    overflow-y: auto;
 }
-
 #chat-suggestion::-webkit-scrollbar {
     width: 6px !important;
 }
-
 #chat-suggestion::-webkit-scrollbar-thumb {
     background-color: #C42E3B !important;
 }
-
 .iplug-container {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 10px
+    margin: 0px 0px 0px 10px;
+    width: 325px;
+    padding-top: 10px;
+    position: absolute;
+    top: 47px;
+    bottom: 0px;
+    overflow-Y: scroll;
+}
+.iplug-container::-webkit-scrollbar {
+    width: 0px !important;
 }
 .iplug-container .subcontainer {
     margin-bottom: 10px;
@@ -569,7 +572,7 @@
     margin-bottom: 25px;
 }
 #backgroundcarddeckcontainer .backgroundcard:last-child {
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 #backgroundcardselected {
     height: 124px;
@@ -686,16 +689,17 @@ body.topvotebar .pop-menu.grab {
 }
 #user-rollover.topbarskip .arrow-down {
     border-top: 0 !important;
-	
     border-bottom: 8px solid #282c35;
     bottom: initial !important;
     top: -8px;
     left: 211px !important;
 }
 .largevideo > #no-dj {
-    width: auto !important;  
-    height: auto !important;  
-    left: 0px !important;  right: 172.5px;  bottom: 27px;
+    width: auto !important;
+    height: auto !important;
+    left: 0px !important;
+    right: 172.5px;
+    bottom: 27px;
 }
 .largevideo > #no-dj .avatar {
     left: 50% !important;
@@ -742,7 +746,6 @@ body.topvotebar .pop-menu.grab {
 #downloadcontainer span:first-child {
     margin-top: 15px;
     margin-bottom: 4px;
-
 }
 #downloadcontainer span a {
     font-size: 28px;
