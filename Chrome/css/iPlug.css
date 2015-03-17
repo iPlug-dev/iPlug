@@ -583,6 +583,9 @@
     margin-top: 6px;
     cursor: pointer;
 }
+#backgroundcardselected img {
+    background: url(chrome-extension://__MSG_@@extension_id__/images/fullscreenplayer.png);
+}
 .largevideo {
     width: auto !important;
     height: auto !important;

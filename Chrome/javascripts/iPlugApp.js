@@ -957,7 +957,7 @@ define("visualizations/core", ["class", "sketch", "jquery", "underscore", "visua
 define("backgrounds", {
     youtube: {
         text: "Fullscreen Player",
-        url: "chrome-extension://__MSG_@@extension_id__/images/fullscreenplayer.png", // this works ONLY in CSS file :P
+        url: "", // this works ONLY in CSS file :P
         description: "Full hd videos :)"
     },
     standard: {
@@ -2295,6 +2295,7 @@ updateColor();
            var checkbox = $("#" + $(e).parent().attr("id") + "enabled > i");
            if (checkbox.css("display") === "block") checkbox.click();
         });
+		$(".backgroundcard[card='youtube'] img").attr("src", (data.media.format === 1) ? ("https://img.youtube.com/vi/" + data.media.cid + "/mqdefault.jpg") : data.media.image);
     });
     $(".nodecontainer .node").each(function (i, e) {
         $(e).css({
