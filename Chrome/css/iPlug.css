@@ -84,6 +84,9 @@
     width: 85px !important;
     left: initial !important;
 }
+.app-right {
+	z-index: initial !important;
+}
 .app-right > div.friends > div.header > div.divider.left {
     width: 260px !important;
 }
@@ -203,7 +206,8 @@
     margin-bottom: 10px;
     padding: 5px;
     background-color: #111317;
-    overflow: hidden
+    overflow: hidden;
+    position: relative;
 }
 .iplug-container .subcontainer .subtitle {
     color: #555d70;
@@ -646,7 +650,7 @@
     overflow: hidden;
 }
 #topbarcontainer #vote i {
-    left: 12px !important;
+    left: 5px !important;
 }
 #topbarcontainer #vote .top {
     width: 54px !important;
@@ -757,4 +761,12 @@ body.topvotebar .pop-menu.grab {
     -webkit-box-shadow: 0 0 5px #000;
     -moz-box-shadow: 0 0 5px #000;
     box-shadow: 0 0 5px #000;
+}
+.unavailable {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(10, 10, 10, 0.75);
 }
