@@ -6,7 +6,16 @@ function loader() {
     } else setTimeout(loader, 1000);
 }
 
+var libs = ["javascripts/qrcode.min.js"];
 var main = "javascripts/iPlugApp.js";
+
+
+libs.forEach(function(e) {
+	var script = document.createElement('script');
+	script.type = "text/javascript";
+	script.src = chrome.extension.getURL(e);
+	document.head.appendChild(script);
+});
 var s = document.createElement('script');
 s.type = "text/javascript";
 s.innerText = loader.toString().replace("VER", getVersion()).replace("IPLUG",chrome.extension.getURL(main)) + ' loader();';

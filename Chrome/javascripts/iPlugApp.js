@@ -48,6 +48,14 @@ for (var i in requireIDs) {
     if (!requireIDs[i]) console.warn("NULL", i, requireIDs[i]);
 }
 
+var gapiloaded = false;
+$("head").append('<script src="https://apis.google.com/js/client.js?onload=initiate"></script>');
+function initiate() {
+	gapi.client.setApiKey('AIzaSyCmqEcQFgJ2RN_k_fjUCdP5m9aaitvUwvs');
+	gapi.client.load('urlshortener', 'v1');
+	gapiloaded = true;
+}
+
 /** 
    Copyright (C) 2013 Justin Windle, http://soulwire.co.uk 
 
@@ -957,7 +965,7 @@ define("visualizations/core", ["class", "sketch", "jquery", "underscore", "visua
 define("backgrounds", {
     youtube: {
         text: "Fullscreen Player",
-        url: "", // this works ONLY in CSS file :P
+        url: $("<i style='.icon-iplug'>").css("background-image").replace("iplug-button", "fullscreenplayer"),
         description: "Full hd videos :)"
     },
     standard: {
@@ -2295,7 +2303,7 @@ updateColor();
            var checkbox = $("#" + $(e).parent().attr("id") + "enabled > i");
            if (checkbox.css("display") === "block") checkbox.click();
         });
-		$(".backgroundcard[card='youtube'] img").attr("src", (data.media.format === 1) ? ("https://img.youtube.com/vi/" + data.media.cid + "/mqdefault.jpg") : data.media.image);
+		//$(".backgroundcard[card='youtube'] img").attr("src", (data.media.format === 1) ? ("https://img.youtube.com/vi/" + data.media.cid + "/mqdefault.jpg") : data.media.image);
     });
     $(".nodecontainer .node").each(function (i, e) {
         $(e).css({
@@ -2556,6 +2564,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         var card = cards.filter("[card=" + selected.children().attr("card") + "]");
         var n = cards.index(card);
         if (selected.css("cursor") !== "pointer") return;
+		$("#playlist-button .icon-arrow-down").click();
         selected.css({
             cursor: "default"
         });
@@ -2685,9 +2694,67 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         var deck = $("#backgroundcarddeckcontainer");
         if (deck.attr("opened") !== "true" || deck.is(":hover")) return;
         deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
-    });
+	});
+	
+	$("#dialog-container").bind("DOMNodeInserted", function(e) {
+        var target = $(e.target);
+        if (target.attr("class") !== "dialog-frame" || target.parent().attr("id") !== "dialog-preview" || target.parent().children(".dialog-frame:first")[0] !== target[0]) return;
+        console.log(target);
+        var id = $(".playlist-media-item.selected img, .playlist-media-first-item.selected img").attr("src").match(/[^,\/]+(?=\/default\.jpg)/)[0];
+         
+        target.prepend('<div id="download"><i></i><div id="downloadbox"><div id="downloadcontainer"><div class="spinner"><i></i></div></div></div></div>');
+		
+		$("#download").bind("mouseenter", function() {
+			if ($("#downloadbox").css("cursor") === "default") {
+				$("#downloadbox").animate({width: "307px", left: "-307px", height: "375px"}, {duration: 250, queue: false});
+			} else {
+				$("#downloadbox").animate({width: "35px", left: "-35px"}, {duration: 250, queue: false});
+			}
+		}).bind("mouseleave", function() {
+			$("#downloadbox").animate({width: "5px", left: "-5px", height: "60px"}, {duration: 250, queue: false});
+		}).one("click", function() {
+			genqr(id);
+		});
+	});
 
     bindGradientCircleEvents($(".iplug-container .gradientpicker > .slider .barcontainer.gradient > .circle"));
+	
+	function fail(id, hi) {
+		console.log("fetching link for qr code failed: (" + hi + ") for video " + id);
+		$("#downloadcontainer >").replaceWith('<div class="failed"><span>failed :(</span><br/><span>(</span><span id="retry">retry?</span><span>)</span></div>');
+		$("#retry").bind("click", function() {
+			$("#downloadcontainer >").replaceWith('<div class="spinner"><i></i></div>');
+			genqr(id);
+		})
+	}
+	
+	function genqr(id) {
+		$("#downloadbox").animate({width: "307px", left: "-307px", height: "375px"}, {duration: 250, queue: false});
+		$("#download").css({cursor: "default"});
+		if (gapiloaded) {
+			$.ajax({
+				url: "https://mp3-l0laapk3.rhcloud.com/init.php?id=" + id,
+				success: function(a) {
+					if (JSON.parse(a)) {
+						var meta = $(".playlist-media-item.selected .meta, .playlist-media-first-item.selected .meta");
+						gapi.client.urlshortener.url.insert({
+							resource: {
+								"longUrl": "https://mp3-l0laapk3.rhcloud.com/download.php?id=" + id + "&name=" + encodeURIComponent($("#dialog-preview > .dialog-body > .message").html().replace(/&amp;/, "&")) + "&title=" + encodeURIComponent(meta.children(".title").html().replace(/&amp;/, "&")) + "&artist=" + encodeURIComponent(meta.children(".author").html().replace(/&amp;/, "&"))
+							}
+						}).execute(function(response) {
+							var url = response.id;
+							$("#downloadcontainer >").replaceWith('<a id="qrlink" target="_blank" attr="" href="' + url + '" tittle="' + url + '">' + url + '</a><span>----- OR -----</span><a id="qrlink" target="_blank" attr="" href="' + url + '"><div id="qrcode"></div></a>');
+							var qrcode = new QRCode("qrcode");
+							qrcode.makeCode(url);
+						});
+					} else fail(id, 3);
+				},
+				error: function() {
+					fail(id, 2);
+				}
+			});
+		} else fail(id, 1);
+	}
 
     function bindnode() {
         var node = $(this);
