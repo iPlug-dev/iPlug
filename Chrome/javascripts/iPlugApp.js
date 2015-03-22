@@ -2743,7 +2743,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
 							}
 						}).execute(function(response) {
 							var url = response.id;
-							$("#downloadcontainer >").replaceWith('<a id="qrlink" target="_blank" attr="" href="' + url + '" tittle="' + url + '">' + url + '</a><span>----- OR -----</span><a id="qrlink" target="_blank" attr="" href="' + url + '"><div id="qrcode"></div></a>');
+							$("#downloadcontainer >").replaceWith('<a id="qrlink" target="_blank" attr="" href="' + url + '" title="' + url + '">' + url.replace("http://", "") + '</a><span>----- OR -----</span><a id="qrlink" target="_blank" attr="" href="' + url + '"><div id="qrcode"></div></a>');
 							var qrcode = new QRCode("qrcode");
 							qrcode.makeCode(url);
 						});
