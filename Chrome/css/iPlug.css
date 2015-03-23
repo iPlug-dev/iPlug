@@ -525,6 +525,7 @@
     width: 160px;
     margin-left: 5px;
     border-radius: 5px;
+    background: url(chrome-extension://__MSG_@@extension_id__/images/fullscreenplayer.png);
 }
 .backgroundtitle {
     margin-left: 10px !important;
@@ -583,9 +584,6 @@
     margin-top: 6px;
     cursor: pointer;
 }
-#backgroundcardselected img {
-    background: url(chrome-extension://__MSG_@@extension_id__/images/fullscreenplayer.png);
-}
 .largevideo {
     width: auto !important;
     height: auto !important;
@@ -602,7 +600,8 @@
 }
 .largevideo > #playback-controls {
     width: auto !important;
-    right: 172.5px !important;
+	left: 0px !important;
+	right: 0px !important;
 }
 #iconscontainer {
     width: auto;
@@ -826,4 +825,14 @@ body.topvotebar .pop-menu.grab {
     left: 0;
     top: 0;
     background-color: rgba(10, 10, 10, 0.75);
+}
+.room-background {
+	background-position: center center !important;
+	background-size: cover !important;
+	left: 0px !important;
+	top: 54px !important;
+	bottom: 54px;
+	right: 345px;
+	width: initial !important;
+	height: initial !important;
 }

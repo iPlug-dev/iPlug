@@ -639,7 +639,11 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
             e ? (f.settings.hdVideo = !0, t && t.get("format") === 1 && this.tx("setPlaybackQuality=hd720"), f.save(), this.$hdLabel.text("ON")) : (f.settings.hdVideo = !1, t && t.get("format") === 1 && this.tx("setPlaybackQuality=medium"), f.save(), this.$hdLabel.text("OFF"));
         }
     });
-    $("#playback").remove();
+	var img = $("#playback .background img").clone();
+    $("#playback").remove(); //THIS NEEDS A BETTER SOLUTION
+	setTimeout(function() {
+		img.prependTo("#playback .background");
+	}, 0);
     var z = new player();
     z.$el.appendTo("#room");
     z.render();
@@ -2181,9 +2185,9 @@ updateColor();
 
 
 
-    $("#playback-container").addClass("custom1");
+    //$("#playback-container").addClass("custom1");
     
-    $("#iplug-playback").addClass("custom1");
+    //$("#iplug-playback").addClass("custom1");
 
 
 
