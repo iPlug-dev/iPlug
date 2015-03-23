@@ -2720,6 +2720,23 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
 			genqr(id);
 		});
 	});
+	
+	$("#footer-user .settings").click().bind("click", function() {
+		$(".application .s-vo").replaceWith('<div class="item iplugremoved"><span>Use the iPlug settings instead :)</span></div>')
+	});
+	function backsettings() {
+		console.log("hi");
+		if ($("#user-settings").offset().left !== 220) {
+			setTimeout(backsettings, 50);
+		} else $("#footer-user .back").click();
+	}
+	setTimeout(function() {
+		if ($(".application .s-vo.selected").click().length) {
+			alert("Detected and disabled hacky plug settings, disabling them because plug sucks. Refreshing..");
+			location.reload();
+		}
+		backsettings();
+	}, 0);
 
     bindGradientCircleEvents($(".iplug-container .gradientpicker > .slider .barcontainer.gradient > .circle"));
 	

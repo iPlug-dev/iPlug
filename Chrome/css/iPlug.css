@@ -716,6 +716,10 @@ body.topvotebar .pop-menu.grab {
 .largevideo > #no-dj .message {
     top: 55% !important;
 }
+.iplugremoved span {
+	color: #f00 !important;
+	cursor: default !important;
+}
 #download {
     height: 55px;
     width: 55px;
