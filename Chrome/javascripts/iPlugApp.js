@@ -639,6 +639,7 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
             e ? (f.settings.hdVideo = !0, t && t.get("format") === 1 && this.tx("setPlaybackQuality=hd720"), f.save(), this.$hdLabel.text("ON")) : (f.settings.hdVideo = !1, t && t.get("format") === 1 && this.tx("setPlaybackQuality=medium"), f.save(), this.$hdLabel.text("OFF"));
         }
     });
+	/*
 	var img = $("#playback .background img").clone();
     $("#playback").remove(); //THIS NEEDS A BETTER SOLUTION
 	setTimeout(function() {
@@ -648,6 +649,7 @@ define("modifications/playback", ["jquery", "underscore", requireIDs.s, requireI
     z.$el.appendTo("#room");
     z.render();
     t.bind(z.onMediaChange,z)();
+	*/
 });
 
 define("processor", ["class"], function (Class) {
@@ -985,7 +987,7 @@ define("backgrounds", {
     oldred: {
         text: "Old Red Default",
         url: "https://i.imgur.com/PccKe3J.jpg",
-        description: "CookieMichal figured the old background was too boring, so he painted it red." // I hax'd it :P
+        description: "plug figured the old background was too boring, so he painted it red." // I hax'd it :P
     },
     newwinter: {
         text: "New Winter Theme",
