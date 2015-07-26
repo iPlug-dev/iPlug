@@ -1,3 +1,4 @@
+set /p msg="Enter message: "
 git add .
-git commit -am "(lazy) quick push"
+git commit -am "%msg%"
 git push
