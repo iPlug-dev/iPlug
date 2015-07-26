@@ -2765,7 +2765,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
 						qrcode.makeCode(url);
 					});*/
 					$.ajax({
-						url: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyCmqEcQFgJ2RN_k_fjUCdP5m9aaitvUwvs",
+						url: "https://www.googleapis.com/urlshortener/v1/url?key=" + gkey,
 						contentType: "application/json",
 						method: "POST",
 						data: '{"longUrl":"' +  + '"}'
