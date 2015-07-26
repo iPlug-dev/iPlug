@@ -48,13 +48,7 @@ for (var i in requireIDs) {
     if (!requireIDs[i]) console.warn("NULL", i, requireIDs[i]);
 }
 
-var gapiloaded = false;
-$("head").append('<script src="https://apis.google.com/js/client.js?onload=initiate"></script>');
-function initiate() {
-	gapi.client.setApiKey('AIzaSyCmqEcQFgJ2RN_k_fjUCdP5m9aaitvUwvs');
-	gapi.client.load('urlshortener', 'v1');
-	gapiloaded = true;
-}
+gkey = 'AIzaSyCmqEcQFgJ2RN_k_fjUCdP5m9aaitvUwvs';
 
 /** 
    Copyright (C) 2013 Justin Windle, http://soulwire.co.uk 
@@ -1398,7 +1392,7 @@ require(["jquery","underscore","autowoot", "version", "sketch", "utils/tooltip",
         return Sheet;
     }();
 
-
+	/*
     window.CustomStyles = new Sheet("iplug-custom-styles");
     CustomStyles.changeBackground = function (URL) {
         this.replaceRule("#room > i.room-background", "background: url(" + URL + ") !important");
@@ -1416,7 +1410,7 @@ require(["jquery","underscore","autowoot", "version", "sketch", "utils/tooltip",
     CustomStyles.normalPlayback = function () {
         this.removeRulesBySelector(".custom1");
     };
-
+	*/
 
 
 
@@ -2618,6 +2612,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                     cursor: "pointer"
                 }).bind("click", function () {
                     var newcard = $(this);
+					if (newcard.attr("card") === "youtube") $("#youtubevideodisabled i[style='display: block'], #playbackborder i[style='display: none']").click();
                     var m = cards.index(newcard);
                     cards.css({
                         cursor: ""
@@ -2727,7 +2722,6 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
 		$(".application .s-vo").replaceWith('<div class="item iplugremoved"><span>Use the iPlug settings instead :)</span></div>')
 	});
 	function backsettings() {
-		console.log("hi");
 		if ($("#user-settings").offset().left !== 220) {
 			setTimeout(backsettings, 50);
 		} else $("#footer-user .back").click();
@@ -2754,29 +2748,40 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
 	function genqr(id) {
 		$("#downloadbox").animate({width: "307px", left: "-307px", height: "375px"}, {duration: 250, queue: false});
 		$("#download").css({cursor: "default"});
-		if (gapiloaded) {
-			$.ajax({
-				url: "https://mp3-l0laapk3.rhcloud.com/init.php?id=" + id,
-				success: function(a) {
-					if (JSON.parse(a)) {
-						var meta = $(".playlist-media-item.selected .meta, .playlist-media-first-item.selected .meta");
-						gapi.client.urlshortener.url.insert({
-							resource: {
-								"longUrl": "https://mp3-l0laapk3.rhcloud.com/download.php?id=" + id + "&name=" + encodeURIComponent($("#dialog-preview > .dialog-body > .message").html().replace(/&amp;/, "&")) + "&title=" + encodeURIComponent(meta.children(".title").html().replace(/&amp;/, "&")) + "&artist=" + encodeURIComponent(meta.children(".author").html().replace(/&amp;/, "&"))
-							}
-						}).execute(function(response) {
-							var url = response.id;
-							$("#downloadcontainer >").replaceWith('<a id="qrlink" target="_blank" attr="" href="' + url + '" title="' + url + '">' + url.replace("http://", "") + '</a><span>----- OR -----</span><a id="qrlink" target="_blank" attr="" href="' + url + '"><div id="qrcode"></div></a>');
-							var qrcode = new QRCode("qrcode");
-							qrcode.makeCode(url);
-						});
-					} else fail(id, 3);
-				},
-				error: function() {
-					fail(id, 2);
-				}
-			});
-		} else fail(id, 1);
+		$.ajax({
+			url: "https://mp3-l0laapk3.rhcloud.com/init.php?id=" + id,
+			success: function(a) {
+				if (JSON.parse(a)) {
+					var meta = $(".playlist-media-item.selected .meta, .playlist-media-first-item.selected .meta");
+					/*
+					gapi.client.urlshortener.url.insert({
+						resource: {
+							"longUrl": "https://mp3-l0laapk3.rhcloud.com/download.php?id=" + id + "&name=" + encodeURIComponent($("#dialog-preview > .dialog-body > .message").html().replace(/&amp;/, "&")) + "&title=" + encodeURIComponent(meta.children(".title").html().replace(/&amp;/, "&")) + "&artist=" + encodeURIComponent(meta.children(".author").html().replace(/&amp;/, "&"))
+						}
+					}).execute(function(response) {
+						var url = response.id;
+						$("#downloadcontainer >").replaceWith('<a id="qrlink" target="_blank" attr="" href="' + url + '" title="' + url + '">' + url.replace("http://", "") + '</a><span>----- OR -----</span><a id="qrlink" target="_blank" attr="" href="' + url + '"><div id="qrcode"></div></a>');
+						var qrcode = new QRCode("qrcode");
+						qrcode.makeCode(url);
+					});*/
+					$.ajax({
+						url: "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyCmqEcQFgJ2RN_k_fjUCdP5m9aaitvUwvs",
+						contentType: "application/json",
+						method: "POST",
+						data: '{"longUrl":"' +  + '"}'
+						success: function(a) {
+							console.log(a);
+						},
+						error: function(a) {
+							fail(id, 1);
+						}
+					});
+				} else fail(id, 3);
+			},
+			error: function() {
+				fail(id, 2);
+			}
+		});
 	}
 
     function bindnode() {
@@ -2907,9 +2912,13 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
             case "youtubevideodisabled":
                 return function () {
                     if (enabled) {
-                        $("#playback").css({
-                            display: "none"
-                        });
+						if ($("#backgroundcardselected .backgroundcard[card='youtube']").length) {
+							$("#youtubevideodisabled").click();
+						} else {
+							$("#playback").css({
+								display: "none"
+							});
+						}
                     } else {
                         $("#playback").css({
                             display: "block"
@@ -2918,9 +2927,19 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                 };
             case "playbackborder":
                 return function () {
-                    $("#playback > .background").css({
-                        display: (enabled) ? "none" : "block"
-                    });
+                    if (enabled) {
+						$("#playback > .background").css({
+							display: "none"
+						});
+					} else {
+						if ($("#backgroundcardselected .backgroundcard[card='youtube']").length) {
+							$("#playbackborder").click();
+						} else {
+							$("#playback > .background").css({
+								display: "block"
+							});
+						}
+					}
                 };
             case "curateenabled":
                 return function () {
