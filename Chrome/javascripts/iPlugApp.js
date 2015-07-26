@@ -2768,7 +2768,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
 						url: "https://www.googleapis.com/urlshortener/v1/url?key=" + gkey,
 						contentType: "application/json",
 						method: "POST",
-						data: '{"longUrl":"' +  + '"}'
+						data: '{"longUrl":"' +  + '"}',
 						success: function(a) {
 							console.log(a);
 						},
