@@ -609,6 +609,7 @@
     right: 0px;
     position: relative;
     float: right;
+	z-index: -2;
 }
 #iconscontainer > div {
     position: relative;
@@ -627,6 +628,7 @@
     height: 54px;
     width: auto;
     right: 0;
+	z-index: -2;
 }
 #nowplayingbarcontainer {
     height: 54px;
@@ -640,6 +642,7 @@
     top: initial !important;
     width: auto !important;
     height: 54px !important;
+	z-index: -2 !important;
 }
 #topbarcontainer #vote > div {
     border-radius: 0 !important;
@@ -720,10 +723,21 @@ body.topvotebar .pop-menu.grab {
 	color: #f00 !important;
 	cursor: default !important;
 }
+.app-header {
+	overflow: visible !important;
+}
 #download {
     height: 55px;
     width: 55px;
 	cursor: pointer;
+}
+#downloadbutton {
+    width: 54px;
+    height: 54px;
+    background: rgb(40, 44, 53);
+    box-shadow: rgb(10, 10, 10) 0px -2px 0px -1px inset;
+    cursor: pointer;
+    margin-right: 1px;
 }
 #download > i {
 	position: absolute;
@@ -731,48 +745,80 @@ body.topvotebar .pop-menu.grab {
 	top: 15px;
 	width: 25px;
 	height: 25px;
-	background: url(chrome-extension://__MSG_@@extension_id__/images/download.png);
+	background: url(chrome-extension://__MSG_@@extension_id__/images/downloadgrey.png);
 }
-#downloadbox {
+#downloadbutton > i {
+    position: absolute;
+    left: 15px;
+    top: 13px;
+    width: 25px;
+    height: 25px;
+    background: url(chrome-extension://__MSG_@@extension_id__/images/downloadwhite.png);
+}
+.downloadbox {
+    position: absolute;
+    overflow: hidden;
+}
+#download .downloadbox {
+    height: 60px;
     width: 5px;
     left: -5px;
     top: -5px;
-    position: absolute;
-    overflow: hidden;
-    height: 60px;
 }
-#downloadcontainer {
+#downloadbutton .downloadbox {
+    width: 54px;
+    right: 0px;
+	height: 0px;
+	z-index: -3;
+}
+.downloadcontainer {
     background-color: #282c35;
     position: absolute;
     -webkit-box-shadow: 0 0 5px #000;
     -moz-box-shadow: 0 0 5px #000;
     width: 304px;
+	overflow: hidden;
+    text-align: center;
+    white-space: nowrap;
+}
+#download .downloadcontainer {
     margin-top: 5px;
     margin-left: 5px;
-	overflow: hidden;
 	padding-top: 8px;
 }
-#downloadcontainer span {
+#downloadbutton .downloadcontainer {
+	right: 0px;
+	top: 53px;
+}
+#downloadbutton .downloadcontainer > * {
+    z-index: 6;
+}
+.downloadcontainer span {
     display: block;
     font-size: 16px;
 	margin-top: 4px;
 	margin-bottom: 0px;
 }
-#downloadcontainer a {
+.downloadcontainer a {
     margin-top: 15px;
     font-size: 28px !important;
     margin-bottom: 4px;
     text-decoration: underline;
     color: #009cdd;
 }
-#downloadcontainer .spinner {
+.downloadcontainer .spinner {
 	height: 256px;
 	width: 256px;
 	position: relative; 
+}
+#download .downloadcontainer .spinner {
 	margin: 22px;
 	margin-top: 14px;
 }
-#downloadcontainer .spinner i {
+#downloadbutton .downloadcontainer .spinner {
+	margin: 23px;
+}
+.downloadcontainer .spinner i {
 	left: 0px;
 	height: 256px;
 	width: 256px;
@@ -795,18 +841,26 @@ body.topvotebar .pop-menu.grab {
     from {-webkit-transform: rotate(0deg);}
     to {-webkit-transform: rotate(360deg);}
 }
-#qrcode {
+#downloadqrcode, #downloadbuttonqrcode {
     margin: 15px;
+	margin-top: 11px;
 	background-color: #FFF;
     -webkit-box-shadow: 0 0 5px #000;
     -moz-box-shadow: 0 0 5px #000;
     box-shadow: 0 0 5px #000;
 }
-#qrcode img {
+.percentage {
+    margin-top: 50% !important;
+    position: absolute;
+    width: 256px;
+    top: -19px;
+	font-size: 28px !important;
+}
+#downloadqrcode img, #downloadbuttonqrcode img {
 	padding: 9px;
 }
 .failed {
-    height: 198px;
+    height: 196px;
     padding-top: 96px;
 }
 .failed > span {
@@ -814,7 +868,7 @@ body.topvotebar .pop-menu.grab {
     display: inline !important;
     font-size: 28px !important;
 }
-#retry {
+.retry {
     text-decoration: underline;
     color: #009cdd;
 	cursor: pointer;

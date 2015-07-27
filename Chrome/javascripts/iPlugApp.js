@@ -1243,8 +1243,14 @@ require(["jquery","underscore","autowoot", "version", "sketch", "utils/tooltip",
     if (undefined === localStorage["iplug|topskipenabled"]) {
         localStorage["iplug|topskipenabled"] = "none";
     }
+    if (undefined === localStorage["iplug|topdlenabled"]) {
+        localStorage["iplug|topdlenabled"] = "none";
+    }
     if (undefined === localStorage["iplug|waitlistdisabled"]) {
         localStorage["iplug|waitlistdisabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|roomnamedisabled"]) {
+        localStorage["iplug|roomnamedisabled"] = "none";
     }
     if (undefined === localStorage["iplug|audiencedisabled"]) {
         localStorage["iplug|audiencedisabled"] = "none";
@@ -1280,6 +1286,9 @@ require(["jquery","underscore","autowoot", "version", "sketch", "utils/tooltip",
     $("#dj-button").css({
         display: (localStorage["iplug|waitlistdisabled"] === "none") ? "block" : "none"
     });
+	$("#room-bar").css({
+		visibility: (localStorage["iplug|roomnamedisabled"] === "none") ? "visible" : "hidden"
+	})
     $("#audience").css({
         display: (localStorage["iplug|audiencedisabled"] === "none") ? "block" : "none"
     });
@@ -2274,7 +2283,7 @@ updateColor();
         });
     });
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
-    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div class="iplug-menu-autowoot iplug-container"> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="playbackborder" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playbackborder'] + '"></i><span>Hide Playback Border</span> </div> <div id="curateenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curateenabled'] + '"></i><span>Show Vote Buttons On Default Position</span> </div> <div id="topwootenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topwootenabled'] + '"></i><span>Show Woot Button In Top Bar</span> </div> <div id="topgrabenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topgrabenabled'] + '"></i><span>Show Grab Button In Top Bar</span> </div> <div id="topmehenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topmehenabled'] + '"></i><span>Show Meh Button In Top Bar</span> </div> <div id="topskipenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topskipenabled'] + '"></i><span>Show Current Dj Button In Top Bar (to skip)</span> </div> <div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> <div id="backgroundcardselected" style="cursor: pointer;">' + cardBuilder(localStorage['iplug|currentBackground']) + '</div> </div> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + { block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>' }[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="visualsstyle" class="noitem centerall" style="width: 300px;"><span style="font-weight: normal; color: #fff">Style ' + (parseInt(localStorage['iplug|scvisualsstyle']) + 1) + '</span><span> - change Style</span> </div> <div id="visuals1" style="' + ((localStorage['iplug|scvisualsstyle'] === '1') ? '' : 'height: 0px; opacity: 0') + '"> <div class="settings"> <div class="noitem delete" style="display: none"><span style="display: ' + ((COLORS.length > 1) ? " block; cursor: pointer " : "none; cursor: default ") + '">Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="decolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="decolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="decolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="decolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div class="nodecontainer" style="height: ' + (-19 * Math.floor(-COLORS.length / 16)) + 'px"> <div class="node cross"> <div class="horizontal"></div> <div class="vertical"></div> </div> <div class="node" style="background-color: ' + COLORS.join('"></div> <div class="node" style="background-color: ') + '"></div> </div> </div> <div id="visuals0" style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '"> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Fast</span> <span class="count">Fancy</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Recenter all markers</span> </div> </div> </div><div class="unavailable"></div></div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div> </div> </div> <div id="backgroundcarddeckcontainer" style="display: none;"> <div id="backgroundcarddeck">' + backgroundcarddeck + '</div> </div></div>');
+    $(".app-right").append('<div id="iplug-menu" style="display: none"> <div class="header"><span class="title">iPlug Menu</span> <div class="divider"></div> </div> <div class="iplug-menu-autowoot iplug-container"> <div id="visuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Visual Options</span> </div> <div id="youtubevideodisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i><span>Hide Youtube Video</span> </div> <div id="playbackborder" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playbackborder'] + '"></i><span>Hide Playback Border</span> </div> <div id="curateenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|curateenabled'] + '"></i><span>Show Vote Buttons On Default Position</span> </div> <div id="roomnamedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|roomnamedisabled'] + '"></i><span>Hide room name & info</span> </div><div id="topwootenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topwootenabled'] + '"></i><span>Show Woot Button In Top Bar</span> </div> <div id="topgrabenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topgrabenabled'] + '"></i><span>Show Grab Button In Top Bar</span> </div> <div id="topmehenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topmehenabled'] + '"></i><span>Show Meh Button In Top Bar</span> </div><div id="topdlenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topdlenabled'] + '"></i><span>Show download to mp3 button in top bar</span> </div><div id="topskipenabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topskipenabled'] + '"></i><span>Show Current Dj Button In Top Bar (to skip)</span> </div><div id="waitlistdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|waitlistdisabled'] + '"></i><span>Hide Waitlist Join Button</span> </div> <div id="audiencedisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|audiencedisabled'] + '"></i><span>Hide Audience</span> </div> <div id="djdisabled" class="item item-iplug"><i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djdisabled'] + '"></i><span>Hide DJ</span> </div> <div id="backgroundcardselected" style="cursor: pointer;">' + cardBuilder(localStorage['iplug|currentBackground']) + '</div> </div> <div id="autowoot" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="autowootenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i> <span class="subtitle">Autowoot</span> </div> <div id="autowootdelay" class="slider">' + { block: ' <div class="titlecontainer min"><span class="title">Autowoot Minimum Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: inline">Autowoot Maximum Delay (Seconds)</span><span class="value" style="display: inline">' + ((localStorage["iplug|autowootdelaymax"] / 10).toFixed(1)) + 's</span> </div>', none: ' <div class="titlecontainer min"><span class="title">Autowoot Delay (Seconds)</span><span class="value">' + ((localStorage['iplug|autowootdelaymin'] / 10).toFixed(1)) + 's</span> </div> <div class="titlecontainer max"><span class="title" style="display: none"></span><span class="value" style="display: none">' + ((localStorage['iplug|autowootdelaymax'] / 10).toFixed(1)) + 's</span> </div>' }[localStorage['iplug|autowootdelayrandom']] + ' <div class="counts"> <span class="count">0s</span> <span class="count">10s</span> <span class="count">20s</span> <span class="count">30s</span><span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="bar selected" style="left: ' + (7 + parseInt(localStorage['iplug|autowootdelaymin'])) + 'px; width: ' + (parseInt(localStorage['iplug|autowootdelaymax']) - parseInt(localStorage['iplug|autowootdelaymin'])) + 'px"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymin'] + 'px;"></div> <div class="circle" style="left: ' + localStorage['iplug|autowootdelaymax'] + 'px;"></div> </div> </div> <div id="autowootdelayrandom" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootdelayrandom'] + '"></i> <span>Advanced Autowoot Timing</span> </div> </div> <div id="scvisuals" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div id="scvisualsenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i> <span class="subtitle">Alternative Soundcloud Visuals</span> </div> <div id="visualsstyle" class="noitem centerall" style="width: 300px;"><span style="font-weight: normal; color: #fff">Style ' + (parseInt(localStorage['iplug|scvisualsstyle']) + 1) + '</span><span> - change Style</span> </div> <div id="visuals1" style="' + ((localStorage['iplug|scvisualsstyle'] === '1') ? '' : 'height: 0px; opacity: 0') + '"> <div class="settings"> <div class="noitem delete" style="display: none"><span style="display: ' + ((COLORS.length > 1) ? " block; cursor: pointer " : "none; cursor: default ") + '">Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="decolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="decolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="decolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="decolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div class="nodecontainer" style="height: ' + (-19 * Math.floor(-COLORS.length / 16)) + 'px"> <div class="node cross"> <div class="horizontal"></div> <div class="vertical"></div> </div> <div class="node" style="background-color: ' + COLORS.join('"></div> <div class="node" style="background-color: ') + '"></div> </div> </div> <div id="visuals0" style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '"> <div id="scvisualsbars" class="slider"> <div class="counts"> <span class="count">Fast</span> <span class="count">Fancy</span> <span class="stretch"></span> </div> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: ' + localStorage['iplug|scvisualsbarsmin'] + 'px;"></div> </div> </div> <div id="sccolorstring" class="gradientpicker"> <div class="settings"> <div class="noitem delete"><span>Delete</span> </div> <div class="colorpicker" style="display: none"> <div id="sccolorred" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #f00"></div> </div> </div> <div id="sccolorgreen" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #0f0"></div> </div> </div> <div id="sccolorblue" class="slider"> <div class="barcontainer"> <div class="bar background"></div> <div class="hit"></div> <div class="circle" style="left: 0px; background-color: #00f"></div> </div> </div> <div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div> </div> </div> <div id="scgradientslider" class="slider"> <div class="barcontainer gradient"> <div class="bar background" style="' + setGradient(colorscheme) + '"></div> <div class="hit"></div>' + colorDom(colorscheme) + '</div> </div> <div class="noitem centerall"><span>Recenter all markers</span> </div> </div> </div><div class="unavailable"></div></div> <div id="misc" class="subcontainer"><i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i> <div class="noitem"><span class="subtitle">Misc Options</span> </div> <div id="autojoinenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autojoinenabled'] + '"></i> <span>Autojoin</span> </div> <div id="listgrabmehenabled" class="item item-iplug"> <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|listgrabmehenabledenabled'] + '"></i> <span>List grabs & mehs</span> </div> </div> </div> <div id="backgroundcarddeckcontainer" style="display: none;"> <div id="backgroundcarddeck">' + backgroundcarddeck + '</div> </div></div>');
     $("#chat-button, #users-button, #waitlist-button, #friends-button").bind("click", function () {
         $("#iplug-button").attr("class", "header-panel-button");
         $("#iplug-menu").attr("style", "display: none");
@@ -2311,7 +2320,7 @@ updateColor();
             top: 5 + 19 * Math.floor(i / 16) + "px"
         });
     }).not(".cross").bind("click", bindnode);
-$("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#history-button").prependTo("#topbarcontainer").wrap('<div id="iconscontainer"></div>').before('<div id="topdjbutton" style="display: ' + ((localStorage["iplug|topskipenabled"] === "none") ? "none !important" : "inline-block !important") + ';"><i class="icon icon-current-dj-white"></i></div>');
+	$("#now-playing-bar").wrap('<div id="topbarcontainer" style="left: ' + ((localStorage["iplug|roomnamedisabled"] === "none") ? "446" : "53") + 'px"></div>').children("#history-button").prependTo("#topbarcontainer").wrap('<div id="iconscontainer"></div>').before('<div id="downloadbutton" style="display: ' + ((localStorage["iplug|topdlenabled"] === "none") ? "none !important" : "inline-block !important") + ';"><i></i><div class="downloadbox"><div class="downloadcontainer"><div class="spinner"><i></i><span class="percentage"></span></div></div></div></div><div id="topdjbutton" style="display: ' + ((localStorage["iplug|topskipenabled"] === "none") ? "none !important" : "inline-block !important") + ';"><i class="icon icon-current-dj-white"></i></div>');
     if (localStorage["iplug|topwootenabled"] === "block" || localStorage["iplug|topgrabenabled"] === "block" || localStorage["iplug|topmehenabled"] === "block") {
         $("#vote").prependTo("#iconscontainer");
         $("body").addClass("topvotebar");
@@ -2557,7 +2566,12 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
         localStorage["iplug|decolorstring"] = COLORS.join("|");
     });
 
-    $("#backgroundcardselected").bind("click", function () {
+    $("#backgroundcardselected").one("click", function() {
+		$("#backgroundcarddeck").css({
+			marginTop: $("#backgroundcardselected").offset().top - 85 + "px",
+			marginBottom: 816 - $("#backgroundcardselected").offset().top + "px"
+		});		
+	}).bind("click", function () {
         var deck = $("#backgroundcarddeckcontainer");
         var selected = $("#backgroundcardselected");
         var cards = deck.children().children();
@@ -2572,7 +2586,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
             marginLeft: "345px"
         });
         deck.children().css({
-            marginTop: 378 + parseInt(deck.css("height")) + "px"
+            marginTop: $("#backgroundcardselected").offset().top - 85 + parseInt(deck.css("height")) + "px"
         });
         deck.scrollTop(0).css({
             overflowY: "hidden",
@@ -2584,7 +2598,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
             queue: false,
             complete: function () {
                 deck.scrollTop(149 * n).children().css({
-                    marginTop: "378px"
+                    marginTop: $("#backgroundcardselected").offset().top - 85 + "px"
                 });
             }
         });
@@ -2641,7 +2655,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                         });
                         setTimeout(function () {
                             deck.children().css({
-                                marginTop: 378 + parseInt(deck.css("height")) + "px"
+                                marginTop: $("#backgroundcardselected").offset().top - 85 + parseInt(deck.css("height")) + "px"
                             });
                             deck.scrollTop(deck.scrollTop() + parseInt(deck.css("height"))).animate({
                                 scrollTop: 0
@@ -2651,7 +2665,7 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                                     deck.scrollTop(0).css({
                                         display: "none"
                                     }).children().css({
-                                        marginTop: "378px"
+                                        marginTop: $("#backgroundcardselected").offset().top - 85 + "px"
                                     });
                                     newcard.css({
                                         marginLeft: "0px"
@@ -2690,33 +2704,6 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
             }, 500);
         }, 250 * Math.pow(n + 2, .5) - 250);
     });
-
-    $("body").bind("click", function () {
-        var deck = $("#backgroundcarddeckcontainer");
-        if (deck.attr("opened") !== "true" || deck.is(":hover")) return;
-        deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
-	});
-	
-	$("#dialog-container").bind("DOMNodeInserted", function(e) {
-        var target = $(e.target);
-        if (target.attr("class") !== "dialog-frame" || target.parent().attr("id") !== "dialog-preview" || target.parent().children(".dialog-frame:first")[0] !== target[0]) return;
-        console.log(target);
-        var id = $(".playlist-media-item.selected img, .playlist-media-first-item.selected img").attr("src").match(/[^,\/]+(?=\/default\.jpg)/)[0];
-         
-        target.prepend('<div id="download"><i></i><div id="downloadbox"><div id="downloadcontainer"><div class="spinner"><i></i></div></div></div></div>');
-		
-		$("#download").bind("mouseenter", function() {
-			if ($("#downloadbox").css("cursor") === "default") {
-				$("#downloadbox").animate({width: "307px", left: "-307px", height: "375px"}, {duration: 250, queue: false});
-			} else {
-				$("#downloadbox").animate({width: "35px", left: "-35px"}, {duration: 250, queue: false});
-			}
-		}).bind("mouseleave", function() {
-			$("#downloadbox").animate({width: "5px", left: "-5px", height: "60px"}, {duration: 250, queue: false});
-		}).one("click", function() {
-			genqr(id);
-		});
-	});
 	
 	$("#footer-user .settings").click().bind("click", function() {
 		$(".application .s-vo").replaceWith('<div class="item iplugremoved"><span>Use the iPlug settings instead :)</span></div>')
@@ -2735,53 +2722,140 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
 	}, 0);
 
     bindGradientCircleEvents($(".iplug-container .gradientpicker > .slider .barcontainer.gradient > .circle"));
+
+    $("body").bind("click", function () {
+        var deck = $("#backgroundcarddeckcontainer");
+        if (deck.attr("opened") !== "true" || deck.is(":hover")) return;
+        deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
+	});
 	
-	function fail(id, hi) {
+	$("#dialog-container").bind("DOMNodeInserted", function(e) {
+        var target = $(e.target);
+        if (target.attr("class") !== "dialog-frame" || target.parent().attr("id") !== "dialog-preview" || target.parent().children(".dialog-frame:first")[0] !== target[0]) return;
+		initdownloadbutton(target)
+	});
+	
+	function initdownloadbutton(target) {
+		var id = ($("#dialog-preview").hasClass("soundcloud")) ? $("#dialog-preview > div.dialog-body > div > iframe").attr("src") : ("https://youtu.be/" + $(".playlist-media-item.selected img, .playlist-media-first-item.selected img").attr("src").match(/[^,\/]+(?=\/default\.jpg)/)[0]);
+		if (id === undefined) return setTimeout(initdownloadbutton, 50, target);
+		var m = $(".playlist-media-item.selected .meta, .playlist-media-first-item.selected .meta");
+		var meta = {
+			name: encodeURIComponent($("#dialog-preview > .dialog-body > .message").text()),
+			title: encodeURIComponent(m.children(".title").text()),
+			artist: encodeURIComponent(m.children(".author").text())
+		};
+        target.prepend('<div id="download"><i></i><div class="downloadbox"><div class="downloadcontainer"><div class="spinner"><i></i><span class="percentage"></span></div></div></div></div>');
+		$("#download").bind("mouseenter", function() {
+			if ($("#download > .downloadbox").css("cursor") === "default") {
+				$("#download > .downloadbox").animate({width: "307px", left: "-307px", height: "375px"}, {duration: 250, queue: false});
+			} else {
+				$("#download > .downloadbox").animate({width: "35px", left: "-35px"}, {duration: 250, queue: false});
+			}
+		}).bind("mouseleave", function() {
+			$("#download > .downloadbox").animate({width: "5px", left: "-5px", height: "60px"}, {duration: 250, queue: false});
+		}).one("click", function() {
+			$("#download > .downloadbox").animate({width: "307px", left: "-307px", height: "375px"}, {duration: 250, queue: false});
+			$("#download").css({cursor: "default"});
+			genqr(id, meta, $("#download"));
+		});
+	}
+	
+	var lastclose = 0;
+	$("#downloadbutton").bind("mouseenter", function() {
+		lastclose = 0;
+		if ($("#downloadbutton").css({boxShadow: "rgb(10, 10, 10) 0px -2px 0px -2px inset"}).css("cursor") === "pointer") $("#downloadbutton .downloadbox").animate({height: "69px", left: "0px", width: "54px"}, {duration: 250, queue: false});
+		else $("#downloadbutton .downloadbox").animate({width: "307px", left: "-253px", height: "429px"}, {duration: 250, queue: false});
+	}).bind("mouseleave", function() {
+		var nowclose = new Date().getTime();
+		lastclose = nowclose;
+		$("#downloadbutton .downloadbox").animate({height: "54px", left: "0px", width: "54px"}, {duration: 250, queue: false, complete: function() {
+			if (lastclose == nowclose) $("#downloadbutton").css({boxShadow: "rgb(10, 10, 10) 0px -2px 0px -1px inset"});
+		}});
+	}).on("click", function() {
+		if ($("#downloadbutton").css("cursor") === "default") return;
+		$("#downloadbutton").css({cursor: "default"});
+		$("#downloadbutton > .downloadbox").animate({width: "307px", left: "-253px", height: "429px"}, {duration: 250, queue: false});
+		var media = API.getMedia();
+		var id = (media.format === 1) ? ("https://youtu.be/" + media.cid) : ("https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F" + media.cid);
+		var meta = {
+			name: media.author + " - " + media.title,
+			title: media.title,
+			artist: media.author
+		};
+		genqr(id, meta, $("#downloadbutton"));
+	});
+	
+	lastreset = 0;
+	API.on(API.ADVANCE, function() {
+		if ($("#downloadbox").css("height") === "54px") return downloadbuttonreset(lastreset = new Date().getTime());
+		$("#downloadbutton").one("mouseleave", function() {
+			downloadbuttonreset(lastreset = new Date().getTime());
+		});
+	});
+	
+	function downloadbuttonreset(thisreset) {
+		if (thisreset !== lastreset) return;
+		lastreset = 0;
+		$("#downloadbutton").css({cursor: "pointer"});
+		$("#downloadbutton .downloadcontainer >").remove();
+		$("#downloadbutton .downloadcontainer").append('<div class="spinner"><i></i><span class="percentage"></span></div>');
+	}
+	
+	function fail(id, hi, meta, dl) {
 		console.log("fetching link for qr code failed: (" + hi + ") for video " + id);
-		$("#downloadcontainer >").replaceWith('<div class="failed"><span>failed :(</span><br/><span>(</span><span id="retry">retry?</span><span>)</span></div>');
-		$("#retry").bind("click", function() {
-			$("#downloadcontainer >").replaceWith('<div class="spinner"><i></i></div>');
-			genqr(id);
+		dl.find(".downloadcontainer >").remove();
+		dl.find(".downloadcontainer").append('<div class="failed"><span>failed :(</span><br/><span>(</span><span class="retry">retry?</span><span>)</span></div>');
+		console.log(dl.find(".retry"));
+		dl.find(".retry").bind("click", function() {
+			dl.find(".downloadcontainer >").remove();
+			dl.find(".downloadcontainer").append('<div class="spinner"><i></i><span class="percentage"></span></div>');
+			genqr(id, meta, dl);
 		})
 	}
 	
-	function genqr(id) {
-		$("#downloadbox").animate({width: "307px", left: "-307px", height: "375px"}, {duration: 250, queue: false});
-		$("#download").css({cursor: "default"});
+	function genqr(id, meta, dl) {
 		$.ajax({
-			url: "https://mp3-l0laapk3.rhcloud.com/init.php?id=" + id,
-			success: function(a) {
-				if (JSON.parse(a)) {
-					var meta = $(".playlist-media-item.selected .meta, .playlist-media-first-item.selected .meta");
-					/*
-					gapi.client.urlshortener.url.insert({
-						resource: {
-							"longUrl": "https://mp3-l0laapk3.rhcloud.com/download.php?id=" + id + "&name=" + encodeURIComponent($("#dialog-preview > .dialog-body > .message").html().replace(/&amp;/, "&")) + "&title=" + encodeURIComponent(meta.children(".title").html().replace(/&amp;/, "&")) + "&artist=" + encodeURIComponent(meta.children(".author").html().replace(/&amp;/, "&"))
-						}
-					}).execute(function(response) {
-						var url = response.id;
-						$("#downloadcontainer >").replaceWith('<a id="qrlink" target="_blank" attr="" href="' + url + '" title="' + url + '">' + url.replace("http://", "") + '</a><span>----- OR -----</span><a id="qrlink" target="_blank" attr="" href="' + url + '"><div id="qrcode"></div></a>');
-						var qrcode = new QRCode("qrcode");
-						qrcode.makeCode(url);
-					});*/
-					$.ajax({
-						url: "https://www.googleapis.com/urlshortener/v1/url?key=" + gkey,
-						contentType: "application/json",
-						method: "POST",
-						data: '{"longUrl":"' +  + '"}',
-						success: function(a) {
-							console.log(a);
-						},
-						error: function(a) {
-							fail(id, 1);
-						}
-					});
-				} else fail(id, 3);
+			url: "https://mp3-l0laapk3.rhcloud.com/init.php?url=" + id,
+			success: function(dlid) {
+				waitqr(id, dlid, meta, dl);
 			},
 			error: function() {
-				fail(id, 2);
+				fail(id, 1, meta, dl);
 			}
 		});
+	}
+	
+	function waitqr(id, dlid, meta, dl) {
+		$.ajax({
+			url: "https://mp3-l0laapk3.rhcloud.com/progress.php?id=" + dlid,
+			success: function(a) {
+				if (!a || (a === "false")) return fail(id, 4, meta, dl);
+				if (a.indexOf("mp3") === -1) {
+					dl.find(".percentage").html(a + "%");
+					return waitqr(id, dlid, meta, dl);
+				}
+				$.ajax({
+					url: "https://www.googleapis.com/urlshortener/v1/url?key=" + gkey,
+					contentType: "application/json",
+					method: "POST",
+					data: '{"longUrl":"https://mp3-l0laapk3.rhcloud.com/download.php?id=' + a + '&name=' + meta.name + '&title=' + meta.title + '&artist=' + meta.artist + '"}',
+					success: function(b) {
+						console.log('"' + a + '"');
+						var url = b.id;
+						dl.find(".downloadcontainer >").remove();
+						dl.find(".downloadcontainer").append('<a id="qrlink" target="_blank" attr="" href="' + url + '" title="' + url + '">' + url.replace("https://", "") + '</a><span>----- OR -----</span><a id="qrlink" target="_blank" attr="" href="' + url + '"><div id="' + dl.attr("id") + 'qrcode"></div></a>');
+						var qrcode = new QRCode(dl.attr("id") + "qrcode");
+						qrcode.makeCode(url);
+					},
+					error: function(b) {
+						fail(id, 3, meta, dl);
+					}
+				});
+			},
+			error: function(a) {
+				fail(id, 2, meta, dl);
+			}
+		})
 	}
 
     function bindnode() {
@@ -2993,10 +3067,25 @@ $("#now-playing-bar").wrap('<div id="topbarcontainer"></div>').children("#histor
                         style: "display: " + ((enabled) ? "inline-block" : "none") + " !important"
                     });
                 };
+            case "topdlenabled":
+                return function () {
+                    $("#downloadbutton").attr({
+                        style: "display: " + ((enabled) ? "inline-block" : "none") + " !important"
+                    });
+                };
             case "waitlistdisabled":
                 return function () {
                     $("#dj-button").css({
                         display: (enabled) ? "none" : "block"
+                    });
+                };
+            case "roomnamedisabled":
+                return function () {
+                    $("#room-bar").css({
+                        visibility: (enabled) ? "hidden" : "visible"
+                    });
+                    $("#topbarcontainer").css({
+                        left: (enabled) ? "53px" : "446px"
                     });
                 };
             case "audiencedisabled":
