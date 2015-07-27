@@ -2739,11 +2739,20 @@ updateColor();
 		var id = ($("#dialog-preview").hasClass("soundcloud")) ? $("#dialog-preview > div.dialog-body > div > iframe").attr("src") : ("https://youtu.be/" + $(".playlist-media-item.selected img, .playlist-media-first-item.selected img").attr("src").match(/[^,\/]+(?=\/default\.jpg)/)[0]);
 		if (id === undefined) return setTimeout(initdownloadbutton, 50, target);
 		var m = $(".playlist-media-item.selected .meta, .playlist-media-first-item.selected .meta");
+		if ($("#dialog-preview > .dialog-body > .message").text() === "") return setTimeout(initdownloadbutton, 50, target);
 		var meta = {
-			name: encodeURIComponent($("#dialog-preview > .dialog-body > .message").text()),
-			title: encodeURIComponent(m.children(".title").text()),
-			artist: encodeURIComponent(m.children(".author").text())
+			name: encodeURIComponent($("#dialog-preview > .dialog-body > .message").text())
 		};
+		if ($("#history-button.selected").length) {
+			var history = API.getHistory();
+			var index = history.map(function(a) {return a.media.author + " - " + a.media.title;}).indexOf($("#dialog-preview > .dialog-body > .message").text());
+			if (index === -1) return console.log("error!", history, history.map(function(a) {return a.media.author + " - " + a.media.title;}), $("#dialog-preview > .dialog-body > .message").text());
+			meta.title = encodeURIComponent(history[i].media.title);
+			meta.artist = encodeURIComponent(history[i].media.author);
+		} else {
+			meta.title = encodeURIComponent(m.children(".title").text());
+			meta.artist = encodeURIComponent(m.children(".author").text());
+		}
         target.prepend('<div id="download"><i></i><div class="downloadbox"><div class="downloadcontainer"><div class="spinner"><i></i><span class="percentage"></span></div></div></div></div>');
 		$("#download").bind("mouseenter", function() {
 			if ($("#download > .downloadbox").css("cursor") === "default") {
