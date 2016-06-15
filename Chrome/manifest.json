@@ -1,10 +1,10 @@
 {
         "name": "iPlug BETA",
         "short_name": "iPlug",
-        "author": "CookieMichal & L0laapk3",
-        "version": "0.2.3.1",
+        "author": "L0laapk3 (& CookieMichal)",
+        "version": "0.2.4.2",
         "manifest_version": 2,
-        "description": "A free addon for http://plug.dj/ that allows autowoot, autojoin and many other things!",
+        "description": "The most sexy plug.dj extension!",
         "icons": {
                 "256": "images/Chrome/icon256.png"
         },
@@ -31,6 +31,7 @@
 		        "images/iplug-button.png",
                 "javascripts/iPlug.js",
                 "javascripts/iPlugApp.js",
+                "javascripts/menu.js",
 				"javascripts/iPlugBG.js",
 				"javascripts/sketch.min.js",
                 "javascripts/socket.io-1.2.0.js",
@@ -47,7 +48,9 @@
                 "images/twitchlogo.png",
                 "images/downloadgrey.png",
                 "images/downloadwhite.png",
-                "images/qrspinner.png"
+                "images/spinnergrey.png",
+                "images/spinnerwhite.png",
+                "images/play.png"
         ],
         "content_scripts": [
                 {

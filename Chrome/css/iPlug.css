@@ -55,15 +55,6 @@
     /*z-index: 1000000 !important; Commented due to bug*/
     /*super serious*/
 }
-#iplug-overlay {
-    bottom: 0px;
-    left: 0px;
-    position: fixed;
-    right: 0px;
-    top: 0px;
-    z-index: 1234321;
-    /*super super mega serious ;D*/
-}
 .iplug-overlay-bg {
     background: rgb(10, 10, 10);
     bottom: 0px;
@@ -72,7 +63,7 @@
     right: 0px;
     top: 0px;
     opacity: 0.7;
-}
+}/*
 #user-lists > div.header > div.divider.right {
     width: 175px !important;
 }
@@ -83,10 +74,10 @@
     right: 0 !important;
     width: 85px !important;
     left: initial !important;
-}
+}*/
 .app-right {
 	z-index: initial !important;
-}
+}/*
 .app-right > div.friends > div.header > div.divider.left {
     width: 260px !important;
 }
@@ -94,26 +85,9 @@
     left: initial !important;
     right: 0px !important;
     width: 45px !important;
-}
-#chat-button {
-    left: 0 !important;
-    width: 80px !important;
-}
-#users-button {
-    left: 80px !important;
-    width: 90px !important;
-}
+}*/
 #playback-controls .button.snooze {
     height: 56px !important;
-}
-#waitlist-button {
-    left: 170px !important;
-    width: 90px !important;
-}
-#friends-button {
-    left: initial !important;
-    width: 40px !important;
-    right: 44px !important;
 }
 #friends-button.selected {
     right: 45px !important;
@@ -121,14 +95,58 @@
 #visualssstyle {
     cursor: pointer;
 }
+#chat-button {
+    left: 0 !important;
+    width: 55px !important;
+}
+#users-button {
+    left: 55px !important;
+    width: 90px !important;
+}
+#waitlist-button {
+    left: 146px !important;
+    width: 90px !important;
+}
+#friends-button {
+    left: 237px !important;
+    width: 55px !important;
+}
+#chat-header .divider {
+    width: 290px !important;
+    left: 55px !important;
+}
+#user-lists .header .divider.left {
+    width: 55px !important;
+}
+#user-lists .header .divider.right {
+    left: 145px !important;
+    width: 200px !important;
+}
+#waitlist .header .divider.left {
+    width: 145px !important;
+}
+#waitlist .header .divider.right {
+	width: 109px !important;
+}
+.app-right .friends .list-header .divider {
+    width: 345px !important;
+}
+#friends-button.selected {
+    padding-bottom: 1px;
+    padding-left: 1px;
+    margin-left: -1px;
+}
 #iplug-button {
     left: initial !important;
-    width: 45px !important;
+	width: 52px !important;
+    height: 53px !important;
     right: -1px !important;
-    /*cuz border*/
+    z-index: 1;
+	background-color: rgb(28, 31, 37);
 }
 #iplug-button.selected {
     right: 0px !important;
+	background-color: #0A0A0A !important;
 }
 #iplug-button i {
     position: relative;
@@ -161,7 +179,7 @@
 #iplug-menu .header .divider {
     position:absolute;
     top:0;
-    width:300px;
+    width:292px;
     height:1px;
     background:#1c1f25
 }
@@ -377,14 +395,12 @@
 }
 .iplug-alert {
     width: 510px;
-    height: 256px;
     margin: auto;
-    position: fixed;
+    position: relative;
     top: 0!important;
     right: 0!important;
     bottom: 0!important;
     left: 0!important;
-    height: 256px;
     background: #282c35;
     -webkit-box-shadow: 0 0 5px #282c35;
     -moz-box-shadow: 0 0 5px #000;
@@ -408,19 +424,29 @@
     font-size: 28px;
 }
 .iplug-alert-body {
-    height: 146px;
     position: relative;
     width: 100%;
     background: #111317;
+	padding-top: 37px;
+	padding-bottom: 37px;
+	max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .iplug-alert-body-message {
-    position: absolute;
-    top: 37px;
-    left: 5%;
-    width: 90%;
+    position: relative;
+    left: 10%;
+    width: 80%;
     text-align: center;
     font-size: 16px;
     white-space: pre-line;
+}
+.iplug-alert-body span span {
+	width: 80%;
+	text-align: center;
+	display: block;
+    font-size: 20px;
+    font-weight: bold;
 }
 .iplug-alert-button-submit {
     position: relative;
@@ -584,25 +610,6 @@
     margin-top: 6px;
     cursor: pointer;
 }
-.largevideo {
-    width: auto !important;
-    height: auto !important;
-    left: 0px !important;
-    right: 345px !important;
-    bottom: 54px !important;
-}
-.largevideo > #playback-container, .largevideo > #iplug-playback {
-    width: auto !important;
-    height: auto !important;
-    left: 0px !important;
-    right: 0px !important;
-    bottom: 0px !important;
-}
-.largevideo > #playback-controls {
-    width: auto !important;
-	left: 0px !important;
-	right: 0px !important;
-}
 #iconscontainer {
     width: auto;
     height: 54px;
@@ -719,9 +726,22 @@ body.topvotebar .pop-menu.grab {
 .largevideo > #no-dj .message {
     top: 55% !important;
 }
+.iplug-disabled {
+	cursor: default !important;
+}
+.iplug-disabled > span {
+	position: relative !important;
+	text-decoration: line-through;
+}
+.iplugremoved {
+	display: inline !important;
+    width: 300px;
+    margin-top: 0 !important;
+    position: absolute !important;
+	cursor: default !important;
+}
 .iplugremoved span {
 	color: #f00 !important;
-	cursor: default !important;
 }
 .app-header {
 	overflow: visible !important;
@@ -823,7 +843,7 @@ body.topvotebar .pop-menu.grab {
 	height: 256px;
 	width: 256px;
 	position: absolute;
-	background: url(chrome-extension://__MSG_@@extension_id__/images/qrspinner.png);
+	background: url(chrome-extension://__MSG_@@extension_id__/images/spinnergrey.png);
     -webkit-animation-name: spinner;
     -webkit-animation-duration: 2s; 
     -webkit-animation-iteration-count: infinite;
@@ -897,4 +917,181 @@ body.topvotebar .pop-menu.grab {
 #iplugsc {
 	width: 100%;
 	height: 100%;
+}
+#chat.over {
+	z-index: 120006 !important;
+}
+#iplug-overlay, #iplug-overlay2 {
+    bottom: 0px;
+    left: 0px;
+	right: 0px;
+    position: fixed;
+    top: 0px;
+    z-index: 120001;
+    /*super super mega serious ;D*/
+}
+#iplug-overlay2 {
+	background-color: rgba(0,0,0,0.7);
+}
+#iplug-overlay2 iframe {
+    position: fixed;
+	top: 0;
+    bottom: 0;
+    left: 0;
+    right: 345px;
+    margin: auto;
+	z-index: 120002;
+}
+#iplug-overlay2.above-chat {
+	z-index: 120005 !important;
+}
+.chat-img {
+	max-width: 100%;
+	cursor: pointer;
+	margin-top: 5px;
+	max-height: calc(100% * 16 / 9);
+}
+.chat-yt {
+	cursor: pointer;
+    overflow: hidden;
+	margin-top: 5px;
+}
+.chat-yt-grab {
+	cursor: default;
+	background-color: #aa74ff;
+	position: absolute;
+    right: 0;
+    margin-top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 3px 0 3px 20px;
+}
+.chat-yt-grab i {
+	right: 4px;
+    top: 4px;
+}
+.chat-yt-grab i.minispinner {
+	left: 8px !important;
+    top: 7px !important;
+}
+.chat-yt::after {
+    content: "";
+    position: absolute;
+    margin-left: 35%;
+    margin-top: calc((100% - 30% * 16 / 9) / 2 * 9 / 16);
+    width: 30%;
+    height: calc(900% / 16);
+    left: 0;
+    background-image: url('chrome-extension://__MSG_@@extension_id__/images/play.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.chat-yt img {
+	max-width: 100%;
+	margin-top: calc(-150% / 16);
+	margin-bottom: calc(-150% / 16);
+    height: 210.75px;
+    width: 281px;
+}
+.chat-yt .pop-menu {
+	overflow: visible !important;
+    right: 0;
+}
+.chat-yt .pop-menu .bar {
+    background-color: #aa74ff !important;
+    height: 40px;
+    border-radius: 20px 3px 3px 20px;
+    width: calc(100% + 37px);
+    left: -37px;
+    overflow: hidden;
+}
+.chat-yt .pop-menu .icon-add {
+    background-position: -35px -280px !important;
+    top: 5px !important;
+    left: 6px !important;
+}
+.chat-yt .pop-menu .bar-divider {
+    left: 37px !important;
+}
+.chat-yt .pop-menu .title {
+    top: 10px !important;
+    left: 75px !important;
+    width: 160px;
+}
+.minispinner {
+	height: 25px;
+	width: 25px;
+	position: absolute;
+	background: url(chrome-extension://__MSG_@@extension_id__/images/spinnerwhite.png);
+	background-size: 25px;
+    -webkit-animation-name: spinner;
+    -webkit-animation-duration: 2s; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-name: spinner;
+    animation-duration: 2s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.largevideo {
+    width: auto !important;
+    height: auto !important;
+    left: 0px !important;
+    right: 345px !important;
+    bottom: 54px !important;
+}
+.largevideo > #playback-container, .largevideo > #iplug-playback {
+    width: auto !important;
+    height: auto !important;
+    left: 0px !important;
+    right: 0px !important;
+    bottom: 0px !important;
+}
+.largevideo > #playback-controls {
+	left: 0px !important;
+	right: 0px !important;
+    width: 400px !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+.largevideo > #playback-controls .button.refresh {
+    border-radius: 0 0 0 25px;
+}
+
+.largevideo > #playback-controls .button.snooze {
+    border-radius: 0 0 25px 0;
+}
+.largevideo > #playback-controls.autohide {
+    display: block !important;
+    transition: height 0.25s;
+    height: 0;
+}
+.largevideo > #playback-controls.autohide:hover {
+    height: 56px !important;
+}
+.largevideo > #playback-controls.autohide::after {
+    content: "V";
+    text-align: center;
+    background-color: #aa74ff;
+    width: 70px;
+    height: 20px;
+    position: absolute;
+    left: 157px;
+    display: block;
+    border-radius: 0 0 20px 20px;
+    top: 100%;
+}
+.largevideo > #playback-controls.autohide .button{
+    background-color: #282c35 !important;
+    height: inherit !important;
+    overflow: hidden;
+    margin-bottom: 0;
+    top: calc(100% - 56px);
+    height: 56px !important;
+}
+.largevideo > #playback-controls.autohide .button.hd {
+    width: 120px;
+}
+.largevideo > #playback-controls.autohide .button.hd, #playback-controls.autohide .button.refresh {
+    box-shadow: inset -1px 0 #0A0A0A;
 }

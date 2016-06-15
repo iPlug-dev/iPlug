@@ -2,7 +2,7 @@
 function loader() {
     if (typeof requirejs !== 'undefined' && typeof API !== "undefined" && API.enabled && document.getElementById("dj-button") !== null && document.getElementById("audience") !== null) {
         console.log("\n  ██╗██████╗ ██╗     ██╗   ██╗ ██████╗ \n  ╚═╝██╔══██╗██║     ██║   ██║██╔════╝ \n  ██╗██████╔╝██║     ██║   ██║██║  ███╗\n  ██║██╔═══╝ ██║     ██║   ██║██║   ██║\n  ██║██║     ███████╗╚██████╔╝╚██████╔╝ VER is now running!\n  ╚═╝╚═╝     ╚══════╝ ╚═════╝  ╚═════╝ ");
-        $.getScript('IPLUG');
+        IPLUG
     } else setTimeout(loader, 1000);
 }
 
@@ -18,7 +18,17 @@ libs.forEach(function(e) {
 });
 var s = document.createElement('script');
 s.type = "text/javascript";
-s.innerText = loader.toString().replace("VER", getVersion()).replace("IPLUG",chrome.extension.getURL(main)) + ' loader();';
+
+var xhr = new XMLHttpRequest();
+xhr.open("GET", chrome.extension.getURL(main), false);
+xhr.send();
+var MAIN = xhr.responseText;
+var xhr = new XMLHttpRequest();
+xhr.open("GET", chrome.extension.getURL('javascripts/menu.js'), false);
+xhr.send();
+var MENU = xhr.responseText.replace(/([\n\r]| (?= ))/g, "").replace(/"/g, '\\"');
+
+s.innerHTML = loader.toString().replace("VER", getVersion()).replace("IPLUG", MAIN.replace("__MENU__", MENU)) + ' loader();';
 document.head.appendChild(s);
 
 /* Version */
