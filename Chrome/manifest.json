@@ -12,7 +12,8 @@
                 "*://*.plug.dj/*",
                 "storage",
                 "notifications",
-                "contextMenus"
+                "contextMenus",
+				"tabCapture"
         ],
         "optional_permissions": [
                 "http://*/*",

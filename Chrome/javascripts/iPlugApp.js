@@ -2783,9 +2783,26 @@ updateColor();
         }, 250 * Math.pow(n + 2, .5) - 250);
     });
 	
-	$("#footer-user .settings").click().bind("click", function() {
+	$("#footer-user .settings")/*click()*/.bind("click", function() {
 		$(".application .s-vo").removeClass("s-vo").addClass("iplug-disabled").append('<div class="item iplugremoved"><span>Use the iPlug settings instead :)</span></div>')
 	});
+	var plugSettings;
+	$.each(require.s.contexts._.defined, function(i,a) {
+	    if (a && a.settings)
+			return !(plugSettings = a.settings);
+	});
+	var settingsSave;
+	$.each(require.s.contexts._.defined, function(i,a) {
+	    if (a && a.prototype && a.prototype.route && a.prototype.route === "users/settings")
+			return !(settingsSave = a);
+	});
+	if (plugSettings && plugSettings.videoOnly) {
+		new settingsSave({
+			videoOnly: false
+		});
+		location.reload();
+	}
+	/*
 	function backsettings() {
 		if ($("#user-settings").offset().left !== 220) {
 			setTimeout(backsettings, 10);
@@ -2802,7 +2819,7 @@ updateColor();
 			location.reload();
 		}
 		backsettings();
-	}, 0);
+	}, 0);*/
 
     bindGradientCircleEvents($(".iplug-container .gradientpicker > .slider .barcontainer.gradient > .circle"));
 
