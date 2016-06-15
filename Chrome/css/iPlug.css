@@ -1066,7 +1066,7 @@ body.topvotebar .pop-menu.grab {
     transition: height 0.25s;
     height: 0;
     left: 12px !important;
-	top: calc(100% - 150px);
+	top: calc(100% - 170px);
 }
 .largevideo #playback-controls.autohide:hover {
     height: 56px !important;

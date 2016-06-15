@@ -3102,7 +3102,7 @@ updateColor();
 		$("#chat-messages a").each(function(i, a) {
 			a = $(a);
 			var text = a.attr("href");
-			if (allowImg && /\.(jpe?g|png|gif|bmp)$/i.test(text)) {
+			if (allowImg && /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]\.(?:jpg|gif|png)\b)/i.test(text)) {
 				var el = $("<img src='" + text + "' class='chat-img'>");
 				getRealImageSize(text, function(size) {
 					el.css({cursor: "pointer"});
