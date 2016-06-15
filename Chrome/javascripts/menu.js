@@ -58,8 +58,8 @@
 				<span>Hide DJ</span>
 			</div>
 			<div id="autohideplaybackcontrolsenabled" class="item item-iplug">
-				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|djautohideplaybackcontrolsenabled'] + '"></i>
-				<span>Hide Playback Controls (Fullscreen Only)</span>
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autohideplaybackcontrolsenabled'] + '"></i>
+				<span>Autohide Playback Controls (Fullscreen)</span>
 			</div>
 			<div id="backgroundcardselected" style="cursor: pointer;">' + cardBuilder(localStorage['iplug|currentBackground']) + '</div>
 		</div>

@@ -1040,36 +1040,38 @@ body.topvotebar .pop-menu.grab {
     right: 345px !important;
     bottom: 54px !important;
 }
-.largevideo > #playback-container, .largevideo > #iplug-playback {
+.largevideo #playback-container, .largevideo > #iplug-playback {
     width: auto !important;
     height: auto !important;
     left: 0px !important;
     right: 0px !important;
     bottom: 0px !important;
 }
-.largevideo > #playback-controls {
+.largevideo #playback-controls {
 	left: 0px !important;
 	right: 0px !important;
     width: 400px !important;
     margin-left: auto;
     margin-right: auto;
 }
-.largevideo > #playback-controls .button.refresh {
+.largevideo #playback-controls .button.refresh {
     border-radius: 0 0 0 25px;
 }
 
-.largevideo > #playback-controls .button.snooze {
+.largevideo #playback-controls .button.snooze {
     border-radius: 0 0 25px 0;
 }
-.largevideo > #playback-controls.autohide {
+.largevideo #playback-controls.autohide {
     display: block !important;
     transition: height 0.25s;
     height: 0;
+    left: 12px !important;
+	top: calc(100% - 150px);
 }
-.largevideo > #playback-controls.autohide:hover {
+.largevideo #playback-controls.autohide:hover {
     height: 56px !important;
 }
-.largevideo > #playback-controls.autohide::after {
+.largevideo #playback-controls.autohide::after {
     content: "V";
     text-align: center;
     background-color: #aa74ff;
@@ -1081,7 +1083,7 @@ body.topvotebar .pop-menu.grab {
     border-radius: 0 0 20px 20px;
     top: 100%;
 }
-.largevideo > #playback-controls.autohide .button{
+.largevideo #playback-controls.autohide .button{
     background-color: #282c35 !important;
     height: inherit !important;
     overflow: hidden;
@@ -1089,9 +1091,24 @@ body.topvotebar .pop-menu.grab {
     top: calc(100% - 56px);
     height: 56px !important;
 }
-.largevideo > #playback-controls.autohide .button.hd {
+.largevideo #playback-controls.autohide .button.hd {
     width: 120px;
 }
-.largevideo > #playback-controls.autohide .button.hd, #playback-controls.autohide .button.refresh {
+.largevideo #playback-controls.autohide .button.hd, #playback-controls.autohide .button.refresh {
     box-shadow: inset -1px 0 #0A0A0A;
+}
+.largevideo .proximitydetector {
+    width: 400px;
+    height: 150px;
+    margin-top: -20px;
+    border-radius: 0 0 200px 200px;
+    position: relative;
+    margin-right: auto;
+    margin-top: 0px;
+    margin-left: auto;
+    z-index: 10;
+    transition: height 0.25s;
+}
+.largevideo .proximitydetector:hover {
+	height: 170px;
 }

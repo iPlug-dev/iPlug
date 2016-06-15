@@ -6,8 +6,9 @@ var changelog = [
 								"-Grab songs directly from chat!"]},
 	{version: "0.2.4.1", text: []},
 	{version: "0.2.4.2", text: ["-Playback controls can now hide!",
-								"-Fix thumbnail for live youtube videos",
-								"-More bugfixes!"], convert: function() {console.log("hey!");localStorage['iplug|usercustomcode']=localStorage['usercustomcode'];localStorage['iplug|usercustomcodesafe']=localStorage['usercustomcodesafe']}}
+								"-Fix thumbnail for live youtube videos"], convert: function() {console.log("hey!");localStorage['iplug|usercustomcode']=localStorage['usercustomcode'];localStorage['iplug|usercustomcodesafe']=localStorage['usercustomcodesafe']}},
+	{version: "0.2.4.3", text: ["-Meh is now a toggle button!",
+								"-Tweaks & Bugfixes!"]}
 ]
 
 
@@ -1226,7 +1227,12 @@ define("backgrounds", {
         text: "Dice",
         url: "https://i.imgur.com/nyMaggV.jpg",
         description: "I heard you liked guessing so I made this just for you <3"
-    }
+    },
+	bacon: {
+		text: "Bacon",
+		url: "http://i.imgur.com/HgpEpcc.jpg",
+		description: "BACOONNNnnn!!!!!!!1!!!"
+	}
 });
 
     /////////
@@ -3052,6 +3058,34 @@ updateColor();
         }
     }
 	
+	
+	var detector = $("<div></div>").addClass("proximitydetector");
+	detector.append($("#playback-controls")).appendTo("#playback");
+	
+	
+	var cover;
+	$("#meh").bind("click", function() {
+		cover = $("<div>");
+		var meh = $("#meh");
+		cover.css({height: meh.height(), width: meh.width(), left: meh.offset().left, top: meh.offset().top, position: "fixed", cursor: "pointer"}).on("click", function() {
+			cover.remove();
+			$("#woot").click();
+			$("#meh").trigger("mouseover");
+		}).on("mouseover", function() {
+			Tooltip.show("click again to woot", cover, false);
+		}).on("mouseout", function() {
+			Tooltip.hide();
+		});
+		$("#vote").append(cover);
+		Tooltip.show("click again to woot", cover, false);
+	});
+	API.on(API.ADVANCE, function() {
+		if (cover && cover.remove)
+			cover.remove();
+	});
+	
+	
+	
 	var grabDialog;
 	$.each(require.s.contexts._.defined, function(i,a) {
 	    if (a && a.drawRowBind)
@@ -3294,6 +3328,8 @@ updateColor();
                 };
             case "curateenabled":
                 return function() {
+					if (cover && cover.remove)
+						cover.remove();
                     $("#vote").css({
                         display: (enabled) ? "block" : "none"
                     });
@@ -3329,6 +3365,8 @@ updateColor();
                 };
             case "topmehenabled":
                 return function() {
+					if (cover && cover.remove)
+						cover.remove();
                     if (enabled && !$("body").hasClass("topvotebar")) {
                         $("#vote").prependTo("#iconscontainer");
                         $("body").addClass("topvotebar");
@@ -3340,12 +3378,16 @@ updateColor();
                 };
             case "topskipenabled":
                 return function() {
+					if (cover && cover.remove)
+						cover.remove();
                     $("#topdjbutton").attr({
                         style: "display: " + ((enabled) ? "inline-block" : "none") + " !important"
                     });
                 };
             case "topdlenabled":
                 return function() {
+					if (cover && cover.remove)
+						cover.remove();
                     $("#downloadbutton").attr({
                         style: "display: " + ((enabled) ? "inline-block" : "none") + " !important"
                     });
