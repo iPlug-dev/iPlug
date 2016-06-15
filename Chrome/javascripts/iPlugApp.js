@@ -3064,18 +3064,18 @@ updateColor();
 	});
 	var ytresps = {};
 	
-	function convertChat(img, vid, first) {
+	function convertChat(allowImg, allowVid, first) {
 		$("#chat-messages a").each(function(i, a) {
 			a = $(a);
 			var text = a.attr("href");
-			if (img && /\.(jpe?g|png|gif|bmp)$/i.test(text)) {
+			if (allowImg && /\.(jpe?g|png|gif|bmp)$/i.test(text)) {
 				var el = $("<img src='" + text + "' class='chat-img'>");
 				getRealImageSize(text, function(size) {
 					el.css({cursor: "pointer"});
 					bindOpenImg(el, text, size);
 				});
 				a.replaceWith(el);
-			} else if (vid) {
+			} else if (allowVid) {
 				var yt = text.match(/youtu(?:\.be|be\.com)(?=[^ \n\r]*(?:&|#|\?)(?:t|time[^= \n\r]+)=((?:[\d]+m)?[\d]+)|)[^ \n\r]*(?:\/embed)?(?:\/|\?)(?:watch|v)?\/?(?:\?(?:.*&)?v)?=?([\w_-]{11})(?:\?|&|$|\n|\r| )/i);
 				if (yt) {
 					var id = yt[2];
