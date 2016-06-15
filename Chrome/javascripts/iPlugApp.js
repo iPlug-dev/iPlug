@@ -2791,16 +2791,32 @@ updateColor();
 	    if (a && a.settings)
 			return !(plugSettings = a.settings);
 	});
-	var settingsSave;
-	$.each(require.s.contexts._.defined, function(i,a) {
-	    if (a && a.prototype && a.prototype.route && a.prototype.route === "users/settings")
-			return !(settingsSave = a);
-	});
 	if (plugSettings && plugSettings.videoOnly) {
+		var settingsSave;
+		$.each(require.s.contexts._.defined, function(i,a) {
+			if (a && a.prototype && a.prototype.route && a.prototype.route === "users/settings")
+				return !(settingsSave = a);
+		});
+		var plugEvent = null;
+		$.each(require.s.contexts._.defined, function(i, a){
+			if (a && a._events && a.trigger && !a.cid)
+				return !(plugEvent = a);
+		});
 		new settingsSave({
 			videoOnly: false
 		});
-		location.reload();
+		plugSettings.videoOnly = false;
+		plugEvent.trigger("change:videoOnly");
+		
+		$("#topbarcontainer #woot").css({
+			display: localStorage["iplug|topwootenabled"]
+		});
+		$("#topbarcontainer #grab").css({
+			display: localStorage["iplug|topgrabenabled"]
+		});
+		$("#topbarcontainer #meh").css({
+			display: localStorage["iplug|topmehenabled"]
+		});
 	}
 	/*
 	function backsettings() {

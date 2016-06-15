@@ -650,6 +650,9 @@
     width: auto !important;
     height: 54px !important;
 	z-index: -2 !important;
+	display: inline-block !important;
+	right: initial !important;
+	bottom: initial !important;
 }
 #topbarcontainer #vote > div {
     border-radius: 0 !important;
