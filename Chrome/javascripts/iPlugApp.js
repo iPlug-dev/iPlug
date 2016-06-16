@@ -4,11 +4,10 @@ var changelog = [
 								"-Youtube in chat!",
 								"-Expand images & videos!",
 								"-Grab songs directly from chat!"]},
-	{version: "0.2.4.1", text: []},
 	{version: "0.2.4.2", text: ["-Playback controls can now hide!",
 								"-Fix thumbnail for live youtube videos"], convert: function() {console.log("hey!");localStorage['iplug|usercustomcode']=localStorage['usercustomcode'];localStorage['iplug|usercustomcodesafe']=localStorage['usercustomcodesafe']}},
-	{version: "0.2.4.3", text: ["-Meh is now a toggle button!",
-								"-Tweaks & Bugfixes!"]}
+	{version: "0.2.4.3", text: ["-Meh is now a toggle button!"]},
+	{version: "0.2.4.5", text: ["-More Tweaks & Bugfixes!"]}
 ]
 
 
@@ -3243,6 +3242,7 @@ updateColor();
 				return bindOpenYt(el, grab, id, time);
 			var width = (window.innerWidth - 345) * 0.75; // width='" + width + "' height='" + width * 9 / 16 + "' frameborder='0'
 			var iframe = $("<div id='embeddedYT'></div>");
+			$("#chat").addClass("over");
 			var overlay = createPopup().append(iframe);
 			
             crl = new window.YT.Player(iframe[0], {
@@ -3296,7 +3296,6 @@ updateColor();
 	
 	$("body").append("<div id='iplug-overlay2' style='display: none'>");
 	function createPopup() {
-		$("#chat").addClass("over");
 		return $("#iplug-overlay2").css({display: "block"});
 	}
 

@@ -5,7 +5,12 @@ chrome.runtime.onUpdateAvailable.addListener(function(details) {
 var ports = [];
 var portsID = [];
 
-console.log(kak = chrome.tabCapture);
+chrome.tabCapture.capture({
+	audio: true,
+	video: false
+}, function(a) {
+	console.log(a);
+});
 
 chrome.runtime.onConnect.addListener(function(port) {
   var ID = Math.floor(Math.random() * 1900);
