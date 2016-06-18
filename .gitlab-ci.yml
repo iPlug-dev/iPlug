@@ -1,0 +1,13 @@
+before_script:
+  - curl -sL https://deb.nodesource.com/setup_6.x | bash -
+  - apt-get install -y nodejs build-essential
+  - which node
+  - node -v
+  - npm -v
+  
+deploy:
+  #only:
+  #  - tags
+  script:
+    - npm install
+    - npm run deploy
