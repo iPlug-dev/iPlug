@@ -1130,8 +1130,14 @@ body.topvotebar .pop-menu.grab {
 }
 #chat-suggestion-items img[src*='static-cdn.jtvnw.net'] {
     margin-left: -4px;
-    margin-top: -6Px;
+    margin-top: -6px;
 }
-#chat-messagaes img[src*='static-cdn.jtvnw.net'] {
+#chat-messages img[src*='static-cdn.jtvnw.net'], img[src*='emotes.tastycat'] {
     vertical-align: middle;
+}
+#chat-suggestion-items img[src*='emotes.tastycat'] {
+    margin-left: -4px;
+    margin-top: -3px;
+    max-width: 30px;
+    max-height: 30px;
 }
