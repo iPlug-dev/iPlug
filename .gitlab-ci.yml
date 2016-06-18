@@ -8,7 +8,7 @@ before_script:
   - npm -v
   
 deploy:
-  only:
-    - tags
+  #only:
+  #  - tags
   script:
     - npm run deploy
