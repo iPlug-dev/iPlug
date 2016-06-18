@@ -6,8 +6,8 @@
     "deploy": "node deploy.js"
   },
   "dependencies": {
-	  "chrome-webstore-manager": "^0.4.0",
-	  "zip-folder": "^1.0.0"
+    "chrome-webstore-manager": "^0.4.0",
+    "zip-folder": "^1.0.0"
   },
   "repository": {
     "type": "git",
