@@ -1,0 +1,22 @@
+{
+  "name": "iplug",
+  "version": "1.0.0",
+  "description": "Scripts for iPlug",
+  "scripts": {
+    "deploy": "npm install && node deploy.js"
+  },
+  "dependencies": {
+	  "chrome-webstore-manager": "^0.4.0",
+	  "zip-folder": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/iPlug/iplug.git"
+  },
+  "author": "iPlug devs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/iPlug/iplug/issues"
+  },
+  "homepage": "https://gitlab.com/iPlug/iplug#README"
+}
