@@ -58,9 +58,25 @@ for (var i in x = requirejs.s.contexts._.defined) {
     if (x[i] && x[i].__proto__ && x[i].__proto__.id === "user-rollover")
         requireIDs.f = requireIDs.f === null ? i : console.warn("NOT NULL", "f", i);
 }
-for (var i in requireIDs) {
-    if (!requireIDs.hasOwnProperty) continue;
-    if (!requireIDs[i]) console.warn("NULL", i, requireIDs[i]);
+
+function krixfix(i) {
+	if (i > 20)
+		return krixfinish();
+	$.each(require.s.contexts._.defined, function(i,a) {
+		if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
+			requireIDs.m = x[i];
+	});
+	if (!requireIDs.m)
+		setTimeout(krixfix, 100, i + 1);
+	else
+		krixfinish();
+}
+
+function krixfinish() {
+	for (var i in requireIDs) {
+		if (!requireIDs.hasOwnProperty) continue;
+		if (!requireIDs[i]) console.warn("NULL", i, requireIDs[i]);
+	}
 }
 
 gkey = 'AIzaSyCmqEcQFgJ2RN_k_fjUCdP5m9aaitvUwvs';
@@ -166,7 +182,7 @@ define("modifications/userlists",[requireIDs.r,requireIDs.v],function(r,v){
     });
     return true;
 });
-define("modifications/chat-suggestions", ["jquery", "underscore", "utils/twitchemotes", requireIDs.i, requireIDs.c, requireIDs.m, requireIDs.g, requireIDs.e, "hbs!templates/room/chat/ChatSuggestionItem"], function(e,t,k,o,z,i,r,s,u){
+/*define("modifications/chat-suggestions", ["jquery", "underscore", "utils/twitchemotes", requireIDs.i, requireIDs.c, requireIDs.m, requireIDs.g, requireIDs.e, "hbs!templates/room/chat/ChatSuggestionItem"], function(e,t,k,o,z,i,r,s,u){
     var a = z.extend({
         check: function (e, t) {
             var n = e.lastIndexOf(" @"),
@@ -268,7 +284,7 @@ define("modifications/chat-suggestions", ["jquery", "underscore", "utils/twitche
     };
 });
 
-define("utils/twitchemotes", function() {
+/*define("utils/twitchemotes", function() {
     var t = {
         map: {},
         lookup: function() {return [];},
@@ -319,7 +335,7 @@ define("utils/twitchemotes", function() {
         t.emojify = replaceArray;
     });
     return t;
-});
+});*/
 
 define("utils/tooltip", [requireIDs.a,"class"], function(a,Class) {
     var n = Class.extend({
@@ -1235,7 +1251,7 @@ define("backgrounds", {
 });
 
     /////////
-require(["jquery","underscore","youtube-api","autowoot", "version", "sketch", "utils/tooltip", "utils/notify", "utils/dj", "backgrounds", "modifications/chat-suggestions", "modifications/userlists", "modifications/playback"], function($, _, ytapi, Autowoot, Version, Sketch, Tooltip, Notify, Dj, backgrounds) {
+require(["jquery","underscore","youtube-api","autowoot", "version", "sketch", "utils/tooltip", "utils/notify", "utils/dj", "backgrounds", /*"modifications/chat-suggestions",*/ "modifications/userlists", "modifications/playback"], function($, _, ytapi, Autowoot, Version, Sketch, Tooltip, Notify, Dj, backgrounds) {
     _.delay(_.bind(Version.check,Version),15000);
     "use strict";
 
@@ -1494,6 +1510,7 @@ require(["jquery","underscore","youtube-api","autowoot", "version", "sketch", "u
 
 
     /////////////////
+	
     var VisualizationsHelper = {};
 
     VisualizationsHelper.currentRoom = window.location.href;
@@ -1551,7 +1568,7 @@ require(["jquery","underscore","youtube-api","autowoot", "version", "sketch", "u
 
 
 
-    /*           INIT HERE              */
+    //           INIT HERE              //
 
     var ALPHA, AudioAnalyser, COLORS, MP3_PATH, NUM_BANDS, NUM_PARTICLES, Particle, SCALE, SIZE, SMOOTHING, SPEED, SPIN, NUM_BARS, NUM_STARS;
     NUM_STARS = 100;
@@ -1836,21 +1853,21 @@ require(["jquery","underscore","youtube-api","autowoot", "version", "sketch", "u
     })();
 
 
-/*
-function updateColor(){
-var result = [];
-var grd= Visualizations.createLinearGradient(0,0,Visualizations.width,0);
-localStorage["iplug|sccolorstring"].split("&").forEach(function(a){
-var z = a.split("|");
-z[1] = z[1].split(",");
-result.push(z);
-});
-for (var i = 0; i < result.length; i++) {
-grd.addColorStop(result[i][0], "rgb("+result[i][1][0]+","+result[i][1][1]+","+result[i][1][2]+")");
-}
-Visualizations.barsColor = grd;
-}
 
+	function updateColor(){
+		var result = [];
+		//var grd= Visualizations.createLinearGradient(0,0,Visualizations.width,0);
+		localStorage["iplug|sccolorstring"].split("&").forEach(function(a){
+			var z = a.split("|");
+			z[1] = z[1].split(",");
+			result.push(z);
+		});
+		/*for (var i = 0; i < result.length; i++) {
+			grd.addColorStop(result[i][0], "rgb("+result[i][1][0]+","+result[i][1][1]+","+result[i][1][2]+")");
+		}*/
+		//Visualizations.barsColor = grd;
+	}
+/*
     var Visualizations = Sketch.create({
         width: parseInt($("#playback-container")[0].style.width, 10),
         height: parseInt($("#playback-container")[0].style.height, 10),
@@ -2067,7 +2084,7 @@ updateColor();
 
 
     VisualizationsHelper.clientID = "9258af128ee9d4c781d46b31917531e7";
-    //* GET YOUR OWN CLIENT ID ON HTTP://DEVELOPERS.SOUNDCLOUD.COM 
+    // * GET YOUR OWN CLIENT ID ON HTTP://DEVELOPERS.SOUNDCLOUD.COM 
     // * DON'T USE MINE :)
     // *
     VisualizationsHelper.killFlash = function () {
@@ -2140,7 +2157,8 @@ updateColor();
         Visualizations.img.src = imgURL;
         Visualizations.play();
     };
-*/
+	*/
+	
     require(requireIDs.a).on("change:streamDisabled", function (x) {
         onAPIadvance();
     });
@@ -3701,6 +3719,20 @@ updateColor();
     }
 });
 
+
+$.fn.preBind = function (type, data, fn) {
+    this.each(function () {
+        var $this = $(this);
+
+        $this.bind(type, data, fn);
+
+        var currentBindings = $this.data('events', type);
+        if ($.isArray(currentBindings)) {
+            currentBindings.unshift(currentBindings.pop());
+        }
+    });
+    return this;
+};
 
 
 

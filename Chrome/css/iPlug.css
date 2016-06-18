@@ -1122,3 +1122,13 @@ body.topvotebar .pop-menu.grab {
 .largevideo .proximitydetector:hover {
 	height: 170px;
 }
+.chat-suggestion-item .value {
+    position: absolute !important;
+}
+#chat-suggestion-items {
+    width: calc(100% - 10px);
+}
+#chat-suggestion-items img[src*='static-cdn.jtvnw.net'] {
+    margin-left: -4px;
+    margin-top: -6Px;
+}

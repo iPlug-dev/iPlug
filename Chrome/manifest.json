@@ -2,7 +2,7 @@
         "name": "iPlug BETA",
         "short_name": "iPlug",
         "author": "L0laapk3 (& CookieMichal)",
-        "version": "0.2.4.5",
+        "version": "0.2.4.6",
         "manifest_version": 2,
         "description": "The most sexy plug.dj extension!",
         "icons": {
@@ -12,8 +12,7 @@
                 "*://*.plug.dj/*",
                 "storage",
                 "notifications",
-                "contextMenus",
-				"tabCapture"
+                "contextMenus"
         ],
         "optional_permissions": [
                 "http://*/*",
