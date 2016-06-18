@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Scripts for iPlug",
   "scripts": {
-    "deploy": "npm install && node deploy.js"
+    "deploy": "node deploy.js"
   },
   "dependencies": {
 	  "chrome-webstore-manager": "^0.4.0",
