@@ -9,4 +9,5 @@ deploy:
   #only:
   #  - tags
   script:
+    - npm install
     - npm run deploy
