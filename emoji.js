@@ -29,37 +29,11 @@ $.getJSON("https://twitchemotes.com/api_cache/v2/subscriber.json", function(x) {
 	$.getJSON("https://twitchemotes.com/api_cache/v2/global.json", function(x) {
 		for (var a in x.emotes)
 			allEmotes[a.toLowerCase()] = x.template.small.replace("{image_id}", x.emotes[a].image_id);
-		
 		console.log("loaded " + Object.keys(allEmotes).length + " emotes! lmao");
 		
-		//replacing
+		//hashing
 		
-		var regex = new RegExp(":(" + Object.keys(allEmotes).map(function(a) {
-			return a.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
-		}).join("|") + "):" , "g");
-		
-		var replace_colons_old = emojiFilter.replace_colons;
-		
-		emojiFilter.replace_colons = function() {
-			var resp = replace_colons_old.apply(emojiFilter, arguments);
-			var args = arguments;
-			if (!args[1] && !args[2])
-				resp = resp.replace(regex, function(a, b) {
-					return "<img src='" + allEmotes[b.toLowerCase()].substr(6) + "'></img>";
-				});
-			return resp;
-		};
-		
-		
-		//suggestions
 		var realHash = {};
-		for (var key in window.emoji.data) {
-			if (!window.emoji.data.hasOwnProperty(key)) continue;
-			var node = window.emoji.data[key];
-			node[3].forEach(function(a) {
-				hashThis(a, node);
-			});
-		}
 		for (var key in allEmotes) {
 			hashThis(key, allEmotes[key]);
 		}
@@ -75,9 +49,44 @@ $.getJSON("https://twitchemotes.com/api_cache/v2/subscriber.json", function(x) {
 			realHash[first][second].push(a);
 		}
 		
+		
 		for (var one in realHash)
 			for (var two in realHash[one])
 				realHash[one][two] = realHash[one][two].sort();
+		
+		var regex = new RegExp(":(" + Object.keys(realHash).map(function(one) {
+			return one.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + Object.keys(realHash[one]).map(function(two) {
+				return two.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + realHash[one][two].map(function (content) {
+					return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
+				}).join("|") + ")";
+			}).join("|") + ")";
+		}).join("|") + "):", "g");
+		
+		for (var key in window.emoji.data) {
+			if (!window.emoji.data.hasOwnProperty(key)) continue;
+			var node = window.emoji.data[key];-
+			node[3].forEach(function(a) {
+				hashThis(a, node);
+			});
+		}
+		
+		
+		
+		//replacing
+		var replace_colons_old = emojiFilter.replace_colons;
+		emojiFilter.replace_colons = function() {
+			var resp = replace_colons_old.apply(emojiFilter, arguments);
+			var args = arguments;
+			if (!args[1] && !args[2])
+				resp = resp.replace(regex, function(a, b) {
+					return "<img tooltip='" + b + "' src='" + allEmotes[b.toLowerCase()].substr(6) + "'></img>";
+				});
+			return resp;
+		};
+		
+		
+		//suggestions
+				
 		
 		var canSkip = false;
 		var last = "";

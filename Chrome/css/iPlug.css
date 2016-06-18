@@ -1132,3 +1132,6 @@ body.topvotebar .pop-menu.grab {
     margin-left: -4px;
     margin-top: -6Px;
 }
+#chat-messagaes img[src*='static-cdn.jtvnw.net'] {
+    vertical-align: middle;
+}
