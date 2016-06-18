@@ -11,6 +11,4 @@ zipFolder(dirpath, filepath, function(err) {
 		process.exit(1);
 	}
 	console.log("Zipped directory :OO");	
-}
-
-//var file = fs.readFileSync(path);
+});
