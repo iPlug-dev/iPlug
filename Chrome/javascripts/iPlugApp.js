@@ -8,6 +8,7 @@ var changelog = [
 								"-Fix thumbnail for live youtube videos"], convert: function() {console.log("hey!");localStorage['iplug|usercustomcode']=localStorage['usercustomcode'];localStorage['iplug|usercustomcodesafe']=localStorage['usercustomcodesafe']}},
 	{version: "0.2.4.3", text: ["-Meh is now a toggle button!"]},
 	{version: "0.2.5.0", text: ["-Twitch.tv emotes!",
+								"-Zoom in on images!",
 								"-Tweaks & Bugfixes!"]}
 ]
 
@@ -3215,17 +3216,38 @@ updateColor();
 			var offset = el.offset();
 			var image = $("<img src='" + url + "'>").css({position: "fixed", zIndex: "120005", width: el.width(), height: el.height, left: offset.left, top: offset.top});
 			var overlay = createPopup().append(image).addClass("above-chat");
-			var scale = Math.min(1, Math.min(window.innerWidth * 0.8 / size.width, window.innerHeight * 0.8 / size.height));
+			var maxscale = Math.min(window.innerWidth * 0.8 / size.width, window.innerHeight * 0.8 / size.height);
+			var scale = Math.min(1, maxscale);
 			var X = size.width * scale;
 			var Y = size.height * scale;
 			image.animate({width: X, height: Y, left: window.innerWidth * 0.5 - X / 2, top: window.innerHeight * 0.5 - Y / 2}, {duration: 250, easing: "easeInOutQuint", complete: function() {
-				overlay.one("click", function(e) {
-					$("#chat").removeClass("over");
+				if (scale === 1) {
+					var zoomedIn = false;
+					var animating = false;
+					image.css({cursor: "zoom-in"}).on("click", function() {
+						if (animating)
+							return;
+						animating = true;
+						var newscale = zoomedIn ? 1 : maxscale;
+						var X = size.width * newscale;
+						var Y = size.height * newscale;
+						image.css({cursor: zoomedIn ? "zoom-in" : "zoom-out"}).animate({width: X, height: Y, left: window.innerWidth * 0.5 - X / 2, top: window.innerHeight * 0.5 - Y / 2}, {duration: 250, easing: "easeInOutQuint", complete: function() {
+							zoomedIn = !zoomedIn;
+							animating = false;
+						}});
+					});
+				}
+				overlay.one("click", remove);
+				function remove(e) {
+					if (document.elementFromPoint(e.pageX, e.pageY) !== overlay[0]) {
+						overlay.one("click", remove);
+						return;
+					}
 					overlay.css({display: "none"});
-					image.remove();
+					image.stop().remove();
 					e.preventDefault();
 					bindOpenImg(el, url, size);
-				});
+				}
 			}});
 		});
 	}
