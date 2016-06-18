@@ -9,8 +9,6 @@ function checkVariable(variable) {
 	}
 }
 
-process.env["CLIENT_SECRET"] = "Kappa"; //can it be changed and saved?
-
 checkVariable("CLIENT_SECRET");
 checkVariable("CLIENT_ID");
 
