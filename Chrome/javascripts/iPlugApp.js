@@ -3215,11 +3215,10 @@ updateColor();
 			var offset = el.offset();
 			var image = $("<img src='" + url + "'>").css({position: "fixed", zIndex: "120005", width: el.width(), height: el.height, left: offset.left, top: offset.top});
 			var overlay = createPopup().append(image).addClass("above-chat");
-			var width = (window.innerWidth - 345) * 0.75;
-			var scale = Math.min(1, Math.min(width / size.width, width * 9 / 16 / size.height));
+			var scale = Math.min(1, Math.min(window.innerWidth * 0.8 / size.width, window.innerHeight * 0.8 / size.height));
 			var X = size.width * scale;
 			var Y = size.height * scale;
-			image.animate({width: X, height: Y, left: window.innerWidth * 0.5 - 115 - X / 2, top: window.innerHeight * 0.5 - Y / 2}, {duration: 250, easing: "easeInOutQuint", complete: function() {
+			image.animate({width: X, height: Y, left: window.innerWidth * 0.5 - X / 2, top: window.innerHeight * 0.5 - Y / 2}, {duration: 250, easing: "easeInOutQuint", complete: function() {
 				overlay.one("click", function(e) {
 					$("#chat").removeClass("over");
 					overlay.css({display: "none"});
