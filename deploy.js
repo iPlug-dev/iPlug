@@ -36,8 +36,6 @@ if (typeof process.env["TOKEN"] != "string") {
 			console.log("AFTER YOU COPY TOKEN ERASE LOGS!");
 			
 			uploadChromeFolder(token);
-			
-			process.exit(1);
 		}, function(b) {
 			console.log("Error getting access token using CODE variable");
 			console.log(b);
@@ -48,8 +46,6 @@ if (typeof process.env["TOKEN"] != "string") {
 } else {
 	uploadChromeFolder(process.env["TOKEN"]);
 }
-
-console.log("All variables set :)");
 
 function uploadChromeFolder(token){
 	var filepath = path.resolve(__dirname, "package.zip");
