@@ -25,6 +25,7 @@ if (typeof process.env["TOKEN"] != "string") {
 	} else {
 		var tokenPR = chromeWebStore.getAccessToken(process.env["CODE"]);	
 		tokenPR.then(function(a) {
+			a = JSON.parse(a);
 			var token = a["access_token"];
 			if (token == null) {
 				console.log("Error getting access_token...");
