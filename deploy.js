@@ -63,8 +63,12 @@ function uploadChromeFolder(token){
 		console.log("Zipped!");
 		console.log("Updating extension %s", process.env["EXTENSION_ID"]);
 		var zip = fs.readFileSync(filepath);
-		chromeWebStore.updateItem(token, zip, function(data) {
+		chromeWebStore.updateItem(token, zip, process.env["EXTENSION_ID"]).then(function(data) {
+			console.log("Success");
 			console.log(data);
+		}, function(err) {
+			console.log("Error");
+			console.log(err);
 		});
 	});
 }
