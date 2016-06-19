@@ -3350,6 +3350,12 @@ updateColor();
 			});
 		});
 	}
+	
+	//scroll to change volume
+	$("#volume").on("mousewheel", function(e) {
+        if (e.deltaY > 0) return API.setVolume(API.getVolume() + 5);
+        if (e.deltaY < 0) return API.setVolume(API.getVolume() - 5);
+    });
 
 	//emotes
 	var emojiFilter;
