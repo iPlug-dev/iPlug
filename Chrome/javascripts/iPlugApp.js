@@ -777,7 +777,6 @@ define("visualizations/style1/bar", ["class"], function (Class) {
     return n;
 });
 
-
 define("star", ["class"], function(Class) {
     var n = Class.extend({
         init: function(x, y, maxSpeed) {
