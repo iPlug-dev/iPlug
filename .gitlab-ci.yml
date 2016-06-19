@@ -1,6 +1,6 @@
 before_script:
   - curl -sL https://deb.nodesource.com/setup_6.x | bash -
-  - apt-get install -y nodejs build-essential
+  - apt-get install -y -qq nodejs build-essential
   - which node
   - node -v
   - npm -v
