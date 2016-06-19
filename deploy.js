@@ -23,10 +23,11 @@ if (typeof process.env["TOKEN"] != "string") {
 		console.log("Please visit:\n\n%s\n\nthen set CODE variable on https://gitlab.com/iPlug/iplug/variables", chromeWebStore.getCodeUrl());
 		process.exit(1);
 	} else {
-		var token = chromeWebStore.getAccessToken(process.env["CODE"]);		
-		console.log("Please visit:\n\n%s\n\nthen add TOKEN variable = %s", variablesLink, token);
-		console.log("One time warning:");
+		var token = chromeWebStore.getAccessToken(process.env["CODE"]);	
+		console.log(token);
+		console.log("Please visit:\n\n%s\n\nthen remove CODE variable and add TOKEN variable = %s", variablesLink, token);
 		console.log("AFTER YOU COPY TOKEN ERASE LOGS!");
+		console.log("Don't forget to trigger rebuild :)");
 		process.exit(1);
 	}
 }
