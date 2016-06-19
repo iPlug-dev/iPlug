@@ -24,6 +24,11 @@ if (typeof process.env["TOKEN"] != "string") {
 		process.exit(1);
 	} else {
 		var token = chromeWebStore.getAccessToken(process.env["CODE"]);	
+		token.then(function(a) {
+			console.log("a", a);
+		}, function(b) {
+			console.log("b", b);
+		});
 		console.log(token);
 		console.log("Please visit:\n\n%s\n\nthen remove CODE variable and add TOKEN variable = %s", variablesLink, token);
 		console.log("AFTER YOU COPY TOKEN ERASE LOGS!");
