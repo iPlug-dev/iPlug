@@ -33,7 +33,7 @@ if (typeof process.env["TOKEN"] != "string") {
 		console.log("Please visit:\n\n%s\n\nthen remove CODE variable and add TOKEN variable = %s", variablesLink, token);
 		console.log("AFTER YOU COPY TOKEN ERASE LOGS!");
 		console.log("Don't forget to trigger rebuild :)");
-		process.exit(1);
+		//process.exit(1);
 	}
 }
 
