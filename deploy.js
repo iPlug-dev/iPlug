@@ -25,9 +25,10 @@ if (typeof process.env["TOKEN"] != "string") {
 	} else {
 		var tokenPR = chromeWebStore.getAccessToken(process.env["CODE"]);	
 		tokenPR.then(function(a) {
-			var token = a ? a["access_token"] ? a["access_token"] : null : null;
+			var token = a["access_token"];
 			if (token == null) {
 				console.log("Error getting access_token...");
+				console.log(a);
 				process.exit(1);
 			}
 			console.log("Please visit:\n\n%s\n\nthen remove CODE variable and add TOKEN variable = %s", variablesLink, token);
