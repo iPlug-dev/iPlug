@@ -9,8 +9,8 @@ var changelog = [
 	{version: "0.2.4.3", text: ["-Meh is now a toggle button!"]},
 	{version: "0.2.5.0", text: ["-Twitch.tv emotes!",
 								"-Zoom in on images!"]},
-	{version: "0.2.5.1", text: ["-Tastycat emotes!",
-								"-Bugfixes!"]}
+	{version: "0.2.5.1", text: ["-Tastycat emotes!"]},
+	{version: "0.2.5.2", text: ["-Bugfixes!"]}
 ]
 
 
@@ -3443,10 +3443,10 @@ updateColor();
 					return resp;
 				};
 				window.emojiTooltip = function(that) {
-					$this = $(that);
-					$this.bind("mouseenter", function() {
+					var $this = $(that);
+					$this.on("mouseenter", function() {
 						Tooltip.show($this.attr("tooltip"), $this, false);
-					}).bind("mouseleave", Tooltip.hide);
+					}).on("mouseleave", Tooltip.hide);
 				}
 				
 				//suggestions
