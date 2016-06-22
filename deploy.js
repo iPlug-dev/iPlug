@@ -20,39 +20,53 @@ var chromeWebStore = new CWS(process.env["CLIENT_ID"], process.env["CLIENT_SECRE
 
 if (typeof process.env["TOKEN"] != "string") {
 	if (typeof process.env["CODE"] != "string") {
-		console.log("Please visit:\n\n%s\n\nthen set CODE variable on https://gitlab.com/iPlug/iplug/variables", chromeWebStore.getCodeUrl());
+		console.log("Please visit:\n\n%s\n\nthen set CODE variable on %s", chromeWebStore.getCodeUrl(), variablesLink);
 		process.exit(1);
 	} else {
-		var token = chromeWebStore.getAccessToken(process.env["CODE"]);	
-		token.then(function(a) {
-			console.log("a", a);
+		var tokenPR = chromeWebStore.getAccessToken(process.env["CODE"]);	
+		tokenPR.then(function(a) {
+			a = JSON.parse(a);
+			var token = a["access_token"];
+			if (token == null) {
+				console.log("Error getting access_token...");
+				console.log(a);
+				process.exit(1);
+			}
+			console.log("Please visit:\n\n%s\n\nthen remove CODE variable and add TOKEN variable = %s", variablesLink, token);
+			console.log("AFTER YOU COPY TOKEN ERASE LOGS!");
+			
+			uploadChromeFolder(token);
 		}, function(b) {
-			console.log("b", b);
-		});
-		console.log(token);
-		console.log("Please visit:\n\n%s\n\nthen remove CODE variable and add TOKEN variable = %s", variablesLink, token);
-		console.log("AFTER YOU COPY TOKEN ERASE LOGS!");
-		console.log("Don't forget to trigger rebuild :)");
-		//process.exit(1);
+			console.log("Error getting access token using CODE variable");
+			console.log(b);
+			console.log("Please visit:\n\n%s\n\nthen set CODE variable on %s", chromeWebStore.getCodeUrl(), variablesLink);
+			process.exit(1);
+		});		
 	}
+} else {
+	uploadChromeFolder(process.env["TOKEN"]);
 }
 
-console.log("All variables set :)");
+function uploadChromeFolder(token){
+	var filepath = path.resolve(__dirname, "package.zip");
+	var dirpath = path.resolve(__dirname, "Chrome");
 
-var filepath = path.resolve(__dirname, "package.zip");
-var dirpath = path.resolve(__dirname, "Chrome");
+	console.log("Zipping %s\ninto: %s", dirpath, filepath);
 
-console.log("Zipping %s\ninto: %s", dirpath, filepath);
-
-zipFolder(dirpath, filepath, function(err) {
-	if (err) {
-		console.log(err);
-		process.exit(1);
-	}
-	console.log("Zipped!");
-	console.log("Updating extension %s", process.env["EXTENSION_ID"]);
-	var zip = fs.readFileSync(filepath);
-	chromeWebStore.updateItem(process.env["TOKEN"], zip, function(data) {
-		console.log(data);
+	zipFolder(dirpath, filepath, function(err) {
+		if (err) {
+			console.log(err);
+			process.exit(1);
+		}
+		console.log("Zipped!");
+		console.log("Updating extension %s", process.env["EXTENSION_ID"]);
+		var zip = fs.readFileSync(filepath);
+		chromeWebStore.updateItem(token, zip, process.env["EXTENSION_ID"]).then(function(data) {
+			console.log("Success");
+			console.log(data);
+		}, function(err) {
+			console.log("Error");
+			console.log(err);
+		});
 	});
-});
+}

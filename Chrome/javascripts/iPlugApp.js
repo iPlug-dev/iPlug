@@ -777,7 +777,6 @@ define("visualizations/style1/bar", ["class"], function (Class) {
     return n;
 });
 
-
 define("star", ["class"], function(Class) {
     var n = Class.extend({
         init: function(x, y, maxSpeed) {
@@ -3350,6 +3349,12 @@ updateColor();
 			});
 		});
 	}
+	
+	//scroll to change volume
+	$("#volume").on("mousewheel", function(e) {
+        if (e.deltaY > 0) return API.setVolume(API.getVolume() + 5);
+        if (e.deltaY < 0) return API.setVolume(API.getVolume() - 5);
+    });
 
 	//emotes
 	var emojiFilter;
