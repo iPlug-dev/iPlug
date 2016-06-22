@@ -9,8 +9,8 @@ var changelog = [
 	{version: "0.2.4.3", text: ["-Meh is now a toggle button!"]},
 	{version: "0.2.5.0", text: ["-Twitch.tv emotes!",
 								"-Zoom in on images!"]},
-	{version: "0.2.5.1", text: ["-Tastycat emotes!"]},
-	{version: "0.2.5.2", text: ["-Bugfixes!"]}
+	{version: "0.2.5.1", text: ["-More emotes!"]},
+	{version: "0.2.5.3", text: ["-Even more emotes!"]}
 ]
 
 
@@ -3375,196 +3375,300 @@ updateColor();
 	//emotes provided by tastycat
 	//
 	var allEmotes = {};
-	$.getJSON("https://twitchemotes.com/api_cache/v2/subscriber.json", function(x) {
-		for (var a in x.channels)
-			for (var b in x.channels[a].emotes)
-				allEmotes[(x.channels[a].emotes[b].code || b).toLowerCase()] = x.template.small.replace("{image_id}", x.channels[a].emotes[b].image_id);
-		for (var a in x.unknown_emotes.emotes)
-			allEmotes[(x.unknown_emotes.emotes[a].code || b).toLowerCase()] = x.template.small.replace("{image_id}", x.unknown_emotes.emotes[a].image_id);
-		$.getJSON("https://twitchemotes.com/api_cache/v2/global.json", function(x) {
-			for (var a in x.emotes)
-				allEmotes[a.toLowerCase()] = x.template.small.replace("{image_id}", x.emotes[a].image_id);
-			$.getJSON("https://emotes.tastycat.org/emotes-full.json", function(x) {
-				for (var a in x.emotes)
-					allEmotes[x.emotes[a].name.toLowerCase()] = x.emotes[a].url;
-
-				console.log("loaded " + Object.keys(allEmotes).length + " emotes! lmao");
-				
-				//hashing
-				
-				var realHash = {};
-				for (var key in allEmotes) {
-					hashThis(key, allEmotes[key]);
-				}
-				function hashThis(a, node) {
-					if (a.length < 2)
-						return;
-					var first = a.substr(0, 1);
-					var second = a.substr(1, 1);
-					if (!realHash[first])
-						realHash[first] = {};
-					if (!realHash[first][second])
-						realHash[first][second] = [];
-					realHash[first][second].push(a);
-				}
-				
-				
-				for (var one in realHash)
-					for (var two in realHash[one])
-						realHash[one][two] = realHash[one][two].sort();
-				
-				var regex = new RegExp(":(" + Object.keys(realHash).map(function(one) {
-					return one.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + Object.keys(realHash[one]).map(function(two) {
-						return two.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + realHash[one][two].map(function (content) {
-							return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
-						}).join("|") + ")";
-					}).join("|") + ")";
-				}).join("|") + "):", "g");
-				
-				for (var key in window.emoji.data) {
-					if (!window.emoji.data.hasOwnProperty(key)) continue;
-					var node = window.emoji.data[key];-
-					node[3].forEach(function(a) {
-						hashThis(a, node);
-					});
-				}
-				
-				
-				
-				//replacing
-				var replace_colons_old = emojiFilter.replace_colons;
-				emojiFilter.replace_colons = function(str, x, y, z) {
-					var resp = replace_colons_old.apply(emojiFilter, arguments);
-					var args = arguments;
-					if (!x && !y)
-						resp = resp.replace(regex, function(a, b) {
-							return "<img src='" + allEmotes[b.toLowerCase()].substr(6) + "'" + (z ? "" : " tooltip='" + b + "' onload='emojiTooltip(this)'") + "></img>";
-						});
-					return resp;
-				};
-				window.emojiTooltip = function(that) {
-					var $this = $(that);
-					$this.on("mouseenter", function() {
-						Tooltip.show($this.attr("tooltip"), $this, false);
-					}).on("mouseleave", Tooltip.hide);
-				}
-				
-				//suggestions
-						
-				
-				var canSkip = false;
-				var last = "";
-				
-				var laststr = "";
-				plugSugg.prototype.check = function(str, len) {
-					var n = str.lastIndexOf("@");
-					if (n !== -1) {
-						var f = str.substr(n + 1, len).toLowerCase();
-						if (!f) {
-							this.suggestions = [];
-							return false;
+	var emoteUrls = [
+		{
+			url: "https://twitchemotes.com/api_cache/v2/subscriber.json",
+			overwrite: false,
+			emotes: function(x) {
+				var emoteArray = x.unknown_emotes.emotes;
+				for (var a in x.channels)
+					emoteArray = emoteArray.concat(x.channels[a].emotes);
+				return emoteArray;
+			},
+			name: function(x, a, key) {
+				return a.code || key;
+			},
+			image: function(x, a, key) {
+				return x.template.small.replace("{image_id}", a.image_id);
+			}
+		},
+		{
+			url: "https://twitchemotes.com/api_cache/v2/global.json",
+			overwrite: true,
+			emotes: function(x) {
+				return x.emotes;
+			},
+			name: function(x, a, key) {
+				return key;
+			},
+			image: function(x, a, key) {
+				return x.template.small.replace("{image_id}", a.image_id);
+			}
+		},
+		{
+			url: "https://emotes.tastycat.org/emotes-full.json",
+			overwrite: true,
+			emotes: function(x) {
+				return x.emotes;
+			},
+			name: function(x, a, key) {
+				return a.name || key;
+			},
+			image: function(x, a, key) {
+				return a.url;
+			}
+		},
+		{
+			url: "https://api.frankerfacez.com/v1/set/global",
+			overwrite: true,
+			emotes: function(x) {
+				var emoteArray = [];
+				for(var a in x.sets) 
+					emoteArray = emoteArray.concat(x.sets[a].emoticons);
+				return emoteArray;
+			},
+			name: function(x, a, key) {
+				return a.name;
+			},
+			image: function(x, a, key) {
+				return "https://" + a.urls["1"];
+			}
+		}, 
+		{
+			url: "https://api.betterttv.net/emotes",
+			overwrite: true,
+			emotes: function(x) {
+				return x.emotes;
+			},
+			name: function(x, a, key) {
+				return a.regex;
+			},
+			image: function(x, a, key) {
+				return a.url;
+			}
+		}
+	];
+	
+	var emoteObjectsToLoad = emoteUrls.length;
+	emoteUrls.forEach(function(emoteObject) {
+		var tries = 0;
+		load();
+		function load() {	
+			$.ajax({
+				url: emoteObject.url,
+				dataType: "json",
+				success: function(x) {
+					var emotes = emoteObject.emotes(x);
+					var faileds = 0;
+					for(var key in emotes) {
+						try {
+							var name = emoteObject.name(x, emotes[key], key).toLowerCase();
+							var img = emoteObject.image(x, emotes[key], key);
+							if (!name || !img) {
+								console.warn(name, img, emotes[key]);
+								faileds++;
+								continue;
+							}
+							if (emoteObject.overwrite || !allEmotes.hasOwnProperty(name))
+								allEmotes[name] = img;
+						} catch(ex) {
+							console.warn(key, ex);
+							faileds++;
 						}
-						this.suggestions = API.getUsers().map(function(a) {
-							return a.rawun;
-						}).filter(function(a) {
-							return a.substr(0, f.length).toLowerCase() === f;
-						}).sort();
-						if (this.suggestions.length) {
-							this.type = "@";
-							return;
-						} else
-							return false;
 					}
-					n = str.lastIndexOf(":");
-					if (n !== -1) {
-						var f = (laststr = str.substr(n + 1, len)).toLowerCase();
-						if (f.length < 2) {
-							this.suggestions = [];
-							return false;
-						}
-						var first = f.substr(0, 1);
-						var second = f.substr(1, 1);
-						if (!first || !second || !realHash[first] || !realHash[first][second]) {
-							this.suggestions = [];
-							return false;
-						}
-						var max = 30;
-						var i = 0;
-						this.suggestions = realHash[first][second];
-						if (f.length > 2) {
-							this.suggestions = this.suggestions.filter(function(a) {
-								return a.substr(0, f.length) === f;
-							});
-							if (max < this.suggestions.length)
-								this.suggestions.length = max;
-						} else this.suggestions = this.suggestions.slice(0, max);
-						this.suggestions = this.suggestions;
-						if (this.suggestions.length)
-							this.type = ":";
-						else
-							return false;
-					}
-				};
-				
-				var upDownOld = plugSugg.prototype.upDown;
-				var container = $("#chat-suggestion");
-				plugSugg.prototype.upDown = function() {
-					canSkip = false;
-					upDownOld.apply(this, arguments);
-					var selected = $("#chat-suggestion-items >:eq(" + this.index + ")");
-					var offTop = selected.offset().top - container.offset().top;
-					if (offTop < 0)
-						container.scrollTop(offTop + container.scrollTop());
-					else {
-						var offBot = offTop - container.height() + selected.height();
-						if (offBot > 0)
-							container.scrollTop(offBot + container.scrollTop());
-					}
+					if (faileds > 0)
+						console.warn("Couldnt load " + faileds + "/" + emotes.length + " emotes from " + emoteObject.url);
+					if (--emoteObjectsToLoad <= 0)
+						finishEmotes();
+				},
+				error: function(x) {
+					if (tries++ < 3)
+						return load();
+					console.warn("Failed to load emotes from " + emoteObject.url + "...");
+					if (--emoteObjectsToLoad <= 0)
+						finishEmotes();
 				}
-				
-				var getSelectedOld = plugSugg.prototype.getSelected;
-				plugSugg.prototype.getSelected = function() {
-					if (canSkip && laststr.length === 1) {
-						setTimeout(function() {
-							var e = jQuery.Event("keydown");
-							e.keyCode = 13;
-							$("#chat-input-field").trigger(e);
-						}, 0);
-						return laststr;
-					}
-					else return getSelectedOld.apply(this, arguments);
-				};
-				
-				
-				
-				$("#chat-input-field").preBind("keydown", function(e) {
-					if (e.keyCode === 18)
-						return;
-						
-					var now = $("#chat-input-field").val();
-					if (now === last)
-						return;
-					if (now.length - last.length !== 1) {
-						canSkip = false;
-						last = now;
-						return;
-					}
-					var i = 0;
-					while (now.substr(i, 1) === last.substr(i, 1) && i < now.length)
-						i++;
-					if (i === now.length) {
-						last = now;
-						canSkip = false;
-						return;
-					}
-					if  (now.substr(i, 1) === ":")
-						canSkip = true;
-					last = now;
-				});
 			});
-		});
+		}
 	});
-
+	
+	function finishEmotes() {
+		console.log("loaded " + Object.keys(allEmotes).length + " emotes! lmao");
+		
+		//hashing
+		
+		var realHash = {};
+		for (var key in allEmotes) {
+			hashThis(key, allEmotes[key]);
+		}
+		function hashThis(a, node) {
+			if (a.length < 2)
+				return;
+			var first = a.substr(0, 1);
+			var second = a.substr(1, 1);
+			if (!realHash[first])
+				realHash[first] = {};
+			if (!realHash[first][second])
+				realHash[first][second] = [];
+			realHash[first][second].push(a);
+		}
+		
+		
+		for (var one in realHash)
+			for (var two in realHash[one])
+				realHash[one][two] = realHash[one][two].sort();
+		
+		var regex = new RegExp(":(" + Object.keys(realHash).map(function(one) {
+			return one.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + Object.keys(realHash[one]).map(function(two) {
+				return two.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + realHash[one][two].map(function (content) {
+					return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
+				}).join("|") + ")";
+			}).join("|") + ")";
+		}).join("|") + "):", "g");
+		
+		for (var key in window.emoji.data) {
+			if (!window.emoji.data.hasOwnProperty(key)) continue;
+			var node = window.emoji.data[key];-
+			node[3].forEach(function(a) {
+				hashThis(a, node);
+			});
+		}
+		
+		
+		
+		//replacing
+		var replace_colons_old = emojiFilter.replace_colons;
+		emojiFilter.replace_colons = function(str, x, y, z) {
+			var resp = replace_colons_old.apply(emojiFilter, arguments);
+			var args = arguments;
+			if (!x && !y)
+				resp = resp.replace(regex, function(a, b) {
+					return "<img src='" + allEmotes[b.toLowerCase()] + "'" + (z ? "" : " tooltip='" + b + "' onload='emojiTooltip(this)'") + "></img>";
+				});
+			return resp;
+		};
+		window.emojiTooltip = function(that) {
+			var $this = $(that);
+			$this.on("mouseenter", function() {
+				Tooltip.show($this.attr("tooltip"), $this, false);
+			}).on("mouseleave", Tooltip.hide);
+		}
+		
+		//suggestions
+				
+		
+		var canSkip = false;
+		var last = "";
+		
+		var laststr = "";
+		plugSugg.prototype.check = function(str, len) {
+			var n = str.lastIndexOf("@");
+			if (n !== -1) {
+				var f = str.substr(n + 1, len).toLowerCase();
+				if (!f) {
+					this.suggestions = [];
+					return false;
+				}
+				this.suggestions = API.getUsers().map(function(a) {
+					return a.rawun;
+				}).filter(function(a) {
+					return a.substr(0, f.length).toLowerCase() === f;
+				}).sort();
+				if (this.suggestions.length) {
+					this.type = "@";
+					return;
+				} else
+					return false;
+			}
+			n = str.lastIndexOf(":");
+			if (n !== -1) {
+				var f = (laststr = str.substr(n + 1, len)).toLowerCase();
+				if (f.length < 2) {
+					this.suggestions = [];
+					return false;
+				}
+				var first = f.substr(0, 1);
+				var second = f.substr(1, 1);
+				if (!first || !second || !realHash[first] || !realHash[first][second]) {
+					this.suggestions = [];
+					return false;
+				}
+				var max = 30;
+				var i = 0;
+				this.suggestions = realHash[first][second];
+				if (f.length > 2) {
+					this.suggestions = this.suggestions.filter(function(a) {
+						return a.substr(0, f.length) === f;
+					});
+					if (max < this.suggestions.length)
+						this.suggestions.length = max;
+				} else this.suggestions = this.suggestions.slice(0, max);
+				this.suggestions = this.suggestions;
+				if (this.suggestions.length)
+					this.type = ":";
+				else
+					return false;
+			}
+		};
+		
+		var upDownOld = plugSugg.prototype.upDown;
+		var container = $("#chat-suggestion");
+		plugSugg.prototype.upDown = function() {
+			canSkip = false;
+			upDownOld.apply(this, arguments);
+			var selected = $("#chat-suggestion-items >:eq(" + this.index + ")");
+			var offTop = selected.offset().top - container.offset().top;
+			if (offTop < 0)
+				container.scrollTop(offTop + container.scrollTop());
+			else {
+				var offBot = offTop - container.height() + selected.height();
+				if (offBot > 0)
+					container.scrollTop(offBot + container.scrollTop());
+			}
+		}
+		
+		var getSelectedOld = plugSugg.prototype.getSelected;
+		plugSugg.prototype.getSelected = function() {
+			if (canSkip && laststr.length === 1) {
+				setTimeout(function() {
+					var e = jQuery.Event("keydown");
+					e.keyCode = 13;
+					$("#chat-input-field").trigger(e);
+				}, 0);
+				return laststr;
+			}
+			else return getSelectedOld.apply(this, arguments);
+		};
+		
+		
+		
+		$("#chat-input-field").preBind("keydown", function(e) {
+			if (e.keyCode === 18)
+				return;
+				
+			var now = $("#chat-input-field").val();
+			if (now === last)
+				return;
+			if (now.length - last.length !== 1) {
+				canSkip = false;
+				last = now;
+				return;
+			}
+			var i = 0;
+			while (now.substr(i, 1) === last.substr(i, 1) && i < now.length)
+				i++;
+			if (i === now.length) {
+				last = now;
+				canSkip = false;
+				return;
+			}
+			if  (now.substr(i, 1) === ":")
+				canSkip = true;
+			last = now;
+		});
+	}
+	
+	
 
 	$.fn.preBind = function (type, data, fn) {
 		this.each(function () {
