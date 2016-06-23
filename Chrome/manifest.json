@@ -29,14 +29,8 @@
         },
         "web_accessible_resources": [
 		        "images/iplug-button.png",
-                "javascripts/iPlug.js",
-                "javascripts/iPlugApp.js",
-                "javascripts/menu.js",
-				"javascripts/iPlugBG.js",
-				"javascripts/sketch.min.js",
-                "javascripts/socket.io-1.2.0.js",
-                "javascripts/iframe_api.min.js",
-                "javascripts/qrcode.min.js",
+				"javascripts/iplug/*.js"
+                "javascripts/*.js",
                 "images/chosen/chosen-sprite.png",
                 "images/chosen/chosen-sprite@2x.png",
                 "images/Plug/dev.png",
