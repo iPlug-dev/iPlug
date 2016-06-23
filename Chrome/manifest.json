@@ -29,7 +29,12 @@
         },
         "web_accessible_resources": [
 		        "images/iplug-button.png",
-				"javascripts/iplug/*.js"
+				"javascripts/iplug/*",
+				"javascripts/iplug/modifications/*",
+				"javascripts/iplug/utils/*",
+				"javascripts/iplug/visualizations/*",
+				"javascripts/iplug/visualizations/style1/*",
+				"javascripts/iplug/visualizations/style2/*",
                 "javascripts/*.js",
                 "images/chosen/chosen-sprite.png",
                 "images/chosen/chosen-sprite@2x.png",
