@@ -952,7 +952,7 @@ body.topvotebar .pop-menu.grab {
 	max-width: 100%;
 	cursor: pointer;
 	margin-top: 5px;
-	max-height: calc(345px * 16 / 9);
+	max-height: calc(270px * 4 / 3);
 }
 .chat-yt {
 	cursor: pointer;
