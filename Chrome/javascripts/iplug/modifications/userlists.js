@@ -1,6 +1,6 @@
 define(["iplug/plug-modules"],function(Modules){
-	var r = require(Modules["r"]);
-	var v = require(Modules["v"]);
+    var r = require(Modules["r"]);
+    var v = require(Modules["v"]);
     r.prototype.RowClass = v.extend({
         vote: function () {
             if (this.model.get('level')) {
