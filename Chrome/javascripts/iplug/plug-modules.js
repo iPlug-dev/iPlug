@@ -11,7 +11,8 @@ define([], function () {
         i: null,
         g: null,
         p: null,
-        z: null
+        z: null,
+        w: null
     };
 
     var x = requirejs.s.contexts._.defined;
@@ -41,6 +42,8 @@ define([], function () {
             requireIDs.d = requireIDs.d === null ? i : (console.warn("NOT NULL", "d", i), i);
         if (x[i] && x[i].__proto__ && x[i].__proto__.id === "user-rollover")
             requireIDs.f = requireIDs.f === null ? i : (console.warn("NOT NULL", "f", i), i);
+        if (x[i] && x[i].__proto__ && x[i].__proto__.onChatReceived)
+            requireIDs.w = requireIDs.w === null ? i : (console.warn("NOT NULL", "w", i), i);
     }
     for (var i in requireIDs) {
         if (!requireIDs.hasOwnProperty) continue;
