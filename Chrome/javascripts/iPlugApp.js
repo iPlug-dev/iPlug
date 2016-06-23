@@ -62,24 +62,9 @@ for (var i in x = requirejs.s.contexts._.defined) {
         requireIDs.f = requireIDs.f === null ? i : console.warn("NOT NULL", "f", i);
 }
 
-function krixfix(i) {
-	if (i > 20)
-		return krixfinish();
-	$.each(require.s.contexts._.defined, function(i,a) {
-		if (x[i] && x[i].lookup && x[i].map && x[i].emojify)
-			requireIDs.m = x[i];
-	});
-	if (!requireIDs.m)
-		setTimeout(krixfix, 100, i + 1);
-	else
-		krixfinish();
-}
-
-function krixfinish() {
-	for (var i in requireIDs) {
-		if (!requireIDs.hasOwnProperty) continue;
-		if (!requireIDs[i]) console.warn("NULL", i, requireIDs[i]);
-	}
+for (var i in requireIDs) {
+	if (!requireIDs.hasOwnProperty) continue;
+	if (!requireIDs[i]) console.warn("NULL", i, requireIDs[i]);
 }
 
 gkey = 'AIzaSyCmqEcQFgJ2RN_k_fjUCdP5m9aaitvUwvs';
