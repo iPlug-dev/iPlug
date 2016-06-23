@@ -30,7 +30,7 @@ xhr.open("GET", chrome.extension.getURL('javascripts/menu.js'), false);
 xhr.send();
 var MENU = xhr.responseText.replace(/([\n\r]| (?= ))/g, "").replace(/"/g, '\\"');
 
-s.innerHTML = loader.toString().replace("VER", getVersion()).replace("IPLUG", MAIN.replace("__MENU__", MENU)) + ' loader();';
+s.innerHTML = loader.toString().replace("VER", getVersion()).replace("IPLUG", MAIN.replace("__MENU__", MENU).replace("___URL___", chrome.extension.getURL(""))) + ' loader();';
 document.head.appendChild(s);
 
 /* Version */
