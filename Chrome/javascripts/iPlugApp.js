@@ -919,7 +919,7 @@ require(["jquery","underscore","iplug/youtube-api","iplug/autowoot", "iplug/vers
 		genqr(id, meta, $("#downloadbutton"));
 	});
 	
-	lastreset = 0;
+	var lastreset = 0;
 	API.on(API.ADVANCE, function() {
 		if ($("#downloadbox").css("height") === "54px") return downloadbuttonreset(lastreset = new Date().getTime());
 		$("#downloadbutton").one("mouseleave", function() {
