@@ -1985,7 +1985,7 @@ require(["jquery","underscore","iplug/youtube-api","iplug/autowoot", "iplug/vers
 
     function colorDom(scheme) {
         var result = "";
-        for (i = 0; i < scheme.length; i++) {
+        for (var i = 0; i < scheme.length; i++) {
             result += '<div class="circle" style="left: ' + parseInt(scheme[i][0] * 300) + 'px; border-color: rgb(' + scheme[i][1].join(",") + ')"></div>';
         }
         return result;
