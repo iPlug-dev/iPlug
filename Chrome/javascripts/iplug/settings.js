@@ -1,17 +1,15 @@
 define(["iplug/class", "jquery"], function(Class, $) {
     var defaults = {
         
-        
-        
-        
-        
-        
     };
     var n = Class.extend({
+        localStorageName: "iplug|settings",
         init: function() {
-            this.localStorageName = "iplug|settings";
-            this.settings = {};
             this.load();
+        },
+        clear: function(){
+            localStorage[this.localStorageName] = JSON.stringify(defaults);
+            return this.load();
         },
         load: function() {
             try {
@@ -19,10 +17,12 @@ define(["iplug/class", "jquery"], function(Class, $) {
             } catch (e) {
                 console.warn("Settings parser", e);
             }
-            this.settings = $.extend(true, {}, defaults, this.settings, data);
+            $.extend(true, this, defaults, data);
+            return this;
         },
         save: function() {
-            localStorage[this.localStorageName] = JSON.stringify(this.settings);
+            localStorage[this.localStorageName] = JSON.stringify(this, Object.keys(defaults));
+            return this;
         }
     });
     return new n();
