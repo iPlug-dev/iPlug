@@ -1,18 +1,31 @@
 define([], function () {
-    var requireIDs = {
-        a: null,
-        r: null,
-        s: null,
-        v: null,
-        c: null,
-        d: null,
+    var requireIDs = { //qwertyuiop asdfghjkl zxcvbnm
+        q: null,
+        w: null,
         e: null,
-        f: null,
+        r: null,
+        
+        
+        
         i: null,
-        g: null,
+        
         p: null,
+        a: null,
+        s: null,
+        d: null,
+        f: null,
+        g: null,
+        
+        
+        
+        
         z: null,
-        w: null
+        
+        c: null,
+        v: null,
+        b: null
+        
+        
     };
 
     var x = requirejs.s.contexts._.defined;
@@ -44,6 +57,10 @@ define([], function () {
             requireIDs.f = requireIDs.f === null ? i : (console.warn("NOT NULL", "f", i), i);
         if (x[i] && x[i].__proto__ && x[i].__proto__.onChatReceived)
             requireIDs.w = requireIDs.w === null ? i : (console.warn("NOT NULL", "w", i), i);
+        if (x[i] && x[i].__proto__ && x[i].__proto__.getActiveID)
+            requireIDs.b = requireIDs.b === null ? i : (console.warn("NOT NULL", "b", i), i);
+        if (x[i] && x[i].GRAB)
+            requireIDs.q = requireIDs.q === null ? i : (console.warn("NOT NULL", "q", i), i);
     }
     for (var i in requireIDs) {
         if (!requireIDs.hasOwnProperty) continue;
