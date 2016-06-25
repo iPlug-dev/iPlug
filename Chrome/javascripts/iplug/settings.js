@@ -30,7 +30,7 @@ define(["iplug/class", "jquery"], function(Class, $) {
             playbackcontrols: true,
         }
         visualizations: {
-            enabled: false
+            enabled: false,
             style: 1, // 1 or 2
             style1: {
                 bars: 150,
