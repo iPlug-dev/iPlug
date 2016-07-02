@@ -86,7 +86,7 @@
     right: 0px !important;
     width: 45px !important;
 }*/
- .button.snooze {
+#playback-controls .button.snooze {
     height: 56px !important;
 }
 #friends-button.selected {
