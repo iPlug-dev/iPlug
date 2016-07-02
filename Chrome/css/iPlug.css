@@ -86,7 +86,7 @@
     right: 0px !important;
     width: 45px !important;
 }*/
-#playback-controls .button.snooze {
+ .button.snooze {
     height: 56px !important;
 }
 #friends-button.selected {
@@ -1058,12 +1058,21 @@ body.topvotebar .pop-menu.grab {
     margin-right: auto;
 }
 .largevideo #playback-controls .button.refresh {
-    border-radius: 0 0 0 25px;
+    border-bottom-left-radius: 15px;
 }
 
 .largevideo #playback-controls .button.snooze {
-    border-radius: 0 0 25px 0;
+    border-bottom-right-radius: 15px;
 }
+
+.largevideo #playback-controls.snoozed .button.hd {
+    border-bottom-right-radius: 15px;
+}
+
+.largevideo #playback-controls.snoozed.no-hd .button {
+    border-bottom-right-radius: 15px;
+}
+
 .largevideo #playback-controls.autohide {
     display: block !important;
     transition: height 0.25s;
