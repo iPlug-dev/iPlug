@@ -1159,3 +1159,17 @@ body.topvotebar .pop-menu.grab {
     max-width: 30px;
     max-height: 30px;
 }*/
+#chat-suggestion-items .icon-search {
+    top: -5px;
+    left: -4px;
+}
+#chat-suggestion-items .chat-suggestion-item.emo:first-child .value::first-letter {
+    font-size: 0
+}
+#chat-suggestion-items .chat-suggestion-item.emo:first-child .value {
+    width: 111px;
+    overflow: hidden;
+}
+.cm.promo {
+    display: none;
+}

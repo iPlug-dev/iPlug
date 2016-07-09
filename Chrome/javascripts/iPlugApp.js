@@ -1,10 +1,10 @@
-var chrome = "___URL___";
-console.log("CHROME", chrome);
+var idiot = "___URL___";
+//console.log("CHROME", idiot);
 
 requirejs.config({
     paths: {
-        "iplug": chrome + "javascripts/iplug",
-        "sketch": chrome + "javascripts/sketch"
+        "iplug": idiot + "javascripts/iplug",
+        "sketch": idiot + "javascripts/sketch"
     }
 });
 
@@ -316,7 +316,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         var img = localStorage["iplug|imagesenabled"] === "block";
         var vid = localStorage["iplug|videosenabled"] === "block";
         if (img || vid)
-            convertChat(img, vid);
+            convertChat(img, vid, $("#chat-messages .message>:last-child"));
     });
     var backgroundcarddeck = "";
     Object.keys(backgrounds).forEach(function (e) {
@@ -1170,20 +1170,20 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     });
     var ytresps = {};
 
-    function convertChat(allowImg, allowVid, first) {
-        $("#chat-messages a").each(function (i, a) {
+    function convertChat(allowImg, allowVid, scope, first) {
+        scope.find("a").each(function (i, a) {
             a = $(a);
             var text = a.attr("href");
-            if (allowImg && /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]\.(?:jpg|gif|png)\b)/i.test(text)) {
-                var el = $("<img src='" + text + "' class='chat-img'>");
-                getRealImageSize(text, function (size) {
-                    el.css({
-                        cursor: "pointer"
-                    });
-                    bindOpenImg(el, text, size);
-                });
-                a.replaceWith(el);
-            } else if (allowVid) {
+            if (allowImg) {
+            	checkRealImage(text, function(response) {
+            		if (!response)
+            			return;
+            		response.image.addClass("chat-img");
+                    bindOpenImg(response);
+                	a.replaceWith(response.image);
+            	});
+            }
+            if (allowVid) {
                 var yt = text.match(/youtu(?:\.be|be\.com)(?=[^ \n\r]*(?:&|#|\?)(?:t|time[^= \n\r]+)=((?:[\d]+m)?[\d]+)|)[^ \n\r]*(?:\/embed)?(?:\/|\?)(?:watch|v)?\/?(?:\?(?:.*&)?v)?=?([\w_-]{11})(?:\?|&|$|\n|\r| )/i);
                 if (yt) {
                     var id = yt[2];
@@ -1242,16 +1242,18 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
         if (!first)
             setTimeout(function () {
-                convertChat(allowImg, allowVid, true);
+                convertChat(allowImg, allowVid, scope, true);
             }, 250);
     }
 
-    function bindOpenImg(el, url, size) {
+    function bindOpenImg(response) {
+    	var url = response.url;
+    	var el = response.image;
         el.one("click", function () {
             if ($("#iplug-overlay2 :not(iframe)").length)
                 $("#iplug-overlay2").click();
             if (!canOpenDialog())
-                return bindOpenImg(el, url, size);
+                return bindOpenImg(response);
             var offset = el.offset();
             var image = $("<img src='" + url + "'>").css({
                 position: "fixed",
@@ -1262,10 +1264,10 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                 top: offset.top
             });
             var overlay = createPopup().append(image).addClass("above-chat");
-            var maxscale = Math.min(window.innerWidth * 0.8 / size.width, window.innerHeight * 0.8 / size.height);
+            var maxscale = Math.min(window.innerWidth * 0.8 / response.width, window.innerHeight * 0.8 / response.height);
             var scale = Math.min(1, maxscale);
-            var X = size.width * scale;
-            var Y = size.height * scale;
+            var X = response.width * scale;
+            var Y = response.height * scale;
             image.animate({
                 width: X,
                 height: Y,
@@ -1285,8 +1287,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                                 return;
                             animating = true;
                             var newscale = zoomedIn ? 1 : maxscale;
-                            var X = size.width * newscale;
-                            var Y = size.height * newscale;
+                            var X = response.width * newscale;
+                            var Y = response.height * newscale;
                             image.css({
                                 cursor: zoomedIn ? "zoom-in" : "zoom-out"
                             }).animate({
@@ -1316,7 +1318,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                         });
                         image.stop().remove();
                         e.preventDefault();
-                        bindOpenImg(el, url, size);
+                        bindOpenImg(response);
                     }
                 }
             });
@@ -1356,7 +1358,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             $("#chat").addClass("over");
             var overlay = createPopup().append(iframe);
 
-            crl = new window.YT.Player(iframe[0], {
+            var crl = new window.YT.Player(iframe[0], {
                 width: width,
                 height: width * 9 / 16,
                 videoId: id,
@@ -1413,16 +1415,31 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
     }
 
-    function getRealImageSize(src, callback) {
-        $("<img/>")
-            .attr("src", src)
-            .load(function () {
+	function checkRealImage(url, callback) {
+		if (/prntscr\.com|prnt\.sc|gyazo\.com|scr\.hu|imgur\.com\/(?!gallery)[^\/]{2,}(?:\/|$)/.test(url) && !/i(?:mage)?\.prnt|i.gyazo\.com|i\.imgur/i.test(url))
+			chrome.runtime.sendMessage("__EXTENSION_ID__", {
+				type: "getRealImage",
+				url: url
+			}, function(response) {
+				go(response.url);
+			});
+		else
+			go(url);
+
+		function go(url) {
+	        var img = $("<img/>")
+	        img.attr("src", url).load(function () {
                 callback({
                     width: this.width,
-                    height: this.height
+                    height: this.height,
+                    image: img,
+                    url: url
                 });
+            }).error(function(a) {
+                callback(false);
             });
-    }
+	    }
+	}
 
     //scroll to change volume
     $("#volume").on("mousewheel", function (e) {
@@ -1609,9 +1626,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         }
 
         //replacing
-        var replace_colons_old = emojiFilter.replace_colons;
+        var replaceColonsOld = emojiFilter.replace_colons;
         emojiFilter.replace_colons = function (str, x, y, z) {
-            var resp = replace_colons_old.apply(emojiFilter, arguments);
+        	if (z && str === ":SSearch All Emojis:")
+        		return "<i class='icon icon-search'></i>";
+            var resp = replaceColonsOld.apply(emojiFilter, arguments);
             var args = arguments;
             if (!x && !y)
                 resp = resp.replace(regex, function (a, b) {
@@ -1673,10 +1692,12 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                     if (max < this.suggestions.length)
                         this.suggestions.length = max;
                 } else this.suggestions = this.suggestions.slice(0, max);
-                this.suggestions = this.suggestions;
-                if (this.suggestions.length)
+                if (this.suggestions.length) {
                     this.type = ":";
-                else
+                	this.suggestions.unshift("SSearch All Emojis");
+                    if (this.index === -1)
+                    	this.index = 1;
+                } else
                     return false;
             }
         };
@@ -1699,6 +1720,12 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 
         var getSelectedOld = plugSugg.prototype.getSelected;
         plugSugg.prototype.getSelected = function () {
+        	if (this.type === ":" && this.index === 0) {
+        		setTimeout(function() {
+
+        		}, 0);
+        		return ""
+        	}
             if (canSkip && laststr.length === 1) {
                 setTimeout(function () {
                     var e = jQuery.Event("keydown");
@@ -1982,12 +2009,12 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         case "imagesenabled":
             return function () {
                 if (enabled)
-                    convertChat(true, false);
+                    convertChat(true, false, $("#chat-messages"));
             }
         case "videosenabled":
             return function () {
                 if (enabled)
-                    convertChat(false, true);
+                    convertChat(false, true, $("#chat-messages"));
             }
         }
         return function () {};

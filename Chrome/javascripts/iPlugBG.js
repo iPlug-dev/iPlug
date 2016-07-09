@@ -45,23 +45,33 @@ chrome.runtime.onUpdateAvailable.addListener(function(details) {
 });*/
 
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
-    console.log("Sender ", sender);
-    console.log("Request", request);
-    setTimeout(function() {
-        sendResponse({
-            "this is callback": "huehe",
-            "json": "object"
-        });
-    }, 3000);
+    //console.log("Sender ", sender);
+    //console.log("Request", request);
+    
+    switch(request.type) {
+    	case "getRealImage":
+			try {
+	    		getRealImage(request.url, function(realUrl) {
+	    			sendResponse({url: realUrl});
+	    		});
+			} catch(ex) {
+				sendResponse({url: url});
+			}
+    		break;
+    	default:
+    		console.error("wtf, unknown request '" + request.type + "'\nsender:", sender, "\nrequest:", request);
+    }
+
     return true; //async support for sendResponse
 });
+
 
 function getRealImage(url, callback) {
     var xhr = new XMLHttpRequest;
     xhr.open('GET', url);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
-            var match = xhr.response.match(/[^'"]*(?:image\.prnt|i\.imgur|i\.gyazo\.com\/(?!thumb)|cloudfront.net\\\/images\\\/(?!default))[^'"]*/);
+            var match = xhr.response.match(/[^'"]*(?:image\.prnt|\/i\.imgur|i\.gyazo\.com\/(?!thumb)|cloudfront.net\\\/images\\\/(?!default))[^'"]*/);
             callback(match && match[0].replace(/\\\//g, "/") || url);
         }
     };
