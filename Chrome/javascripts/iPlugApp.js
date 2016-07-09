@@ -313,8 +313,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         JN();
     });
     API.on(API.CHAT, function () {
-        img = localStorage["iplug|imagesenabled"] === "block";
-        vid = localStorage["iplug|videosenabled"] === "block";
+        var img = localStorage["iplug|imagesenabled"] === "block";
+        var vid = localStorage["iplug|videosenabled"] === "block";
         if (img || vid)
             convertChat(img, vid);
     });
@@ -1648,8 +1648,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                 if (this.suggestions.length) {
                     this.type = "@";
                     return;
-                } else
-                    return false;
+                }
             }
             n = str.lastIndexOf(":");
             if (n !== -1) {
