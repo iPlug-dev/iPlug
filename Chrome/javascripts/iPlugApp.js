@@ -316,7 +316,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         var img = localStorage["iplug|imagesenabled"] === "block";
         var vid = localStorage["iplug|videosenabled"] === "block";
         if (img || vid)
-            convertChat(img, vid, $("#chat-messages >.cm.message").last());
+            convertChat(img, vid, $("#chat-messages >.cm:not(.promo)").last());
     });
     var backgroundcarddeck = "";
     Object.keys(backgrounds).forEach(function (e) {
