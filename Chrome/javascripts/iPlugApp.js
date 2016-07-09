@@ -316,7 +316,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         var img = localStorage["iplug|imagesenabled"] === "block";
         var vid = localStorage["iplug|videosenabled"] === "block";
         if (img || vid)
-            convertChat(img, vid, $("#chat-messages .message>:last-child"));
+            convertChat(img, vid, $("#chat-messages >.cm.message").last());
     });
     var backgroundcarddeck = "";
     Object.keys(backgrounds).forEach(function (e) {
@@ -1264,7 +1264,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                 top: offset.top
             });
             var overlay = createPopup().append(image).addClass("above-chat");
-            var maxscale = Math.min(window.innerWidth * 0.8 / response.width, window.innerHeight * 0.8 / response.height);
+            var maxscale = Math.min(3, Math.min(window.innerWidth * 0.8 / response.width, window.innerHeight * 0.8 / response.height));
             var scale = Math.min(1, maxscale);
             var X = response.width * scale;
             var Y = response.height * scale;
