@@ -1242,7 +1242,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
         if (!first)
             setTimeout(function () {
-                convertChat(img, vid, true);
+                convertChat(allowImg, allowVid, true);
             }, 250);
     }
 

@@ -12,7 +12,11 @@
         "*://*.plug.dj/*",
         "storage",
         "notifications",
-        "contextMenus"
+        "contextMenus",
+		"*://*.prntscr.com/*",
+		"*://*.prnt.sc/*",
+		"*://*.gyazo.com/*",
+		"*://*.scr.hu/*"
     ],
     "optional_permissions": [
         "http://*/*",

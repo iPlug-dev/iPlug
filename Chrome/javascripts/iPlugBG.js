@@ -38,7 +38,7 @@ chrome.runtime.onConnect.addListener(function(port) {
             broadcast(port.name, 0);
             console.log("No update found");
           } else if (status == "throttled") {
-            broadcast(port.name, -1);
+           broadcast(port.name, -1);
             console.log("Slow down!");
           }
         });
@@ -53,4 +53,17 @@ function broadcast(channelName, data) {
       ports[i].postMessage(data);
     }
   }
+}
+  
+function getRealImage(url, callback) {
+  var xhr = new XMLHttpRequest;
+  xhr.open('GET', url);
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4)
+    {
+      var match = xhr.response.match(/[^'"]*(?:image\.prnt|i\.imgur|i\.gyazo\.com\/(?!thumb)|cloudfront.net\\\/images\\\/(?!default))[^'"]*/);
+      callback(match && match[0].replace(/\\\//g, "/") || url);
+    }
+  };
+  xhr.send();
 }
