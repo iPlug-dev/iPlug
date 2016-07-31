@@ -58,6 +58,16 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
 				sendResponse({url: url});
 			}
     		break;
+        case "checkImageHeaders":
+            try {
+                checkImageHeaders(request.url, function(isImage) {
+                    sendResponse({isImage: isImage});
+                });
+            } catch(ex) {
+                sendResponse({isImage: false});
+            }
+            break;
+        
     	default:
     		console.error("wtf, unknown request '" + request.type + "'\nsender:", sender, "\nrequest:", request);
     }
@@ -66,8 +76,20 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
 });
 
 
+function checkImageHeaders(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('HEAD', url);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            callback(/^Content-Type: image/im.test(xhr.getAllResponseHeaders()));
+        }
+    };
+    xhr.send(null);
+}
+
+
 function getRealImage(url, callback) {
-    var xhr = new XMLHttpRequest;
+    var xhr = new XMLHttpRequest();
     xhr.open('GET', url);
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
