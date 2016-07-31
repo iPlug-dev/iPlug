@@ -13,9 +13,8 @@ define(["iplug/class", "iplug/settings", "iplug/visualizations/style1/bar", "ipl
             this.image.src = "";
             this.image.loaded = false;
             this.offset = (isFinite(this.offset) && !isNaN(this.offset)) ? this.offset : 0;
-
             this.title = {
-                state: 1, //0 = no animation, 1 = stay, 2 = go left & stay
+                state: 0, //0 = no animation, 1 = stay, 2 = go left & stay
                 changed: 0, //internal
                 offset: 0, //internal
                 offsetMax: 0, //internal
@@ -25,7 +24,7 @@ define(["iplug/class", "iplug/settings", "iplug/visualizations/style1/bar", "ipl
                 }
             };
             this.author = {
-                state: 1, //0 = no animation, 1 = stay, 2 = go left & stay
+                state: 0, //0 = no animation, 1 = stay, 2 = go left & stay
                 changed: 0, //internal
                 offset: 0, //internal
                 offsetMax: 0, //internal
@@ -89,6 +88,8 @@ define(["iplug/class", "iplug/settings", "iplug/visualizations/style1/bar", "ipl
                 this.offset = (this.offset + ctx.canvas.width / 502 * time.delta / 1000 * (Settings.visualizations.style1.rotationSpeed.static + Settings.visualizations.style1.rotationSpeed.dynamic * this.speedA.reduce(function(p, c, i, a) {
                     return p + c / (a.length || 1);
                 }, 0))) % ((1 + 2 / Settings.visualizations.style1.colors.length) * ctx.canvas.width);
+
+                this.offset = (isFinite(this.offset) && !isNaN(this.offset)) ? this.offset : 0;
 
                 this.gradient = ctx.createLinearGradient(-this.offset, 0, ctx.canvas.width * (2 + 2 / (Settings.visualizations.style1.colors.length)) - this.offset, 0);
 
