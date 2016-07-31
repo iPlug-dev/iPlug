@@ -15,7 +15,7 @@ font-family: 'Fjalla One', sans-serif;
     width:10px !important;
 }
 ::-webkit-scrollbar-thumb {
-    background:#4e4e4e !important;
+    background:#282c35 !important;
     min-height:35px !important;
 }
 ::-webkit-scrollbar-thumb, ::-webkit-scrollbar-track {
@@ -926,7 +926,7 @@ body.topvotebar .pop-menu.grab {
 #chat.over {
 	z-index: 120006 !important;
 }
-#iplug-overlay, #iplug-overlay2 {
+#iplug-overlay, #iplug-overlay2, #iplug-search-emojis {
     bottom: 0px;
     left: 0px;
 	right: 0px;
@@ -947,12 +947,12 @@ body.topvotebar .pop-menu.grab {
     margin: auto;
 	z-index: 120002;
 }
-#iplug-overlay2.above-chat {
+#iplug-overlay2.above-chat, #iplug-search-emojis {
 	z-index: 120005 !important;
 }
 .chat-img {
 	max-width: 100%;
-	cursor: pointer;
+	cursor: wait;
 	margin-top: 5px;
 	max-height: calc(270px * 4 / 3);
 }
@@ -1161,3 +1161,141 @@ body.topvotebar .pop-menu.grab {
     max-width: 30px;
     max-height: 30px;
 }*/
+#chat-suggestion-items .icon-search {
+    top: -5px;
+    left: -4px;
+}
+#chat-suggestion-items .chat-suggestion-item.emo:first-child .value::first-letter {
+    font-size: 0
+}
+#chat-suggestion-items .chat-suggestion-item.emo:first-child .value {
+    width: 111px;
+    overflow: hidden;
+}
+.cm.promo {
+    display: none;
+}
+.spinning {
+    -webkit-animation-name: spinner;
+    -webkit-animation-duration: 2s; 
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-name: spinner;
+    animation-duration: 2s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+.largeImageScroller {
+
+}
+#iplug-search-emojis {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+#iplug-search-emojis > div {
+    background-color: #282c35;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 600px;
+    height: 650px;
+}
+#iplug-search-emojis .title, #iplug-search-emojis .close {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    text-align: center;
+
+}
+#iplug-search-emojis .title {
+    top: 0;
+    height: 48px; /*55 - 7*/
+    padding-top: 7px;
+    font-size: 28px;
+}
+#iplug-search-emojis .icon-dialog-close {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+}
+#iplug-search-emojis .close {
+    color: #808691;
+    bottom: 0;
+    height: 43px; /*55 - 12*/
+    padding-top: 12px;
+    font-size: 22px;
+    cursor: pointer;
+}
+#iplug-search-emojis > div > div { /*content*/
+    width: 100%;
+    height: calc(100% - 110px);
+    position: absolute;
+    left: 0;
+    top: 55px;
+    background-color: #111317;
+}
+#emojiSearchResults {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    overflow-x: hidden;
+    height: 420px; /*blaze ittt*/
+}
+#emojiSearchResults::-webkit-scrollbar-thumb {
+    background-color: #282c35 !important;
+}
+#emojiSearchResults div { /*emojis*/
+    display: inline-block;
+    position: relative;
+    height: 58px;
+    width: 102px;
+    border: 1px solid #282c35;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #282c35;
+    cursor: pointer;
+}
+#emojiSearchResults div:hover {
+    border-color: #009cdd;
+}
+#emojiSearchResults img {
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    max-height: 28px;
+    max-width: 102px;
+}
+#emojiSearchResults span {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    position: absolute;
+    display: block;
+    top: 36px;
+}
+#emojiSearchCount {
+    color: #777C86;
+    position: absolute;
+    right: 20px;
+}
+input.iplug {
+    outline: 0;
+    border: 0;
+    background: 0 0;
+    color: #eee;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: "Open Sans",sans-serif;
+    height: 46px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: solid 1px #404a59;
+    margin: 20px;
+    width: calc(100% - 62px); /* margin: 2 * 20px border: 2 * 1px; padding: 2 * 10px total: 62px*/
+    background-color: #212328;
+}
+input.iplug:focus {
+    border-color: #009cdd;
+}

@@ -16,7 +16,9 @@
 		"*://*.prntscr.com/*",
 		"*://*.prnt.sc/*",
 		"*://*.gyazo.com/*",
-		"*://*.scr.hu/*"
+		"*://*.scr.hu/*",
+        "*://*.imgur.com/*",
+        "*://*/*"
     ],
     "optional_permissions": [
         "http://*/*",

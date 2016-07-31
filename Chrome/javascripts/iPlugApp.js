@@ -1,10 +1,10 @@
-var chrome = "___URL___";
-console.log("CHROME", chrome);
+var idiot = "___URL___";
+//console.log("CHROME", idiot);
 
 requirejs.config({
     paths: {
-        "iplug": chrome + "javascripts/iplug",
-        "sketch": chrome + "javascripts/sketch"
+        "iplug": idiot + "javascripts/iplug",
+        "sketch": idiot + "javascripts/sketch"
     }
 });
 
@@ -274,6 +274,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 
     $('body').keyup(function (e) {
         if (e.keyCode !== 32 || $("#chat-input").hasClass("focused") || $("#dialog-container").css("display") === "block") return;
+        if (document.activeElement.tagName === "INPUT") return;
         $("#volume > .button").click();
     });
 
@@ -312,11 +313,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         smartAutoJoin(); // init settings
         JN();
     });
-    API.on(API.CHAT, function () {
+    API.on(API.CHAT, function (a) {
         var img = localStorage["iplug|imagesenabled"] === "block";
         var vid = localStorage["iplug|videosenabled"] === "block";
         if (img || vid)
-            convertChat(img, vid);
+            convertChat(img, vid, $(".cid-" + a.cid));
     });
     var backgroundcarddeck = "";
     Object.keys(backgrounds).forEach(function (e) {
@@ -816,7 +817,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     $("#dialog-container").bind("DOMNodeInserted", function (e) {
         var target = $(e.target);
         if (target.attr("class") !== "dialog-frame" || target.parent().attr("id") !== "dialog-preview" || target.parent().children(".dialog-frame:first")[0] !== target[0]) return;
-        initdownloadbutton(target)
+        try {
+            initdownloadbutton(target)
+        } catch(ex) {
+            console.warn("wtf", ex);
+        }
     });
 
     function initdownloadbutton(target) {
@@ -1170,20 +1175,33 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     });
     var ytresps = {};
 
-    function convertChat(allowImg, allowVid, first) {
-        $("#chat-messages a").each(function (i, a) {
+    function isChatBottom() {
+        return $("#chat-messages")[0].scrollHeight <= $("#chat-messages").scrollTop() + $("#chat-messages").innerHeight() + 5;
+    }
+
+    function scrollChatToBottom() {
+        $("#chat-messages").scrollTop($("#chat-messages")[0].scrollHeight - $("#chat-messages").innerHeight());
+    }
+
+    function convertChat(allowImg, allowVid, scope, first) {
+        scope.find("a").each(function (i, a) {
             a = $(a);
             var text = a.attr("href");
-            if (allowImg && /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]\.(?:jpg|gif|png)\b)/i.test(text)) {
-                var el = $("<img src='" + text + "' class='chat-img'>");
-                getRealImageSize(text, function (size) {
-                    el.css({
-                        cursor: "pointer"
-                    });
-                    bindOpenImg(el, text, size);
+            if (allowImg) {
+            	checkRealImage(text, function(response) {
+            		if (!response)
+            			return;
+            		response.image.addClass("chat-img");
+                    var atBottom = isChatBottom();
+                	a.replaceWith(response.image);
+                    if (atBottom)
+                        scrollChatToBottom();
+            	}, function(response) {
+                    response.image.css({cursor: "pointer"});
+                    bindOpenImg(response);
                 });
-                a.replaceWith(el);
-            } else if (allowVid) {
+            }
+            if (allowVid) {
                 var yt = text.match(/youtu(?:\.be|be\.com)(?=[^ \n\r]*(?:&|#|\?)(?:t|time[^= \n\r]+)=((?:[\d]+m)?[\d]+)|)[^ \n\r]*(?:\/embed)?(?:\/|\?)(?:watch|v)?\/?(?:\?(?:.*&)?v)?=?([\w_-]{11})(?:\?|&|$|\n|\r| )/i);
                 if (yt) {
                     var id = yt[2];
@@ -1215,7 +1233,10 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                     });
                     t = t[0] + 60 * (t[1] || 0);
                     bindOpenYt(el, grab, id, t);
+                    var atBottom = isChatBottom();
                     a.replaceWith(el);
+                    if (atBottom)
+                        scrollChatToBottom();
                     if (ytresps[id])
                         finish();
                     else
@@ -1242,30 +1263,37 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
         if (!first)
             setTimeout(function () {
-                convertChat(allowImg, allowVid, true);
+                convertChat(allowImg, allowVid, scope, true);
             }, 250);
     }
 
-    function bindOpenImg(el, url, size) {
+    function bindOpenImg(response) {
+    	var url = response.url;
+    	var el = response.image;
         el.one("click", function () {
             if ($("#iplug-overlay2 :not(iframe)").length)
                 $("#iplug-overlay2").click();
             if (!canOpenDialog())
-                return bindOpenImg(el, url, size);
+                return bindOpenImg(response);
             var offset = el.offset();
-            var image = $("<img src='" + url + "'>").css({
-                position: "fixed",
-                zIndex: "120005",
-                width: el.width(),
-                height: el.height,
-                left: offset.left,
-                top: offset.top
-            });
-            var overlay = createPopup().append(image).addClass("above-chat");
-            var maxscale = Math.min(window.innerWidth * 0.8 / size.width, window.innerHeight * 0.8 / size.height);
+            var maxscale = Math.min(3, Math.min(window.innerWidth * 0.8 / response.width, window.innerHeight * 0.8 / response.height));
             var scale = Math.min(1, maxscale);
-            var X = size.width * scale;
-            var Y = size.height * scale;
+            var X = response.width * scale;
+            var Y = response.height * scale;
+            var image = $("<img src='" + url + "'>");
+            if (response.height > 4 * response.width && scale < 0.25) { //image is super long, make scroller (TODO: DOESNT WORK YET I THINK)
+            	image = image.wrap("<div>").addClass("largeImageScroller");
+            } else {
+	            image.css({
+	                position: "fixed",
+	                zIndex: "120005",
+	                width: el.width(),
+	                height: el.height,
+	                left: offset.left,
+	                top: offset.top
+	            });
+	        }
+            var overlay = createPopup().append(image).addClass("above-chat");
             image.animate({
                 width: X,
                 height: Y,
@@ -1275,7 +1303,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                 duration: 250,
                 easing: "easeInOutQuint",
                 complete: function () {
-                    if (scale === 1) {
+                    if (scale === 1 && maxscale > 1.5) {
                         var zoomedIn = false;
                         var animating = false;
                         image.css({
@@ -1285,8 +1313,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                                 return;
                             animating = true;
                             var newscale = zoomedIn ? 1 : maxscale;
-                            var X = size.width * newscale;
-                            var Y = size.height * newscale;
+                            var X = response.width * newscale;
+                            var Y = response.height * newscale;
                             image.css({
                                 cursor: zoomedIn ? "zoom-in" : "zoom-out"
                             }).animate({
@@ -1316,7 +1344,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                         });
                         image.stop().remove();
                         e.preventDefault();
-                        bindOpenImg(el, url, size);
+                        bindOpenImg(response);
                     }
                 }
             });
@@ -1356,7 +1384,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             $("#chat").addClass("over");
             var overlay = createPopup().append(iframe);
 
-            crl = new window.YT.Player(iframe[0], {
+            var crl = new window.YT.Player(iframe[0], {
                 width: width,
                 height: width * 9 / 16,
                 videoId: id,
@@ -1407,22 +1435,69 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 
     $("body").append("<div id='iplug-overlay2' style='display: none'>");
 
+
     function createPopup() {
         return $("#iplug-overlay2").css({
             display: "block"
         });
     }
 
-    function getRealImageSize(src, callback) {
-        $("<img/>")
-            .attr("src", src)
-            .load(function () {
-                callback({
-                    width: this.width,
-                    height: this.height
+	function checkRealImage(url, callback, sizecallback) {
+        var needResponse = true;
+        var img;
+		if (/prntscr\.com|prnt\.sc|gyazo\.com|scr\.hu|imgur\.com\/(?!gallery)[^\/]{2,}(?:\/|$)/.test(url) && !/i(?:mage)?\.prnt|i.gyazo\.com|i\.imgur/i.test(url)) {
+            needResponse = false;
+            img = $("<img/>").attr({src: "chrome-extension://__EXTENSION_ID__/images/spinnergrey.png", class: "spinning"});
+            callback({
+                image: img,
+                url: "chrome-extension://__EXTENSION_ID__/images/spinnergrey.png"
+            });
+			chrome.runtime.sendMessage("__EXTENSION_ID__", {
+				type: "getRealImage",
+				url: url
+			}, function(response) {
+                var atBottom = isChatBottom();
+                img.attr({src: response.url}).removeClass("spinning");
+                if (atBottom)
+                    scrollChatToBottom();
+				go(response.url);
+			});
+		} else
+			go(url);
+
+		function go(url) {
+            if (!img)
+                img = $("<img/>").attr("src", url);
+            img.error(function(a) {
+                if (needResponse)
+                    callback(needResponse = false);
+            }).load(function(a) {
+                img.css({display: "none"});
+                var width = this.width,
+                    height = this.height;
+                img.css({display: ""});
+                sizecallback({
+                    image: img,
+                    url: url,
+                    width: width,
+                    height: height
                 });
             });
-    }
+            if (needResponse)
+                chrome.runtime.sendMessage("__EXTENSION_ID__", {
+                    type: "checkImageHeaders",
+                    url: url
+                }, function(response) {
+                    if (response.isImage)
+                        callback({
+                            image: img,
+                            url: url
+                        });
+                    else if (needResponse)
+                        callback(needResponse = false);
+                });
+	    }
+	}
 
     //scroll to change volume
     $("#volume").on("mousewheel", function (e) {
@@ -1598,7 +1673,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                     return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
                 }).join("|") + ")";
             }).join("|") + ")";
-        }).join("|") + "):", "g");
+        }).join("|") + "):", "ig");
 
         for (var key in window.emoji.data) {
             if (!window.emoji.data.hasOwnProperty(key)) continue;
@@ -1609,9 +1684,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         }
 
         //replacing
-        var replace_colons_old = emojiFilter.replace_colons;
+        var replaceColonsOld = emojiFilter.replace_colons;
         emojiFilter.replace_colons = function (str, x, y, z) {
-            var resp = replace_colons_old.apply(emojiFilter, arguments);
+        	if (z && str === ":SSearch All Emojis:")
+        		return "<i class='icon icon-search'></i>";
+            var resp = replaceColonsOld.apply(emojiFilter, arguments);
             var args = arguments;
             if (!x && !y)
                 resp = resp.replace(regex, function (a, b) {
@@ -1673,11 +1750,18 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                     if (max < this.suggestions.length)
                         this.suggestions.length = max;
                 } else this.suggestions = this.suggestions.slice(0, max);
-                this.suggestions = this.suggestions;
-                if (this.suggestions.length)
-                    this.type = ":";
-                else
+                if (this.lastEmpty)
+                    this.index = 1;
+                this.lastEmpty = !this.suggestions.length;
+                if (this.suggestions.length === 0)
                     return false;
+                else
+                    this.suggestions.unshift("SSearch All Emojis");
+                this.type = ":";
+                if (this.index === -1)
+                	this.index = 1;
+                this.lastEmojiSearch = str.substr(n + 1, len);
+                this.lastLength = len;
             }
         };
 
@@ -1697,8 +1781,115 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             }
         }
 
+
+
+        //search all
+        var search = $("<div id='iplug-search-emojis' style='display: none'>");
+        var content = $('<div><span class="title">Search All Emojis</span><i class="icon icon-dialog-close"></i><div><input type="text" id="emojiSearch" placeholder="Search for emoji" class="iplug"><div id="emojiSearchResults"></div><span id="emojiSearchCount"></span></div><span class="close">Close</span>');
+        content.on("click", function(e) {
+            e.stopPropagation();
+        }).appendTo(search);
+        search.appendTo("body").add("#iplug-search-emojis .close, #iplug-search-emojis .icon-dialog-close").on("click", function() {
+            search.css({display: "none"});
+        });
+
+        //initialise worker
+        var blobURL = URL.createObjectURL(new Blob(['(',
+        function() {
+            onmessage = function(m) {
+                var allEmotes = m.data;
+                var keys = Object.keys(allEmotes).sort().reverse();
+                onmessage = function(m) {
+                    var str = m.data;
+                    postMessage({
+                        query: str,
+                        result: keys.filter(function(a) {
+                            return -1 !== a.indexOf(str);
+                        }).map(function(key) {
+                            return "<div><img src='" + allEmotes[key] + "'></img><span>" + key + "</span></div>"
+                        })
+                    });
+                }
+                postMessage(true); //init complete
+            };
+        }.toString(),
+        ')()'], {type: 'application/javascript'}));
+        var worker = new Worker(blobURL);
+        URL.revokeObjectURL(blobURL);
+
+        var chatInputRange;
+        var chatInputBefore;
+        var chatInputAfter;
+        var input = $("#emojiSearch");
+        var output = $("#emojiSearchResults");
+        worker.onmessage = function() {
+            var lastQuery = "";
+            input.on("input", function() {
+                if (input.val().length < 2) return;
+                lastQuery = input.val();
+                worker.postMessage(input.val());
+                output.empty();
+            });
+
+            worker.onmessage = function(m) {
+                if (m.data.query !== lastQuery) return;
+                output.empty();
+                $("#emojiSearchCount").text(m.data.result.length + " results");
+                one(m.data.result, m.data.query);
+
+                function one(array, query) {
+                    for (var i = 0; i < 20; i++)
+                        output.append(array.pop());
+                    if (m.data.query === lastQuery)
+                        setTimeout(one, 0, array, query);
+                }
+            }
+        };
+        worker.postMessage(allEmotes);
+
+        output.on("click", "*", function() {
+            output.empty();
+            search.css({display: "none"});
+
+            var chatInput = document.getElementById("chat-input-field");
+            chatInput.value = chatInputBefore + $(this).children("span").text() + ":" + (chatInputAfter[0] === " " ? "" : " ") + chatInputAfter;
+            chatInput.focus();
+            chatInput.selectionEnd = chatInput.selectionStart = chatInputRange[0] + $(this).children("span").text().length + 2;
+        });
+
+        var plugChat = [];
+        $.each(require.s.contexts._.defined, function(i, plugChat){
+            if (plugChat && plugChat.prototype && plugChat.prototype.onLevelChange && plugChat.prototype.playSound) {
+                var submitSuggestionOld = plugChat.prototype.submitSuggestion;
+                plugChat.prototype.submitSuggestion = function() {
+                    if ("SSearch All Emojis:" === this.suggestionView.getSelected()) {
+                        chatInputRange = this.suggestionView.type === "@" ? this.getMentionRange() : this.getEmojiRange();
+                        chatInputBefore = this.chatInput.value.substr(0, chatInputRange[0]);
+                        chatInputAfter = this.chatInput.value.substr(chatInputRange[1]);
+                        this.chatInput.value = this.chatInput.value.substr(0, chatInputRange[0] - 1) + this.chatInput.value.substr(chatInputRange[1]);
+                        this.chatInput.setSelectionRange(chatInputRange[0], chatInputRange[0]);
+                        this.suggestionView.reset();
+                        this.suggestionView.updateSuggestions();
+
+                        //open emoji search
+                        search.css({display: "block"});
+                        input.val(this.suggestionView.lastEmojiSearch).trigger("input").focus();
+
+                    } else submitSuggestionOld.apply(this, arguments);
+                }
+            }
+        });
+
+
+        /*
         var getSelectedOld = plugSugg.prototype.getSelected;
         plugSugg.prototype.getSelected = function () {
+        	if (this.type === ":" && this.index === 0) {
+        		setTimeout(function() {
+
+        		}, 0);
+        		return ""
+        	}
             if (canSkip && laststr.length === 1) {
                 setTimeout(function () {
                     var e = jQuery.Event("keydown");
@@ -1707,7 +1898,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                 }, 0);
                 return laststr;
             } else return getSelectedOld.apply(this, arguments);
-        };
+        };*/
 
         $("#chat-input-field").preBind("keydown", function (e) {
             if (e.keyCode === 18)
@@ -1982,12 +2173,12 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         case "imagesenabled":
             return function () {
                 if (enabled)
-                    convertChat(true, false);
+                    convertChat(true, false, $("#chat-messages"));
             }
         case "videosenabled":
             return function () {
                 if (enabled)
-                    convertChat(false, true);
+                    convertChat(false, true, $("#chat-messages"));
             }
         }
         return function () {};
