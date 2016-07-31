@@ -19,6 +19,5 @@ define({
         MIN: 0.001,
         MAX: 0.005
     },
-    LIMIT: 75,
-    FFTSize: 256
+    LIMIT: 185
 });

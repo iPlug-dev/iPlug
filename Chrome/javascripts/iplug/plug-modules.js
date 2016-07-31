@@ -5,7 +5,7 @@ define([], function() {
         e: null,
         r: null,
         t: null,
-        y: undefined,
+        y: null,
         u: undefined,
         i: null,
         o: undefined,
@@ -65,6 +65,8 @@ define([], function() {
             requireIDs.q = requireIDs.q === null ? i : (console.warn("NOT NULL", "q", i), i);
         if (x[i].id && x[i].cb)
             requireIDs.t = requireIDs.t === null ? i : (console.warn("NOT NULL", "t", i), i);
+        if (x[i].onResize && x[i].getSize)
+            requireIDs.y = requireIDs.y === null ? i : (console.warn("NOT NULL", "y", i), i);
     }
     for (var i in requireIDs) {
         if (!requireIDs.hasOwnProperty) continue;

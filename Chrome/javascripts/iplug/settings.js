@@ -33,7 +33,12 @@ define(["iplug/class", "jquery"], function(Class, $) {
             enabled: true,
             style: 1, // 1 or 2 (coming 3)
             style1: {
-                bars: 150,
+                fftSize: 1024, //min 128, max 32768
+                colorRotation: true,
+                rotationSpeed: {
+                    static: 50,
+                    dynamic: 200
+                },
                 colors: [{
                     pos: 0.00,
                     color: {
@@ -140,14 +145,14 @@ define(["iplug/class", "jquery"], function(Class, $) {
                             }
                         } catch (e) {
                             console.warn("Settings parser", e);
-                            this.clear();
+                            n.clear();
                         }
-                        return this;
+                        return n;
                     }
                 case "save":
                     return function() {
                         localStorage[localStorageName] = JSON.stringify(settings);
-                        return this;
+                        return n;
                     }
                 case "clear":
                     return function() {
@@ -158,7 +163,7 @@ define(["iplug/class", "jquery"], function(Class, $) {
                         for (prop in data) {
                             settings[prop] = data[prop];
                         }
-                        return this;
+                        return n;
                     }
                 default:
                     return obj[prop];
