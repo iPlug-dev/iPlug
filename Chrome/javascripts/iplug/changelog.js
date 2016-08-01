@@ -26,6 +26,7 @@ define(function () {
         version: "0.2.6.0",
         text: ["-Search trough emotes!",
                "-Improved image loading!",
-               "-Indirect images now work! (prntscr, gyazo, ..)"]
+               "-Indirect images now work! (prntscr, gyazo, ..)",
+               "-Improved mention search!"]
     }]
 });

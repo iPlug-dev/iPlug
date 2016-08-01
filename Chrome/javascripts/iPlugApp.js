@@ -2415,7 +2415,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     API.on(API.CHAT_COMMAND, function(string) {
         var params = string.split(" ");
         if (params.shift() != "/flip") return;
-        setTimeout(function() {
+        API.sendChat(function() {
             $("#chat-input-field").val($.trim(strtr(strtr(params.join(" "), {
                 ä:"a",á:"a",à:"a",â:"a",ã:"a",Ä:"A",Á:"A",À:"A",Â:"A",Ã:"A",ë:"e",é:"e",è:"e",ê:"e",Ë:"E",É:"E",È:"E",Ê:"E",ï:"i",í:"i",ì:"i",î:"i",Ï:"I",Í:"I",Ì:"I",Î:"I",ö:"o",ó:"o",ò:"o",ô:"o",õ:"o",Ö:"O",Ó:"O",Ò:"O",Ô:"O",Õ:"O",ü:"u",ú:"u",ù:"u",û:"u",Ü:"U",Ú:"U",Ù:"U",Û:"U",ß:"ss"
             }), {
