@@ -1299,3 +1299,12 @@ input.iplug {
 input.iplug:focus {
     border-color: #009cdd;
 }
+#chat .cm .cm:not(:last-child) {
+    margin-bottom: -16px;
+}
+#chat .cm.odd {
+    background-color: #111317;
+}
+#chat .cm.even {
+    background-color: #0a0a0a;
+}
