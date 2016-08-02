@@ -2415,13 +2415,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     API.on(API.CHAT_COMMAND, function(string) {
         var params = string.split(" ");
         if (params.shift() != "/flip") return;
-        API.sendChat(function() {
-            $("#chat-input-field").val($.trim(strtr(strtr(params.join(" "), {
-                ä:"a",á:"a",à:"a",â:"a",ã:"a",Ä:"A",Á:"A",À:"A",Â:"A",Ã:"A",ë:"e",é:"e",è:"e",ê:"e",Ë:"E",É:"E",È:"E",Ê:"E",ï:"i",í:"i",ì:"i",î:"i",Ï:"I",Í:"I",Ì:"I",Î:"I",ö:"o",ó:"o",ò:"o",ô:"o",õ:"o",Ö:"O",Ó:"O",Ò:"O",Ô:"O",Õ:"O",ü:"u",ú:"u",ù:"u",û:"u",Ü:"U",Ú:"U",Ù:"U",Û:"U",ß:"ss"
-            }), {
-                ",":"\u02bb","!":"\u00a1","?":"\u00bf",".":"\u0387","'":"\u02cc","\"":"\u02cc\u02cc","*":"\u2093","&":"\u214b","1":"\u0196","2":"\u0547","3":"\u0190","4":"h","5":"\u0aec","6":"9","7":"L","9":"6","A":"\u2200","a":"\u0250","b":"q","B":"\u0a98","c":"\u0254","C":"\u0186","d":"p","D":"\u10a7","e":"\u0259","E":"\u018e","F":"\u2132","f":"\u025f","g":"\u0253","G":"\u2141","h":"\u0265","i":"\u0131","j":"\u017f","J":"\u017f","k":"\u029e","K":"\u029e","L":"\u10a8","l":"\u0e45","M":"W","m":"\u026f","n":"u","P":"\u0500","p":"d","Q":"\u1ff8","q":"b","R":"\u0b27","r":"\u0279","T":"\u22a5","t":"\u0287","U":"\u2229","u":"n","V":"\u039b","v":"\u028c","w":"\u028d","W":"M","Y":"\u2144","y":"\u028e"
-            })).split("").reverse().join(""));
-        });
+        API.sendChat($.trim(strtr(strtr(params.join(" "), {
+            ä:"a",á:"a",à:"a",â:"a",ã:"a",Ä:"A",Á:"A",À:"A",Â:"A",Ã:"A",ë:"e",é:"e",è:"e",ê:"e",Ë:"E",É:"E",È:"E",Ê:"E",ï:"i",í:"i",ì:"i",î:"i",Ï:"I",Í:"I",Ì:"I",Î:"I",ö:"o",ó:"o",ò:"o",ô:"o",õ:"o",Ö:"O",Ó:"O",Ò:"O",Ô:"O",Õ:"O",ü:"u",ú:"u",ù:"u",û:"u",Ü:"U",Ú:"U",Ù:"U",Û:"U",ß:"ss"
+        }), {
+            ",":"\u02bb","!":"\u00a1","?":"\u00bf",".":"\u0387","'":"\u02cc","\"":"\u02cc\u02cc","*":"\u2093","&":"\u214b","1":"\u0196","2":"\u0547","3":"\u0190","4":"h","5":"\u0aec","6":"9","7":"L","9":"6","A":"\u2200","a":"\u0250","b":"q","B":"\u0a98","c":"\u0254","C":"\u0186","d":"p","D":"\u10a7","e":"\u0259","E":"\u018e","F":"\u2132","f":"\u025f","g":"\u0253","G":"\u2141","h":"\u0265","i":"\u0131","j":"\u017f","J":"\u017f","k":"\u029e","K":"\u029e","L":"\u10a8","l":"\u0e45","M":"W","m":"\u026f","n":"u","P":"\u0500","p":"d","Q":"\u1ff8","q":"b","R":"\u0b27","r":"\u0279","T":"\u22a5","t":"\u0287","U":"\u2229","u":"n","V":"\u039b","v":"\u028c","w":"\u028d","W":"M","Y":"\u2144","y":"\u028e"
+        })).split("").reverse().join(""));
 
         //php's strtr for javascript (replace arrays)
         function strtr(e,t,n){var r="",i=0,s=0,o=0,u=0,a=false,f="",l="",c="";var h=[];var p=[];var d="";var v=false;if(typeof t==="object"){for(r in t){if(t.hasOwnProperty(r)){h.push(r);p.push(t[r])}}t=h;n=p}o=e.length;u=t.length;f=typeof t==="string";l=typeof n==="string";for(i=0;i<o;i++){v=false;if(f){c=e.charAt(i);for(s=0;s<u;s++){if(c==t.charAt(s)){v=true;break}}}else{for(s=0;s<u;s++){if(e.substr(i,t[s].length)==t[s]){v=true;i=i+t[s].length-1;break}}}if(v){d+=l?n.charAt(s):n[s]}else{d+=e.charAt(i)}}return d}
