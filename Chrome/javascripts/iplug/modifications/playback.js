@@ -1,59 +1,56 @@
 define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "iplug/visualizations/processor", "jquery", "underscore"], function(Modules, Settings, Core, Processor, $, _) {
-    var p = require(Modules["p"]); //playback
     var s = require(Modules["s"]); //now playing
     var z = require(Modules["z"]); //settings
     var t = require(Modules["t"]); //soundcloud
     var a = require(Modules["a"]); //eventemitter
 
-    //TODO: REWRITE P = ...context
+    var p = null;
+    var c;
+    var d;
 
-    for (var i = 0; i < s._events["change:media"].length; i++) {
-        var c = s._events["change:media"][i].callback;
-        if (c.name === "onMediaChange" && c.toString().indexOf("soundcloud-support.s3.amazonaws.com") > -1) {
-            for (var j = 0; j < a._events["change:streamDisabled"].length; j++) {
-                var d = a._events["change:streamDisabled"][j].callback;
-                if (d === c) {
-                    console.log("Unbound A", j);
-                    console.log("Unbound B", i);
-                    a._events["change:streamDisabled"][j].context.reset.call(a._events["change:streamDisabled"][j].context);
-                    a._events["change:streamDisabled"].splice(j, 1);
-                    s._events["change:media"].splice(i, 1);
-                    break;
+    for (var i = 0, found = false; !found && i < s._events["change:media"].length; i++) {
+        for (var j = 0; !found && j < a._events["change:streamDisabled"].length; j++) {
+            for (var k = 0; !found && k < s._events["change:remaining"].length; k++) {
+                for (var l = 0; !found && l < s._events["change:volume"].length; l++) {
+
+                    c = s._events["change:media"][i];
+                    d = a._events["change:streamDisabled"][j];
+                    var e = s._events["change:remaining"][k];
+                    var f = s._events["change:volume"][l];
+
+                    if (f.callback.name === "onVolumeChange") {
+                        if (e.callback.name === "onRemainingChange") {
+                            if (c.callback.name === "onMediaChange") {
+                                if (d.callback === c.callback) {
+                                    if (c.context == d.context && d.context == e.context && e.context == f.context) {
+                                        console.log("Context found", i, j, k, l);
+                                        p = a._events["change:streamDisabled"][j].context;
+                                        found = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 
-    for (var i = 0; i < s._events["change:remaining"].length; i++) {
-        var c = s._events["change:remaining"][i].callback;
-        if (c.name === "onRemainingChange") {
-            console.log("Unbound C", i);
-            s._events["change:remaining"].splice(i, 1);
-            break;
-        }
-    }
+    if (p === null) throw new Error("Playback modification: context not found!");
 
-    for (var i = 0; i < s._events["change:volume"].length; i++) {
-        var c = s._events["change:volume"][i].callback;
-        if (c.name === "onVolumeChange" && c.toString().indexOf("player") > -1) {
-            console.log("Unbound D", i);
-            s._events["change:volume"].splice(i, 1);
-            break;
-        }
-    }
+    p._reset = p.reset;
+    p._onResize = p.onResize;
 
-    p.prototype._reset = p.prototype.reset;
-    p.prototype._onResize = p.prototype.onResize;
-    p.prototype.reset = function() {
+    p.reset = function() {
         Core.reset();
         return this._reset.apply(this, arguments);
     };
-    p.prototype.onResize = function() {
+    p.onResize = function() {
         var r = this._onResize.apply(this, arguments);
         Core.onResize();
         return r;
     };
-    p.prototype.onSnoozeClick = function() {
+    p.onSnoozeClick = function() {
         this.reset();
         this.stop();
         this.$ytIframe.hide();
@@ -62,7 +59,7 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
         this.$controls.addClass("snoozed");
     };
 
-    p.prototype.onMediaChange = function() {
+    c.callback = d.callback = p.onMediaChange = function() {
         var s = require(Modules["s"]); //now playing
         this.reset();
         this.$controls.removeClass("snoozed");
@@ -185,26 +182,5 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
             this.$controls.hide();
         }
     };
-    var playback = new p();
-    $("#playback").empty().replaceWith(playback.$el);
-    playback.render();
-    playback.onRefreshClick();
-
-    //TRIGGER MODULE plug-background "d2f19/cff9b/bc78d"
-
-    /* DONE
-    u.on("change:volume", this.onVolumeChange, this).on("change:media", this.onMediaChange, this).on("change:remaining", this.onRemainingChange, this),
-r.on("change:streamDisabled", this.onMediaChange, this)
-
-
-
-TODO!!!!!!
-    r.on("playback:block", this.block, this).on("playback:unblock", this.unblock, this)
-
-    */
-
-    /*require("d2f19/ae79a/f1afc/b83f5").loadBG = function() {
-
-    }*/
-    return playback;
+    return p;
 });
