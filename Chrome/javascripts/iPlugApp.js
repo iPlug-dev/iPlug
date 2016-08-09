@@ -1803,7 +1803,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                     return a.substr(0, f.length).toLowerCase() === f;
                 }).sort();
                 var searchRegex = new RegExp(f.split("").map(function(a) {
-                    return REGEXUNICODELETTERS[a] || a;
+                    return REGEXUNICODELETTERS[a] || ("\\" + a);
                 }).join(""), "i");
                 this.suggestions = this.suggestions.concat(names.filter(function(a) {
                     return first.indexOf(a) == -1 && searchRegex.test(a);
