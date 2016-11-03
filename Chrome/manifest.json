@@ -2,27 +2,17 @@
     "name": "iPlug BETA",
     "short_name": "iPlug",
     "author": "L0laapk3 & CookieMichal",
-    "version": "0.2.5.3",
+    "version": "0.3.0.0",
     "manifest_version": 2,
     "description": "The most sexy plug.dj extension!",
     "icons": {
         "256": "images/Chrome/icon256.png"
     },
     "permissions": [
-        "*://*.plug.dj/*",
         "storage",
         "notifications",
         "contextMenus",
-		"*://*.prntscr.com/*",
-		"*://*.prnt.sc/*",
-		"*://*.gyazo.com/*",
-		"*://*.scr.hu/*",
-        "*://*.imgur.com/*",
         "*://*/*"
-    ],
-    "optional_permissions": [
-        "http://*/*",
-        "https://*/*"
     ],
     "externally_connectable": {
         "matches": [

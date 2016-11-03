@@ -22,7 +22,7 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
                         if (e.callback.name === "onRemainingChange") {
                             if (c.callback.name === "onMediaChange") {
                                 if (d.callback === c.callback) {
-                                    if (c.context == d.context && d.context == e.context && e.context == f.context) {
+                                    if (c.context === d.context && d.context === e.context && e.context === f.context) {
                                         console.log("Context found", i, j, k, l);
                                         p = a._events["change:streamDisabled"][j].context;
                                         found = true;
@@ -72,7 +72,7 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
                 var ela = s.get("elapsed");
                 var o = ela < 4 ? 0 : ela;
                 console.log("elapsed", ela, o);
-                if (n.get("format") === 1) { //youtube = 1, sc = 2
+                if (n.get("format") === 1) { //youtube = 1
                     this.buffering = !1;
                     this.yto = {
                         id: n.get("cid"),
@@ -101,7 +101,7 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
                     this.$syncIframe.hide();
                     if (this.$ipIframe) this.$ipIframe.hide();
                     this.$scIframe.hide();
-                } else if (n.get("format") === 2) {
+                } else if (n.get("format") === 2) { //sc = 2
                     if (Settings.visualizations.enabled) {
                         if (!this.$ipIframe) {
                             this.$ipIframe = Core.render(this.$container);
@@ -182,5 +182,8 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
             this.$controls.hide();
         }
     };
+    if (s.get("media") && s.get("media").get("format") === 2 && Settings.visualizations.enabled) {
+        p.onMediaChange();
+    }
     return p;
 });
