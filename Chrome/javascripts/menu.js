@@ -106,6 +106,36 @@
 				<span>Advanced Autowoot Timing</span>
 			</div>
 		</div>
+        <div id="mehoptions" class="subcontainer">
+			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
+            <div class="noitem link">
+                <span class="subtitle">Meh Options</span>
+            </div>
+            <div id="playmehenabled" class="item item-iplug">
+                <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playmehenabled'] + '"></i>
+                <span>Play song from playlists when mehing</span>
+            </div>
+            <div id="remembermehsenabled" class="item item-iplug">
+                <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|remembermehsenabled'] + '"></i>
+                <span>Remember Mehs</span>
+            </div>
+            <div class="noitem clickable" id="managemehs">
+                <span>Manage meh&#39;d songs</span>
+            </div>
+        </div>
+        <div id="playlistoptions" class="subcontainer">
+			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
+            <div class="noitem">
+                <span class="subtitle">Playlist Options</span>
+            </div>
+            <div id="multiplaylistenabled" class="item item-iplug">
+                <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|multiplaylistenabled'] + '"></i>
+                <span>MultiPlaylist</span>
+            </div>
+            <div class="noitem clickable">
+                <span>Remove duplicate songs</span>
+            </div>
+        </div>
 		<div class="subcontainer" id="chatoptions">
 			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
 			<div class="noitem">

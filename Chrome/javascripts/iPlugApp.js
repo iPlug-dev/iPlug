@@ -99,6 +99,15 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     if (undefined === localStorage["iplug|videosenabled"]) {
         localStorage["iplug|videosenabled"] = "block";
     }
+    if (undefined === localStorage["iplug|playmehenabled"]) {
+        localStorage["iplug|playmehenabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|remembermehsenabled"]) {
+        localStorage["iplug|remembermehsenabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|multiplaylistenabled"]) {
+        localStorage["iplug|multiplaylistenabled"] = "none";
+    }
 
     $("#playback > .background").css({
         display: (localStorage["iplug|playbackborder"] === "none") ? "block" : "none"
@@ -1490,6 +1499,40 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 	    }
 	}
 
+	//automeh songs
+	var mehstorage = (localStorage["iplug|mehstorage"] || "").split(" ");
+	var nowmehd = false;
+	$("#vote").on("click", function() {
+	  setTimeout(function() {
+	    var mehd = $("#meh").hasClass("active");
+	    var media = API.getMedia();
+	    var songstr = media.format + media.cid;
+	    if (mehd) {
+	    	if ((localStorage['iplug|remembermehsenabled'] !== "block") && !nowmehd) return;
+	    	if (mehstorage.indexOf(songstr) > -1) return;
+	    	mehstorage.push(songstr);
+	    	localStorage["iplug|mehstorage"] = mehstorage.join(" ");
+	    } else {
+	    	nowmehd = true;
+	    	var index = mehstorage.indexOf(songstr);
+	    	if (index === -1) return;
+	    	mehstorage.pop(index);
+	    	localStorage["iplug|mehstorage"] = mehstorage.join(" ");
+	    }
+	  }, 0);
+	});
+	API.on(API.ADVANCE, function(a) {
+		nowmehd = false;
+		if (localStorage['iplug|remembermehsenabled'] !== "block") return;
+		if (mehstorage.indexOf(a.media.format + a.media.cid) > -1) $("#meh").click();
+	});
+
+	//display meh storage
+	$("managemehs").on("click", function() {
+		//WIP
+	});
+
+
     //scroll to change volume
     $("#volume").on("mousewheel", function (e) {
         if (e.deltaY > 0) return API.setVolume(API.getVolume() + 5);
@@ -1753,6 +1796,16 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                     while (/(?:^|\u00a0)([^\u00a0]+)\u00a0([^\u00a0]+)\u00a0(.+)(?:$|\u00a0)/.test(resp))
                 }
             }
+            setTimeout(function() {
+            	$("#chat-suggestion-items > .chat-suggestion-item:has(.icon-search)").unbind("click mousedown").on("click", function() { //take over search emoji button
+            		var val = $("#chat-input-field").val();
+            		$("#chat-input-field").val(val.substring(0, lastEmojiCursorPos) + val.substring(lastEmojiCursorPos + lastEmojiPart.length + 1));
+            		//open emoji search (on mouseclick)
+            		searchEmojiMode = false;
+            		search.css({display: "block"});
+                    input.val(lastEmojiPart).trigger("input").focus();
+            	});
+            }, 0);
             return resp;
         };
         window.emojiTooltip = function (that) {
@@ -1809,6 +1862,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         var last = "";
 
         var laststr = "";
+        var lastEmojiPart = "";
+        var lastEmojiCursorPos = 0;
         plugSugg.prototype.check = function (str, len) {
             var max = 30;
             var n = str.lastIndexOf("@");
@@ -1869,7 +1924,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                 this.type = ":";
                 if (this.index === -1)
                 	this.index = 1;
-                this.lastEmojiSearch = str.substr(n + 1, len);
+                lastEmojiPart = this.lastEmojiSearch = str.substr(n + 1, len);
+                lastEmojiCursorPos = n;
                 this.lastLength = len;
             }
         };
@@ -1929,6 +1985,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         var chatInputRange;
         var chatInputBefore;
         var chatInputAfter;
+        var searchEmojiMode;
         var input = $("#emojiSearch");
         var output = $("#emojiSearchResults");
         worker.onmessage = function() {
@@ -1961,9 +2018,12 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             search.css({display: "none"});
 
             var chatInput = document.getElementById("chat-input-field");
-            chatInput.value = chatInputBefore + $(this).children("span").text() + ":" + (chatInputAfter[0] === " " ? "" : " ") + chatInputAfter;
-            chatInput.focus();
-            chatInput.selectionEnd = chatInput.selectionStart = chatInputRange[0] + $(this).children("span").text().length + 2;
+            if (searchEmojiMode) {
+	            chatInput.value = chatInputBefore + $(this).children("span").text() + ":" + (chatInputAfter[0] === " " ? "" : " ") + chatInputAfter;
+	            chatInput.focus();
+	            chatInput.selectionEnd = chatInput.selectionStart = chatInputRange[0] + $(this).children("span").text().length + 2;
+	        } else
+	        	chatInput.value = chatInput.value.substring(0, lastEmojiCursorPos) + ":" + $(this).children("span").text() + ":" + (chatInput.value[lastEmojiCursorPos] === " " ? "" : " ") + chatInput.value.substring(lastEmojiCursorPos);
         });
 
         var plugChat = [];
@@ -1980,7 +2040,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                         this.suggestionView.reset();
                         this.suggestionView.updateSuggestions();
 
-                        //open emoji search
+                        //open emoji search (on enter)
+                        searchEmojiMode = true;
                         search.css({display: "block"});
                         input.val(this.suggestionView.lastEmojiSearch).trigger("input").focus();
 
@@ -2283,13 +2344,16 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             return function () {
                 if (enabled)
                     convertChat(true, false, $("#chat-messages"));
-            }
+            };
         case "videosenabled":
             return function () {
                 if (enabled)
                     convertChat(false, true, $("#chat-messages"));
-            }
+            };
+        case "remembermehsenabled":
+        	return function() {};
         }
+        console.error("iplug menu error: unknown option '" + id + "'");
         return function () {};
     }
 

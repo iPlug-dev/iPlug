@@ -5,6 +5,7 @@ define(["iplug/class", "iplug/utils/vote", "underscore"], function (Class, vote,
         },
         handler: function () {
             if (!this.isEnabled) return;
+            if ($("#meh").hasClass("active")) return; //todo: fix with define
             _.delay(_.bind(vote.woot, vote), this.getDelay());
         },
         isEnabled: function () {

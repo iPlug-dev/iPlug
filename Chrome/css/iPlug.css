@@ -415,6 +415,9 @@ font-family: 'Fjalla One', sans-serif;
     color: #282c35;
     border-radius: 10px;
 }
+.iplug-container .clickable {
+    cursor: pointer;
+}
 .iplug-alert {
     width: 510px;
     margin: auto;
@@ -573,7 +576,7 @@ font-family: 'Fjalla One', sans-serif;
     width: 160px;
     margin-left: 5px;
     border-radius: 5px;
-    background: url(chrome-extension://__MSG_@@extension_id__/images/fullgrreenplayer.png);
+    background: url(chrome-extension://__MSG_@@extension_id__/images/fullscreenplayer.png);
 }
 .backgroundtitle {
     margin-left: 10px !important;
@@ -658,6 +661,7 @@ font-family: 'Fjalla One', sans-serif;
     width: auto;
     right: 0;
 	z-index: -2;
+    border-right: #0A0A0A 1px solid;
 }
 #nowplayingbarcontainer {
     height: 54px;
@@ -1244,6 +1248,7 @@ body.topvotebar .pop-menu.grab {
     font-size: 28px;
 }
 #iplug-search-emojis .icon-dialog-close {
+    cursor: pointer;
     position: absolute;
     right: 12px;
     top: 12px;
