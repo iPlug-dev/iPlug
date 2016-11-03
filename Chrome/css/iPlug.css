@@ -250,13 +250,20 @@ font-family: 'Fjalla One', sans-serif;
 }
 .iplug-container .subcontainer .iplug-collapse {
     right: 15px;
-    cursor: pointer
+}
+.iplug-container .subcontainer .openhitbox {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 40px;
+    z-index: 1;
+    cursor: pointer;
 }
 .iplug-container .item {
-    position:relative;
-    margin-top:6px;
-    height:25px;
-    cursor:pointer
+    position: relative;
+    margin-top: 6px;
+    height: 25px;
+    cursor: pointer;
 }
 .iplug-container .item i {
     top:2px;

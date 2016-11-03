@@ -65,9 +65,12 @@
 		</div>
 		<div id="autowoot" class="subcontainer">
 			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
+			<div class="noitem">
+				<span class="subtitle">Autowoot</span>
+			</div>
 			<div id="autowootenabled" class="item item-iplug">
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|autowootenabled'] + '"></i>
-				<span class="subtitle">Autowoot</span>
+				<span>Enable Autowoot</span>
 			</div>
 			<div id="autowootdelay" class="slider">' + { block: ' 
 				<div class="titlecontainer min">
@@ -166,9 +169,12 @@
 		</div>
 		<div id="scvisuals" class="subcontainer">
 			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
+			<div class="noitem">
+				<span class="subtitle">Alternative Soundcloud Visuals</span>
+			</div>
 			<div id="scvisualsenabled" class="item item-iplug">
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i>
-				<span class="subtitle">Alternative Soundcloud Visuals</span>
+				<span>Enable Alternative Soundcloud Visuals</span>
 			</div>
 			<div style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '">
 				<div id="scvisualsbars" class="slider scroll1">

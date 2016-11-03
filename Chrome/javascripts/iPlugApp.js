@@ -473,16 +473,19 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
     });
 
-    $(".iplug-container > .subcontainer > .iplug-collapse").bind("mousedown", function () {
-        if ($(this).css("text-indent") != "0px") {
-            $(this).attr("queue", "true");
+    $(".iplug-container > .subcontainer").prepend("<div class='openhitbox'>");
+    $(".iplug-container .openhitbox").bind("mousedown", function () {
+    	var that = $(this);
+    	var _this = that.siblings(".iplug-collapse");
+        if (_this.css("text-indent") != "0px") {
+            that.attr("queue", "true");
             return;
         }
-        var newclass, newheight, rotate, clearheight, complete, dis = $(this);
-        if (dis.attr("class") == "iplug-collapse icon icon-arrow-up") {
+        var newclass, newheight, rotate, clearheight, complete;
+        if (_this.attr("class") == "iplug-collapse icon icon-arrow-up") {
             newclass = "iplug-collapse icon icon-arrow-down";
-            newheight = $(this).parent().css("height", "").css("height");
-            dis.parent().css("height", "30px");
+            newheight = _this.parent().css("height", "").css("height");
+            _this.parent().css("height", "30px");
             rotate = "-180px";
             clearheight = true;
             complete = function () {};
@@ -492,8 +495,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             rotate = "180px";
             clearheight = false;
             complete = function () {
-                dis.siblings(".gradientpicker").children(".settings").children().css("display", "none");
-                dis.siblings(".gradientpicker").children(".slider").children(".barcontainer").children(".circle.selected").removeClass("selected").css({
+                _this.siblings(".gradientpicker").children(".settings").children().css("display", "none");
+                _this.siblings(".gradientpicker").children(".slider").children(".barcontainer").children(".circle.selected").removeClass("selected").css({
                     height: "10px",
                     width: "10px",
                     marginLeft: "-8px",
@@ -501,25 +504,22 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                 });
             };
         }
-        $(this).attr("class", newclass).css("text-indent", "180px").css("margin-top", "-2px").css("text-indent", rotate).animate({
+        _this.attr("class", newclass).css("text-indent", "180px").css("margin-top", "-2px").css("text-indent", rotate).animate({
             marginTop: "0px",
             textIndent: 0
         }, {
             step: function (go) {
-                $(this).css('-moz-transform', 'rotate(' + go + 'deg)');
-                $(this).css('-webkit-transform', 'rotate(' + go + 'deg)');
-                $(this).css('-o-transform', 'rotate(' + go + 'deg)');
-                $(this).css('transform', 'rotate(' + go + 'deg)');
+                _this.css('transform', 'rotate(' + go + 'deg)');
             },
             duration: 750,
             complete: function () {
                 complete();
-                if ($(this).attr("queue") == "true") {
-                    $(this).mousedown();
+                if (that.attr("queue") == "true") {
+                    that.mousedown();
                 }
-                $(this).attr("queue", "false");
+                that.attr("queue", "false");
                 if (clearheight === true) {
-                    var lol = $(this).parent();
+                    var lol = _this.parent();
                     setTimeout(function () {
                         lol.css("height", "");
                     }, 0);
