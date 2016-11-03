@@ -6,7 +6,6 @@ function loader() {
     } else setTimeout(loader, 1000);
 }
 
-console.log(kak = chrome.tabCapture);
 
 var libs = ["javascripts/qrcode.min.js"];
 var main = "javascripts/iPlugApp.js";

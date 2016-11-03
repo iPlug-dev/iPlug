@@ -140,12 +140,53 @@
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|scvisualsenabled'] + '"></i>
 				<span class="subtitle">Alternative Soundcloud Visuals</span>
 			</div>
-			<div style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '">
-				<div id="scvisualsbars" class="slider scroll1">
+			<div id="visuals1" style="' + ((localStorage['iplug|scvisualsstyle'] === '1') ? '' : 'height: 0px; opacity: 0') + '">
+				<div class="settings">
+					<div class="noitem delete" style="display: none">
+						<span style="display: ' + ((COLORS.length > 1) ? " block; cursor: pointer " : "none; cursor: default ") + '">Delete</span>
+					</div>
+					<div class="colorpicker" style="display: none">
+						<div id="decolorred" class="slider">
+							<div class="barcontainer">
+								<div class="bar background"></div>
+								<div class="hit"></div>
+								<div class="circle" style="left: 0px; background-color: #f00"></div>
+							</div>
+						</div>
+						<div id="decolorgreen" class="slider">
+							<div class="barcontainer">
+								<div class="bar background"></div>
+								<div class="hit"></div>
+								<div class="circle" style="left: 0px; background-color: #0f0"></div>
+							</div>
+						</div>
+						<div id="decolorblue" class="slider">
+							<div class="barcontainer">
+								<div class="bar background"></div>
+								<div class="hit"></div>
+								<div class="circle" style="left: 0px; background-color: #00f"></div>
+							</div>
+						</div>
+						<div id="decolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div>
+					</div>
+				</div>
+				<div class="nodecontainer" style="height: ' + (-19 * Math.floor(-COLORS.length / 16)) + 'px">
+					<div class="node cross">
+						<div class="horizontal"></div>
+						<div class="vertical"></div>
+					</div>
+					<div class="node" style="background-color: ' + COLORS.join('"></div>
+					<div class="node" style="background-color: ') + '"></div>
+				</div>
+			</div>
+			<div id="visuals0" style="' + ((localStorage['iplug|scvisualsstyle'] === '0') ? '' : 'height: 0px; opacity: 0') + '">
+				<div id="visualsscroll" class="noitem centerall">
+					<span style="font-weight: normal; color: #fff">Scrolling colors: ' + (localStorage['iplug|scvisualsscroll'] ? "On" : "Off") + ' - <span>Toggle</span></span>
+				</div>
+				<div id="scvisualsbars" class="slider">
 					<div class="counts">
-						<span class="count">Left</span>
-						<span class="left: 151.96px;position: absolute;">0</span>
-						<span class="count">Right</span>
+						<span class="count">Slower</span>
+						<span class="count">Faster</span>
 						<span class="stretch"></span>
 					</div>
 					<div class="barcontainer">
@@ -184,19 +225,10 @@
 							<div id="sccolorcolor" class="colorblock" style="background-color: rgb(0, 0, 0);"></div>
 						</div>
 					</div>
-					<div id="scgradientslider" class="slider scroll0">
+					<div id="scgradientslider" class="slider">
 						<div class="barcontainer gradient">
 							<div class="bar background" style="' + setGradient(colorscheme) + '"></div>
 							<div class="hit"></div>' + colorDom(colorscheme) + '
-						</div>
-					</div>
-					<div id="scgradientcircleslider" class="circleslider scroll1">
-						PENIS LUL
-						<div>
-						<div class="circlebarcontainer gradient">
-											<div class="circlebar background" style="' + setCircleGradient(colorscheme) + '"></div>
-											<div class="hit"></div>' + colorCircleDom(colorscheme) + '
-						</div>
 						</div>
 					</div>
 					<div class="noitem centerall">

@@ -43,21 +43,13 @@
         "javascripts/iplug/visualizations/*",
         "javascripts/iplug/visualizations/style1/*",
         "javascripts/iplug/visualizations/style2/*",
-        "javascripts/*.js",
+        "javascripts/*",
         "images/chosen/chosen-sprite.png",
         "images/chosen/chosen-sprite@2x.png",
         "images/Plug/dev.png",
         "images/Plug/icon256.png",
         "images/Plug/plug.png",
-        "images/loading.png",
-        "images/noise-1.png",
-        "images/fullscreenplayer.png",
-        "images/twitchlogo.png",
-        "images/downloadgrey.png",
-        "images/downloadwhite.png",
-        "images/spinnergrey.png",
-        "images/spinnerwhite.png",
-        "images/play.png"
+        "images/*"
     ],
     "content_scripts": [{
         "matches": [
