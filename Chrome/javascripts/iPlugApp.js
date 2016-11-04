@@ -108,6 +108,9 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     if (undefined === localStorage["iplug|multiplaylistenabled"]) {
         localStorage["iplug|multiplaylistenabled"] = "none";
     }
+    if (undefined === localStorage["iplug|duplicatesongsenabled"]) {
+        localStorage["iplug|duplicatesongsenabled"] = "none";
+    }
 
     $("#playback > .background").css({
         display: (localStorage["iplug|playbackborder"] === "none") ? "block" : "none"
@@ -814,6 +817,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
     });
 
+    //OLD DOWNLOAD BUTTON STUFF
+    /*
     $("#dialog-container").bind("DOMNodeInserted", function (e) {
         var target = $(e.target);
         if (target.attr("class") !== "dialog-frame" || target.parent().attr("id") !== "dialog-preview" || target.parent().children(".dialog-frame:first")[0] !== target[0]) return;
@@ -1025,6 +1030,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             }
         })
     }
+    */
 
     function bindnode() {
         var node = $(this);
@@ -1442,6 +1448,12 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
     }
 
+	var scapi = null;
+	$.each(require.s.contexts._.defined, function(i, a){
+	  if (a && a.id && a.sc)
+	    return !(scapi = a);
+	});
+
 	function checkRealImage(url, callback, sizecallback) {
         var needResponse = true;
         var img;
@@ -1500,7 +1512,9 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 	}
 
 	//automeh songs
-	var mehstorage = (localStorage["iplug|mehstorage"] || "").split(" ");
+	var mehstorage = (localStorage["iplug|mehstorage"] || "").split(" ").filter(function(a) {
+		return a;
+	});
 	var nowmehd = false;
 	$("#vote").on("click", function() {
 	  setTimeout(function() {
@@ -1527,9 +1541,82 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 		if (mehstorage.indexOf(a.media.format + a.media.cid) > -1) $("#meh").click();
 	});
 
+
+
+        
 	//display meh storage
-	$("managemehs").on("click", function() {
-		//WIP
+    var managemehs = $("<div id='iplug-manage-mehs' style='display: none'>");
+    var managemehcontent = $('<div><span class="title">Manage meh&#39;d songs</span><i class="icon icon-dialog-close"></i><div><input type="text" id="mehSearch" placeholder="Filter" class="iplug"><div id="mehSearchResults"></div></div><span class="close">Close</span>');
+    managemehcontent.on("click", function(e) {
+        e.stopPropagation();
+    }).appendTo(managemehs);
+    managemehs.appendTo("body").add("#iplug-manage-mehs .close, #iplug-manage-mehs .icon-dialog-close").on("click", function() {
+        managemehs.css({display: "none"});
+    });
+    $("#mehSearch").on("input", function() {
+    	var val = $("#mehSearch").val().toLowerCase();
+    	$("#mehSearchResults > div").each(function(i, e) {
+    		$(e).css({display: e.childNodes[2].innerText.toLowerCase().indexOf(val) === -1 ? "none" : ""});
+    	});
+    });
+
+	$("#managemehs").on("click", function() {
+		$("#mehSearchResults").empty().addClass("loading");
+		$("#mehSearch").val("");
+		managemehs.css({display: "block"});
+		var oneDone = false;
+		gapi.client.youtube.videos.list({ //youtube
+			id: mehstorage.filter(function(a) {
+					return a[0] === "1";
+				}).map(function(a) {
+					return a.substring(1);
+				}).join(","),
+			part: "snippet"
+		}).execute(function(response) {
+			if ("error" in response)
+				return $("#mehSearchResults").addClass("error");
+			response.items.forEach(function(a) {
+				addSong("1" + a.id, a.snippet.thumbnails.default.url, a.snippet.title);
+			});
+			finish();
+		});
+		var scids = mehstorage.filter(function(a) { //soundcloud
+			return a[0] === "2";
+		}).map(function(a) {
+			return a.substring(1);
+		});
+		function sc() {
+			if (!scids.length)
+				return finish();
+			scapi.sc.get("/tracks", {
+                ids: scids.splice(0, 100).join(",")
+            }).then(function(resp) {
+            	resp.forEach(function(a) {
+            		addSong("2" + a.id, a.artwork_url || a.user.avatar_url || a.artwork_url, a.user.username + " - " + a.title);
+            	});
+            	sc();
+            });
+		}
+		sc();
+
+		function addSong(id, img, title) {
+			var el = $("<div cid='" + id + "'><div><img src='" + img + "'></img></div><div class='delete'><i class='icon icon-delete'></i></div></div>");
+			$("<span>").text(title).appendTo(el);
+			$("#mehSearchResults").append(el);
+		}
+
+		function finish() {
+			if (!oneDone)
+				return oneDone = true;
+			$("#mehSearchResults").removeClass("loading").find(".delete").on("click", function(a) {
+				var item = $(this).parent();
+		    	var index = mehstorage.indexOf(item.attr("cid"));
+		    	if (index === -1) return;
+		    	mehstorage.pop(index);
+		    	localStorage["iplug|mehstorage"] = mehstorage.join(" ");
+				item.remove();
+			});
+		}
 	});
 
 

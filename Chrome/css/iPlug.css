@@ -957,7 +957,7 @@ body.topvotebar .pop-menu.grab {
 #chat.over {
 	z-index: 120006 !important;
 }
-#iplug-overlay, #iplug-overlay2, #iplug-search-emojis {
+#iplug-overlay, #iplug-overlay2, #iplug-search-emojis, #iplug-manage-mehs {
     bottom: 0px;
     left: 0px;
 	right: 0px;
@@ -978,7 +978,7 @@ body.topvotebar .pop-menu.grab {
     margin: auto;
 	z-index: 120002;
 }
-#iplug-overlay2.above-chat, #iplug-search-emojis {
+#iplug-overlay2.above-chat, #iplug-search-emojis, #iplug-manage-mehs {
 	z-index: 120005 !important;
 }
 .chat-img {
@@ -1060,10 +1060,6 @@ body.topvotebar .pop-menu.grab {
 	position: absolute;
 	background: url(chrome-extension://__MSG_@@extension_id__/images/spinnerwhite.png);
 	background-size: 25px;
-    -webkit-animation-name: spinner;
-    -webkit-animation-duration: 2s; 
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
     animation-name: spinner;
     animation-duration: 2s; 
     animation-iteration-count: infinite;
@@ -1215,22 +1211,20 @@ body.topvotebar .pop-menu.grab {
     display: none;
 }
 .spinning {
-    -webkit-animation-name: spinner;
-    -webkit-animation-duration: 2s; 
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
     animation-name: spinner;
     animation-duration: 2s; 
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
 .largeImageScroller {
-
+    /*TODO LMAO*/
 }
-#iplug-search-emojis {
+#iplug-search-emojis,
+#iplug-manage-mehs {
     background-color: rgba(0, 0, 0, 0.7);
 }
-#iplug-search-emojis > div {
+#iplug-search-emojis > div,
+#iplug-manage-mehs > div {
     background-color: #282c35;
     position: absolute;
     margin: auto;
@@ -1241,26 +1235,30 @@ body.topvotebar .pop-menu.grab {
     width: 600px;
     height: 650px;
 }
-#iplug-search-emojis .title, #iplug-search-emojis .close {
+#iplug-search-emojis .title, #iplug-search-emojis .close,
+#iplug-manage-mehs .title, #iplug-manage-mehs .close {
     position: absolute;
     left: 0;
     width: 100%;
     text-align: center;
 
 }
-#iplug-search-emojis .title {
+#iplug-search-emojis .title,
+#iplug-manage-mehs .title {
     top: 0;
     height: 48px; /*55 - 7*/
     padding-top: 7px;
     font-size: 28px;
 }
-#iplug-search-emojis .icon-dialog-close {
+#iplug-search-emojis .icon-dialog-close,
+#iplug-manage-mehs .icon-dialog-close {
     cursor: pointer;
     position: absolute;
     right: 12px;
     top: 12px;
 }
-#iplug-search-emojis .close {
+#iplug-search-emojis .close,
+#iplug-manage-mehs .close {
     color: #808691;
     bottom: 0;
     height: 43px; /*55 - 12*/
@@ -1268,7 +1266,8 @@ body.topvotebar .pop-menu.grab {
     font-size: 22px;
     cursor: pointer;
 }
-#iplug-search-emojis > div > div { /*content*/
+#iplug-search-emojis > div > div,
+#iplug-manage-mehs > div > div { /*content*/
     width: 100%;
     height: calc(100% - 110px);
     position: absolute;
@@ -1276,13 +1275,15 @@ body.topvotebar .pop-menu.grab {
     top: 55px;
     background-color: #111317;
 }
-#emojiSearchResults {
+#emojiSearchResults,
+#mehSearchResults {
     margin-left: 20px;
     margin-bottom: 10px;
     overflow-x: hidden;
     height: 420px; /*blaze ittt*/
 }
-#emojiSearchResults::-webkit-scrollbar-thumb {
+#emojiSearchResults::-webkit-scrollbar-thumb,
+#mehSearchResults::-webkit-scrollbar-thumb {
     background-color: #282c35 !important;
 }
 #emojiSearchResults div { /*emojis*/
@@ -1293,10 +1294,22 @@ body.topvotebar .pop-menu.grab {
     border: 1px solid #282c35;
     margin-right: 10px;
     margin-bottom: 10px;
+    cursor: pointer;
     background-color: #282c35;
+}
+#mehSearchResults .delete {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-color: #555D70;
+    padding: 1px;
+    border: 1px solid #555D70;
     cursor: pointer;
 }
-#emojiSearchResults div:hover {
+#emojiSearchResults div:hover,
+#mehSearchResults .delete:hover {
     border-color: #009cdd;
 }
 #emojiSearchResults img {
@@ -1319,6 +1332,67 @@ body.topvotebar .pop-menu.grab {
     color: #777C86;
     position: absolute;
     right: 20px;
+}
+#mehSearchResults > div {
+    display: inline-block;
+    position: relative;
+    height: 67.5px;
+    width: 548px;
+    border: 1px solid #282c35;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    background-color: #282c35;
+    padding: 5px;
+    line-height: 67.5px;
+}
+#mehSearchResults > div > div:first-child {
+    width: 120px;
+    height: 67.5px;
+    overflow: hidden;
+    position: absolute;
+}
+#mehSearchResults img {
+    width: 120px;
+    height: 90px;
+    margin-top: -11.25px;
+}
+#mehSearchResults span {
+    margin-left: 130px;
+    top: 0;
+    width: 378px;
+    color: #777C86;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+}
+#mehSearchResults:not(.loading):empty:before {
+    content: "looks like you haven't meh'd anything yet";
+    color: #777C86;
+    top: 120px;
+    position: relative;
+    margin-left: 141px;
+}
+#mehSearchResults.loading:before {
+    content: url(chrome-extension://__MSG_@@extension_id__/images/spinnerwhite.png);
+    color: #777C86;
+    top: 750px;
+    position: absolute;
+    margin-left: 780px;
+    animation-name: spinner;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    zoom: 30%;
+    height: initial;
+    width: initial;
+    padding-top: 3px;
+}
+#mehSearchResults.loading:empty:after {
+    content: "loading song data..";
+    color: #777C86;
+    top: 320px;
+    position: absolute;
+    margin-left: 213px;
 }
 input.iplug {
     outline: 0;

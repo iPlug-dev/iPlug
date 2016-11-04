@@ -135,8 +135,9 @@
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|multiplaylistenabled'] + '"></i>
                 <span>MultiPlaylist</span>
             </div>
-            <div class="noitem clickable">
-                <span>Remove duplicate songs</span>
+            <div id="duplicatesongsenabled" class="item item-iplug">
+                <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|duplicatesongsenabled'] + '"></i>
+                <span>Check for duplicate songs</span>
             </div>
         </div>
 		<div class="subcontainer" id="chatoptions">
