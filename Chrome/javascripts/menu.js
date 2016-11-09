@@ -37,10 +37,10 @@
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topmehenabled'] + '"></i>
                 <span>Show Meh Button In Top Bar</span>
             </div>
-            <div id="topdlenabled" class="item item-iplug">
+            <!--<div id="topdlenabled" class="item item-iplug">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topdlenabled'] + '"></i>
                 <span>Show download to mp3 button in top bar</span>
-            </div>
+            </div>-->
             <div id="topskipenabled" class="item item-iplug">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|topskipenabled'] + '"></i>
                 <span>Show Skip Button In Top Bar</span>
@@ -138,6 +138,10 @@
             <div id="duplicatesongsenabled" class="item item-iplug">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|duplicatesongsenabled'] + '"></i>
                 <span>Check for duplicate songs</span>
+            </div>
+            <div id="brokensongsenabled" class="item item-iplug">
+                <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|brokensongsenabled'] + '"></i>
+                <span>Check for broken songs</span>
             </div>
         </div>
 		<div class="subcontainer" id="chatoptions">

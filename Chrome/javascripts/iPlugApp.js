@@ -111,6 +111,9 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     if (undefined === localStorage["iplug|duplicatesongsenabled"]) {
         localStorage["iplug|duplicatesongsenabled"] = "none";
     }
+    if (undefined === localStorage["iplug|brokensongsenabled"]) {
+        localStorage["iplug|brokensongsenabled"] = "none";
+    }
 
     $("#playback > .background").css({
         display: (localStorage["iplug|playbackborder"] === "none") ? "block" : "none"
@@ -144,6 +147,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     });
     if (localStorage["iplug|autohideplaybackcontrolsenabled"] === "block")
         $("#playback-controls").addClass("autohide");
+    if (localStorage["iplug|multiplaylistenabled"] === "block")
+    	$("#footer").addClass("multi");
     var colorscheme = localStorage["iplug|sccolorstring"].split("&");
     colorscheme.forEach(function (a, i, e) {
         e[i] = [a.split("|")[0], a.split("|")[1].split(",")];
@@ -351,6 +356,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             top: $(".room-background.default").css("top")
         });
     });
+    $("#your-active-playlist").append("<span id='playlistcounter'>");
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
     $(".app-right").append(eval("'__MENU__'"));
     $("#chat-button, #users-button, #waitlist-button, #friends-button").bind("click", function () {
@@ -2183,6 +2189,207 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
     }
 
+
+    //alt song on meh
+    var playingAltSong = false;
+	$("#vote").on("click", function() {
+	  setTimeout(function() {
+	  	if (localStorage["iplug|playmehenabled"] !== "block") return;
+	    if ($("#meh").hasClass("active"))
+	    	openAltSong();
+	    else
+	    	closeAltSong();
+	  }, 0);
+	});
+	API.on(API.ADVANCE, function() {
+		if (playingAltSong)
+			closeAltSong();
+	});
+    function openAltSong() {
+    	if (playingAltSong) return;
+    	playingAltSong = true;
+    	console.log("TODO: OPEN");
+    	//TODO
+
+    }
+    function closeAltSong() {
+    	if (!playingAltSong) return;
+    	playingAltSong = false;
+    	console.log("TODO: CLOSE");
+    	//TODO
+
+    }
+
+
+    //multiplaylist binder
+    /*$("#playlist-menu .activate-button .icon").on("click", multibind);
+    function multibind() {
+    	if (localStorage["iplug|multiplaylistenabled"] !== "block") return;
+    	e.stopPropagation();
+    	//real select
+    }*/
+
+    var playlistRow;
+	$.each(require.s.contexts._.defined, function(i,a) {
+		if (a && a.prototype && a.prototype.onMouseEnter && a.prototype.render && a.prototype.onActivateClick)
+		    return !(playlistRow = a);
+	});
+	var playlistmenu;
+	$.each(require.s.contexts._.defined, function(i,a) {
+		if (a && a.onCreateRelease && a.onReset)
+		    return !(playlistmenu = a);
+	});
+	var playlistcollection;
+	$.each(require.s.contexts._.defined, function(i,a) {
+	    if (a && a.getActiveID && a.getVisibleID)
+	    	return !(playlistcollection = a)
+	});
+
+	var allPlaylists;
+	var multiorder = (localStorage["iplug|multiplaylist"] || playlistcollection.getActiveID().toString()).split(" ").filter(function(a) {
+		return a;
+	}).map(function(a) {
+		return parseInt(a);
+	});
+	var count = playlistcollection.findWhere({
+		id: multiorder[0]
+	}).attributes.count;
+	var nowcount = localStorage["iplug|playlistcounter" + multiorder[0]] = parseInt(localStorage["iplug|playlistcounter" + multiorder[0]]) || count;
+	$("#playlistcounter").text(count - nowcount + 1 + "/" + count);
+
+	API.on(API.ADVANCE, function(data) {
+		if (data.lastPlay.dj.id !== API.getUser().id)
+			return;
+		var count = playlistcollection.findWhere({
+			id: multiorder[0]
+		}).attributes.count;
+		var nowcount = localStorage["iplug|playlistcounter" + multiorder[0]] = (parseInt(localStorage["iplug|playlistcounter" + multiorder[0]]) || count) - 1;
+		if (!nowcount && (localStorage["iplug|multiplaylistenabled"] !== "block"))
+			return;
+		if (!nowcount && multiorder.length > 1) {
+			//cycle playlists
+			multiorder.push(multiorder.shift());
+
+			var real = playlistcollection.findWhere({
+				visible: true
+			});
+			real.visible = false;
+			var fake = playlistcollection.findWhere({
+				id: multiorder[0]
+			});
+			real.attributes.visible = false;
+			fake.attributes.visible = true;
+			allPlaylists[multiorder[0]].onActivateClick();
+			real.attributes.visible = true;
+			fake.attributes.visible = false;
+		}
+		var count = playlistcollection.findWhere({
+			id: multiorder[0]
+		}).attributes.count;
+		var nowcount = localStorage["iplug|playlistcounter" + multiorder[0]] = (parseInt(localStorage["iplug|playlistcounter" + multiorder[0]]) || count);
+		$("#playlistcounter").text(count - nowcount + 1 + "/" + count);
+		var initializeOld = playlistRow.prototype.initialize;
+	});
+
+	var initializeOld = playlistRow.prototype.initialize;
+
+	playlistRow.prototype.initialize = function() {
+		initializeOld.apply(this, arguments);
+		allPlaylists[this.model.get("id")] = this;
+	}
+	var renderOld = playlistRow.prototype.render;
+	playlistRow.prototype.render = function() {
+		renderOld.apply(this, arguments);
+		var $this = this.$el;
+		var id = this.model.get("id")
+		$this.attr("playlistid", id);
+		var del = $("<div>");
+		del.append("<div><i class='icon icon-leave-booth-big'>").on("click", function() {
+			//remove from multiorder
+			var index = multiorder.indexOf(id);
+			console.log(id, index, $this.attr("playlistid"), multiorder.join(" "), $this[0]);
+			multiorder.splice(index, 1);
+			localStorage["iplug|multiplaylist"] = multiorder.join(" ");
+			$this.removeClass("queued").find(".activate-button span").text("");
+			//fix display order of other playlists
+			$("#playlist-menu .row.queued .activate-button span").each(function(i, e) {
+				var n = parseInt(e.innerText);
+				if (n > index)
+					e.innerText = (n - 1) || "";
+			});
+			if (!index) { //activate new playlist if needed
+				var real = playlistcollection.findWhere({
+					visible: true
+				});
+				real.visible = false;
+				var fake = playlistcollection.findWhere({
+					id: multiorder[0]
+				});
+				if (multiorder.length === 1)
+					$("#playlist-menu .row.queued").addClass("last");
+				real.attributes.visible = false;
+				fake.attributes.visible = true;
+				allPlaylists[multiorder[0]].onActivateClick();
+				real.attributes.visible = true;
+				fake.attributes.visible = false;
+			}
+		}).wrap("<div class='delete'></div>").parent().appendTo($this);
+		if (localStorage["iplug|multiplaylistenabled"] === "block") {
+			var index = multiorder.indexOf(this.model.get("id"));
+			if (index === -1)
+				return;
+			var span = $("<span>");
+			$this.addClass("queued").children(".activate-button").append(span);
+			if (multiorder.length === 1)
+				$this.addClass("last");
+			if (index > 0)
+				span.text(index);
+		}
+	};
+	var onActivateClickOld = playlistRow.prototype.onActivateClick;
+	playlistRow.prototype.onActivateClick = function() {
+		var $this = this.$el;
+		if (localStorage["iplug|multiplaylistenabled"] === "block") {
+			if (!$this.hasClass("queued")) {
+				$this.addClass("queued").children(".activate-button").append("<span>" + multiorder.length + "</span>");
+				multiorder.push(this.model.get("id"));
+				localStorage["iplug|multiplaylist"] = multiorder.join(" ");
+				$("#playlist-menu .row.last").removeClass("last");
+				return;
+			}
+			var index = multiorder.indexOf(this.model.get("id"));
+			if (index || $this.find(".activate-button .icon-check-purple").length) {
+				if (index === -1)
+					console.error("playlist is in queue, but not in multiorder!");
+				if (!index)
+					return; //do nothing :) just like plug devs
+				multiorder = multiorder.concat(multiorder.splice(0, index));
+				localStorage["iplug|multiplaylist"] = multiorder.join(" ");
+				var rows = $("#playlist-menu .container .row");
+				multiorder.forEach(function(a, i) {
+					rows.filter("[playlistid='" + a + "']").find(".activate-button span").text(i || "");
+				});
+			}
+		}
+		//$this.addClass("active").siblings(".active").removeClass("active");
+		onActivateClickOld.apply(this, arguments);
+	}
+	var onMouseEnterOld = playlistRow.prototype.onMouseEnter;
+	playlistRow.prototype.onMouseEnter = function() {
+		var $this = this.$el;
+		if ($(this).filter(".selected:has(.activate-button .icon-check-purple)").length) {
+
+		}
+		onMouseEnterOld.apply(this, arguments);
+	}
+	var onResetOld = playlistmenu.onReset;
+	playlistmenu.onReset = function() {
+		allPlaylists = {};
+		onResetOld.apply(this, arguments);
+	};
+	playlistmenu.onReset();
+
+
     $.fn.preBind = function (type, data, fn) {
         this.each(function () {
             var $this = $(this);
@@ -2439,6 +2646,20 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             };
         case "remembermehsenabled":
         	return function() {};
+        case "playmehenabled":
+        	return function() {
+        		if (!enabled && playingAltSong)
+        			closeAltSong();
+        	}
+        case "multiplaylistenabled":
+        	return function() {
+    			if (enabled)
+    				$("#footer").addClass("multi");
+    			else
+    				$("#footer").removeClass("multi");
+
+				playlistmenu.onReset();
+        	}
         }
         console.error("iplug menu error: unknown option '" + id + "'");
         return function () {};

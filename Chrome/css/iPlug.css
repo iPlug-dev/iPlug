@@ -1429,3 +1429,100 @@ input.iplug:focus {
     padding-top: 112px;
     overflow: hidden;
 }
+#footer.multi #playlist-menu .row.queued .activate-button {
+    display: block !important;
+}
+#footer.multi #playlist-menu .row .activate-button span {
+    top: 13px;
+    width: 30px;
+    text-align: right;
+    position: absolute;
+}
+#footer.multi #playlist-menu .activate-button .icon-check-purple {
+    cursor: pointer;
+}
+#playlist-menu .menu, #playlist-menu .jspContainer {
+    overflow: visible !important;
+    z-index: initial !important;
+}
+#footer.multi #playlist-menu .row.queued.selected:not(.last):hover .delete {
+    z-index: 11;
+}
+#footer.multi #playlist-menu .row.queued.selected:not(.last):hover .delete > div {
+    width: 48px;
+}
+#playlist-menu .row .delete {
+    overflow: hidden;
+    margin-left: 100%;
+    z-index: 10;
+    height: 82px;
+    margin-top: -21px;
+    position: absolute;
+}
+#playlist-menu .row .delete:before {
+    content: "";
+    background-image: radial-gradient(circle at 13px 0, transparent 13px, #1c1f25 13px);
+    background-repeat: no-repeat;
+    background-size: 13px 13px;
+    width: 13px;
+    height: 13px;
+    right: 13px;
+    padding-right: calc(100% - 26px);
+    position: absolute;
+    float: right;
+}
+#playlist-menu .row .delete:after {
+    content: "";
+    background-image: radial-gradient(circle at 13px 100%, transparent 13px, #1c1f25 13px);
+    background-repeat: no-repeat;
+    background-size: 13px 13px;
+    width: 13px;
+    height: 13px;
+    right: 13px;
+    padding-right: calc(100% - 26px);
+    position: absolute;
+    float: right;
+}
+#playlist-menu .row .delete > div {
+    height: 56px;
+    margin-top: 13px;
+    width: 0;
+    transition: width 0.4s;
+    border-bottom-right-radius: 13px;
+    border-top-right-radius: 13px;
+    background-color: #1c1f25;
+}
+#playlist-menu .row .delete > div > div {
+    margin-left: -256px;
+    padding-left: 264px;
+    top: 8px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #32234c;
+    cursor: pointer;
+    height: 40px;
+    right: 8px;
+    position: relative;
+    width: auto;
+    overflow: hidden;
+
+}
+#playlist-menu .row .delete i {
+    margin-top: 5px;
+    margin-left: 5px;
+}
+#playlist-menu .row {
+    overflow: visible !important;
+}
+#footer #playlistcounter {
+    display: none;
+}
+#footer.multi #playlistcounter {
+    display: block;
+    position: absolute;
+    color: #575b64;
+    font-size: 13px;
+    font-weight: bold;
+    left: 45px;
+    top: 35px;
+}
