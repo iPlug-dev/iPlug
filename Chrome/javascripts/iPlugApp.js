@@ -164,22 +164,21 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     function JN() {
         if (localStorage["iplug|autojoinenabled"] != "block") return;
         if (tempAutoJoinDisabled) return;
-        if ($("#dj-button").length > 0) {
-            var t = $("#dj-button")[0];
-            if ((t == $(".is-leave")[0]) || (t == $(".is-quit")[0])) return; //done
-            if ((t == $(".is-full")[0]) || (t == $(".is-locked")[0])) {
+        var button = $("#dj-button");
+        if (button.length > 0) {
+            if (button.hasClass("is-leave") || button.hasClass("is-quit")) return; //done
+            if (button.hasClass("is-full") || button.hasClass("is-locked")) {
                 return setTimeout(JN, 500);
             }
-            if (t == $(".is-wait")[0]) {
-                $("#dj-button").click();
+            if (button.hasClass("is-wait") || button.hasClass("is-join")) {
+                button.click();
                 return;
             }
-        } else {
-            setTimeout(JN, 1000); // object not created yet || slow pc || loll
         }
+        setTimeout(JN, 1000); // object not created yet || slow pc || loll
     }
 
-    setTimeout(JN, 5000); // AUTO JOIN ON JOIN, and butter on butter is butter
+    JN(); // AUTO JOIN ON JOIN, and butter on butter is butter
 
     //========== INIT
     $("#playback-container").css("width", $("#playback-container").css("width"));
@@ -409,7 +408,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
     });
 
-    $(".iplug-container .item-iplug").bind("click", function () {
+    $(".iplug-container .item-iplug:not(.unavailable)").bind("click", function () {
         var enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
         if (enabled) {
             localStorage["iplug|" + $(this).attr("id")] = "block";
@@ -1655,7 +1654,6 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     //emotes provided by twitchemotes.com
     //emotes provided by tastycat
     //
-    var allEmotes = {};
     var emoteUrls = [{
         url: "https://twitchemotes.com/api_cache/v2/subscriber.json",
         overwrite: false,
@@ -1760,6 +1758,9 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     	}
     }];
 
+
+	console.log("downloading emotes..");
+    var allEmotes = {};
     var emoteObjectsToLoad = emoteUrls.length;
     emoteUrls.forEach(function (emoteObject) {
         var tries = 0;
@@ -1791,60 +1792,87 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                     if (faileds > 0)
                         console.warn("Couldnt load " + faileds + "/" + emotes.length + " emotes from " + emoteObject.url);
                     if (--emoteObjectsToLoad <= 0)
-                        finishEmotes();
+                        mapEmotes();
                 },
                 error: function (x) {
                     if (tries++ < 3)
                         return load();
                     console.warn("Failed to load emotes from " + emoteObject.url + "...");
                     if (--emoteObjectsToLoad <= 0)
-                        finishEmotes();
+                        mapEmotes();
                 }
             });
         }
     });
 
-    function finishEmotes() {
-        console.log("loaded " + Object.keys(allEmotes).length + " emotes! lmao");
+    function mapEmotes() {
+	    //initialise worker
+	    var blobURL = URL.createObjectURL(new Blob(['(',
+	    function() {
+	        onmessage = function(m) {
+	        	var allEmotes = m.data.allEmotes;
+	        	var emojidata = m.data.emojidata;
+		        //hashing
 
-        //hashing
+		        function hashThis(a, node) {
+		            if (a.length < 2)
+		                return;
+		            var first = a.substr(0, 1);
+		            var second = a.substr(1, 1);
+		            if (!realHash[first])
+		                realHash[first] = {};
+		            if (!realHash[first][second])
+		                realHash[first][second] = [];
+		            realHash[first][second].push(a);
+		        }
 
-        var realHash = {};
-        for (var key in allEmotes) {
-            hashThis(key, allEmotes[key]);
-        }
+		        var realHash = {};
+		        for (var key in allEmotes) {
+		            hashThis(key, allEmotes[key]);
+		        }
 
-        function hashThis(a, node) {
-            if (a.length < 2)
-                return;
-            var first = a.substr(0, 1);
-            var second = a.substr(1, 1);
-            if (!realHash[first])
-                realHash[first] = {};
-            if (!realHash[first][second])
-                realHash[first][second] = [];
-            realHash[first][second].push(a);
-        }
+		        for (var one in realHash)
+		            for (var two in realHash[one])
+		                realHash[one][two] = realHash[one][two].sort();
 
-        for (var one in realHash)
-            for (var two in realHash[one])
-                realHash[one][two] = realHash[one][two].sort();
+		        var regex = new RegExp(":(" + Object.keys(realHash).map(function (one) {
+		            return one.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + Object.keys(realHash[one]).map(function (two) {
+		                return two.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + realHash[one][two].map(function (content) {
+		                    return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
+		                }).join("|") + ")";
+		            }).join("|") + ")";
+		        }).join("|") + "):", "ig");
 
-        var regex = new RegExp(":(" + Object.keys(realHash).map(function (one) {
-            return one.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + Object.keys(realHash[one]).map(function (two) {
-                return two.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + realHash[one][two].map(function (content) {
-                    return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
-                }).join("|") + ")";
-            }).join("|") + ")";
-        }).join("|") + "):", "ig");
+		        for (var key in emojidata) {
+		            if (!emojidata.hasOwnProperty(key)) continue;
+		            var node = emojidata[key]; -
+		            node[3].forEach(function (a) {
+		                hashThis(a, node);
+		            });
+		        }
 
-        for (var key in window.emoji.data) {
-            if (!window.emoji.data.hasOwnProperty(key)) continue;
-            var node = window.emoji.data[key]; -
-            node[3].forEach(function (a) {
-                hashThis(a, node);
-            });
-        }
+	            postMessage({
+	            	realHash: realHash,
+	            	regex: regex
+	            });
+	        };
+	    }.toString(),
+	    ')()'], {type: 'application/javascript'}));
+	    var worker = new Worker(blobURL);
+	    URL.revokeObjectURL(blobURL);
+
+	    worker.onmessage = function(m) {
+        	console.log("succesfully loaded " + Object.keys(allEmotes).length + " emotes!");
+	    	finishEmotes(m.data.realHash, m.data.regex);
+	    };
+	    console.log("mapping emotes..");
+	    worker.postMessage({
+	    	allEmotes: allEmotes,
+	    	emojidata: window.emoji.data
+	    });
+	}
+
+    function finishEmotes(realHash, regex) {
 
         //replacing
         var replaceColonsOld = emojiFilter.replace_colons;

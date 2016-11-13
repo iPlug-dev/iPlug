@@ -932,13 +932,22 @@ body.topvotebar .pop-menu.grab {
 .dialog-frame .title {
     pointer-events: none;
 }
-.unavailable {
+.subcontainer.unavailable {
     position: absolute;
     height: 100%;
     width: 100%;
     left: 0;
     top: 0;
     background-color: rgba(10, 10, 10, 0.75);
+}
+.item.unavailable {
+    cursor: default;
+}
+.item.unavailable span {
+    color: #575b64;
+}
+.item.unavailable .icon {
+    display: none !important;
 }
 .room-background {
 	background-position: center center !important;

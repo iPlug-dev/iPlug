@@ -11,7 +11,7 @@
             </div>
             <div id="youtubevideodisabled" class="item item-iplug">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|youtubevideodisabled'] + '"></i>
-                <span>Hide Youtube Video</span>
+                <span>Hide Youtube Video (Saves Bandwidth)</span>
             </div>
             <div id="playbackborder" class="item item-iplug">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playbackborder'] + '"></i>
@@ -114,7 +114,7 @@
             <div class="noitem link">
                 <span class="subtitle">Meh Options</span>
             </div>
-            <div id="playmehenabled" class="item item-iplug">
+            <div id="playmehenabled" class="item item-iplug unavailable">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|playmehenabled'] + '"></i>
                 <span>Play song from playlists when mehing</span>
             </div>
@@ -135,11 +135,11 @@
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|multiplaylistenabled'] + '"></i>
                 <span>MultiPlaylist</span>
             </div>
-            <div id="duplicatesongsenabled" class="item item-iplug">
+            <div id="duplicatesongsenabled" class="item item-iplug unavailable">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|duplicatesongsenabled'] + '"></i>
                 <span>Check for duplicate songs</span>
             </div>
-            <div id="brokensongsenabled" class="item item-iplug">
+            <div id="brokensongsenabled" class="item item-iplug unavailable">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|brokensongsenabled'] + '"></i>
                 <span>Check for broken songs</span>
             </div>
