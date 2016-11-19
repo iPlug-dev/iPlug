@@ -2297,6 +2297,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 		if (!nowcount && multiorder.length > 1) {
 			//cycle playlists
 			multiorder.push(multiorder.shift());
+			localStorage["iplug|multiplaylist"] = multiorder.join(" ");
+			var rows = $("#playlist-menu .container .row");
 
 			var real = playlistcollection.findWhere({
 				visible: true
