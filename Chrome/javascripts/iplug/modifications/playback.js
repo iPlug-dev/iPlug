@@ -92,7 +92,7 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
                         } else {
                             a += "staging"
                         }
-                        var l = $('<iframe id="yt-frame" frameborder="0" src="' + window.location.protocol + "//bug.dj/_/" + a + '.html"></iframe>');
+                        var l = $('<iframe id="yt-frame" frameborder="0" src="' + window.location.protocol + "//yt.bug.dj/_/" + a + '.html"></iframe>');
 
                         l.load(this.ytFrameLoadedBind);
                         this.$container.append(l);
@@ -185,5 +185,6 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
     if (s.get("media") && s.get("media").get("format") === 2 && Settings.visualizations.enabled) {
         p.onMediaChange();
     }
+    console.log("[PLAYBACK] Modifications loaded");
     return p;
 });

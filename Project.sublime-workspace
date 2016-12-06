@@ -1,0 +1,699 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"me",
+				"mentions"
+			],
+			[
+				"chat",
+				"chatButton"
+			],
+			[
+				"click",
+				"click_events"
+			],
+			[
+				"rqe",
+				"requireIDs"
+			],
+			[
+				"cli",
+				"click_events"
+			],
+			[
+				"con",
+				"continue"
+			],
+			[
+				"opus",
+				"opusDecoder"
+			],
+			[
+				"ogg",
+				"oggDecoder"
+			],
+			[
+				"off",
+				"offset"
+			],
+			[
+				"part",
+				"particles"
+			],
+			[
+				"strea",
+				"streamDisabled"
+			],
+			[
+				"update",
+				"updateStyles"
+			],
+			[
+				"upda",
+				"updateStyles"
+			],
+			[
+				"y",
+				"midY"
+			],
+			[
+				"MO",
+				"Modules"
+			],
+			[
+				"loaca",
+				"localStorageName"
+			],
+			[
+				"defa",
+				"defaults"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"ip",
+				"iplugCanvas"
+			],
+			[
+				"vi",
+				"visualizations"
+			],
+			[
+				"sty",
+				"style1"
+			],
+			[
+				"Style",
+				"Style2"
+			],
+			[
+				"setti",
+				"settings"
+			],
+			[
+				"under",
+				"underscore"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Java/Ant.sublime-build",
+					""
+				],
+				[
+					"Packages/Java/JavaC.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Java/JavaC.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 58.0,
+		"last_filter": "show",
+		"selected_items":
+		[
+			[
+				"show",
+				"SFTP: Show Panel"
+			],
+			[
+				"side",
+				"Preferences: Settings - Default"
+			],
+			[
+				"bar",
+				"View: Toggle Status Bar"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"Snippet: ",
+				"Snippet: #!/usr/bin/env"
+			],
+			[
+				"snippetcl",
+				"Snippet: class"
+			],
+			[
+				"packag",
+				"Package Control: Install Package"
+			],
+			[
+				"java",
+				"Build With: JavaC"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"javasc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"downl",
+				"Download Source"
+			],
+			[
+				"dow",
+				"Download Source"
+			],
+			[
+				"ajvasc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"javsc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"wra",
+				"Word Wrap: Toggle"
+			],
+			[
+				"down",
+				"Download Source"
+			],
+			[
+				"downlo",
+				"Download Source"
+			],
+			[
+				"new",
+				"File: New View into File"
+			],
+			[
+				"json",
+				"Pretty JSON: Format (Pretty Print) JSON"
+			],
+			[
+				"sync",
+				"SFTP: Sync Both Directions…"
+			],
+			[
+				"sftp sett",
+				"Preferences: SFTP Settings"
+			],
+			[
+				"sftp",
+				"SFTP: Cancel Upload"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			],
+			[
+				"set syntax javasc",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"download",
+				"Download Source"
+			],
+			[
+				"hex",
+				"Set Syntax: Hex"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"d",
+				"Download & Insert Source"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"insatll",
+				"Package Control: Install Package"
+			],
+			[
+				"INSTALL",
+				"Package Control: Install Package"
+			],
+			[
+				"beaut",
+				"Javascript Beautify"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"bea",
+				"Javascript Beautify"
+			],
+			[
+				"status",
+				"View: Toggle Status Bar"
+			],
+			[
+				"auto ",
+				"Toggle AutoSave: current file only"
+			],
+			[
+				"auto",
+				"Toggle AutoSave: current file only"
+			],
+			[
+				"si",
+				"View: Toggle Side Bar"
+			],
+			[
+				"open",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"bookma",
+				"Bookmarks: Toggle"
+			],
+			[
+				"sideba",
+				"View: Toggle Side Bar"
+			],
+			[
+				"syntax: java",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"package install",
+				"Package Control: Install Package"
+			],
+			[
+				"package remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"settings",
+				"Preferences: Settings - User"
+			],
+			[
+				"package instal",
+				"Package Control: Install Package"
+			],
+			[
+				"beau",
+				"Preferences: Key Bindings - Default"
+			],
+			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
+				"package control: sea",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 432.0
+	},
+	"console":
+	{
+		"height": 288.0,
+		"history":
+		[
+			"restart",
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/MrCoo/iplug",
+		"/C/Users/MrCoo/iplug/Avatars"
+	],
+	"file_history":
+	[
+		"/C/Users/MrCoo/iplug/Project.sublime-project",
+		"/C/Users/MrCoo/iplug/Project.sublime-workspace",
+		"/C/Users/MrCoo/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Michal/java/java.sublime-project",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/app-right/iplugmenu.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/alert.js",
+		"/C/Users/Michal/iplug/Chrome/manifest.json",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/playback.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/app-right/chat.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iPlugApp.js",
+		"/C/Users/Michal/Desktop/BA_exported_user_list.txt",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/visualizations/style1.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/app-right.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/app-right/friends.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/chat.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/plug-modules.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iPlug.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iPlugBG.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/utils/grab.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/utils/vote.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/privatechat.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/iplugmenu.js",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/JavascriptBeautify.sublime-settings",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/waitlist.js",
+		"/C/Users/Michal/AppData/Local/Google/Chrome/User Data/Default/Extensions/bjjnmnajlmcemhnncfpfglodcegahcpg/0.2.5.1_0/javascripts/menu.js",
+		"/C/Users/Michal/AppData/Local/Google/Chrome/User Data/Default/Extensions/bjjnmnajlmcemhnncfpfglodcegahcpg/0.2.5.1_0/javascripts/sketch.min.js",
+		"/C/Users/Michal/AppData/Local/Google/Chrome/User Data/Default/Extensions/bjjnmnajlmcemhnncfpfglodcegahcpg/0.2.5.1_0/javascripts/qrcode.min.js",
+		"/C/Users/Michal/AppData/Local/Google/Chrome/User Data/Default/Extensions/bjjnmnajlmcemhnncfpfglodcegahcpg/0.2.5.1_0/javascripts/jquery-2.0.3.js",
+		"/C/Users/Michal/iplug/Chrome/css/iPlug.css",
+		"/C/Users/Michal/Desktop/slowa.txt",
+		"/C/Users/Michal/blackandrzej/sftp-config.json",
+		"/C/Users/Michal/blackandrzej/scripts/ffmpeg.js",
+		"/C/Users/Michal/blackandrzej/kappa.js",
+		"/C/Users/Michal/blackandrzej/package.json",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/SFTP/SFTP.sublime-settings",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/AutoBackups/AutoBackups (Windows).sublime-settings",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/soundcloud-api.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/settings.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/visualizations/style2/particle.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/visualizations/style2.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/visualizations/processor.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/visualizations/core.js",
+		"/C/Users/Michal/iplug/~",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/Git/Git.sublime-settings",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/Git.sublime-settings",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/visualizations/style2/settings.js",
+		"/C/Program Files (x86)/Steam/userdata/190468469/730/local/cfg/config.cfg",
+		"/C/Users/Michal/Desktop/Nazwa projektu.npf",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/StatusBarTime.sublime-settings",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/StatusBarFileSize.sublime-settings",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/StatusBarFileSize/StatusBarFileSize.sublime-settings",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/visualizations/style1/bar.js",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/autowoot.js",
+		"/C/Users/Michal/Desktop/animatedNick.js",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/backgrounds.js",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/GitlabIntegrate.sublime-settings",
+		"/C/Users/Michal/AppData/Roaming/Sublime Text 3/Packages/User/JavaScript.sublime-settings",
+		"/C/Users/Michal/iplug/Chrome/javascripts/iplug/modifications/userlists.js"
+	],
+	"find":
+	{
+		"height": 22.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			"<open folders>"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"extend\\(\\{.+?(\\n.+?)+?render",
+			"\\.extend\\(\\{.+?(\\n.+?)+?render",
+			"\\.extend\\(\\{.+(\\n.+)+render",
+			"\\.extend\\(\\{.*\\n.*render",
+			"\"d2f19/c9b09/e5e6f",
+			"/me",
+			"background",
+			"//",
+			"Visualizations",
+			"___URL___",
+			"idiot",
+			"___URL___",
+			"chat_header_panel",
+			"j",
+			"chat_header_panel",
+			"\"d2f19/fbc72/c1f08\"",
+			"onEmojiUpdate",
+			"show:chat ",
+			"friends\"",
+			"friends",
+			"\"d2f19/ae391/e7722/cc6bf\"",
+			"invites",
+			"a",
+			"\"d2f19/ae79a/f1afc/f0e85/d4376\"",
+			"OFFSET",
+			"\"d2f19/ae79a/f1afc/f9b2f/f3ca7\"",
+			"icon-chat\"",
+			"\"message\"",
+			"\"d2f19/c1d61/aecda/d44b7\"",
+			"chatDelete",
+			"\"chat:delete\"",
+			"idiot",
+			"'",
+			"webSocketConnection",
+			"connection",
+			"stream",
+			"Stdout",
+			"stdout",
+			"_stdout",
+			"webPanel",
+			"'",
+			"f",
+			"callback",
+			"i",
+			"c",
+			"\"d2f19/ae391/af221/d804b\"",
+			"\"d2f19/cff9b/d86dc\"",
+			"\"d2f19/ae391/af221/d804b\"",
+			"/me\"",
+			"window",
+			"5",
+			"radius",
+			"height",
+			"width",
+			"bar_d_w",
+			"Settings",
+			"i",
+			"3",
+			"fft",
+			");\n",
+			"this",
+			"his.gradient.addColorStop",
+			"data",
+			"Data",
+			"data",
+			"title",
+			"reset",
+			".resize(",
+			"particle",
+			"Settings",
+			".get(\"media\").",
+			".set(\"media\"",
+			"title",
+			"height",
+			"width",
+			"this",
+			"data",
+			"updateStyles",
+			"onResize",
+			".sc",
+			"r: !",
+			"soundcloud",
+			"width",
+			"onSCLoading",
+			"everyone",
+			"getSelected",
+			"convertUnixDateStringToDate",
+			"secondsSince",
+			"getSecondsElapsed",
+			"Settings",
+			"gradient",
+			"alt",
+			"this.grid.$el.css",
+			"\"room\"",
+			"detector",
+			"this.playback",
+			".refresh",
+			"d2f19/cff9b/df34c",
+			"-frame",
+			"settings",
+			"Could not ",
+			"isPlaying",
+			"\"d2f19/ae79a/f1afc/d3327\"",
+			"iplug/modifications/playback",
+			"iplug\\modifications\\playback",
+			"core",
+			"update",
+			"Style2",
+			"\n                ",
+			");\n",
+			"pride",
+			"case",
+			"\n                ",
+			"                Style2.update(ctx);",
+			"update",
+			"\"d2f19/ae79a/f1afc/d3327\"",
+			"video-only",
+			"\"d2f19/ae79a/f1afc/cb094/fcbb3\"",
+			"change:media",
+			"\"custom",
+			"\"custom\"",
+			"\"d2f19/cff9b/bc78d\"",
+			"\"tasty",
+			"\"d2f19/c9b09/a46b6\"",
+			"\"tasty\"",
+			".tasty",
+			"tasty",
+			"\"d2f19/cff9b/bc78d\""
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"Settings",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 22.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.commandbox_output":
+	{
+		"height": 94.0
+	},
+	"output.exec":
+	{
+		"height": 123.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 94.0
+	},
+	"output.hex_viewer_inspector":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 185.0
+	},
+	"pinned_build_system": "Packages/Java/JavaC.sublime-build",
+	"project": "Project.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 204.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
