@@ -2402,6 +2402,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 		}
 		//$this.addClass("active").siblings(".active").removeClass("active");
 		onActivateClickOld.apply(this, arguments);
+		var count = playlistcollection.findWhere({
+			id: multiorder[0]
+		}).attributes.count;
+		var nowcount = localStorage["iplug|playlistcounter" + multiorder[0]] = (parseInt(localStorage["iplug|playlistcounter" + multiorder[0]]) || count);
+		$("#playlistcounter").text(count - nowcount + 1 + "/" + count);
 	}
 	var onMouseEnterOld = playlistRow.prototype.onMouseEnter;
 	playlistRow.prototype.onMouseEnter = function() {
