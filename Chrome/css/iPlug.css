@@ -1535,3 +1535,136 @@ input.iplug:focus {
     left: 45px;
     top: 35px;
 }
+
+body.vertical #room-meta {
+    width: 100vw !important;
+}
+
+body.vertical #header-panel-bar {
+    left: 0 !important;
+    top: calc(56.25vw + 54px) !important;
+    width: 100% !important;
+}
+
+body.vertical #playback {
+    width: 100vw !important;
+    height: 56.25vw !important;
+}
+
+body.vertical .app-right {
+    left: 0 !important;
+    width: calc(100vw - 345px) !important;
+    top: calc(56.25vw + 108px) !important;
+    height: calc(100vh - 54px - 56.25vw - 54px - 54px) !important;
+}
+body.vertical .app-right::after {
+    display: block;
+    width: 1px;
+    height: calc(100% + 54px);
+    background-color: #1c1f25;
+    content: "";
+    right: 0;
+    z-index: 1000;
+    position: absolute;
+    top: -54px;
+}
+body.vertical #header-panel-bar {
+    border-bottom: 1px solid #1c1f25;
+    height: 52px !important;
+}
+
+body.vertical #chat-button,
+body.vertical #users-button,
+body.vertical #waitlist-button,
+body.vertical #friends-button,
+body.vertical #iplug-button {
+    width: calc((100vw - 345px) / 4) !important;
+}
+body.vertical .divider {
+    display: none;
+}
+
+body.vertical #users-button {
+    left: calc((100vw - 345px) / 4) !important;
+}
+body.vertical #waitlist-button {
+    left: calc((100vw - 345px) / 2) !important;
+}
+body.vertical #friends-button {
+    left: calc((100vw - 345px) * 3 / 4) !important;
+}
+body.vertical #iplug-button {
+    display: none;
+}
+
+body.vertical #user-lists > *,
+body.vertical #waitlist > * {
+    width: calc(100vw - 345px) !important;
+}
+
+body.vertical #iplug-menu {
+    display: block !important;
+    left: calc(100vw - 345px);
+    top: -48px;
+}
+
+body.vertical #iplug-menu .header .title {
+    margin-left: 144px;
+}
+body.vertical #iplug-menu .header::after {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url(chrome-extension://__MSG_@@extension_id__/images/iplug-button.png);
+    content: "";
+    left: 105px;
+    top: 8px;
+    position: absolute;
+}
+
+body.vertical #backgroundcardselected {
+    display: none;
+}
+body.vertical #twitter-menu,
+body.vertical #facebook-menu,
+body.vertical #iosbadge-menu,
+body.vertical #androidbadge-menu {
+    display: none !important;
+}
+body.vertical #footer-user {
+    left: calc(100vw - 345px);
+}
+body.vertical #app {
+    width: 100vw !important;
+}
+body.vertical #chat-input {
+    width: calc(100% - 23px) !important;
+}
+body.vertical #chat-input-field {
+    width: calc(100% - 19px) !important;
+}
+
+body.vertical #history-panel {
+    z-index: 10001;
+}
+body.vertical #history-panel,
+body.vertical #history-panel .history,
+body.vertical #history-panel .jspContainer {
+    width: 100vw !important;
+}
+body.vertical #history-panel .jspPane,
+body.vertical #history-panel .container {
+    width: calc(100vw - 14px) !important;
+}
+body.vertical #footer {
+    z-index: 10000;
+}
+body.vertical #playlist-panel {
+    width: 100vw !important
+}
+body.vertical #search {
+    width: calc(100vw - 53px) !important;
+}
+body.vertical #search-bar {
+    width: calc(100vw - 239px) !important;
+}

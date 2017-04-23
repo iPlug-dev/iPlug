@@ -342,6 +342,10 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     Object.keys(backgrounds).forEach(function (e) {
         backgroundcarddeck += cardBuilder(e);
     });
+    if (window.outerHeight > window.outerWidth)
+        $("body").addClass("vertical");
+    else
+        $("body").removeClass("vertical");
     $(window).bind("resize", function () {
         var heightwidth = {
             width: window.innerWidth - 345 + "px",
@@ -354,6 +358,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             left: $(".room-background.default").css("left"),
             top: $(".room-background.default").css("top")
         });
+
+        if (window.outerHeight > window.outerWidth)
+            $("body").addClass("vertical");
+        else
+            $("body").removeClass("vertical");
     });
     $("#your-active-playlist").append("<span id='playlistcounter'>");
     $("#header-panel-bar").append("<div id='iplug-button' class='header-panel-button'><div class='box'><i class='icon-iplug'></i></div></div>");
@@ -1756,6 +1765,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     	image: function(x, a, key) {
     		return "https://ddragon.leagueoflegends.com/cdn/6.21.1/img/spell/" + a.image.full;
     	}
+    }, {
+    	
     }];
 
 
@@ -2853,7 +2864,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     function updateColor() {}
 });
 
-totalLength = 
+totalLength = 0; //UNFINISHED!!! had to do with animation from line to circle
 $.extend($.easing, {
     tocircle: function(x, t, b, c, d) {
     	return Math.min(10000, 1 / $.easing.easeInOutQuint(x, t, b, c, d));
