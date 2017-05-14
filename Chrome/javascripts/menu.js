@@ -157,6 +157,26 @@
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|videosenabled'] + '"></i>
 				<span>Convert video links</span>
 			</div>
+			<div class="item item-iplug" id="keepdeletedchatenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|keepdeletedchatenabled'] + '"></i>
+				<span>Keep deleted messages</span>
+			</div>
+			<div class="item item-iplug" id="deletedchathideimgenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|deletedchathideimgenabled'] + '"></i>
+				<span>hide deleted graphic content</span>
+			</div>
+			<div class="item item-iplug" id="desktopnotificationsenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|desktopnotificationsenabled'] + '"></i>
+				<span>Show desktop notifications for mentions</span>
+			</div>
+			<div class="item item-iplug" id="desktopnotificationsallenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|desktopnotificationsallenabled'] + '"></i>
+				<span>Show desktop notifications for all messages</span>
+			</div>
+			<div class="item item-iplug" id="notificationsoundallenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|notificationsoundallenabled'] + '"></i>
+				<span>Play notification sound for all messages</span>
+			</div>
 		</div>
 		<div id="misc" class="subcontainer">
 			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>

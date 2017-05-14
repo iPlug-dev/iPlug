@@ -114,6 +114,21 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     if (undefined === localStorage["iplug|brokensongsenabled"]) {
         localStorage["iplug|brokensongsenabled"] = "none";
     }
+    if (undefined === localStorage["iplug|keepdeletedchatenabled"]) {
+        localStorage["iplug|keepdeletedchatenabled"] = "block";
+    }
+    if (undefined === localStorage["iplug|deletedchathideimgenabled"]) {
+        localStorage["iplug|deletedchathideimgenabled"] = "block";
+    }
+    if (undefined === localStorage["iplug|desktopnotificationsenabled"]) {
+        localStorage["iplug|desktopnotificationsenabled"] = "block";
+    }
+    if (undefined === localStorage["iplug|desktopnotificationsallenabled"]) {
+        localStorage["iplug|desktopnotificationsallenabled"] = "none";
+    }
+    if (undefined === localStorage["iplug|notificationsoundallenabled"]) {
+        localStorage["iplug|notificationsoundallenabled"] = "none";
+    }
 
     $("#playback > .background").css({
         display: (localStorage["iplug|playbackborder"] === "none") ? "block" : "none"
@@ -332,11 +347,29 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         smartAutoJoin(); // init settings
         JN();
     });
-    API.on(API.CHAT, function (a) {
+
+
+	if ((localStorage["iplug|desktopnotificationsenabled"] === "block") && (Notification.permission !== "granted"))
+		Notification.requestPermission();
+
+    API.on(API.CHAT, function (data) {
         var img = localStorage["iplug|imagesenabled"] === "block";
         var vid = localStorage["iplug|videosenabled"] === "block";
         if (img || vid)
-            convertChat(img, vid, $(".cid-" + a.cid));
+            convertChat(img, vid, $(".cid-" + data.cid));
+
+        if (localStorage["iplug|desktopnotificationsenabled"] === "block") {
+        	var user = API.getUser();
+        	if (data.uid === user.id || isActive)
+        		return;
+        	var isMentioned = data.message.indexOf("@" + user.username) >= 0;
+        	if ((isMentioned) || (localStorage["iplug|desktopnotificationsallenabled"] === "block")) {
+        		var notification = new Notification(data.un + (isMentioned ? " mentioned you" : " send a chat message"), {
+			      icon: "chrome-extension://__EXTENSION_ID__/images/plug_dark.png",
+			      body: data.message
+			    });
+        	}
+        }
     });
     var backgroundcarddeck = "";
     Object.keys(backgrounds).forEach(function (e) {
@@ -2284,6 +2317,17 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 	    	return !(playlistcollection = a)
 	});
 
+
+	var isActive = true;
+	$(window).focus(function() {
+	    isActive = true;
+	});
+
+	$(window).blur(function() {
+	    isActive = false;
+	});
+
+
 	var allPlaylists;
 	var multiorder = (localStorage["iplug|multiplaylist"] || playlistcollection.getActiveID().toString()).split(" ").filter(function(a) {
 		return a;
@@ -2704,6 +2748,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     				$("#footer").removeClass("multi");
 
 				playlistmenu.onReset();
+        	}
+        case "desktopnotificationsenabled":
+        	return function() {
+        		if (enabled && (Notification.permission !== "granted"))
+    				Notification.requestPermission();
         	}
         }
         console.error("iplug menu error: unknown option '" + id + "'");

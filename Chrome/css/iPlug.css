@@ -266,14 +266,20 @@ font-family: 'Fjalla One', sans-serif;
     cursor: pointer;
 }
 .iplug-container .item i {
-    top:2px;
-    left:4px;
+    top: 2px;
+    left: 4px;
 }
 .iplug-container .item span {
     position:absolute;
-    left:17px;
-    margin-left:10px;
-    color:#808691
+    left: 17px;
+    margin-left: 10px;
+    color: #808691
+}
+.iplug-container .item.disabled i {
+    filter: hue-rotate(29.2deg) saturate(7.2%) brightness(91%) brightness(75%);
+}
+.iplug-container .item.disabled span {
+    color: #60646a;
 }
 .iplug-container .slider {
     position:relative;
@@ -1000,6 +1006,8 @@ body.topvotebar .pop-menu.grab {
 	cursor: pointer;
     overflow: hidden;
 	margin-top: 5px;
+    height: 158px;
+    width: 281px;
 }
 .chat-yt-grab {
 	cursor: default;
@@ -1639,6 +1647,10 @@ body.vertical #app {
 }
 body.vertical #chat-input {
     width: calc(100% - 23px) !important;
+    margin-bottom: 10px;
+    bottom: 0 !important;
+    top: initial !important;
+}
 }
 body.vertical #chat-input-field {
     width: calc(100% - 19px) !important;
@@ -1667,4 +1679,24 @@ body.vertical #search {
 }
 body.vertical #search-bar {
     width: calc(100vw - 239px) !important;
+}
+body.vertical #chat-messages {
+    height: calc(100% - 99px) !important;
+}
+body.vertical #room-bar {
+    visibility: hidden !important;
+}
+body.vertical #topbarcontainer {
+    left: 53px !important;
+}
+body.vertical #dialog-container {
+    right: 0 !important;
+    padding-left: 0 !important;
+}
+body.vertical #chat-input-field {
+    width: 694px;
+}
+body.vertical #toast-notifications {
+    right: 6px;
+    left: initial !important;
 }
