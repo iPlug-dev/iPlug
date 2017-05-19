@@ -465,7 +465,7 @@ font-family: 'Fjalla One', sans-serif;
     position: relative;
     width: 100%;
     background: #111317;
-	padding-top: 37px;
+    padding-top: 37px;
 	padding-bottom: 37px;
 	max-height: 500px;
     overflow-x: hidden;
@@ -938,12 +938,7 @@ body.topvotebar .pop-menu.grab {
 .dialog-frame .title {
     pointer-events: none;
 }
-.subcontainer.unavailable {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
+.iplug-container .subcontainer.unavailable {
     background-color: rgba(10, 10, 10, 0.75);
 }
 .item.unavailable {
@@ -1394,7 +1389,7 @@ body.topvotebar .pop-menu.grab {
     color: #777C86;
     top: 750px;
     position: absolute;
-    margin-left: 780px;
+    margin-left: 777px;
     animation-name: spinner;
     animation-duration: 2s;
     animation-iteration-count: infinite;
@@ -1403,13 +1398,25 @@ body.topvotebar .pop-menu.grab {
     height: initial;
     width: initial;
     padding-top: 3px;
+    z-index: 3;
 }
-#mehSearchResults.loading:empty:after {
+#mehSearchResults.loading:after {
     content: "loading song data..";
-    color: #777C86;
-    top: 320px;
+    color: rgb(119, 124, 134);
+    left: calc(50% - 85px);
+    top: 195px;
+    padding-top: 110px;
     position: absolute;
-    margin-left: 213px;
+    background-color: rgba(17, 19, 23, 0.7);
+    height: 40px;
+    text-align: center;
+    width: 150px;
+    border-radius: 40px;
+    z-index: 2;
+}
+#mehSearchResults.loading.error:after {
+	content: "Server error!";
+	color: red;
 }
 input.iplug {
     outline: 0;
@@ -1557,6 +1564,9 @@ body.vertical #header-panel-bar {
 body.vertical #playback {
     width: 100vw !important;
     height: 56.25vw !important;
+    border-bottom: 1px solid rgb(28, 31, 37);
+    z-index: 100;
+    overflow: hidden;
 }
 
 body.vertical .app-right {
@@ -1644,6 +1654,7 @@ body.vertical #footer-user {
 }
 body.vertical #app {
     width: 100vw !important;
+    height: 100% !important;
 }
 body.vertical #chat-input {
     width: calc(100% - 23px) !important;
@@ -1670,6 +1681,8 @@ body.vertical #history-panel .container {
 }
 body.vertical #footer {
     z-index: 10000;
+    top: initial !important;
+    bottom: 0;
 }
 body.vertical #playlist-panel {
     width: 100vw !important
@@ -1682,6 +1695,7 @@ body.vertical #search-bar {
 }
 body.vertical #chat-messages {
     height: calc(100% - 99px) !important;
+    width: calc(100% - 1px) !important;
 }
 body.vertical #room-bar {
     visibility: hidden !important;
@@ -1699,4 +1713,21 @@ body.vertical #chat-input-field {
 body.vertical #toast-notifications {
     right: 6px;
     left: initial !important;
+}
+body.vertical #user-rollover {
+    margin-left: 450px;
+    margin-top: -8px;
+}
+body.vertical #user-rollover > .meta,
+body.vertical #user-rollover .actions .action {
+    background: #282c35;
+}
+body.vertical #user-rollover .arrow-down {
+    border-right: 8px solid #282c35 !important;
+    border-top: 8px solid transparent !important;
+    border-bottom: 8px solid transparent !important;
+    border-left: 0 !important;
+    right: auto !important;
+    top: 17px !important;
+    left: -8px !important;
 }

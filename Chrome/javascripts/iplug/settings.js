@@ -30,7 +30,7 @@ define(["iplug/class", "jquery"], function(Class, $) {
             playbackcontrols: true,
         },
         visualizations: {
-            enabled: true,
+            enabled: false,
             style: 1, // 1 or 2 (coming 3)
             style1: {
                 fftSize: 1024, //min 128, max 32768

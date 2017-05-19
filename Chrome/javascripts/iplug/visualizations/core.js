@@ -48,6 +48,8 @@ define(["iplug/class", "iplug/settings", "jquery", "iplug/soundcloud-api", "iplu
             this.lastDraw = t;
         },
         updateMedia: function(obj) {
+            return false;
+
             SC.tracks(obj.media.get("cid"), function(err, data) {
                 if (err) throw err; //BETTER HANDLE REQUIRED
                 console.log(data);

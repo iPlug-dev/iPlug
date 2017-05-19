@@ -1,6 +1,9 @@
 var idiot = "___URL___";
 //console.log("CHROME", idiot);
 
+
+
+
 requirejs.config({
     paths: {
         "iplug": idiot + "javascripts/iplug",
@@ -352,6 +355,15 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 	if ((localStorage["iplug|desktopnotificationsenabled"] === "block") && (Notification.permission !== "granted"))
 		Notification.requestPermission();
 
+
+    $(window).on("focus", function() {
+        chrome.runtime.sendMessage("__EXTENSION_ID__", {
+            type: "clearAllNotifications"
+        });
+    });
+
+
+    var allNotifications =  [];
     API.on(API.CHAT, function (data) {
         var img = localStorage["iplug|imagesenabled"] === "block";
         var vid = localStorage["iplug|videosenabled"] === "block";
@@ -360,14 +372,26 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 
         if (localStorage["iplug|desktopnotificationsenabled"] === "block") {
         	var user = API.getUser();
-        	if (data.uid === user.id || isActive)
+        	if (data.uid === user.id || document.hasFocus())
         		return;
         	var isMentioned = data.message.indexOf("@" + user.username) >= 0;
         	if ((isMentioned) || (localStorage["iplug|desktopnotificationsallenabled"] === "block")) {
-        		var notification = new Notification(data.un + (isMentioned ? " mentioned you" : " send a chat message"), {
+        		/*var notification = new Notification(), {
 			      icon: "chrome-extension://__EXTENSION_ID__/images/plug_dark.png",
 			      body: data.message
-			    });
+			    });*/
+                chrome.runtime.sendMessage("__EXTENSION_ID__", {
+                    type: "createNotification",
+                    options: {
+                        type: "BASIC",
+                        title: data.un + (isMentioned ? " mentioned you" : " send a chat message"),
+                        iconUrl: "chrome-extension://__EXTENSION_ID__/images/plug_dark.png",
+                        message: $("<p>").html(data.message).text()
+                    }
+                }, function() {
+                    window.focus();
+                    parent.focus();
+                });
         	}
         }
     });
@@ -375,9 +399,10 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     Object.keys(backgrounds).forEach(function (e) {
         backgroundcarddeck += cardBuilder(e);
     });
-    if (window.outerHeight > window.outerWidth)
+    if (window.outerHeight > window.outerWidth) {
         $("body").addClass("vertical");
-    else
+        initIplugMenu();
+    } else
         $("body").removeClass("vertical");
     $(window).bind("resize", function () {
         var heightwidth = {
@@ -392,9 +417,11 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             top: $(".room-background.default").css("top")
         });
 
-        if (window.outerHeight > window.outerWidth)
+        if (window.outerHeight > window.outerWidth) {
             $("body").addClass("vertical");
-        else
+            initIplugMenu();
+            closeBackgroundDeck();
+        } else
             $("body").removeClass("vertical");
     });
     $("#your-active-playlist").append("<span id='playlistcounter'>");
@@ -416,20 +443,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         $("#iplug-menu").attr("style", "display: block");
         $("#waitlist-button").attr("class", "header-panel-button");
         $("#waitlist").attr("style", "display: none");
-    }).one("click", function () {
-        $(".iplug-container .item, .iplug-container .noitem").each(function (i, item) {
-            var width = $(item).hasClass("item") ? 30 : 0;
-            $(item).children("span").each(function (i, e) {
-                width += parseInt($(e).css("width"));
-            });
-            $(item).css("width", width + 1 + "px");
-        });
-        $(".unavailable").each(function (i, e) {
-            var checkbox = $("#" + $(e).parent().attr("id") + "enabled > i");
-            if (checkbox.css("display") === "block") checkbox.click();
-        });
-        //$(".backgroundcard[card='youtube'] img").attr("src", (data.media.format === 1) ? ("https://img.youtube.com/vi/" + data.media.cid + "/mqdefault.jpg") : data.media.image);
-    });
+    }).one("click", initIplugMenu);
     $(".nodecontainer .node").each(function (i, e) {
         $(e).css({
             right: 5 + 19 * (i % 16) + "px",
@@ -449,6 +463,30 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             $("#tooltip").remove();
         });
     });
+
+    var hasInitedIplugMenu = false;
+    function initIplugMenu() {
+        if (hasInitedIplugMenu)
+            return;
+        hasInitedIplugMenu = true;
+        $(".iplug-container .item, .iplug-container .noitem").each(function (i, item) {
+            var width = $(item).hasClass("item") ? 30 : 0;
+            $(item).children("span").each(function (i, e) {
+                width += parseInt($(e).css("width"));
+            });
+            $(item).css("width", width + 1 + "px");
+        });
+        $(".unavailable").each(function (i, e) {
+            var checkbox = $("#" + $(e).parent().attr("id") + "enabled > i");
+            if (checkbox.css("display") === "block") checkbox.click();
+        });
+
+        setTimeout(function() {
+            $(".iplug-container > .subcontainer").css("height", "30px");
+        }, 0);
+        //$(".backgroundcard[card='youtube'] img").attr("src", (data.media.format === 1) ? ("https://img.youtube.com/vi/" + data.media.cid + "/mqdefault.jpg") : data.media.image);
+    }
+
 
     $(".iplug-container .item-iplug:not(.unavailable)").bind("click", function () {
         var enabled = "block" != localStorage["iplug|" + $(this).attr("id")];
@@ -523,7 +561,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         });
     });
 
-    $(".iplug-container > .subcontainer").prepend("<div class='openhitbox'>");
+    $(".iplug-container > .subcontainer:not('.unavailable')").prepend("<div class='openhitbox'>");
     $(".iplug-container .openhitbox").bind("mousedown", function () {
     	var that = $(this);
     	var _this = that.siblings(".iplug-collapse");
@@ -858,11 +896,12 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 
     bindGradientCircleEvents($(".iplug-container .gradientpicker > .slider .barcontainer.gradient > .circle"));
 
-    $("body").bind("click", function () {
+    $("body").bind("click", closeBackgroundDeck);
+    function closeBackgroundDeck() {
         var deck = $("#backgroundcarddeckcontainer");
         if (deck.attr("opened") !== "true" || deck.is(":hover")) return;
         deck.children().children().filter("[card=" + localStorage["iplug|currentBackground"] + "]").click();
-    });
+    }
 
     //OLD DOWNLOAD BUTTON STUFF
     /*
@@ -1611,22 +1650,32 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 		$("#mehSearchResults").empty().addClass("loading");
 		$("#mehSearch").val("");
 		managemehs.css({display: "block"});
-		var oneDone = false;
-		gapi.client.youtube.videos.list({ //youtube
-			id: mehstorage.filter(function(a) {
-					return a[0] === "1";
-				}).map(function(a) {
-					return a.substring(1);
-				}).join(","),
-			part: "snippet"
-		}).execute(function(response) {
-			if ("error" in response)
-				return $("#mehSearchResults").addClass("error");
-			response.items.forEach(function(a) {
-				addSong("1" + a.id, a.snippet.thumbnails.default.url, a.snippet.title);
-			});
-			finish();
-		});
+
+        if(!gapi || !gapi.client || !gapi.client.youtube || !gapi.client.youtube.videos || !gapi.client.youtube.videos.list)
+            return setTimeout(function() {
+                if ($("#iplug-manage-mehs").css("display") == "block")
+                    $("#managemehs").trigger("click");
+            }, 50);
+
+        var ytvids = mehstorage.filter(function(a) {
+                return a[0] === "1";
+            }).map(function(a) {
+                return a.substring(1);
+            });
+		var left = 1 + Math.ceil(ytvids.length / 50);
+        while (ytvids.length) {
+    		gapi.client.youtube.videos.list({ //youtube
+    			id: ytvids.splice(0, 50).join(","),
+    			part: "snippet"
+    		}).execute(function(response) {
+    			if ("error" in response)
+    				return $("#mehSearchResults").addClass("error");
+    			response.items.forEach(function(a) {
+    				addSong("1" + a.id, a.snippet.thumbnails.default.url, a.snippet.title);
+    			});
+    			finish();
+    		});
+        }
 		var scids = mehstorage.filter(function(a) { //soundcloud
 			return a[0] === "2";
 		}).map(function(a) {
@@ -1653,8 +1702,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 		}
 
 		function finish() {
-			if (!oneDone)
-				return oneDone = true;
+			if (!left--)
+				return;
 			$("#mehSearchResults").removeClass("loading").find(".delete").on("click", function(a) {
 				var item = $(this).parent();
 		    	var index = mehstorage.indexOf(item.attr("cid"));
@@ -1757,7 +1806,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             return x.emotes;
         },
         name: function (x, a, key) {
-            return a.regex;
+            return a.regex.replace(/\(\)/g, "");
         },
         image: function (x, a, key) {
             return a.url;
@@ -1798,29 +1847,56 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     	image: function(x, a, key) {
     		return "https://ddragon.leagueoflegends.com/cdn/6.21.1/img/spell/" + a.image.full;
     	}
-    }, {
-    	
     }];
 
 
-	console.log("downloading emotes..");
     var allEmotes = {};
-    var emoteObjectsToLoad = emoteUrls.length;
-    emoteUrls.forEach(function (emoteObject) {
-        var tries = 0;
-        load();
+    loadAllEmotes();
+    function loadAllEmotes() {
+    	console.log("downloading emotes..");
 
-        function load() {
-            $.ajax({
-                url: emoteObject.url,
-                dataType: "json",
-                success: function (x) {
-                    var emotes = emoteObject.emotes(x);
+
+
+
+
+
+
+        //initialise worker
+        var blobURL = URL.createObjectURL(new Blob(['(',
+        function() {
+            var allEmotes = {};
+            var emojidata;
+            var emoteObjectsToLoad;
+            var emoteUrls;
+            onmessage = function(m) {
+                if (m.data.init) {
+                    emojidata = m.data.emojidata;
+                    emoteObjectsToLoad = m.data.emoteObjectsToLoad;
+                    emoteUrls = JSON.parse(m.data.emoteUrls, function (key, value) {
+                        if (value && typeof value === "string" && value.substr(0,8) == "function") {
+                            var startBody = value.indexOf('{') + 1;
+                            var endBody = value.lastIndexOf('}');
+                            var startArgs = value.indexOf('(') + 1;
+                            var endArgs = value.indexOf(')');
+ 
+                            return new Function(value.substring(startArgs, endArgs) , value.substring(startBody, endBody));
+                        }
+                        return value;
+                    });
+                    return;
+                }
+
+                if (m.data.response) {
+                    var emoteObject = emoteUrls.find(function(a) {
+                        return a.url == m.data.emoteObjectUrl;
+                    });
+
+                    var emotes = emoteObject.emotes(m.data.response);
                     var faileds = 0;
                     for (var key in emotes) {
                         try {
-                            var name = emoteObject.name(x, emotes[key], key).toLowerCase();
-                            var img = emoteObject.image(x, emotes[key], key);
+                            var name = emoteObject.name(m.data.response, emotes[key], key).toLowerCase();
+                            var img = emoteObject.image(m.data.response, emotes[key], key);
                             if (!name || !img) {
                                 console.warn(name, img, emotes[key]);
                                 faileds++;
@@ -1834,432 +1910,468 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
                         }
                     }
                     if (faileds > 0)
-                        console.warn("Couldnt load " + faileds + "/" + emotes.length + " emotes from " + emoteObject.url);
-                    if (--emoteObjectsToLoad <= 0)
-                        mapEmotes();
-                },
-                error: function (x) {
-                    if (tries++ < 3)
-                        return load();
-                    console.warn("Failed to load emotes from " + emoteObject.url + "...");
-                    if (--emoteObjectsToLoad <= 0)
-                        mapEmotes();
+                        console.warn("Couldnt load " + faileds + "/" + Object.keys(emotes).length + " emotes from " + emoteObject.url);
                 }
-            });
-        }
-    });
-
-    function mapEmotes() {
-	    //initialise worker
-	    var blobURL = URL.createObjectURL(new Blob(['(',
-	    function() {
-	        onmessage = function(m) {
-	        	var allEmotes = m.data.allEmotes;
-	        	var emojidata = m.data.emojidata;
-		        //hashing
-
-		        function hashThis(a, node) {
-		            if (a.length < 2)
-		                return;
-		            var first = a.substr(0, 1);
-		            var second = a.substr(1, 1);
-		            if (!realHash[first])
-		                realHash[first] = {};
-		            if (!realHash[first][second])
-		                realHash[first][second] = [];
-		            realHash[first][second].push(a);
-		        }
-
-		        var realHash = {};
-		        for (var key in allEmotes) {
-		            hashThis(key, allEmotes[key]);
-		        }
-
-		        for (var one in realHash)
-		            for (var two in realHash[one])
-		                realHash[one][two] = realHash[one][two].sort();
-
-		        var regex = new RegExp(":(" + Object.keys(realHash).map(function (one) {
-		            return one.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + Object.keys(realHash[one]).map(function (two) {
-		                return two.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + realHash[one][two].map(function (content) {
-		                    return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
-		                }).join("|") + ")";
-		            }).join("|") + ")";
-		        }).join("|") + "):", "ig");
-
-		        for (var key in emojidata) {
-		            if (!emojidata.hasOwnProperty(key)) continue;
-		            var node = emojidata[key]; -
-		            node[3].forEach(function (a) {
-		                hashThis(a, node);
-		            });
-		        }
-
-	            postMessage({
-	            	realHash: realHash,
-	            	regex: regex
-	            });
-	        };
-	    }.toString(),
-	    ')()'], {type: 'application/javascript'}));
-	    var worker = new Worker(blobURL);
-	    URL.revokeObjectURL(blobURL);
-
-	    worker.onmessage = function(m) {
-        	console.log("succesfully loaded " + Object.keys(allEmotes).length + " emotes!");
-	    	finishEmotes(m.data.realHash, m.data.regex);
-	    };
-	    console.log("mapping emotes..");
-	    worker.postMessage({
-	    	allEmotes: allEmotes,
-	    	emojidata: window.emoji.data
-	    });
-	}
-
-    function finishEmotes(realHash, regex) {
-
-        //replacing
-        var replaceColonsOld = emojiFilter.replace_colons;
-        emojiFilter.replace_colons = function (str, x, y, z) {
-        	if (z && str === ":SSearch All Emojis:")
-        		return "<i class='icon icon-search'></i>";
-            var resp = replaceColonsOld.apply(emojiFilter, arguments);
-            var args = arguments;
-            if (!x && !y) {
-                resp = resp.replace(regex, function (a, $1) {
-                    return "<img src='" + allEmotes[$1.toLowerCase()] + "'" + (z ? "" : " tooltip='" + $1 + "' onload='emojiTooltip(this)'") + "></img>";
-                });
-
-                //quote chat
-                if (/[^\u00a0]\u200E[^\u00a0]*\u00a0[^\u00a0]+\u00a0.*\u200F./.test(resp)) {
-                    var users = API.getUsers();
-                    do
-                        resp = resp.replace(/([^\u00a0])\u200E([^\u00a0]*)\u00a0([^\u00a0]+)\u00a0(.*)\u200F(.)/, function(a, $1, $2, timestamp, $4, $5) {
-                            var un = $1 + $2;
-                            var msg = $4 + $5
-                            var user = users.find(function(a) {
-                                return a.username == un;
-                            }), badge = "?",
-                                icons = "";
-                            if (user) {
-                                badge = "bdg bdg-" + plugUtils.badgeClass(user.badge);
-                                if (user.sub)
-                                    icons = '<i class="icon icon-chat-subscriber"></i>';
-                                else if (user.silver)
-                                    icons = '<i class="icon icon-chat-silver-subscriber"></i>';
-                                if (user.gRole >= 5)
-                                    icons += '<i class="icon icon-chat-admin"></i>';
-                                else if (users.gRole >= 2)
-                                    icons += '<i class="icon icon-chat-ambassador"></i>';
-                                if (user.role > 0)
-                                    icons += '<i class="icon icon-chat-' + Object.keys(API.ROLE).find(function(a) {
-                                        return API.ROLE[a] == user.role;
-                                    }).toLowerCase() + '"></i>';
-                            }
-                            return '<div class="cm message"><div class="badge-box clickable"><i class="' + badge + '"></i></div><div class="msg"><div class="from staff">' + icons + '<span class="un clickable">' + un + '</span><span class="timestamp" style="display: inline;">' + timestamp + '</span></div><div class="text">' + msg + '</div></div></div>'
-                        });
-                    while (/(?:^|\u00a0)([^\u00a0]+)\u00a0([^\u00a0]+)\u00a0(.+)(?:$|\u00a0)/.test(resp))
-                }
-            }
-            setTimeout(function() {
-            	$("#chat-suggestion-items > .chat-suggestion-item:has(.icon-search)").unbind("click mousedown").on("click", function() { //take over search emoji button
-            		var val = $("#chat-input-field").val();
-            		$("#chat-input-field").val(val.substring(0, lastEmojiCursorPos) + val.substring(lastEmojiCursorPos + lastEmojiPart.length + 1));
-            		//open emoji search (on mouseclick)
-            		searchEmojiMode = false;
-            		search.css({display: "block"});
-                    input.val(lastEmojiPart).trigger("input").focus();
-            	});
-            }, 0);
-            return resp;
-        };
-        window.emojiTooltip = function (that) {
-            var $this = $(that);
-            $this.on("mouseenter", function () {
-                Tooltip.show($this.attr("tooltip"), $this, false);
-            }).on("mouseleave", Tooltip.hide);
-        }
-
-        //suggestions
-
-        //GENERATED BY CHARINDEX EXTRACTER.JS
-        var REGEXUNICODELETTERS = {
-        	" ":"[ -_\\u00A0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u200B\\u202F\\u205F\\u3000\\uFEFF]+",
-            "0":"[0\\uD835\\uDFCE\\uDFE2\\uDFF6\\uDFD8\\u0030\\u2080\\u2070\\uFF10\\u24EA\\u1159\\u2298\\u24AA]",
-            "1":"[1\\u00A0\\u00A0\\u00A0\\u00A0\\uFE00\\uD835\\uDFCF\\uDFE3\\uDFF7\\uDFD9\\u0031\\u2081\\u00B9\\uFF11\\u2460\\u2474]",
-            "2":"[2\\u21EB\\u21E7\\uD835\\uDFD0\\uDFE4\\uDFF8\\uDFDA\\u0032\\u2082\\u00B2\\uFF12\\u2461\\u11AF\\u03E9\\u0536\\u2475]",
-            "3":"[3\\u21EF\\u21EE\\uD835\\uDFD1\\uDFE5\\uDFF9\\uDFDB\\u0033\\u2083\\u00B3\\uFF13\\u2462\\u04E0\\u0545\\u2476]",
-            "4":"[4\\uD835\\uDFD2\\uDFE6\\uDFFA\\uDFDC\\u0034\\u2084\\u2074\\uFF14\\u2463\\u096B\\u054E\\u2477]",
-            "5":"[5\\uFA0C\\uD835\\uDFD3\\uDFE7\\uDFFB\\uDFDD\\u0035\\u2085\\u2075\\uFF15\\u2464\\u01BC\\u2478]",
-            "6":"[6\\uD835\\uDFD4\\uDFE8\\uDFFC\\uDFDE\\u0036\\u2086\\u2076\\uFF16\\u2465\\u03EC\\u2479]",
-            "7":"[7\\uD835\\uDFD5\\uDFE9\\uDFFD\\uDFDF\\u0037\\u2087\\u2077\\uFF17\\u2466\\u11A8\\u0534\\u247A]",
-            "8":"[8\\uD835\\uDFD6\\uDFEA\\uDFFE\\uDFE0\\u0038\\u2088\\u2078\\uFF18\\u2467\\u0551\\u247B]",
-            "9":"[9\\u201F\\u201E\\u201F\\u201B\\u201E\\u201A\\u201F\\u201E\\u2E42\\u201B\\u201A\\u201B\\u201A\\uD835\\uDFD7\\uDFEB\\uDFFF\\uDFE1\\u0039\\u2089\\u2079\\uFF19\\u2468\\u096F\\u0533\\u247C]",
-            "a":"[a\\u00C1\\u00E1\\u0103\\u01CE\\u00C2\\u00E2\\u00C4\\u00E4\\u0227\\u1EA1\\u0201\\u00C0\\u00E0\\u1EA3\\u0203\\u0101\\u0105\\u1E9A\\u00C5\\u00E5\\u1E01\\u023A\\u00C3\\u00E3\\u08A0\\uFB50\\u27F0\\u2327\\u3400\\u2DE0\\uAB00\\u263A\\uA960\\u0100\\u10600\\uAA60\\u2284\\u2285\\u2327\\u00C5\\u00E5\\u1E01\\u2284\\u2285\\uF0000\\u2327\\uD835\\uDCEA\\uDCD0\\uDCB6\\uDC9C\\uDD1E\\uDD04\\uDE8A\\uDE70\\uDD52\\uDD38\\u15E9\\u03B1\\u0041\\u1D00\\u019B\\u1D43\\u1D2C\\u03BB\\u0394\\uFF41\\uFF21\\u0E04\\u24D0\\u24B6\\u039B\\u1F84\\u1F8B\\uFF91\\u0571\\u10DB\\u01DF\\u028C\\u0539\\u0061\\u0308\\u00AA\\u00C6\\u1571\\u01DE\\u15C5\\u0252\\u0250\\u007C\\u033F\\u0336\\u0020\\u0251\\u2200\\u0034\\u249C\\u0430]",
-            "x":"[x\\u033D\\u2612\\u2717\\u0353\\u2327\\u1F5D9\\u033D\\u0353\\uFA30\\u2718\\u2716\\uFA30\\uFA30\\u2715\\u2327\\u033D\\u0353\\u2327\\u1E8D\\u1E8B\\uD835\\uDD01\\uDCE7\\uDCCD\\uDCB3\\uDD35\\uDD1B\\uDEA1\\uDE87\\uDD69\\uDD4F\\u166D\\u0078\\u0058\\u03C7\\u0445\\u04B2\\u02E3\\u1D61\\u03F0\\u0416\\uFF58\\uFF38\\u24E7\\u24CD\\u04FE\\u1E8A\\uFF92\\u00D7\\u10EF\\u0AEA\\u04FC\\u04B3\\u0543\\u03A7\\u0308\\uA2BC\\u0436\\u2573\\u24B3]",
-            "v":"[v\\u030C\\u030C\\u1E7F\\u01B2\\u028B\\u1E7D\\uD835\\uDCFF\\uDCE5\\uDCCB\\uDCB1\\uDD33\\uDD19\\uDE9F\\uDE85\\uDD67\\uDD4D\\u142F\\u03BD\\u1D20\\u0056\\u0076\\u0194\\u1D5B\\uFF56\\uFF36\\u24E5\\u24CB\\u0474\\u040F\\u03C5\\u0475\\u221A\\u0E07\\u0C6E\\u2200\\u05E2\\u0308\\u13C9\\u00A5\\u143B\\u028C\\u005C\\u0020\\u0347\\u002F\\u039B\\u143A\\u24B1]",
-            "n":"[n\\uFF2E\\u22C0\\u2AFF\\u2A00\\u2A01\\u2A02\\u2210\\u2AFF\\u22C2\\u019D\\u0272\\u22C0\\u22C1\\u0144\\u0148\\u0146\\u1E4B\\u0235\\u1E45\\u1E47\\u01F9\\u019D\\u0272\\u1E49\\u0220\\u019E\\u0273\\u00D1\\u00F1\\u2210\\u2AFF\\u22C2\\u22C0\\u22C1\\u22C0\\u2A00\\u220F\\u2211\\u2140\\u2A09\\u22C3\\u2AFF\\u22C0\\u2A00\\u22C1\\u220F\\u0273\\u2140\\u2211\\u2A09\\u22C3\\u2AFF\\u2AFF\\u0274\\u057C\\u03B7\\u041B\\u041F]",
-            "c":"[c\\u2183\\u212D\\u0107\\u010D\\u00C7\\u00E7\\u0109\\u0255\\u010B\\u0188\\u023B\\u023C\\u00C7\\u00E7\\u2A700\\u1C80\\u2C60\\u0297\\uD835\\uDCEC\\uDCD2\\uDCB8\\uDC9E\\uDD20\\uDE8C\\uDE72\\uDD54\\u2102\\u1455\\u0063\\u0187\\u1D04\\u0043\\u1D9C\\u03C2\\uFF43\\uFF23\\u1645\\u24D2\\u24B8\\u00A2\\u03B6\\u21BB\\u096E\\u0108\\u03FE\\u0547\\u0308\\u00A9\\u3108\\uA49D\\u091F\\u1464\\u0254\\u007C\\u033F\\u0347\\u0020\\u1462\\u249E]",
-            "b":"[b\\uFE70\\u1E03\\u1E05\\u0181\\u0253\\u1E07\\u0243\\u0180\\u0183\\u20000\\uA640\\u10080\\uD7B0\\u0180\\u10080\\u10000\\uA9E0\\u212C\\u2900\\u100000\\u10000\\uD835\\uDCEB\\uDCB7\\uDC35\\uDD1F\\uDD05\\uDE8B\\uDE71\\uDD53\\uDD39\\u15F7\\u0432\\u0299\\u0042\\u1D47\\u1D2E\\u03D0\\uFF42\\uFF22\\u1656\\u0E52\\u10A6\\u24D1\\u24B7\\u00DF\\u4E43\\u03B2\\u048D\\u0E56\\u044A\\u10EA\\u10E9\\u026E\\u0185\\u0411\\u0545\\u0062\\u0308\\u03E6\\u00FE\\u1658\\u0064\\u0071\\u007C\\u033F\\u0347\\u0336\\u0020\\u0029\\u0038\\u249D]",
-            "z":"[z\\u22FF\\u2128\\u2982\\u22FF\\u0290\\u0240\\u01B6\\u22FF\\u2981\\u2982\\u017A\\u017E\\u1E91\\u0291\\u017C\\u1E93\\u0225\\u1E95\\u0290\\u01B6\\u0240\\uD835\\uDD03\\uDCE9\\uDCCF\\uDCB5\\uDD37\\uDEA3\\uDE89\\uDD6B\\u2124\\u0020\\u1614\\u007A\\u01B5\\u1D22\\u005A\\u0224\\u1DBB\\uFF5A\\uFF3A\\u24E9\\u24CF\\u1E94\\u4E59\\u0540\\u0E8A\\u09E8\\u0ABD\\u1E90\\u0308\\u13C3\\u0582\\u0577\\u1663\\u033F\\u002F\\u0347\\u0032\\u15F1\\u24B5]",
-            "l":"[l\\u026C\\u2114\\u013A\\u023D\\u019A\\u026C\\u013E\\u013C\\u1E3D\\u0234\\u1E37\\u1E3B\\u0140\\u026B\\u026D\\u1D0C\\u0142\\u0140\\u026B\\u026D\\u2143\\u2112\\u2113\\u2142\\uD835\\uDCF5\\uDCC1\\uDC3F\\uDD29\\uDD0F\\uDE95\\uDE7B\\uDD5D\\uDD43\\u14AA\\u0196\\u004C\\u029F\\u006C\\u053C\\u02E1\\u1D38\\uFF4C\\uFF2C\\u0285\\u24DB\\u24C1\\u013F\\uFF9A\\u04C0\\u0546\\u0141\\u03B9\\u0308\\u007C\\u056C\\u013B\\u1102\\u0E45\\u0347\\u0020\\u0433\\u0393\\u0031\\u24A7]",
-            "h":"[h\\u210C\\u1E2B\\u021F\\u1E29\\u0125\\u1E27\\u1E23\\u1E25\\u02AE\\u0266\\u1E96\\u0127\\u210B\\u02AE\\uD835\\uDCF1\\uDCBD\\uDC3B\\uDD25\\uDCD7\\uDE91\\uDE77\\uDD59\\u210D\\u157C\\u043D\\u0048\\u029C\\u04C7\\u02B0\\u1D34\\uFF48\\uFF28\\u0452\\u050B\\u24D7\\u24BD\\u0124\\u1F2C\\u3093\\u0068\\u0570\\u01F6\\u0267\\u04BA\\u0126\\u0308\\u2645\\u09F8\\u0265\\u007C\\u0336\\u0020\\u24A3]",
-            "i":"[i\\u2111\\u268A\\u0130\\u4DC0\\u0197\\u4DC0\\u268A\\u2630\\u0130\\u00CD\\u00ED\\u012D\\u01D0\\u00CE\\u00EE\\u00CF\\u00EF\\u0130\\u1ECB\\u0209\\u00CC\\u00EC\\u1EC9\\u020B\\u012B\\u012F\\u0197\\u0268\\u1E2D\\u0129\\u268A\\u2110\\u4DC0\\u268A\\u2630\\u4DC0\\u268A\\u2630\\u2630\\u4DC0\\u268A\\u2630\\uD835\\uDCF2\\uDCD8\\uDCBE\\uDC3C\\uDD26\\uDE92\\uDE78\\uDD5A\\uDD40\\u0049\\u03B9\\u01C0\\u026A\\u0196\\u1DA4\\u1D35\\uFF49\\uFF29\\u0E40\\u24D8\\u24BE\\u0131\\u012A\\u1F37\\u1F3F\\uFF89\\u0069\\uFEE8\\u027F\\u1F36\\u0142\\u03AF\\u0308\\u00A1\\u13A5\\u0407\\u14FF\\u007C\\u0021\\u14F0\\u24A4\\u05D5]",
-            "r":"[r\\u211C\\u0155\\u0159\\u0157\\u1E59\\u1E5B\\u0211\\u027E\\u027F\\u027B\\u0213\\u1E5F\\u027C\\u027A\\u024C\\u024D\\u027D\\u027F\\u211B\\u027B\\u027A\\uD835\\uDCFB\\uDCC7\\uDC45\\uDD2F\\uDCE1\\uDE9B\\uDE81\\uDD63\\u211D\\u1587\\u044F\\u0052\\u0280\\u0072\\u01A6\\u02B3\\u1D3F\\u0433\\u0393\\uFF52\\uFF32\\u24E1\\u24C7\\u0154\\u0212\\u5C3A\\u0F60\\u0550\\u042F\\u0AB0\\u0308\\u00AE\\u13D2\\u0490\\u0279\\u007C\\u033F\\u0020\\u0336\\u0027\\u256E\\u0281\\u0269\\u24AD\\u1D26\\uFF41]",
-            "d":"[d\\u2B740\\u0256\\u010F\\u1E11\\u1E13\\u0221\\u1E0B\\u1E0D\\u018A\\u0257\\u1E0F\\u0111\\u0256\\u018C\\uA720\\u0256\\uD835\\uDCED\\uDCD3\\uDCB9\\uDC9F\\uDD21\\uDD07\\uDE8D\\uDE73\\uDD55\\uDD3B\\u15EA\\u2202\\u1D05\\u0044\\u0064\\u1D48\\u1D30\\uFF44\\uFF24\\u0E54\\u0503\\u24D3\\u24B9\\u0254\\u0189\\u00D0\\u03B4\\u056A\\u0ED3\\u10EB\\u053A\\u0308\\u00F0\\u13A0\\u00DE\\u15EB\\u0062\\u0070\\u007C\\u033F\\u0347\\u0020\\u0029\\u1572\\u249F\\u0110]",
-            "e":"[e\\u15f4\\u2B820\\u00C9\\u00E9\\u0115\\u011B\\u0229\\u1E19\\u00CA\\u00EA\\u00CB\\u00EB\\u0117\\u1EB9\\u0205\\u00C8\\u00E8\\u1EBB\\u025D\\u0207\\u0113\\u0119\\u0246\\u0247\\u1E1B\\u1EBD\\uAB30\\u025D\\u025D\\u2130\\u212F\\uD835\\uDC86\\uDCD4\\uDC52\\uDC38\\uDD22\\uDD08\\uDE8E\\uDE74\\uDD56\\uDD3C\\u156E\\u0454\\u0190\\u1D07\\u0045\\u0065\\u0404\\u1D49\\u1D31\\u03B5\\u03A3\\uFF45\\uFF25\\u1653\\u04BD\\u24D4\\u24BA\\u1F14\\u1F1D\\u4E47\\u0AEF\\u025B\\u00A3\\u039E\\u021D\\u0308\\u20AC\\uA085\\u164D\\u0258\\u01DD\\u007C\\u033F\\u0347\\u0336\\u0020\\u0033\\u163F\\u24A0]",
-            "j":"[j\\u025F\\u01F0\\u0135\\u029D\\u0248\\u0249\\u025F\\uD835\\uDCF3\\uDCD9\\uDCBF\\uDCA5\\uDD27\\uDD0D\\uDE93\\uDE79\\uDD5B\\uDD41\\u148D\\u05E0\\u004A\\u1D0A\\u006A\\u0286\\u02B2\\u1D36\\u03F3\\uFF4A\\uFF2A\\u05DF\\u24D9\\u24BF\\u0134\\u0408\\uFF8C\\u0644\\u0E27\\u0575\\u0296\\u0308\\u00BF\\u1499\\u012F\\u017F\\u0020\\u0347\\u007C\\u027F\\u0E45\\u149A\\u24A5]",
-            "o":"[o\\u0153\\u019F\\u019F\\u0275\\u0153\\u00D8\\u00F8\\u00D3\\u00F3\\u014F\\u01D2\\u00D4\\u00F4\\u00D6\\u00F6\\u022F\\u1ECD\\u0151\\u020D\\u00D2\\u00F2\\u1ECF\\u01A1\\u020F\\u014D\\u019F\\u01EB\\u00D8\\u00F8\\u1D13\\u00D5\\u00F5\\u2134\\u1D13\\u00D8\\u00F8\\u00D8\\u00F8\\uD835\\uDCF8\\uDCDE\\uDC5C\\uDCAA\\uDD2C\\uDD12\\uDE98\\uDE7E\\uDD60\\uDD46\\u004F\\u03C3\\u1D0F\\u006F\\u01A0\\u1D52\\u1D3C\\u0398\\uFF4F\\uFF2F\\u0E4F\\u24DE\\u24C4\\u2661\\u1F44\\u1F4B\\u053E\\u0585\\u0ED0\\u0AE6\\u2295\\u0424\\u0308\\u00A4\\u25CA\\u03A6\\u14CE\\u007C\\u033F\\u0347\\u0020\\u0030\\u14CD\\u24AA]",
-            "f":"[f\\u1E1F\\u0192\\u2131\\u2132\\u214E\\uD835\\uDC87\\uDCBB\\uDC39\\uDD23\\uDD09\\uDE8F\\uDE75\\uDD57\\uDD3D\\u15B4\\u0066\\u0191\\u0493\\u0046\\u1DA0\\u03D1\\uFF46\\uFF26\\u0166\\u03DD\\u24D5\\u24BB\\u0492\\uFF77\\u2231\\u0562\\u0532\\u0284\\u0283\\u0308\\uA2B0\\u0287\\u025F\\u007C\\u033F\\u0336\\u0020\\u027B\\u24A1]",
-            "g":"[g\\u01F5\\u011F\\u01E7\\u0123\\u011D\\u0121\\u0193\\u029B\\u0260\\u1E21\\u01E5\\u210A\\u2141\\uD835\\uDCF0\\uDCD6\\uDC54\\uDCA2\\uDD24\\uDD0A\\uDE90\\uDE76\\uDD58\\uDD3E\\u0047\\u0067\\u0262\\u1D4D\\u1D33\\uFF47\\uFF27\\u161C\\u24D6\\u24BC\\u01E4\\u0581\\u0E87\\u0AED\\u0533\\u0122\\u0308\\u0AEC\\u03B6\\u03F1\\u0253\\u007C\\u033F\\u0347\\u0020\\u0336\\u03B9\\u10DB\\u018B\\u0039\\u24A2]",
-            "s":"[s\\u223E\\u223D\\u015B\\u0161\\u015F\\u015D\\u0219\\u1E61\\u1E9B\\u1E63\\u0282\\u023F\\u023F\\uD835\\uDCFC\\uDCE2\\uDCC8\\uDCAE\\uDD30\\uDD16\\uDE9C\\uDE82\\uDD64\\uDD4A\\u1515\\u0455\\u0053\\u0073\\u01A7\\u02E2\\u0405\\uFF53\\uFF33\\u0E23\\u24E2\\u24C8\\u01A8\\u1E69\\u1E68\\u310E\\u0024\\u03DA\\u015E\\u03C2\\u0586\\u054F\\u0218\\u0308\\u00A7\\u3089\\u13D5\\u0160\\u0020\\u0347\\u005C\\u033F\\u0035\\u1522\\u24AE]",
-            "k":"[k\\u1E31\\u01E9\\u0137\\u1E33\\u0199\\u1E35\\uD835\\uDCF4\\uDCDA\\uDCC0\\uDCA6\\uDC58\\uDD0E\\uDE94\\uDE7A\\uDD5C\\uDD42\\u004B\\u043A\\u0198\\u1D0B\\u0138\\u1D4F\\u1D37\\u03BA\\uFF4B\\uFF2B\\u24DA\\u24C0\\u04A0\\u045C\\u1E30\\u30BA\\u049F\\u04A1\\u006B\\u049B\\u04C4\\u049A\\u041A\\u0308\\u039A\\u15BD\\u1438\\u029E\\u007C\\u27E8\\u24A6]",
-            "m":"[m\\u1E3F\\u1E41\\u1E43\\u0271\\u0270\\u2133\\u2133\\u0270\\uD835\\uDCF6\\uDCC2\\uDC40\\uDD2A\\uDD10\\uDE96\\uDE7C\\uDD5E\\uDD44\\u15F0\\u043C\\u004D\\u1D0D\\u1D50\\u1D39\\u03FB\\u039C\\uFF4D\\uFF2D\\u164F\\u0E53\\u24DC\\u24C2\\u1E42\\u110A\\u028D\\u264F\\u10DD\\u006D\\u0308\\u0BF1\\u1662\\u026F\\u007C\\u033F\\u0020\\u0056\\u0077\\u0057\\u163B\\u24A8]",
-            "u":"[u\\u0D4D\\u0244\\u0289\\u00DA\\u00FA\\u016D\\u01D4\\u1E77\\u00DB\\u00FB\\u1E73\\u00DC\\u00FC\\u1EE5\\u0171\\u0215\\u00D9\\u00F9\\u1EE7\\u01B0\\u0217\\u016B\\u0173\\u016F\\u1E75\\u0169\\uD835\\uDCFE\\uDCE4\\uDCCA\\uDCB0\\uDD32\\uDD18\\uDE9E\\uDE84\\uDD66\\uDD4C\\u144C\\u03C5\\u0055\\u1D1C\\u01B2\\u1D58\\u1D41\\u01B1\\uFF55\\uFF35\\u1640\\u0E22\\u24E4\\u24CA\\u1F57\\u0216\\u0426\\u0075\\u0574\\u0531\\u0E19\\u057D\\u028A\\u016A\\u0544\\u0308\\u00B5\\u1457\\u006E\\u007C\\u0347\\u0020\\u220F\\u039B\\u1458\\u24B0\\u0446]",
-            "p":"[p\\u1E55\\u1E57\\u01A5\\u2118\\uD835\\uDCF9\\uDCDF\\uDCC5\\uDCAB\\uDD2D\\uDD13\\uDE99\\uDE7F\\uDD61\\u2119\\u146D\\u03C1\\u01A4\\u1D18\\u0050\\u0070\\u1D56\\u1D3E\\uFF50\\uFF30\\u0569\\u24DF\\u24C5\\u1E56\\u1FE5\\uFF71\\u0584\\u03C6\\u00FE\\u01BF\\u0580\\u0308\\u00DE\\u13B5\\u01F7\\u0420\\u157F\\u0071\\u0064\\u007C\\u033F\\u0336\\u0020\\u0027\\u0185\\u0062\\u1575\\u24AB]",
-            "t":"[t\\u01AB\\u01AE\\u0288\\u0165\\u0163\\u1E71\\u021B\\u0236\\u1E97\\u023E\\u1E6B\\u1E6D\\u01AD\\u1E6F\\u01AB\\u01AE\\u0288\\u0167\\uD835\\uDCFD\\uDCE3\\uDCC9\\uDCAF\\uDD31\\uDD17\\uDE9D\\uDE83\\uDD65\\uDD4B\\u0054\\u0442\\u01AC\\u1D1B\\u1D57\\u1D40\\u03C4\\uFF54\\uFF34\\u0074\\u019A\\u24E3\\u24C9\\u04AD\\u04AC\\uFF72\\u2020\\u0567\\u0A6E\\u0166\\u0535\\u0308\\u0164\\u03EE\\u22A5\\u15B6\\u0287\\u0020\\u033F\\u007C\\u0037\\u24AF]",
-            "q":"[q\\u024A\\u024B\\u02A0\\u213A\\uD835\\uDCFA\\uDCE0\\uDCC6\\uDCAC\\uDD2E\\uDD14\\uDE9A\\uDE80\\uDD62\\u211A\\u146B\\u0071\\u0051\\u03D9\\u01A2\\u1D60\\u03C6\\u10B3\\uFF51\\uFF31\\u1EE3\\u24E0\\u24C6\\u04A8\\u01EB\\u0566\\u04A9\\u0E51\\u0563\\u03A9\\u01A3\\u01EA\\u0308\\u018D\\u00D8\\u1574\\u0070\\u0062\\u0020\\u007C\\u033F\\u0347\\u03ED\\u01A0\\u24AC]",
-            "y":"[y\\u2144\\u00DD\\u00FD\\u0177\\u0178\\u00FF\\u1E8F\\u1EF5\\u1EF3\\u1EF7\\u01B4\\u0233\\u1E99\\u024E\\u024F\\u1EF9\\uD835\\uDD02\\uDCE8\\uDCCE\\uDCB4\\uDC66\\uDD1C\\uDEA2\\uDE88\\uDD6A\\uDD50\\u0059\\u0443\\u01B3\\u028F\\u0079\\u02B8\\u1D5E\\u03C8\\u03A8\\uFF59\\uFF39\\u05E5\\u10E7\\u24E8\\u24CE\\u0447\\u1F5B\\uFF98\\u057E\\u04CB\\u03B3\\u0E2F\\u05E2\\uFFE5\\u0263\\u00A5\\u040F\\u054E\\u03D3\\u0308\\u03E4\\u13A9\\u15BB\\u028E\\u2570\\u007C\\u256F\\u2443\\u03BB\\u24B4]",
-            "w":"[w\\u1E83\\u0175\\u1E85\\u1E87\\u1E89\\u1E81\\u1E98\\uD835\\uDD00\\uDCE6\\uDCCC\\uDCB2\\uDD34\\uDD1A\\uDEA0\\uDE86\\uDD68\\uDD4E\\u15EF\\u03C9\\u019C\\u1D21\\u0057\\u0077\\u02B7\\u1D42\\u0448\\u0428\\uFF57\\uFF37\\u164E\\u0E2C\\u026F\\u24E6\\u24CC\\u0460\\u1FA7\\u1E82\\u0429\\u0561\\u0C1A\\u0449\\u0E9F\\u03CE\\u0308\\u13B3\\u028D\\u007C\\u0347\\u0020\\u039B\\u004D\\u163A\\u24B2]"
-        }; 
-
-        var canSkip = false;
-        var last = "";
-
-        var laststr = "";
-        var lastEmojiPart = "";
-        var lastEmojiCursorPos = 0;
-        plugSugg.prototype.check = function (str, len) {
-            var max = 30;
-            var n = str.lastIndexOf("@");
-            if (n !== -1) {
-                var f = str.substr(n + 1, len).toLowerCase();
-                if (!f) {
-                    this.suggestions = [];
-                    return false;
-                }
-                var names = API.getUsers().map(function (a) {
-                    return a.rawun;
-                });
-                var first = this.suggestions = names.filter(function (a) {
-                    return a.substr(0, f.length).toLowerCase()/*.replace(/ +/g, "")*/ === f;
-                }).sort();
-                var searchRegex = new RegExp(f.split("").map(function(a) {
-                    return REGEXUNICODELETTERS[a] || ("\\" + a);
-                }).join(""), "i");
-                this.suggestions = this.suggestions.concat(names.filter(function(a) {
-                    return first.indexOf(a) == -1 && searchRegex.test(a);
-                }).sort());
-                if (max < this.suggestions.length)
-                    this.suggestions.length = max;
-                if (this.suggestions.length) {
-                    this.type = "@";
-                    return;
-                }
-            }
-            n = str.lastIndexOf(":");
-            if (n !== -1) {
-                var f = (laststr = str.substr(n + 1, len)).toLowerCase();
-                if (f.length < 2) {
-                    this.suggestions = [];
-                    return false;
-                }
-                var first = f.substr(0, 1);
-                var second = f.substr(1, 1);
-                if (!first || !second || !realHash[first] || !realHash[first][second]) {
-                    this.suggestions = [];
-                    return false;
-                }
-                var i = 0;
-                this.suggestions = realHash[first][second];
-                if (f.length > 2) {
-                    this.suggestions = this.suggestions.filter(function (a) {
-                        return a.substr(0, f.length) === f;
-                    });
-                    if (max < this.suggestions.length)
-                        this.suggestions.length = max;
-                } else this.suggestions = this.suggestions.slice(0, max);
-                if (this.lastEmpty)
-                    this.index = 1;
-                this.lastEmpty = !this.suggestions.length;
-                if (this.suggestions.length === 0)
-                    return false;
-                else
-                    this.suggestions.unshift("SSearch All Emojis");
-                this.type = ":";
-                if (this.index === -1)
-                	this.index = 1;
-                lastEmojiPart = this.lastEmojiSearch = str.substr(n + 1, len);
-                lastEmojiCursorPos = n;
-                this.lastLength = len;
-            }
-        };
-
-        var upDownOld = plugSugg.prototype.upDown;
-        var container = $("#chat-suggestion");
-        plugSugg.prototype.upDown = function () {
-            canSkip = false;
-            upDownOld.apply(this, arguments);
-            var selected = $("#chat-suggestion-items >:eq(" + this.index + ")");
-            var offTop = selected.offset().top - container.offset().top;
-            if (offTop < 0)
-                container.scrollTop(offTop + container.scrollTop());
-            else {
-                var offBot = offTop - container.height() + selected.height();
-                if (offBot > 0)
-                    container.scrollTop(offBot + container.scrollTop());
-            }
-        }
+                if (--emoteObjectsToLoad <= 0)
+                    mapEmotes();
 
 
-
-        //search all
-        var search = $("<div id='iplug-search-emojis' style='display: none'>");
-        var content = $('<div><span class="title">Search All Emojis</span><i class="icon icon-dialog-close"></i><div><input type="text" id="emojiSearch" placeholder="Search for emoji" class="iplug"><div id="emojiSearchResults"></div><span id="emojiSearchCount"></span></div><span class="close">Close</span>');
-        content.on("click", function(e) {
-            e.stopPropagation();
-        }).appendTo(search);
-        search.appendTo("body").add("#iplug-search-emojis .close, #iplug-search-emojis .icon-dialog-close").on("click", function() {
-            search.css({display: "none"});
-        });
-
-        //initialise worker
-        var blobURL = URL.createObjectURL(new Blob(['(',
-        function() {
-            onmessage = function(m) {
-                var allEmotes = m.data;
-                var keys = Object.keys(allEmotes).sort().reverse();
-                onmessage = function(m) {
-                    var str = m.data;
-                    postMessage({
-                        query: str,
-                        result: keys.filter(function(a) {
-                            return -1 !== a.indexOf(str);
-                        }).map(function(key) {
-                            return "<div><img src='" + allEmotes[key] + "'></img><span>" + key + "</span></div>"
-                        })
-                    });
-                }
-                postMessage(true); //init complete
             };
+            function mapEmotes() {
+                //hashing
+
+                function hashThis(a, node) {
+                    if (a.length < 2)
+                        return;
+                    var first = a.substr(0, 1);
+                    var second = a.substr(1, 1);
+                    if (!realHash[first])
+                        realHash[first] = {};
+                    if (!realHash[first][second])
+                        realHash[first][second] = [];
+                    realHash[first][second].push(a);
+                }
+
+                var realHash = {};
+                for (var key in allEmotes) {
+                    hashThis(key, allEmotes[key]);
+                }
+
+                for (var one in realHash)
+                    for (var two in realHash[one])
+                        realHash[one][two] = realHash[one][two].sort();
+
+                var regex = new RegExp(":(" + Object.keys(realHash).map(function (one) {
+                    return one.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + Object.keys(realHash[one]).map(function (two) {
+                        return two.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&") + "(?:" + realHash[one][two].map(function (content) {
+                            return content.substr(2).replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/gi, "\\$&").toLowerCase(); //escape for regex usage
+                        }).join("|") + ")";
+                    }).join("|") + ")";
+                }).join("|") + "):", "ig");
+
+                for (var key in emojidata) {
+                    if (!emojidata.hasOwnProperty(key)) continue;
+                    var node = emojidata[key]; -
+                    node[3].forEach(function (a) {
+                        hashThis(a, node);
+                    });
+                }
+
+                postMessage({
+                    realHash: realHash,
+                    regex: regex,
+                    allEmotes: allEmotes
+                });
+            }
         }.toString(),
         ')()'], {type: 'application/javascript'}));
         var worker = new Worker(blobURL);
         URL.revokeObjectURL(blobURL);
 
-        var chatInputRange;
-        var chatInputBefore;
-        var chatInputAfter;
-        var searchEmojiMode;
-        var input = $("#emojiSearch");
-        var output = $("#emojiSearchResults");
-        worker.onmessage = function() {
-            var lastQuery = "";
-            input.on("input", function() {
-                if (input.val().length < 2) return;
-                lastQuery = input.val();
-                worker.postMessage(input.val());
-                output.empty();
+        worker.onmessage = function(m) {
+            allEmotes = m.data.allEmotes;
+            console.log("succesfully loaded " + Object.keys(allEmotes).length + " emotes!");
+            finishEmotes(m.data.realHash, m.data.regex);
+        };
+        console.log("mapping emotes..");
+        worker.postMessage({
+            init: true,
+            emojidata: window.emoji.data,
+            emoteObjectsToLoad: emoteUrls.length,
+            emoteUrls: JSON.stringify(emoteUrls, function (key, value) {
+                if (typeof value === 'function')
+                    return value.toString();
+                return value;
+            }, 2)
+        });
+
+
+
+
+
+
+
+
+
+        emoteUrls.forEach(function (emoteObject) {
+            var tries = 0;
+            load();
+
+            function load() {
+                $.ajax({
+                    url: emoteObject.url,
+                    dataType: "json",
+                    success: function (response) {
+                        worker.postMessage({
+                            response: response,
+                            emoteObjectUrl: emoteObject.url
+                        });
+                    },
+                    error: function (response) {
+                        if (tries++ < 3)
+                            return load();
+                        console.warn("Failed to load ALL emotes from " + emoteObject.url + "!", response);
+                        worker.postMessage({
+                            emoteObjectUrl: emoteObject.url
+                        });
+                    }
+                });
+            }
+        });
+
+
+
+        function finishEmotes(realHash, regex) {
+
+            //replacing
+            var replaceColonsOld = emojiFilter.replace_colons;
+            emojiFilter.replace_colons = function (str, x, y, z) {
+                if (z && str === ":SSearch All Emojis:")
+                    return "<i class='icon icon-search'></i>";
+                var resp = replaceColonsOld.apply(emojiFilter, arguments);
+                var args = arguments;
+                if (!x && !y) {
+                    resp = resp.replace(regex, function (a, $1) {
+                        return "<img src='" + allEmotes[$1.toLowerCase()] + "'" + (z ? "" : " tooltip='" + $1 + "' onload='emojiTooltip(this)'") + "></img>";
+                    });
+
+                    //quote chat
+                    if (/[^\u00a0]\u200E[^\u00a0]*\u00a0[^\u00a0]+\u00a0.*\u200F./.test(resp)) {
+                        var users = API.getUsers();
+                        do
+                            resp = resp.replace(/([^\u00a0])\u200E([^\u00a0]*)\u00a0([^\u00a0]+)\u00a0(.*)\u200F(.)/, function(a, $1, $2, timestamp, $4, $5) {
+                                var un = $1 + $2;
+                                var msg = $4 + $5
+                                var user = users.find(function(a) {
+                                    return a.username == un;
+                                }), badge = "?",
+                                    icons = "";
+                                if (user) {
+                                    badge = "bdg bdg-" + plugUtils.badgeClass(user.badge);
+                                    if (user.sub)
+                                        icons = '<i class="icon icon-chat-subscriber"></i>';
+                                    else if (user.silver)
+                                        icons = '<i class="icon icon-chat-silver-subscriber"></i>';
+                                    if (user.gRole >= 5)
+                                        icons += '<i class="icon icon-chat-admin"></i>';
+                                    else if (users.gRole >= 2)
+                                        icons += '<i class="icon icon-chat-ambassador"></i>';
+                                    if (user.role > 0)
+                                        icons += '<i class="icon icon-chat-' + Object.keys(API.ROLE).find(function(a) {
+                                            return API.ROLE[a] == user.role;
+                                        }).toLowerCase() + '"></i>';
+                                }
+                                return '<div class="cm message"><div class="badge-box clickable"><i class="' + badge + '"></i></div><div class="msg"><div class="from staff">' + icons + '<span class="un clickable">' + un + '</span><span class="timestamp" style="display: inline;">' + timestamp + '</span></div><div class="text">' + msg + '</div></div></div>'
+                            });
+                        while (/(?:^|\u00a0)([^\u00a0]+)\u00a0([^\u00a0]+)\u00a0(.+)(?:$|\u00a0)/.test(resp))
+                    }
+                }
+                setTimeout(function() {
+                    $("#chat-suggestion-items > .chat-suggestion-item:has(.icon-search)").unbind("click mousedown").on("click", function() { //take over search emoji button
+                        var val = $("#chat-input-field").val();
+                        $("#chat-input-field").val(val.substring(0, lastEmojiCursorPos) + val.substring(lastEmojiCursorPos + lastEmojiPart.length + 1));
+                        //open emoji search (on mouseclick)
+                        searchEmojiMode = false;
+                        search.css({display: "block"});
+                        input.val(lastEmojiPart).trigger("input").focus();
+                    });
+                }, 0);
+                return resp;
+            };
+            window.emojiTooltip = function (that) {
+                var $this = $(that);
+                $this.on("mouseenter", function () {
+                    Tooltip.show($this.attr("tooltip"), $this, false);
+                }).on("mouseleave", Tooltip.hide);
+            }
+
+            //suggestions
+
+            //GENERATED BY CHARINDEX EXTRACTER.JS
+            var REGEXUNICODELETTERS = {
+                " ":"[ -_\\u00A0\\u1680\\u180E\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200A\\u200B\\u202F\\u205F\\u3000\\uFEFF]+",
+                "0":"[0\\uD835\\uDFCE\\uDFE2\\uDFF6\\uDFD8\\u0030\\u2080\\u2070\\uFF10\\u24EA\\u1159\\u2298\\u24AA]",
+                "1":"[1\\u00A0\\u00A0\\u00A0\\u00A0\\uFE00\\uD835\\uDFCF\\uDFE3\\uDFF7\\uDFD9\\u0031\\u2081\\u00B9\\uFF11\\u2460\\u2474]",
+                "2":"[2\\u21EB\\u21E7\\uD835\\uDFD0\\uDFE4\\uDFF8\\uDFDA\\u0032\\u2082\\u00B2\\uFF12\\u2461\\u11AF\\u03E9\\u0536\\u2475]",
+                "3":"[3\\u21EF\\u21EE\\uD835\\uDFD1\\uDFE5\\uDFF9\\uDFDB\\u0033\\u2083\\u00B3\\uFF13\\u2462\\u04E0\\u0545\\u2476]",
+                "4":"[4\\uD835\\uDFD2\\uDFE6\\uDFFA\\uDFDC\\u0034\\u2084\\u2074\\uFF14\\u2463\\u096B\\u054E\\u2477]",
+                "5":"[5\\uFA0C\\uD835\\uDFD3\\uDFE7\\uDFFB\\uDFDD\\u0035\\u2085\\u2075\\uFF15\\u2464\\u01BC\\u2478]",
+                "6":"[6\\uD835\\uDFD4\\uDFE8\\uDFFC\\uDFDE\\u0036\\u2086\\u2076\\uFF16\\u2465\\u03EC\\u2479]",
+                "7":"[7\\uD835\\uDFD5\\uDFE9\\uDFFD\\uDFDF\\u0037\\u2087\\u2077\\uFF17\\u2466\\u11A8\\u0534\\u247A]",
+                "8":"[8\\uD835\\uDFD6\\uDFEA\\uDFFE\\uDFE0\\u0038\\u2088\\u2078\\uFF18\\u2467\\u0551\\u247B]",
+                "9":"[9\\u201F\\u201E\\u201F\\u201B\\u201E\\u201A\\u201F\\u201E\\u2E42\\u201B\\u201A\\u201B\\u201A\\uD835\\uDFD7\\uDFEB\\uDFFF\\uDFE1\\u0039\\u2089\\u2079\\uFF19\\u2468\\u096F\\u0533\\u247C]",
+                "a":"[a\\u00C1\\u00E1\\u0103\\u01CE\\u00C2\\u00E2\\u00C4\\u00E4\\u0227\\u1EA1\\u0201\\u00C0\\u00E0\\u1EA3\\u0203\\u0101\\u0105\\u1E9A\\u00C5\\u00E5\\u1E01\\u023A\\u00C3\\u00E3\\u08A0\\uFB50\\u27F0\\u2327\\u3400\\u2DE0\\uAB00\\u263A\\uA960\\u0100\\u10600\\uAA60\\u2284\\u2285\\u2327\\u00C5\\u00E5\\u1E01\\u2284\\u2285\\uF0000\\u2327\\uD835\\uDCEA\\uDCD0\\uDCB6\\uDC9C\\uDD1E\\uDD04\\uDE8A\\uDE70\\uDD52\\uDD38\\u15E9\\u03B1\\u0041\\u1D00\\u019B\\u1D43\\u1D2C\\u03BB\\u0394\\uFF41\\uFF21\\u0E04\\u24D0\\u24B6\\u039B\\u1F84\\u1F8B\\uFF91\\u0571\\u10DB\\u01DF\\u028C\\u0539\\u0061\\u0308\\u00AA\\u00C6\\u1571\\u01DE\\u15C5\\u0252\\u0250\\u007C\\u033F\\u0336\\u0020\\u0251\\u2200\\u0034\\u249C\\u0430]",
+                "x":"[x\\u033D\\u2612\\u2717\\u0353\\u2327\\u1F5D9\\u033D\\u0353\\uFA30\\u2718\\u2716\\uFA30\\uFA30\\u2715\\u2327\\u033D\\u0353\\u2327\\u1E8D\\u1E8B\\uD835\\uDD01\\uDCE7\\uDCCD\\uDCB3\\uDD35\\uDD1B\\uDEA1\\uDE87\\uDD69\\uDD4F\\u166D\\u0078\\u0058\\u03C7\\u0445\\u04B2\\u02E3\\u1D61\\u03F0\\u0416\\uFF58\\uFF38\\u24E7\\u24CD\\u04FE\\u1E8A\\uFF92\\u00D7\\u10EF\\u0AEA\\u04FC\\u04B3\\u0543\\u03A7\\u0308\\uA2BC\\u0436\\u2573\\u24B3]",
+                "v":"[v\\u030C\\u030C\\u1E7F\\u01B2\\u028B\\u1E7D\\uD835\\uDCFF\\uDCE5\\uDCCB\\uDCB1\\uDD33\\uDD19\\uDE9F\\uDE85\\uDD67\\uDD4D\\u142F\\u03BD\\u1D20\\u0056\\u0076\\u0194\\u1D5B\\uFF56\\uFF36\\u24E5\\u24CB\\u0474\\u040F\\u03C5\\u0475\\u221A\\u0E07\\u0C6E\\u2200\\u05E2\\u0308\\u13C9\\u00A5\\u143B\\u028C\\u005C\\u0020\\u0347\\u002F\\u039B\\u143A\\u24B1]",
+                "n":"[n\\uFF2E\\u22C0\\u2AFF\\u2A00\\u2A01\\u2A02\\u2210\\u2AFF\\u22C2\\u019D\\u0272\\u22C0\\u22C1\\u0144\\u0148\\u0146\\u1E4B\\u0235\\u1E45\\u1E47\\u01F9\\u019D\\u0272\\u1E49\\u0220\\u019E\\u0273\\u00D1\\u00F1\\u2210\\u2AFF\\u22C2\\u22C0\\u22C1\\u22C0\\u2A00\\u220F\\u2211\\u2140\\u2A09\\u22C3\\u2AFF\\u22C0\\u2A00\\u22C1\\u220F\\u0273\\u2140\\u2211\\u2A09\\u22C3\\u2AFF\\u2AFF\\u0274\\u057C\\u03B7\\u041B\\u041F]",
+                "c":"[c\\u2183\\u212D\\u0107\\u010D\\u00C7\\u00E7\\u0109\\u0255\\u010B\\u0188\\u023B\\u023C\\u00C7\\u00E7\\u2A700\\u1C80\\u2C60\\u0297\\uD835\\uDCEC\\uDCD2\\uDCB8\\uDC9E\\uDD20\\uDE8C\\uDE72\\uDD54\\u2102\\u1455\\u0063\\u0187\\u1D04\\u0043\\u1D9C\\u03C2\\uFF43\\uFF23\\u1645\\u24D2\\u24B8\\u00A2\\u03B6\\u21BB\\u096E\\u0108\\u03FE\\u0547\\u0308\\u00A9\\u3108\\uA49D\\u091F\\u1464\\u0254\\u007C\\u033F\\u0347\\u0020\\u1462\\u249E]",
+                "b":"[b\\uFE70\\u1E03\\u1E05\\u0181\\u0253\\u1E07\\u0243\\u0180\\u0183\\u20000\\uA640\\u10080\\uD7B0\\u0180\\u10080\\u10000\\uA9E0\\u212C\\u2900\\u100000\\u10000\\uD835\\uDCEB\\uDCB7\\uDC35\\uDD1F\\uDD05\\uDE8B\\uDE71\\uDD53\\uDD39\\u15F7\\u0432\\u0299\\u0042\\u1D47\\u1D2E\\u03D0\\uFF42\\uFF22\\u1656\\u0E52\\u10A6\\u24D1\\u24B7\\u00DF\\u4E43\\u03B2\\u048D\\u0E56\\u044A\\u10EA\\u10E9\\u026E\\u0185\\u0411\\u0545\\u0062\\u0308\\u03E6\\u00FE\\u1658\\u0064\\u0071\\u007C\\u033F\\u0347\\u0336\\u0020\\u0029\\u0038\\u249D]",
+                "z":"[z\\u22FF\\u2128\\u2982\\u22FF\\u0290\\u0240\\u01B6\\u22FF\\u2981\\u2982\\u017A\\u017E\\u1E91\\u0291\\u017C\\u1E93\\u0225\\u1E95\\u0290\\u01B6\\u0240\\uD835\\uDD03\\uDCE9\\uDCCF\\uDCB5\\uDD37\\uDEA3\\uDE89\\uDD6B\\u2124\\u0020\\u1614\\u007A\\u01B5\\u1D22\\u005A\\u0224\\u1DBB\\uFF5A\\uFF3A\\u24E9\\u24CF\\u1E94\\u4E59\\u0540\\u0E8A\\u09E8\\u0ABD\\u1E90\\u0308\\u13C3\\u0582\\u0577\\u1663\\u033F\\u002F\\u0347\\u0032\\u15F1\\u24B5]",
+                "l":"[l\\u026C\\u2114\\u013A\\u023D\\u019A\\u026C\\u013E\\u013C\\u1E3D\\u0234\\u1E37\\u1E3B\\u0140\\u026B\\u026D\\u1D0C\\u0142\\u0140\\u026B\\u026D\\u2143\\u2112\\u2113\\u2142\\uD835\\uDCF5\\uDCC1\\uDC3F\\uDD29\\uDD0F\\uDE95\\uDE7B\\uDD5D\\uDD43\\u14AA\\u0196\\u004C\\u029F\\u006C\\u053C\\u02E1\\u1D38\\uFF4C\\uFF2C\\u0285\\u24DB\\u24C1\\u013F\\uFF9A\\u04C0\\u0546\\u0141\\u03B9\\u0308\\u007C\\u056C\\u013B\\u1102\\u0E45\\u0347\\u0020\\u0433\\u0393\\u0031\\u24A7]",
+                "h":"[h\\u210C\\u1E2B\\u021F\\u1E29\\u0125\\u1E27\\u1E23\\u1E25\\u02AE\\u0266\\u1E96\\u0127\\u210B\\u02AE\\uD835\\uDCF1\\uDCBD\\uDC3B\\uDD25\\uDCD7\\uDE91\\uDE77\\uDD59\\u210D\\u157C\\u043D\\u0048\\u029C\\u04C7\\u02B0\\u1D34\\uFF48\\uFF28\\u0452\\u050B\\u24D7\\u24BD\\u0124\\u1F2C\\u3093\\u0068\\u0570\\u01F6\\u0267\\u04BA\\u0126\\u0308\\u2645\\u09F8\\u0265\\u007C\\u0336\\u0020\\u24A3]",
+                "i":"[i\\u2111\\u268A\\u0130\\u4DC0\\u0197\\u4DC0\\u268A\\u2630\\u0130\\u00CD\\u00ED\\u012D\\u01D0\\u00CE\\u00EE\\u00CF\\u00EF\\u0130\\u1ECB\\u0209\\u00CC\\u00EC\\u1EC9\\u020B\\u012B\\u012F\\u0197\\u0268\\u1E2D\\u0129\\u268A\\u2110\\u4DC0\\u268A\\u2630\\u4DC0\\u268A\\u2630\\u2630\\u4DC0\\u268A\\u2630\\uD835\\uDCF2\\uDCD8\\uDCBE\\uDC3C\\uDD26\\uDE92\\uDE78\\uDD5A\\uDD40\\u0049\\u03B9\\u01C0\\u026A\\u0196\\u1DA4\\u1D35\\uFF49\\uFF29\\u0E40\\u24D8\\u24BE\\u0131\\u012A\\u1F37\\u1F3F\\uFF89\\u0069\\uFEE8\\u027F\\u1F36\\u0142\\u03AF\\u0308\\u00A1\\u13A5\\u0407\\u14FF\\u007C\\u0021\\u14F0\\u24A4\\u05D5]",
+                "r":"[r\\u211C\\u0155\\u0159\\u0157\\u1E59\\u1E5B\\u0211\\u027E\\u027F\\u027B\\u0213\\u1E5F\\u027C\\u027A\\u024C\\u024D\\u027D\\u027F\\u211B\\u027B\\u027A\\uD835\\uDCFB\\uDCC7\\uDC45\\uDD2F\\uDCE1\\uDE9B\\uDE81\\uDD63\\u211D\\u1587\\u044F\\u0052\\u0280\\u0072\\u01A6\\u02B3\\u1D3F\\u0433\\u0393\\uFF52\\uFF32\\u24E1\\u24C7\\u0154\\u0212\\u5C3A\\u0F60\\u0550\\u042F\\u0AB0\\u0308\\u00AE\\u13D2\\u0490\\u0279\\u007C\\u033F\\u0020\\u0336\\u0027\\u256E\\u0281\\u0269\\u24AD\\u1D26\\uFF41]",
+                "d":"[d\\u2B740\\u0256\\u010F\\u1E11\\u1E13\\u0221\\u1E0B\\u1E0D\\u018A\\u0257\\u1E0F\\u0111\\u0256\\u018C\\uA720\\u0256\\uD835\\uDCED\\uDCD3\\uDCB9\\uDC9F\\uDD21\\uDD07\\uDE8D\\uDE73\\uDD55\\uDD3B\\u15EA\\u2202\\u1D05\\u0044\\u0064\\u1D48\\u1D30\\uFF44\\uFF24\\u0E54\\u0503\\u24D3\\u24B9\\u0254\\u0189\\u00D0\\u03B4\\u056A\\u0ED3\\u10EB\\u053A\\u0308\\u00F0\\u13A0\\u00DE\\u15EB\\u0062\\u0070\\u007C\\u033F\\u0347\\u0020\\u0029\\u1572\\u249F\\u0110]",
+                "e":"[e\\u15f4\\u2B820\\u00C9\\u00E9\\u0115\\u011B\\u0229\\u1E19\\u00CA\\u00EA\\u00CB\\u00EB\\u0117\\u1EB9\\u0205\\u00C8\\u00E8\\u1EBB\\u025D\\u0207\\u0113\\u0119\\u0246\\u0247\\u1E1B\\u1EBD\\uAB30\\u025D\\u025D\\u2130\\u212F\\uD835\\uDC86\\uDCD4\\uDC52\\uDC38\\uDD22\\uDD08\\uDE8E\\uDE74\\uDD56\\uDD3C\\u156E\\u0454\\u0190\\u1D07\\u0045\\u0065\\u0404\\u1D49\\u1D31\\u03B5\\u03A3\\uFF45\\uFF25\\u1653\\u04BD\\u24D4\\u24BA\\u1F14\\u1F1D\\u4E47\\u0AEF\\u025B\\u00A3\\u039E\\u021D\\u0308\\u20AC\\uA085\\u164D\\u0258\\u01DD\\u007C\\u033F\\u0347\\u0336\\u0020\\u0033\\u163F\\u24A0]",
+                "j":"[j\\u025F\\u01F0\\u0135\\u029D\\u0248\\u0249\\u025F\\uD835\\uDCF3\\uDCD9\\uDCBF\\uDCA5\\uDD27\\uDD0D\\uDE93\\uDE79\\uDD5B\\uDD41\\u148D\\u05E0\\u004A\\u1D0A\\u006A\\u0286\\u02B2\\u1D36\\u03F3\\uFF4A\\uFF2A\\u05DF\\u24D9\\u24BF\\u0134\\u0408\\uFF8C\\u0644\\u0E27\\u0575\\u0296\\u0308\\u00BF\\u1499\\u012F\\u017F\\u0020\\u0347\\u007C\\u027F\\u0E45\\u149A\\u24A5]",
+                "o":"[o\\u0153\\u019F\\u019F\\u0275\\u0153\\u00D8\\u00F8\\u00D3\\u00F3\\u014F\\u01D2\\u00D4\\u00F4\\u00D6\\u00F6\\u022F\\u1ECD\\u0151\\u020D\\u00D2\\u00F2\\u1ECF\\u01A1\\u020F\\u014D\\u019F\\u01EB\\u00D8\\u00F8\\u1D13\\u00D5\\u00F5\\u2134\\u1D13\\u00D8\\u00F8\\u00D8\\u00F8\\uD835\\uDCF8\\uDCDE\\uDC5C\\uDCAA\\uDD2C\\uDD12\\uDE98\\uDE7E\\uDD60\\uDD46\\u004F\\u03C3\\u1D0F\\u006F\\u01A0\\u1D52\\u1D3C\\u0398\\uFF4F\\uFF2F\\u0E4F\\u24DE\\u24C4\\u2661\\u1F44\\u1F4B\\u053E\\u0585\\u0ED0\\u0AE6\\u2295\\u0424\\u0308\\u00A4\\u25CA\\u03A6\\u14CE\\u007C\\u033F\\u0347\\u0020\\u0030\\u14CD\\u24AA]",
+                "f":"[f\\u1E1F\\u0192\\u2131\\u2132\\u214E\\uD835\\uDC87\\uDCBB\\uDC39\\uDD23\\uDD09\\uDE8F\\uDE75\\uDD57\\uDD3D\\u15B4\\u0066\\u0191\\u0493\\u0046\\u1DA0\\u03D1\\uFF46\\uFF26\\u0166\\u03DD\\u24D5\\u24BB\\u0492\\uFF77\\u2231\\u0562\\u0532\\u0284\\u0283\\u0308\\uA2B0\\u0287\\u025F\\u007C\\u033F\\u0336\\u0020\\u027B\\u24A1]",
+                "g":"[g\\u01F5\\u011F\\u01E7\\u0123\\u011D\\u0121\\u0193\\u029B\\u0260\\u1E21\\u01E5\\u210A\\u2141\\uD835\\uDCF0\\uDCD6\\uDC54\\uDCA2\\uDD24\\uDD0A\\uDE90\\uDE76\\uDD58\\uDD3E\\u0047\\u0067\\u0262\\u1D4D\\u1D33\\uFF47\\uFF27\\u161C\\u24D6\\u24BC\\u01E4\\u0581\\u0E87\\u0AED\\u0533\\u0122\\u0308\\u0AEC\\u03B6\\u03F1\\u0253\\u007C\\u033F\\u0347\\u0020\\u0336\\u03B9\\u10DB\\u018B\\u0039\\u24A2]",
+                "s":"[s\\u223E\\u223D\\u015B\\u0161\\u015F\\u015D\\u0219\\u1E61\\u1E9B\\u1E63\\u0282\\u023F\\u023F\\uD835\\uDCFC\\uDCE2\\uDCC8\\uDCAE\\uDD30\\uDD16\\uDE9C\\uDE82\\uDD64\\uDD4A\\u1515\\u0455\\u0053\\u0073\\u01A7\\u02E2\\u0405\\uFF53\\uFF33\\u0E23\\u24E2\\u24C8\\u01A8\\u1E69\\u1E68\\u310E\\u0024\\u03DA\\u015E\\u03C2\\u0586\\u054F\\u0218\\u0308\\u00A7\\u3089\\u13D5\\u0160\\u0020\\u0347\\u005C\\u033F\\u0035\\u1522\\u24AE]",
+                "k":"[k\\u1E31\\u01E9\\u0137\\u1E33\\u0199\\u1E35\\uD835\\uDCF4\\uDCDA\\uDCC0\\uDCA6\\uDC58\\uDD0E\\uDE94\\uDE7A\\uDD5C\\uDD42\\u004B\\u043A\\u0198\\u1D0B\\u0138\\u1D4F\\u1D37\\u03BA\\uFF4B\\uFF2B\\u24DA\\u24C0\\u04A0\\u045C\\u1E30\\u30BA\\u049F\\u04A1\\u006B\\u049B\\u04C4\\u049A\\u041A\\u0308\\u039A\\u15BD\\u1438\\u029E\\u007C\\u27E8\\u24A6]",
+                "m":"[m\\u1E3F\\u1E41\\u1E43\\u0271\\u0270\\u2133\\u2133\\u0270\\uD835\\uDCF6\\uDCC2\\uDC40\\uDD2A\\uDD10\\uDE96\\uDE7C\\uDD5E\\uDD44\\u15F0\\u043C\\u004D\\u1D0D\\u1D50\\u1D39\\u03FB\\u039C\\uFF4D\\uFF2D\\u164F\\u0E53\\u24DC\\u24C2\\u1E42\\u110A\\u028D\\u264F\\u10DD\\u006D\\u0308\\u0BF1\\u1662\\u026F\\u007C\\u033F\\u0020\\u0056\\u0077\\u0057\\u163B\\u24A8]",
+                "u":"[u\\u0D4D\\u0244\\u0289\\u00DA\\u00FA\\u016D\\u01D4\\u1E77\\u00DB\\u00FB\\u1E73\\u00DC\\u00FC\\u1EE5\\u0171\\u0215\\u00D9\\u00F9\\u1EE7\\u01B0\\u0217\\u016B\\u0173\\u016F\\u1E75\\u0169\\uD835\\uDCFE\\uDCE4\\uDCCA\\uDCB0\\uDD32\\uDD18\\uDE9E\\uDE84\\uDD66\\uDD4C\\u144C\\u03C5\\u0055\\u1D1C\\u01B2\\u1D58\\u1D41\\u01B1\\uFF55\\uFF35\\u1640\\u0E22\\u24E4\\u24CA\\u1F57\\u0216\\u0426\\u0075\\u0574\\u0531\\u0E19\\u057D\\u028A\\u016A\\u0544\\u0308\\u00B5\\u1457\\u006E\\u007C\\u0347\\u0020\\u220F\\u039B\\u1458\\u24B0\\u0446]",
+                "p":"[p\\u1E55\\u1E57\\u01A5\\u2118\\uD835\\uDCF9\\uDCDF\\uDCC5\\uDCAB\\uDD2D\\uDD13\\uDE99\\uDE7F\\uDD61\\u2119\\u146D\\u03C1\\u01A4\\u1D18\\u0050\\u0070\\u1D56\\u1D3E\\uFF50\\uFF30\\u0569\\u24DF\\u24C5\\u1E56\\u1FE5\\uFF71\\u0584\\u03C6\\u00FE\\u01BF\\u0580\\u0308\\u00DE\\u13B5\\u01F7\\u0420\\u157F\\u0071\\u0064\\u007C\\u033F\\u0336\\u0020\\u0027\\u0185\\u0062\\u1575\\u24AB]",
+                "t":"[t\\u01AB\\u01AE\\u0288\\u0165\\u0163\\u1E71\\u021B\\u0236\\u1E97\\u023E\\u1E6B\\u1E6D\\u01AD\\u1E6F\\u01AB\\u01AE\\u0288\\u0167\\uD835\\uDCFD\\uDCE3\\uDCC9\\uDCAF\\uDD31\\uDD17\\uDE9D\\uDE83\\uDD65\\uDD4B\\u0054\\u0442\\u01AC\\u1D1B\\u1D57\\u1D40\\u03C4\\uFF54\\uFF34\\u0074\\u019A\\u24E3\\u24C9\\u04AD\\u04AC\\uFF72\\u2020\\u0567\\u0A6E\\u0166\\u0535\\u0308\\u0164\\u03EE\\u22A5\\u15B6\\u0287\\u0020\\u033F\\u007C\\u0037\\u24AF]",
+                "q":"[q\\u024A\\u024B\\u02A0\\u213A\\uD835\\uDCFA\\uDCE0\\uDCC6\\uDCAC\\uDD2E\\uDD14\\uDE9A\\uDE80\\uDD62\\u211A\\u146B\\u0071\\u0051\\u03D9\\u01A2\\u1D60\\u03C6\\u10B3\\uFF51\\uFF31\\u1EE3\\u24E0\\u24C6\\u04A8\\u01EB\\u0566\\u04A9\\u0E51\\u0563\\u03A9\\u01A3\\u01EA\\u0308\\u018D\\u00D8\\u1574\\u0070\\u0062\\u0020\\u007C\\u033F\\u0347\\u03ED\\u01A0\\u24AC]",
+                "y":"[y\\u2144\\u00DD\\u00FD\\u0177\\u0178\\u00FF\\u1E8F\\u1EF5\\u1EF3\\u1EF7\\u01B4\\u0233\\u1E99\\u024E\\u024F\\u1EF9\\uD835\\uDD02\\uDCE8\\uDCCE\\uDCB4\\uDC66\\uDD1C\\uDEA2\\uDE88\\uDD6A\\uDD50\\u0059\\u0443\\u01B3\\u028F\\u0079\\u02B8\\u1D5E\\u03C8\\u03A8\\uFF59\\uFF39\\u05E5\\u10E7\\u24E8\\u24CE\\u0447\\u1F5B\\uFF98\\u057E\\u04CB\\u03B3\\u0E2F\\u05E2\\uFFE5\\u0263\\u00A5\\u040F\\u054E\\u03D3\\u0308\\u03E4\\u13A9\\u15BB\\u028E\\u2570\\u007C\\u256F\\u2443\\u03BB\\u24B4]",
+                "w":"[w\\u1E83\\u0175\\u1E85\\u1E87\\u1E89\\u1E81\\u1E98\\uD835\\uDD00\\uDCE6\\uDCCC\\uDCB2\\uDD34\\uDD1A\\uDEA0\\uDE86\\uDD68\\uDD4E\\u15EF\\u03C9\\u019C\\u1D21\\u0057\\u0077\\u02B7\\u1D42\\u0448\\u0428\\uFF57\\uFF37\\u164E\\u0E2C\\u026F\\u24E6\\u24CC\\u0460\\u1FA7\\u1E82\\u0429\\u0561\\u0C1A\\u0449\\u0E9F\\u03CE\\u0308\\u13B3\\u028D\\u007C\\u0347\\u0020\\u039B\\u004D\\u163A\\u24B2]"
+            }; 
+
+            var canSkip = false;
+            var last = "";
+
+            var laststr = "";
+            var lastEmojiPart = "";
+            var lastEmojiCursorPos = 0;
+            plugSugg.prototype.check = function (str, len) {
+                var max = 30;
+                var n = str.lastIndexOf("@");
+                if (n !== -1) {
+                    var f = str.substr(n + 1, len).toLowerCase();
+                    if (!f) {
+                        this.suggestions = [];
+                        return false;
+                    }
+                    var names = API.getUsers().map(function (a) {
+                        return a.rawun;
+                    });
+                    var first = this.suggestions = names.filter(function (a) {
+                        return a.substr(0, f.length).toLowerCase()/*.replace(/ +/g, "")*/ === f;
+                    }).sort();
+                    var searchRegex = new RegExp(f.split("").map(function(a) {
+                        return REGEXUNICODELETTERS[a] || ("\\" + a);
+                    }).join(""), "i");
+                    this.suggestions = this.suggestions.concat(names.filter(function(a) {
+                        return first.indexOf(a) == -1 && searchRegex.test(a);
+                    }).sort());
+                    if (max < this.suggestions.length)
+                        this.suggestions.length = max;
+                    if (this.suggestions.length) {
+                        this.type = "@";
+                        return;
+                    }
+                }
+                n = str.lastIndexOf(":");
+                if (n !== -1) {
+                    var f = (laststr = str.substr(n + 1, len)).toLowerCase();
+                    if (f.length < 2) {
+                        this.suggestions = [];
+                        return false;
+                    }
+                    var first = f.substr(0, 1);
+                    var second = f.substr(1, 1);
+                    if (!first || !second || !realHash[first] || !realHash[first][second]) {
+                        this.suggestions = [];
+                        return false;
+                    }
+                    var i = 0;
+                    this.suggestions = realHash[first][second];
+                    if (f.length > 2) {
+                        this.suggestions = this.suggestions.filter(function (a) {
+                            return a.substr(0, f.length) === f;
+                        });
+                        if (max < this.suggestions.length)
+                            this.suggestions.length = max;
+                    } else this.suggestions = this.suggestions.slice(0, max);
+                    if (this.lastEmpty)
+                        this.index = 1;
+                    this.lastEmpty = !this.suggestions.length;
+                    if (this.suggestions.length === 0)
+                        return false;
+                    else
+                        this.suggestions.unshift("SSearch All Emojis");
+                    this.type = ":";
+                    if (this.index === -1)
+                        this.index = 1;
+                    lastEmojiPart = this.lastEmojiSearch = str.substr(n + 1, len);
+                    lastEmojiCursorPos = n;
+                    this.lastLength = len;
+                }
+            };
+
+            var upDownOld = plugSugg.prototype.upDown;
+            var container = $("#chat-suggestion");
+            plugSugg.prototype.upDown = function () {
+                canSkip = false;
+                upDownOld.apply(this, arguments);
+                var selected = $("#chat-suggestion-items >:eq(" + this.index + ")");
+                var offTop = selected.offset().top - container.offset().top;
+                if (offTop < 0)
+                    container.scrollTop(offTop + container.scrollTop());
+                else {
+                    var offBot = offTop - container.height() + selected.height();
+                    if (offBot > 0)
+                        container.scrollTop(offBot + container.scrollTop());
+                }
+            }
+
+
+
+            //search all
+            var search = $("<div id='iplug-search-emojis' style='display: none'>");
+            var content = $('<div><span class="title">Search All Emojis</span><i class="icon icon-dialog-close"></i><div><input type="text" id="emojiSearch" placeholder="Search for emoji" class="iplug"><div id="emojiSearchResults"></div><span id="emojiSearchCount"></span></div><span class="close">Close</span>');
+            content.on("click", function(e) {
+                e.stopPropagation();
+            }).appendTo(search);
+            search.appendTo("body").add("#iplug-search-emojis .close, #iplug-search-emojis .icon-dialog-close").on("click", function() {
+                search.css({display: "none"});
             });
 
-            worker.onmessage = function(m) {
-                if (m.data.query !== lastQuery) return;
+            //initialise worker
+            var blobURL = URL.createObjectURL(new Blob(['(',
+            function() {
+                onmessage = function(m) {
+                    var allEmotes = m.data;
+                    var keys = Object.keys(allEmotes).sort().reverse();
+                    onmessage = function(m) {
+                        var str = m.data;
+                        postMessage({
+                            query: str,
+                            result: keys.filter(function(a) {
+                                return -1 !== a.indexOf(str);
+                            }).map(function(key) {
+                                return "<div><img src='" + allEmotes[key] + "'></img><span>" + key + "</span></div>"
+                            })
+                        });
+                    }
+                    postMessage(true); //init complete
+                };
+            }.toString(),
+            ')()'], {type: 'application/javascript'}));
+            var worker = new Worker(blobURL);
+            URL.revokeObjectURL(blobURL);
+
+            var chatInputRange;
+            var chatInputBefore;
+            var chatInputAfter;
+            var searchEmojiMode;
+            var input = $("#emojiSearch");
+            var output = $("#emojiSearchResults");
+            worker.onmessage = function() {
+                var lastQuery = "";
+                input.on("input", function() {
+                    if (input.val().length < 2) return;
+                    lastQuery = input.val();
+                    worker.postMessage(input.val());
+                    output.empty();
+                });
+
+                worker.onmessage = function(m) {
+                    if (m.data.query !== lastQuery) return;
+                    output.empty();
+                    $("#emojiSearchCount").text(m.data.result.length + " results");
+                    one(m.data.result, m.data.query);
+
+                    function one(array, query) {
+                        for (var i = 0; i < 20; i++)
+                            output.append(array.pop());
+                        if (m.data.query === lastQuery)
+                            setTimeout(one, 0, array, query);
+                    }
+                }
+            };
+            worker.postMessage(allEmotes);
+
+            output.on("click", "*", function() {
                 output.empty();
-                $("#emojiSearchCount").text(m.data.result.length + " results");
-                one(m.data.result, m.data.query);
+                search.css({display: "none"});
 
-                function one(array, query) {
-                    for (var i = 0; i < 20; i++)
-                        output.append(array.pop());
-                    if (m.data.query === lastQuery)
-                        setTimeout(one, 0, array, query);
+                var chatInput = document.getElementById("chat-input-field");
+                if (searchEmojiMode) {
+                    chatInput.value = chatInputBefore + $(this).children("span").text() + ":" + (chatInputAfter[0] === " " ? "" : " ") + chatInputAfter;
+                    chatInput.focus();
+                    chatInput.selectionEnd = chatInput.selectionStart = chatInputRange[0] + $(this).children("span").text().length + 2;
+                } else
+                    chatInput.value = chatInput.value.substring(0, lastEmojiCursorPos) + ":" + $(this).children("span").text() + ":" + (chatInput.value[lastEmojiCursorPos] === " " ? "" : " ") + chatInput.value.substring(lastEmojiCursorPos);
+            });
+
+            var plugChat = [];
+            $.each(require.s.contexts._.defined, function(i, plugChat){
+                if (plugChat && plugChat.prototype && plugChat.prototype.onLevelChange && plugChat.prototype.playSound) {
+                    var submitSuggestionOld = plugChat.prototype.submitSuggestion;
+                    plugChat.prototype.submitSuggestion = function() {
+                        if ("SSearch All Emojis:" === this.suggestionView.getSelected()) {
+                            chatInputRange = this.suggestionView.type === "@" ? this.getMentionRange() : this.getEmojiRange();
+                            chatInputBefore = this.chatInput.value.substr(0, chatInputRange[0]);
+                            chatInputAfter = this.chatInput.value.substr(chatInputRange[1]);
+                            this.chatInput.value = this.chatInput.value.substr(0, chatInputRange[0] - 1) + this.chatInput.value.substr(chatInputRange[1]);
+                            this.chatInput.setSelectionRange(chatInputRange[0], chatInputRange[0]);
+                            this.suggestionView.reset();
+                            this.suggestionView.updateSuggestions();
+
+                            //open emoji search (on enter)
+                            searchEmojiMode = true;
+                            search.css({display: "block"});
+                            input.val(this.suggestionView.lastEmojiSearch).trigger("input").focus();
+
+                        } else submitSuggestionOld.apply(this, arguments);
+                    }
                 }
-            }
-        };
-        worker.postMessage(allEmotes);
+            });
 
-        output.on("click", "*", function() {
-            output.empty();
-            search.css({display: "none"});
 
-            var chatInput = document.getElementById("chat-input-field");
-            if (searchEmojiMode) {
-	            chatInput.value = chatInputBefore + $(this).children("span").text() + ":" + (chatInputAfter[0] === " " ? "" : " ") + chatInputAfter;
-	            chatInput.focus();
-	            chatInput.selectionEnd = chatInput.selectionStart = chatInputRange[0] + $(this).children("span").text().length + 2;
-	        } else
-	        	chatInput.value = chatInput.value.substring(0, lastEmojiCursorPos) + ":" + $(this).children("span").text() + ":" + (chatInput.value[lastEmojiCursorPos] === " " ? "" : " ") + chatInput.value.substring(lastEmojiCursorPos);
-        });
+            /*
+            var getSelectedOld = plugSugg.prototype.getSelected;
+            plugSugg.prototype.getSelected = function () {
+                if (this.type === ":" && this.index === 0) {
+                    setTimeout(function() {
 
-        var plugChat = [];
-        $.each(require.s.contexts._.defined, function(i, plugChat){
-            if (plugChat && plugChat.prototype && plugChat.prototype.onLevelChange && plugChat.prototype.playSound) {
-                var submitSuggestionOld = plugChat.prototype.submitSuggestion;
-                plugChat.prototype.submitSuggestion = function() {
-                    if ("SSearch All Emojis:" === this.suggestionView.getSelected()) {
-                        chatInputRange = this.suggestionView.type === "@" ? this.getMentionRange() : this.getEmojiRange();
-                        chatInputBefore = this.chatInput.value.substr(0, chatInputRange[0]);
-                        chatInputAfter = this.chatInput.value.substr(chatInputRange[1]);
-                        this.chatInput.value = this.chatInput.value.substr(0, chatInputRange[0] - 1) + this.chatInput.value.substr(chatInputRange[1]);
-                        this.chatInput.setSelectionRange(chatInputRange[0], chatInputRange[0]);
-                        this.suggestionView.reset();
-                        this.suggestionView.updateSuggestions();
-
-                        //open emoji search (on enter)
-                        searchEmojiMode = true;
-                        search.css({display: "block"});
-                        input.val(this.suggestionView.lastEmojiSearch).trigger("input").focus();
-
-                    } else submitSuggestionOld.apply(this, arguments);
+                    }, 0);
+                    return ""
                 }
-            }
-        });
+                if (canSkip && laststr.length === 1) {
+                    setTimeout(function () {
+                        var e = jQuery.Event("keydown");
+                        e.keyCode = 13;
+                        $("#chat-input-field").trigger(e);
+                    }, 0);
+                    return laststr;
+                } else return getSelectedOld.apply(this, arguments);
+            };*/
 
+            $("#chat-input-field").preBind("keydown", function (e) {
+                if (e.keyCode === 18)
+                    return;
 
-        /*
-        var getSelectedOld = plugSugg.prototype.getSelected;
-        plugSugg.prototype.getSelected = function () {
-        	if (this.type === ":" && this.index === 0) {
-        		setTimeout(function() {
-
-        		}, 0);
-        		return ""
-        	}
-            if (canSkip && laststr.length === 1) {
-                setTimeout(function () {
-                    var e = jQuery.Event("keydown");
-                    e.keyCode = 13;
-                    $("#chat-input-field").trigger(e);
-                }, 0);
-                return laststr;
-            } else return getSelectedOld.apply(this, arguments);
-        };*/
-
-        $("#chat-input-field").preBind("keydown", function (e) {
-            if (e.keyCode === 18)
-                return;
-
-            var now = $("#chat-input-field").val();
-            if (now === last)
-                return;
-            if (now.length - last.length !== 1) {
-                canSkip = false;
+                var now = $("#chat-input-field").val();
+                if (now === last)
+                    return;
+                if (now.length - last.length !== 1) {
+                    canSkip = false;
+                    last = now;
+                    return;
+                }
+                var i = 0;
+                while (now.substr(i, 1) === last.substr(i, 1) && i < now.length)
+                    i++;
+                if (i === now.length) {
+                    last = now;
+                    canSkip = false;
+                    return;
+                }
+                if (now.substr(i, 1) === ":")
+                    canSkip = true;
                 last = now;
-                return;
-            }
-            var i = 0;
-            while (now.substr(i, 1) === last.substr(i, 1) && i < now.length)
-                i++;
-            if (i === now.length) {
-                last = now;
-                canSkip = false;
-                return;
-            }
-            if (now.substr(i, 1) === ":")
-                canSkip = true;
-            last = now;
-        });
+            });
+        }
     }
+
+
+
+
+
+    
 
 
     //alt song on meh
@@ -2317,15 +2429,6 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 	    	return !(playlistcollection = a)
 	});
 
-
-	var isActive = true;
-	$(window).focus(function() {
-	    isActive = true;
-	});
-
-	$(window).blur(function() {
-	    isActive = false;
-	});
 
 
 	var allPlaylists;

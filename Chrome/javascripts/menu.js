@@ -137,14 +137,14 @@
             </div>
             <div id="duplicatesongsenabled" class="item item-iplug unavailable">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|duplicatesongsenabled'] + '"></i>
-                <span>Check for duplicate songs</span>
+                <span>Fix duplicate songs</span>
             </div>
             <div id="brokensongsenabled" class="item item-iplug unavailable">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|brokensongsenabled'] + '"></i>
-                <span>Check for broken songs</span>
+                <span>Fix broken songs</span>
             </div>
         </div>
-		<div class="subcontainer" id="chatoptions">
+		<div id="chatoptions" class="subcontainer">
 			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
 			<div class="noitem">
 				<span class="subtitle">Chat Options</span>
@@ -157,13 +157,31 @@
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|videosenabled'] + '"></i>
 				<span>Convert video links</span>
 			</div>
-			<div class="item item-iplug" id="keepdeletedchatenabled">
+			<div class="item item-iplug unavailable" id="keepdeletedchatenabled">
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|keepdeletedchatenabled'] + '"></i>
 				<span>Keep deleted messages</span>
 			</div>
-			<div class="item item-iplug" id="deletedchathideimgenabled">
+			<div class="item item-iplug unavailable" id="deletedchathideimgenabled">
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|deletedchathideimgenabled'] + '"></i>
-				<span>hide deleted graphic content</span>
+				<span>Hide deleted graphic content</span>
+			</div>
+			<div class="item item-iplug unavailable" id="pasteimagetochatenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|pasteimagetochatenabled'] + '"></i>
+				<span>Paste (ctrl + v) images directly into chat</span>
+			</div>
+			<div class="item item-iplug unavailable" id="multilinechatenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|multilinechatenabled'] + '"></i>
+				<span>Multiline chat input (shift+enter for new line)</span>
+			</div>
+		</div>
+		<div id="notificationsoptions" class="subcontainer">
+			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
+			<div class="noitem">
+				<span class="subtitle">Notification Options</span>
+			</div>
+			<div class="item item-iplug unavailable" id="notificationsoundallenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|notificationsoundallenabled'] + '"></i>
+				<span>Play notification sound for all messages</span>
 			</div>
 			<div class="item item-iplug" id="desktopnotificationsenabled">
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|desktopnotificationsenabled'] + '"></i>
@@ -173,9 +191,21 @@
 				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|desktopnotificationsallenabled'] + '"></i>
 				<span>Show desktop notifications for all messages</span>
 			</div>
-			<div class="item item-iplug" id="notificationsoundallenabled">
-				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|notificationsoundallenabled'] + '"></i>
-				<span>Play notification sound for all messages</span>
+			<div class="item item-iplug unavailable" id="notificationsuserjoinenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|notificationsuserjoinenabled'] + '"></i>
+				<span>Show notification for user join</span>
+			</div>
+			<div class="item item-iplug unavailable" id="notificationsuserleaveenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|notificationsuserleaveenabled'] + '"></i>
+				<span>Show notification for user leave</span>
+			</div>
+			<div class="item item-iplug unavailable" id="notificationsgrabenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|notificationsgrabenabled'] + '"></i>
+				<span>Show notification for grabs</span>
+			</div>
+			<div class="item item-iplug unavailable" id="notificationsmehenabled">
+				<i class="icon icon-check-blue" style="display: ' + localStorage['iplug|notificationsmehenabled'] + '"></i>
+				<span>Show notification for mehs</span>
 			</div>
 		</div>
 		<div id="misc" class="subcontainer">
@@ -192,7 +222,7 @@
 				<span>List grabs & mehs</span>
 			</div>
 		</div>
-		<div id="scvisuals" class="subcontainer">
+		<div id="scvisuals" class="subcontainer unavailable">
 			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
 			<div class="noitem">
 				<span class="subtitle">Alternative Soundcloud Visuals</span>
@@ -252,7 +282,7 @@
 						</div>
 					</div>
 					<div id="scgradientcircleslider" class="circleslider scroll1">
-						PENIS LUL
+						SFW LUL
 						<div>
 						<div class="circlebarcontainer gradient">
 											<div class="circlebar background" style="' + setCircleGradient(colorscheme) + '"></div>

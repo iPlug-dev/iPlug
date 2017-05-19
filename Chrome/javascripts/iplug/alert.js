@@ -35,10 +35,12 @@ define(["iplug/class", "jquery"], function (Class, $) {
         hide: function () {
             this.$el.css("display", "none");
         },
-        setMessage: function (title, message, buttonText, callback) {
+        setMessage: function (title, subtitle, message, buttonText, callback) {
             this.$title.text(typeof title === "string" ? title : "");
             this.$message.html(typeof message === "string" ? message : "");
             this.$buttonText.text(typeof buttonText === "string" ? buttonText : "");
+            if (subtitle)
+                this.$message.prepend('<span class="iplug-alert-body-subtitle">' + subtitle);
             var that = this;
             this.$button.unbind().bind("click", function () {
                 that.hide();

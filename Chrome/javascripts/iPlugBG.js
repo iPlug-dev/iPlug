@@ -44,6 +44,8 @@ chrome.runtime.onUpdateAvailable.addListener(function(details) {
     }
 });*/
 
+
+
 chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
     //console.log("Sender ", sender);
     //console.log("Request", request);
@@ -67,13 +69,60 @@ chrome.runtime.onMessageExternal.addListener(function(request, sender, sendRespo
                 sendResponse({isImage: false});
             }
             break;
-        
+        case "pullToForeground":
+            chrome.tabs.update(sender.tab.id, {selected: true});
+            console.log("HI!!!" + sender.tab.id);
+            break;
+        case "createNotification":
+            request.options.type = chrome.notifications.TemplateType[request.options.type];
+            chrome.notifications.create(request.options, function(id) {
+                allNotifications.push({
+                    notid: id,
+                    tabid: sender.tab.id
+                });
+            });
+            focusChrome = sendResponse;
+            break;
+        case "clearAllNotifications":
+            allNotifications.forEach(function(not) {
+                chrome.notifications.clear(not.notid);
+            });
+            break;
     	default:
     		console.error("wtf, unknown request '" + request.type + "'\nsender:", sender, "\nrequest:", request);
     }
 
     return true; //async support for sendResponse
 });
+
+var focusChrome;
+var allNotifications = [];
+chrome.notifications.onClicked.addListener(function(nootid) {
+    focusChrome();
+    chrome.tabs.update(allNotifications.find(function(a) { return a.notid = nootid; }).tabid, {selected: true});
+});
+chrome.notifications.onClosed.addListener(function(nootid) {
+    allNotifications = allNotifications.filter(function(a) {
+        return a.notid = nootid;
+    });
+});
+
+
+/*
+var isMutedBecauseOfYoutube = false;
+chrome.tabs.query({audible: true, url: "*://*.youtube.com/*"}, function(response) {
+    if (isMutedBecauseOfYoutube ^ !!response.length) {
+        isMutedBecauseOfYoutube = !isMutedBecauseOfYoutube;
+    }
+});
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo) {
+    if (isMutedBecauseOfYoutube ^ changeInfo.) {
+        isMutedBecauseOfYoutube = !isMutedBecauseOfYoutube;
+    }
+});*/
+
+
+
 
 
 function checkImageHeaders(url, callback) {

@@ -20,17 +20,44 @@ libs.forEach(function(e) {
 var s = document.createElement('script');
 s.type = "text/javascript";
 
-var xhr = new XMLHttpRequest();
-xhr.open("GET", chrome.extension.getURL(main), false);
-xhr.send();
-var MAIN = xhr.responseText;
-var xhr = new XMLHttpRequest();
-xhr.open("GET", chrome.extension.getURL('javascripts/menu.js'), false);
-xhr.send();
-var MENU = xhr.responseText.replace(/([\n\r]| (?= ))/g, "").replace(/"/g, '\\"');
+var oneDone = false;
 
-s.innerHTML = loader.toString().replace("VER", getVersion()).replace("IPLUG", MAIN.replace(/__EXTENSION_ID__/g, chrome.runtime.id).replace("__MENU__", MENU).replace("___URL___", chrome.extension.getURL(""))) + ' loader();';
-document.head.appendChild(s);
+var MAIN;
+var xhr = new XMLHttpRequest();
+xhr.open("GET", chrome.extension.getURL(main));
+xhr.onreadystatechange = function() {
+    if (this.readyState == 4) {
+        if (this.status !== 200)
+            return console.error("IPLUG MAIN FAILED TO LOAD!");
+        MAIN = this.responseText;
+        if (oneDone)
+            mainLoad();
+        else
+            oneDone = true;
+    }
+};
+xhr.send();
+
+var MENU;
+var xhr = new XMLHttpRequest();
+xhr.open("GET", chrome.extension.getURL('javascripts/menu.js'));
+xhr.onreadystatechange = function() {
+    if (this.readyState == 4) {
+        if (this.status !== 200)
+            return console.error("IPLUG MAIN FAILED TO LOAD!");
+        MENU = this.responseText.replace(/([\n\r]| (?= ))/g, "").replace(/"/g, '\\"');
+        if (oneDone)
+            mainLoad();
+        else
+            oneDone = true;
+    }
+};
+xhr.send();
+
+function mainLoad() {
+    s.innerHTML = loader.toString().replace("VER", getVersion()).replace("IPLUG", MAIN.replace(/__EXTENSION_ID__/g, chrome.runtime.id).replace("__MENU__", MENU).replace("___URL___", chrome.extension.getURL(""))) + ' loader();';
+    document.head.appendChild(s);
+}
 
 /* Version */
 

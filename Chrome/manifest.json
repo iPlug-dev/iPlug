@@ -12,6 +12,7 @@
         "storage",
         "notifications",
         "contextMenus",
+        "tabs",
         "*://*/*"
     ],
     "externally_connectable": {

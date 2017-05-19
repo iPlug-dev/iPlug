@@ -1,3 +1,5 @@
+
+/*
 define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "iplug/visualizations/processor", "jquery", "underscore"], function(Modules, Settings, Core, Processor, $, _) {
     var s = require(Modules["s"]); //now playing
     var z = require(Modules["z"]); //settings
@@ -187,3 +189,4 @@ define(["iplug/plug-modules", "iplug/settings", "iplug/visualizations/core", "ip
     }
     return p;
 });
+*/

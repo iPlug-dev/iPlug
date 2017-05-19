@@ -211,7 +211,7 @@ define({
     },
     bacon: {
         text: "Bacon",
-        url: "http://i.imgur.com/HgpEpcc.jpg",
+        url: "https://i.imgur.com/HgpEpcc.jpg",
         description: "BACOONNNnnn!!!!!!!1!!!"
     }
 });

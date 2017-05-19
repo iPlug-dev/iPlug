@@ -6,7 +6,6 @@ define(function () {
         version: "0.2.4.2",
         text: ["-Playback controls can now hide!", "-Fix thumbnail for live youtube videos"],
         convert: function () {
-            console.log("hey!");
             localStorage['iplug|usercustomcode'] = localStorage['usercustomcode'];
             localStorage['iplug|usercustomcodesafe'] = localStorage['usercustomcodesafe']
         }
@@ -28,5 +27,19 @@ define(function () {
                "-Improved image loading!",
                "-Indirect images now work! (prntscr, gyazo, ..)",
                "-Improved mention search!"]
-    }]
+    }, {
+        version: "0.9.9.99",
+        title: "Prepare for the big update!",
+        text:  ["-Desktop notifications!",
+                "-Multiplaylist select!",
+                "-Automeh remembererer",
+                "-Plug portrait mode!",
+                "-Sped up plug loading times!",
+                "-New emotes!",
+                "-Much, much more!"]
+    }/*, {
+        version: "1.0.0.0",
+        title: "THE BIG UPDATE!",
+        text:  [""]
+    }*/]
 });
