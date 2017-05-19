@@ -130,7 +130,7 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         localStorage["iplug|desktopnotificationsallenabled"] = "none";
     }
     if (undefined === localStorage["iplug|notificationsoundallenabled"]) {
-        localStorage["iplug|notificationsoundallenabled"] = "none";
+        localStorage["iplug|notificationsoundallenabled"] = "block";
     }
 
     $("#playback > .background").css({
