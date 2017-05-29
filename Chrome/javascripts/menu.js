@@ -129,7 +129,7 @@
         <div id="playlistoptions" class="subcontainer">
 			<i class="iplug-collapse icon icon-arrow-up" style="text-indent: 0px"></i>
             <div class="noitem">
-                <span class="subtitle">Playlist Options</span>
+                <span class="subtitle">Song &amp; Playlist Options</span>
             </div>
             <div id="multiplaylistenabled" class="item item-iplug">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|multiplaylistenabled'] + '"></i>
@@ -142,6 +142,10 @@
             <div id="brokensongsenabled" class="item item-iplug unavailable">
                 <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|brokensongsenabled'] + '"></i>
                 <span>Fix broken songs</span>
+            </div>
+            <div id="automuteenabled" class="item item-iplug">
+                <i class="icon icon-check-blue" style="display: ' + localStorage['iplug|automuteenabled'] + '"></i>
+                <span>Mute plug when playing youtube in another tab</span>
             </div>
         </div>
 		<div id="chatoptions" class="subcontainer">

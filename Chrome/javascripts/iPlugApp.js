@@ -132,6 +132,9 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     if (undefined === localStorage["iplug|notificationsoundallenabled"]) {
         localStorage["iplug|notificationsoundallenabled"] = "block";
     }
+    if (undefined === localStorage["iplug|automuteenabled"]) {
+        localStorage["iplug|automuteenabled"] = "block";
+    }
 
     $("#playback > .background").css({
         display: (localStorage["iplug|playbackborder"] === "none") ? "block" : "none"
@@ -172,6 +175,38 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         e[i] = [a.split("|")[0], a.split("|")[1].split(",")];
     });
     var COLORS = localStorage["iplug|decolorstring"].split("|");
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var requestHandlers = [];
+    chrome.runtime.onMessageExternal.addListener(function(request, sender, sendResponse) {
+        //console.log("Sender ", sender);
+        //console.log("Request", request);
+        if (!requestHandlers[request.type])
+            console.error("wtf, unknown request '" + request.type + "'\nsender:", sender, "\nrequest:", request);
+
+        requestHandlers[request.type](request, sender, sendResponse);
+        
+        return true; //async support for sendResponse
+    });
+
+
+
+
+
+
+
+
 
     //=============================================================================================================================================\\
     //=============================================================================================================================================\\
@@ -352,8 +387,16 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
     });
 
 
-	if ((localStorage["iplug|desktopnotificationsenabled"] === "block") && (Notification.permission !== "granted"))
-		Notification.requestPermission();
+	if (localStorage["iplug|desktopnotificationsenabled"] === "block")
+        chrome.runtime.sendMessage("__EXTENSION_ID__", {
+            type: "requestNotificationPermission"
+        }, function(response) {
+            if (response.granted)
+                return;
+            $(".item-iplug[id*='desktopnotification'] > i").filter(function() {
+                return $(this).css("display") == "block";
+            }).click();
+        });
 
 
     $(window).on("focus", function() {
@@ -474,7 +517,8 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             $(item).children("span").each(function (i, e) {
                 width += parseInt($(e).css("width"));
             });
-            $(item).css("width", width + 1 + "px");
+            if (width + 1 <= 250)
+                $(item).css("width", width + 1 + "px");
         });
         $(".unavailable").each(function (i, e) {
             var checkbox = $("#" + $(e).parent().attr("id") + "enabled > i");
@@ -2001,20 +2045,29 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
             function load() {
                 $.ajax({
                     url: emoteObject.url,
-                    dataType: "json",
+                    dataType: "text",
                     success: function (response) {
+                        localStorage["iplug|emojicache|" + emoteObject.url] = response;
                         worker.postMessage({
-                            response: response,
+                            response: JSON.parse(response),
                             emoteObjectUrl: emoteObject.url
                         });
                     },
                     error: function (response) {
                         if (tries++ < 3)
                             return load();
-                        console.warn("Failed to load ALL emotes from " + emoteObject.url + "!", response);
-                        worker.postMessage({
-                            emoteObjectUrl: emoteObject.url
-                        });
+                        if (localStorage["iplug|emojicache|" + emoteObject.url]) {
+                            console.warn("Failed to load ALL emotes from " + emoteObject.url + "! Loading from cache..", response);
+                            worker.postMessage({
+                                response: JSON.parse(localStorage["iplug|emojicache|" + emoteObject.url]),
+                                emoteObjectUrl: emoteObject.url
+                            });
+                        } else {
+                            console.warn("Failed to load ALL emotes from " + emoteObject.url + " and no cache available!", response);
+                            worker.postMessage({
+                                emoteObjectUrl: emoteObject.url
+                            });
+                        }
                     }
                 });
             }
@@ -2373,6 +2426,65 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
 
 
     
+
+
+
+
+
+
+
+    requestHandlers["mutePlug"] = function(request, sender, sendResponse) {
+        if (!response.success) {
+            alert("Tabs permission is required to peek into other tabs to automute. The option will now be disabled.");
+            $(".item-iplug[id='automuteenabled'] > i").filter(function() {
+                return $(this).css("display") == "block";
+            }).click();
+            return;
+        }
+        mutePlug(response.success);
+    };
+
+
+
+    if (localStorage["iplug|automuteenabled"] == "block")
+        initAutoMute();
+    function initAutoMute() {
+        chrome.runtime.sendMessage("__EXTENSION_ID__", {
+            type: "initAutoMute",
+            muteFilter: ["youtube."]
+        });
+    }
+    function disableAutoMute() {
+        chrome.runtime.sendMessage("__EXTENSION_ID__", {
+            type: "initAutoMute",
+            disable: true
+        }, function(response) {
+            mutePlug(response.success);
+        });
+    }
+    function mutePlug(newState) {
+        console.log("MUTE PLUG", newState);
+        var b = $("#volume > .button > .icon");
+        if (newState && !b.hasClass("icon-volume-off")) b.click();
+        else if (!newState && b.hasClass("icon-volume-off")) b.click();
+    }
+
+
+
+
+
+
+    API.on(API.CHAT_COMMAND, function(a) {
+        API.chatLog("[iPlug] Checking for updates..");
+        chrome.runtime.sendMessage("__EXTENSION_ID__", {
+            type: "update"
+        }, function(status, details) {
+            if (status == "update_available") return API.chatLog("[iPlug] Good news! A new update is available: " + details.version);
+            else if (status == "no_update") return API.chatLog("[iPlug] Good news! You are up to date!");
+            return API.chatLog("[iPlug] Something went wrong while checking for new version, please try again later.");
+        });
+    });
+
 
 
     //alt song on meh
@@ -2855,9 +2967,37 @@ require(["jquery", "underscore", "iplug/youtube-api", "iplug/autowoot", "iplug/v
         	}
         case "desktopnotificationsenabled":
         	return function() {
-        		if (enabled && (Notification.permission !== "granted"))
-    				Notification.requestPermission();
+        		if (!enabled) {
+                    $("#desktopnotificationsallenabled > i").filter(function() {
+                        return $(this).css("display") == "block";
+                    }).click();
+                    return;
+                }
+                chrome.runtime.sendMessage("__EXTENSION_ID__", {
+                    type: "requestNotificationPermission"
+                }, function(response) {
+                    if (response.granted)
+                        return;
+                    $(".item-iplug[id*='desktopnotification'] > i").filter(function() {
+                        return $(this).css("display") == "block";
+                    }).click();
+                    alert("Notification and tab permissions are required for notifications to work (Duh). The option will now be disabled.");
+                });
         	}
+        case "desktopnotificationsallenabled":
+            return function() {
+                if (enabled)
+                    $("#desktopnotificationsenabled > i").filter(function() {
+                        return $(this).css("display") == "none";
+                    }).click();
+            }
+        case "automuteenabled":
+            return function() {
+                if (enabled)
+                    initAutoMute();
+                else
+                    disableAutoMute();
+            }
         }
         console.error("iplug menu error: unknown option '" + id + "'");
         return function () {};

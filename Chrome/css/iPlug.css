@@ -262,17 +262,16 @@ font-family: 'Fjalla One', sans-serif;
 .iplug-container .item {
     position: relative;
     margin-top: 6px;
-    height: 25px;
     cursor: pointer;
+    width: 270px;
 }
 .iplug-container .item i {
     top: 2px;
     left: 4px;
 }
 .iplug-container .item span {
-    position:absolute;
-    left: 17px;
-    margin-left: 10px;
+    position: relative;
+    left: 27px;
     color: #808691
 }
 .iplug-container .item.disabled i {
